@@ -20,6 +20,7 @@ from django.http import HttpResponseRedirect
 from .models import ReviewOfUniverity
 from .forms import ReviewForm
 
+
 class ReviewOfUniversityView(CreateView):
     template_name = 'reviews/review_of_university.html'
     form_class = ReviewForm
