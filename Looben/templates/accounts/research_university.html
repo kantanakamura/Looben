@@ -1,0 +1,718 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block head_content%}
+{% endblock %}
+
+
+{% block content %}
+<!-- **************** MAIN CONTENT START **************** -->
+<main class="pt-5">
+
+    <!-- Page header START -->
+    <div class="py-5" style="background-image:url({% static 'images/bg/search_uni.jpg' %}); background-position: center center; background-size: cover; background-repeat: no-repeat;"> 
+        <div class="container">
+            <div class="row justify-content-center py-5">
+              <div class="col-md-6 text-center">
+              <!-- Title -->
+              <h1 class="text-white">自分に合った台湾の大学を探す.</h1>
+              <!-- Search form START -->
+              <form class="rounded position-relative">
+                <input class="form-control form-control-lg ps-5" type="search" placeholder="検索" aria-label="Search">
+                <button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit"><i class="bi bi-search fs-5 ps-1"> </i></button>
+              </form>
+              <!-- Search form END -->
+              <p class="mb-4 text-white" style="margin-top:20px;"><i class="bi bi-patch-check-fill text-success small"></i>は国立大学、<i class="bi bi-patch-check-fill text-warning small"></i>は私立大学</p>
+              </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page header END -->
+  
+  <!-- Container START -->
+  <div class="py-5">
+    <div class="container">
+  
+      <div class="row g-4">
+        <div class="col-12">
+           <!-- Tab nav line START -->
+           <ul class="nav nav-tabs nav-tabs-white justify-content-center border-0">
+            <li class="nav-item"> <a class="nav-link active" data-bs-toggle="tab" href="#tab-1"> おすすめ </a> </li>
+            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-2"> 国立 </a> </li>
+            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-3"> 私立 </a> </li>
+            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-4"> 北部 </a> </li>
+            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-5"> 中部 </a> </li>
+            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-6"> 東部 </a> </li>
+            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-7"> 南部 </a> </li>
+            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-8"> 保存した大学 </a> </li>
+          </ul>
+          <!-- Tab nav line START -->
+        </div>
+      </div>
+      
+      <div class="tab-content mb-0 pb-0">
+
+        <!-- おすすめ tab START -->
+        <div class="tab-pane fade show active" id="tab-1">
+            
+         <div class="row g-4">
+          <!-- Main content START -->
+          <div class="col-sm-6 col-lg-4">
+            <!-- Card feed item START -->
+            <div class="card h-100">
+              <img class="card-img-top" src="{% static 'images/uni/yuan_ze_university.jpg' %}" alt="元智大學2" style="height:210px;">
+              <!-- Card body START -->
+              <div class="card-body">
+                <!-- Info -->
+                <p class="text-body"><strong>元智大學 - Yuan Ze Univerisity</strong> <i class="bi bi-patch-check-fill text-warning small"></i></p>
+                <a class="text-body" href="{% url 'accounts:university_detail' pk=79 %}">1989年にFar Eastグループ創設者により設立された桃園縣の中心に位置する私立大学で、理系学部が有名ですが、管理学部もAACSBの認証を獲得しています。キャンパスは2008年、台湾建設賞を受賞しました。</a>
+                <!-- Feed react START -->
+                <ul class="nav nav-stack flex-wrap small mt-3">
+                  <li class="nav-item">
+                    <a class="nav-link" href="#!"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>(56)</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>(12)</a>
+                  </li>
+                  <!-- 保存　button START -->
+                  <li class="nav-item ms-sm-auto">
+                    <a href=""><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                  </li>
+                  <!-- 保存　button END -->
+                </ul>
+                <!-- Feed react END -->
+              </div>
+              <!-- Card body END -->
+  
+            </div>
+            <!-- Card feed item END -->
+          </div>
+
+
+          <div class="col-sm-6 col-lg-4">
+            <!-- Card feed item START -->
+            <div class="card h-100">
+              <div class="ratio ratio-16x9 card-img-top overflow-hidden">
+                <iframe src="https://www.youtube.com/embed/6uQ_nKHb8ng" title="YouTube video" allowfullscreen></iframe>
+              </div>
+              <!-- Card header END -->
+              <!-- Card body START -->
+              <div class="card-body">
+                <!-- Info -->
+                <a class="text-body">元智大學 情報管理学部3年  松村颯氏が自身のYouTubeチャンネル「Hayato Taiwan Life」で元智大學を紹介しくれています。</a>
+              </div>
+              <!-- Card body END -->
+            </div>
+            <!-- Card feed item END -->
+          </div>
+  
+          <div class="col-sm-6 col-lg-4">
+            <!-- Card feed item START -->
+            <div class="card h-100">
+              <!-- Slider START -->
+              <div class="tiny-slider dots-inside dots-white">
+                <div class="tiny-slider-inner" data-arrow="false" data-dots="true" data-autoplay="true" data-items="1" data-gutter="0">
+                  <div class="overflow-hidden">
+                    <img class="card-img-top" src="{% static 'images/uni/National_Taiwan_University.jpg' %}" alt="國立台灣大學" style="height:210px;">
+                  </div>
+                </div>
+              </div>
+              <!-- Card body START -->
+              <div class="card-body">
+                <!-- Info -->
+                <p class="text-body"><strong>國立台灣大學 - National Taiwan Univerisity</strong> <i class="bi bi-patch-check-fill text-success small"></i></p>
+                <a class="text-body" href="{% url 'accounts:university_detail' pk=1 %}">台湾において最も伝統のある台湾大学では、総合大学として世界的にも質の高い学位プログラムを設置しています。大学院には全て英語で授業が行われるグローバルMBAプログラムもあり、世界中から学生が集まっています。</a>
+                <!-- Feed react START -->
+                <ul class="nav nav-stack flex-wrap small mt-3">
+                  <li class="nav-item">
+                    <a class="nav-link" href="#!"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>(23)</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>(10)</a>
+                  </li>
+                  <!-- 保存　button START -->
+                  <li class="nav-item ms-sm-auto">
+                    <a href=""><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                  </li>
+                  <!-- 保存　button END -->
+                </ul>
+                <!-- Feed react END -->
+              </div>
+              <!-- Card body END -->
+            </div>
+            <!-- Card feed item END -->
+          </div>
+  
+          <div class="col-sm-6 col-lg-4">
+            <!-- Card feed item START -->
+            <div class="card h-100">
+              <img class="card-img-top" src="{% static 'images/uni/national_taiwan_normal.jpg' %}" alt="國立台灣師範大學" style="height:210px;">
+              <!-- Card header END -->
+              <!-- Card body START -->
+              <div class="card-body">
+                <!-- Info -->
+                <p class="text-body"><strong>國立台灣師範大學 - National Taiwan Normal Univerisity</strong> <i class="bi bi-patch-check-fill text-success small"></i></p>
+                <a class="text-body" href="{% url 'accounts:university_detail' pk=2 %}">1922年に創立した9学部、62学部課程、21の研究センター及び教育センターを擁する大学で、現在、台北市中心のメインキャンパスと公館キャンパス、新北市の林口キャンパスの3か所に分布しています。</a>
+                <!-- Feed react START -->
+                <ul class="nav nav-stack flex-wrap small mt-3">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="#!"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>(102)</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>(65)</a>
+                  </li>
+                  <!-- 保存　button START -->
+                  <li class="nav-item ms-sm-auto">
+                    <a href=""><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                  </li>
+                  <!-- 保存　button END -->
+                </ul>
+                <!-- Feed react END -->
+              </div>
+              <!-- Card body END -->
+  
+            </div>
+            <!-- Card feed item END -->
+          </div>
+  
+          <div class="col-sm-6 col-lg-4">
+            <!-- Card feed item START -->
+            <div class="card h-100">
+              <img class="card-img-top" src="{% static 'images/uni/zhong-yuan.jpg' %}" alt="中原大學" style="height:210px;">
+              <!-- Card header END -->
+              <!-- Card body START -->
+              <div class="card-body">
+                <!-- Info -->
+                <p class="text-body"><strong>中原大學 - Chung Yuan Christian Univerisity</strong> <i class="bi bi-patch-check-fill text-warning small"></i></p>
+                <a class="text-body" href="{% url 'accounts:university_detail' pk=24 %}">本校は1955年に創立され、現在63年の歴史を有しています。長い歴史を経て全世界に多くの卒業生がいます。信、望、愛を理念とした全人教育を目指し、国際認証も多数受け、世界ランキングでは台湾で最も評価が高い私立総合大学です。</a>
+                <!-- Feed react START -->
+                <ul class="nav nav-stack flex-wrap small mt-3">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="#!"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>(102)</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>(65)</a>
+                  </li>
+                  <!-- 保存　button START -->
+                  <li class="nav-item ms-sm-auto">
+                    <a href=""><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                  </li>
+                  <!-- 保存　button END -->
+                </ul>
+                <!-- Feed react END -->
+              </div>
+              <!-- Card body END -->
+  
+            </div>
+            <!-- Card feed item END -->
+          </div>
+  
+          <div class="col-sm-6 col-lg-4">
+            <!-- Card feed item START -->
+            <div class="card h-100">
+              <img class="card-img-top" src="{% static 'images/uni/feng_chia.jpg' %}" alt="逢甲大學" style="height:210px;">
+              <!-- Card header END -->
+              <!-- Card body START -->
+              <div class="card-body">
+                <!-- Info -->
+                <p class="text-body"><strong>逢甲大學 - Feng Chia Univerisity</strong> <i class="bi bi-patch-check-fill text-warning small"></i></p>
+                <a class="text-body" href="{% url 'accounts:university_detail' pk=28 %}">1961年に台中で創立した私立総合大学で、素養と専門知識を兼ね備えた現代の民主社会を生きる人材教育を教育目標に掲げ、「卓越した教育と研究でアジア太平洋地域の著名大学」を目指して発展し続けています。</a>
+                <!-- Feed react START -->
+                <ul class="nav nav-stack flex-wrap small mt-3">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="#!"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>(102)</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>(65)</a>
+                  </li>
+                  <!-- 保存　button START -->
+                  <li class="nav-item ms-sm-auto">
+                    <a href=""><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                  </li>
+                  <!-- 保存　button END -->
+                </ul>
+                <!-- Feed react END -->
+              </div>
+              <!-- Card body END -->
+            </div>
+            <!-- Card feed item END -->
+          </div>
+
+  
+          <div class="col-sm-6 col-lg-4">
+            <!-- Card feed item START -->
+            <div class="card h-100">
+              <img class="card-img-top" src="{% static 'images/uni/National_Chengchi.jpg' %}" alt="國立政治大學" style="height:210px;">
+              <!-- Card header END -->
+              <!-- Card body START -->
+              <div class="card-body">
+                <!-- Info -->
+                <p class="text-body"><strong>國立政治大學 - National Chengchi Univerisity</strong> <i class="bi bi-patch-check-fill text-success small"></i></p>
+                <a class="text-body" href="{% url 'accounts:university_detail' pk=41 %}">台北市南部の木柵地区にある台湾を代表する国立総合大学です。商学や文学、マスメディア学等の分野では特に台湾でもトップレベルで、留学生にも人気があります。裏手は山間地帯ですが周辺は便利です。</a>
+                <!-- Feed react START -->
+                <ul class="nav nav-stack flex-wrap small mt-3">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="#!"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>(102)</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>(65)</a>
+                  </li>
+                  <!-- 保存　button START -->
+                  <li class="nav-item ms-sm-auto">
+                    <a href=""><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                  </li>
+                  <!-- 保存　button END -->
+                </ul>
+                <!-- Feed react END -->
+              </div>
+              <!-- Card body END -->
+            </div>
+            <!-- Card feed item END -->
+          </div>
+  
+
+          <div class="col-sm-6 col-lg-4">
+            <!-- Card feed item START -->
+            <div class="card h-100">
+              <img class="card-img-top" src="{% static 'images/uni/taipei.jpg' %}" alt="台北市立大學" style="height:210px;">
+              <!-- Card header END -->
+              <!-- Card body START -->
+              <div class="card-body">
+                <!-- Info -->
+                <p class="text-body"><strong>台北市立大學 - Univerisity of Taipei</strong> <i class="bi bi-patch-check-fill text-success small"></i></p>
+                <a class="text-body" href="{% url 'accounts:university_detail' pk=45 %}">1895年の日本統治時代に創立された台湾で2番目に歴史がある大学で、台北市の中心部にある台北駅に近く、交通が便利で生活しやすい環境が整っています。</a>
+                <!-- Feed react START -->
+                <ul class="nav nav-stack flex-wrap small mt-3">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="#!"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>(102)</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>(65)</a>
+                  </li>
+                  <!-- 保存　button START -->
+                  <li class="nav-item ms-sm-auto">
+                    <a href=""><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                  </li>
+                  <!-- 保存　button END -->
+                </ul>
+                <!-- Feed react END -->
+              </div>
+              <!-- Card body END -->
+            </div>
+            <!-- Card feed item END -->
+          </div>
+  
+          <div class="col-sm-6 col-lg-4">
+            <!-- Card feed item START -->
+            <div class="card h-100">
+              <img class="card-img-top" src="{% static 'images/uni/ming_chuan.jpg' %}" alt="銘傳大學" style="height:210px;">
+              <!-- Card header END -->
+              <!-- Card body START -->
+              <div class="card-body">
+                <!-- Info -->
+                <p class="text-body"><strong>銘傳大學 - Ming Chuan Univerisity</strong> <i class="bi bi-patch-check-fill text-warning small"></i></p>
+                <a class="text-body" href="{% url 'accounts:university_detail' pk=12 %}">1957年に創立された私立総合大学で、現在台湾で最も外国人留学生が多いグローバルな大学です。中国語で受講できる学科の他にAll Englishコースも充実しており、アジアで唯一アメリカの認証を得ている大学としても知られています。</a>
+                <!-- Feed react START -->
+                <ul class="nav nav-stack flex-wrap small mt-3">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="#!"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>(102)</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>(65)</a>
+                  </li>
+                  <!-- 保存　button START -->
+                  <li class="nav-item ms-sm-auto">
+                    <a href=""><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                  </li>
+                  <!-- 保存　button END -->
+                </ul>
+                <!-- Feed react END -->
+              </div>
+              <!-- Card body END -->
+            </div>
+            <!-- Card feed item END -->
+          </div>
+
+          <div class="col-sm-6 col-lg-4">
+            <!-- Card feed item START -->
+            <div class="card h-100">
+              <img class="card-img-top" src="{% static 'images/uni/kaohsiung.jpg' %}" alt="國立高雄大學" style="height:210px;">
+              <!-- Card header END -->
+              <!-- Card body START -->
+              <div class="card-body">
+                <!-- Info -->
+                <p class="text-body"><strong>國立高雄大學 - National Univerisity of Kaohsiung</strong> <i class="bi bi-patch-check-fill text-success small"></i></p>
+                <a class="text-body" href="{% url 'accounts:university_detail' pk=11 %}">國立高雄大學は2000年に創立された新しい国立大学で、世界各地の学校と姉妹校関係にあります。ヨーロッパ、アメリカ、アジア及びオセアニアの各国から来た学生がおり、緑豊かなキャンパスは国際色にも溢れています。</a>
+                <!-- Feed react START -->
+                <ul class="nav nav-stack flex-wrap small mt-3">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="#!"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>(102)</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>(65)</a>
+                  </li>
+                  <!-- 保存　button START -->
+                  <li class="nav-item ms-sm-auto">
+                    <a href=""><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                  </li>
+                  <!-- 保存　button END -->
+                </ul>
+                <!-- Feed react END -->
+              </div>
+              <!-- Card body END -->
+            </div>
+            <!-- Card feed item END -->
+          </div>
+
+          <div class="col-sm-6 col-lg-4">
+            <!-- Card feed item START -->
+            <div class="card h-100">
+              <img class="card-img-top" src="{% static 'images/uni/I-Shou.jpeg' %}" alt="義守大學" style="height:210px;">
+              <!-- Card header END -->
+              <!-- Card body START -->
+              <div class="card-body">
+                <!-- Info -->
+                <p class="text-body"><strong>義守大學 - I-Shou Univerisity</strong> <i class="bi bi-patch-check-fill text-warning small"></i></p>
+                <a class="text-body" href="{% url 'accounts:university_detail' pk=38 %}">台湾南部・高雄の観音山に位置し、林義守氏により創立された大学です。創立31年ほどですでに学生数は16,000人を超え、563人の専任講師の87%は博士号を取得しています。設備も充実し、近年急速に発展しています。</a>
+                <!-- Feed react START -->
+                <ul class="nav nav-stack flex-wrap small mt-3">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="#!"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>(102)</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>(65)</a>
+                  </li>
+                  <!-- 保存　button START -->
+                  <li class="nav-item ms-sm-auto">
+                    <a href=""><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                  </li>
+                  <!-- 保存　button END -->
+                </ul>
+                <!-- Feed react END -->
+              </div>
+              <!-- Card body END -->
+            </div>
+            <!-- Card feed item END -->
+          </div>
+
+          <div class="col-sm-6 col-lg-4">
+            <!-- Card feed item START -->
+            <div class="card h-100">
+              <img class="card-img-top" src="{% static 'images/uni/tamkang.jpg' %}" alt="淡江大學" style="height:210px;">
+              <!-- Card header END -->
+              <!-- Card body START -->
+              <div class="card-body">
+                <!-- Info -->
+                <p class="text-body"><strong>淡江大學 - Tamkang Univerisity</strong> <i class="bi bi-patch-check-fill text-warning small"></i></p>
+                <a class="text-body" href="{% url 'accounts:university_detail' pk=75 %}">私立大学では台湾で最も歴史があり、日本では知名度が高いです。英語教育に力を入れるため、台北キャンパスの他に蘭陽キャンパス（全学生入寮）を設置しました。OBが多く、様々な業界で活躍しています。</a>
+                <!-- Feed react START -->
+                <ul class="nav nav-stack flex-wrap small mt-3">
+                  <li class="nav-item">
+                    <a class="nav-link active" href="#!"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>(102)</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>(65)</a>
+                  </li>
+                  <!-- 保存　button START -->
+                  <li class="nav-item ms-sm-auto">
+                    <a href=""><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                  </li>
+                  <!-- 保存　button END -->
+                </ul>
+                <!-- Feed react END -->
+              </div>
+              <!-- Card body END -->
+            </div>
+            <!-- Card feed item END -->
+          </div>
+          <!-- Main content END -->
+        </div> 
+        <!-- Row END -->
+        </div>
+        <!-- おすすめ tab END -->
+  
+
+        <!-- 国立 tab START -->
+        <div class="tab-pane fade" id="tab-2">
+            
+          <div class="row g-4">
+            {% for object in object_list %}
+            {% if object.national %}
+            <!-- Main content START -->
+            <div class="col-sm-6 col-lg-4">
+                <!-- Card feed item START -->
+                <div class="card h-100">
+                  <img class="card-img-top" src="{{ object.picture.url }}" alt="{{ object.name }}" style="height:210px;">
+                  <!-- Card header END -->
+                  <!-- Card body START -->
+                  <div class="card-body">
+                    <!-- Info -->
+                    <p class="text-body"><strong>{{ object.name }}</strong> <i class="bi bi-patch-check-fill text-success small"></i></p>
+                    <a class="text-body" href="{% url 'accounts:university_detail' pk=object.id %}">{{ object.description }}</a>
+                    <!-- Feed react START -->
+                    <ul class="nav nav-stack flex-wrap small mt-3">
+                      <li class="nav-item">
+                        <a class="nav-link active" href="#!"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>(102)</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>(65)</a>
+                      </li>
+                      <!-- 保存　button START -->
+                      <li class="nav-item ms-sm-auto">
+                        <a href=""><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                      </li>
+                      <!-- 保存　button END -->
+                    </ul>
+                    <!-- Feed react END -->
+                  </div>
+                  <!-- Card body END -->
+                </div>
+                <!-- Card feed item END -->
+            </div>
+            <!-- Main content END -->
+            {% endif %}
+            {% endfor %}
+          </div> <!-- Row END -->
+        </div>
+        <!-- 国立 tab END -->
+  
+
+        <!-- 私立 tab START -->
+        <div class="tab-pane fade" id="tab-3">
+            
+            <div class="row g-4">
+              {% for object in object_list %}
+              {% if not object.national and not object.name == '小学生' and not object.name == '中学生' and not object.name == '高校生' and not object.name == '大学生' and not object.name == '社会人' and not object.name == 'その他'%}
+              <!-- Main content START -->
+              <div class="col-sm-6 col-lg-4">
+                  <!-- Card feed item START -->
+                  <div class="card h-100">
+                    <img class="card-img-top" src="{{ object.picture.url }}" alt="{{ object.name }}" style="height:210px;">
+                    <!-- Card header END -->
+                    <!-- Card body START -->
+                    <div class="card-body">
+                      <!-- Info -->
+                      <p class="text-body"><strong>{{ object.name }}</strong> <i class="bi bi-patch-check-fill text-warning small"></i></p>
+                      <a class="text-body" href="{% url 'accounts:university_detail' pk=object.id %}">{{ object.description }}</a>
+                      <!-- Feed react START -->
+                      <ul class="nav nav-stack flex-wrap small mt-3">
+                        <li class="nav-item">
+                          <a class="nav-link active" href="#!"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>(102)</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>(65)</a>
+                        </li>
+                        <!-- 保存　button START -->
+                        <li class="nav-item ms-sm-auto">
+                            <a href=""><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                        </li>
+                        <!-- 保存　button END -->
+                      </ul>
+                      <!-- Feed react END -->
+                    </div>
+                    <!-- Card body END -->
+                  </div>
+                  <!-- Card feed item END -->
+              </div>
+              <!-- Main content END -->
+              {% endif %}
+              {% endfor %}
+            </div> <!-- Row END -->
+        </div>
+        <!-- 私立 tab END -->
+  
+
+        <!-- 北部 tab START -->
+        <div class="tab-pane fade" id="tab-4">
+            
+            <div class="row g-4">
+              {% for object in object_list %}
+              {% if object.place == '北部' %}
+              <!-- Main content START -->
+              <div class="col-sm-6 col-lg-4">
+                  <!-- Card feed item START -->
+                  <div class="card h-100">
+                    <img class="card-img-top" src="{{ object.picture.url }}" alt="{{ object.name }}" style="height:210px;">
+                    <!-- Card header END -->
+                    <!-- Card body START -->
+                    <div class="card-body">
+                      <!-- Info -->
+                      <p class="text-body"><strong>{{ object.name }}</strong> {% if object.national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                      <a class="text-body" href="{% url 'accounts:university_detail' pk=object.id %}">{{ object.description }}</a>
+                      <!-- Feed react START -->
+                      <ul class="nav nav-stack flex-wrap small mt-3">
+                        <li class="nav-item">
+                          <a class="nav-link active" href="#!"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>(102)</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>(65)</a>
+                        </li>
+                        <!-- 保存　button START -->
+                        <li class="nav-item ms-sm-auto">
+                            <a href=""><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                        </li>
+                        <!-- 保存　button END -->
+                      </ul>
+                      <!-- Feed react END -->
+                    </div>
+                    <!-- Card body END -->
+                  </div>
+                  <!-- Card feed item END -->
+              </div>
+              <!-- Main content END -->
+              {% endif %}
+              {% endfor %}
+            </div> <!-- Row END -->
+        </div>
+        <!-- 北部 tab END -->
+  
+        <!-- 中部 tab START -->
+        <div class="tab-pane fade" id="tab-5">
+            
+            <div class="row g-4">
+              {% for object in object_list %}
+              {% if object.place == '中部' %}
+              <!-- Main content START -->
+              <div class="col-sm-6 col-lg-4">
+                  <!-- Card feed item START -->
+                  <div class="card h-100">
+                    <img class="card-img-top" src="{{ object.picture.url }}" alt="{{ object.name }}" style="height:210px;">
+                    <!-- Card header END -->
+                    <!-- Card body START -->
+                    <div class="card-body">
+                      <!-- Info -->
+                      <p class="text-body"><strong>{{ object.name }}</strong> {% if object.national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                      <a class="text-body" href="{% url 'accounts:university_detail' pk=object.id %}">{{ object.description }}</a>
+                      <!-- Feed react START -->
+                      <ul class="nav nav-stack flex-wrap small mt-3">
+                        <li class="nav-item">
+                          <a class="nav-link active" href="#!"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>(102)</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>(65)</a>
+                        </li>
+                        <!-- 保存　button START -->
+                        <li class="nav-item ms-sm-auto">
+                            <a href=""><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                        </li>
+                        <!-- 保存　button END -->
+                      </ul>
+                      <!-- Feed react END -->
+                    </div>
+                    <!-- Card body END -->
+                  </div>
+                  <!-- Card feed item END -->
+              </div>
+              <!-- Main content END -->
+              {% endif %}
+              {% endfor %}
+            </div> <!-- Row END -->
+        </div>
+        <!-- 中部 tab END -->
+  
+        <!-- 東部 tab START -->
+        <div class="tab-pane fade" id="tab-6">
+            
+            <div class="row g-4">
+              {% for object in object_list %}
+              {% if object.place == '東部' %}
+              <!-- Main content START -->
+              <div class="col-sm-6 col-lg-4">
+                  <!-- Card feed item START -->
+                  <div class="card h-100">
+                    <img class="card-img-top" src="{{ object.picture.url }}" alt="{{ object.name }}" style="height:210px;">
+                    <!-- Card header END -->
+                    <!-- Card body START -->
+                    <div class="card-body">
+                      <!-- Info -->
+                      <p class="text-body"><strong>{{ object.name }}</strong> {% if object.national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                      <a class="text-body" href="{% url 'accounts:university_detail' pk=object.id %}">{{ object.description }}</a>
+                      <!-- Feed react START -->
+                      <ul class="nav nav-stack flex-wrap small mt-3">
+                        <li class="nav-item">
+                          <a class="nav-link active" href="#!"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>(102)</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>(65)</a>
+                        </li>
+                        <!-- 保存　button START -->
+                        <li class="nav-item ms-sm-auto">
+                            <a href=""><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                        </li>
+                        <!-- 保存　button END -->
+                      </ul>
+                      <!-- Feed react END -->
+                    </div>
+                    <!-- Card body END -->
+                  </div>
+                  <!-- Card feed item END -->
+              </div>
+              <!-- Main content END -->
+              {% endif %}
+              {% endfor %}
+            </div> <!-- Row END -->
+        </div>
+        <!-- 東部 tab END -->
+
+        <!-- 南部 tab START -->
+        <div class="tab-pane fade" id="tab-7">
+            
+            <div class="row g-4">
+              {% for object in object_list %}
+              {% if object.place == '南部' %}
+              <!-- Main content START -->
+              <div class="col-sm-6 col-lg-4">
+                  <!-- Card feed item START -->
+                  <div class="card h-100">
+                    <img class="card-img-top" src="{{ object.picture.url }}" alt="{{ object.name }}" style="height:210px;">
+                    <!-- Card header END -->
+                    <!-- Card body START -->
+                    <div class="card-body">
+                      <!-- Info -->
+                      <p class="text-body"><strong>{{ object.name }}</strong> {% if object.national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                      <a class="text-body" href="{% url 'accounts:university_detail' pk=object.id %}">{{ object.description }}</a>
+                      <!-- Feed react START -->
+                      <ul class="nav nav-stack flex-wrap small mt-3">
+                        <li class="nav-item">
+                          <a class="nav-link active" href="#!"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>(102)</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>(65)</a>
+                        </li>
+                        <!-- 保存　button START -->
+                        <li class="nav-item ms-sm-auto">
+                            <a href=""><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                        </li>
+                        <!-- 保存　button END -->
+                      </ul>
+                      <!-- Feed react END -->
+                    </div>
+                    <!-- Card body END -->
+                  </div>
+                  <!-- Card feed item END -->
+              </div>
+              <!-- Main content END -->
+              {% endif %}
+              {% endfor %}
+            </div> <!-- Row END -->
+        </div>
+        <!-- 南部 tab END -->
+
+        <!-- Entertainment tab START -->
+        <div class="tab-pane fade text-center" id="tab-8">
+            <div class="my-sm-5 py-sm-5">
+              <i class="display-1 text-primary text-opacity-25 bi bi-card-text"> </i>
+              <h4 class="mt-2 mb-3 text-body">あなたが保存した大学はありません</h4>
+              <button class="btn btn-primary-soft btn-sm"> View recent post </button>
+            </div>
+        </div>
+        <!-- Entertainment tab END -->  
+      </div>
+    </div>
+  </div>
+    <!-- Container END -->
+  
+</main>
+<!-- **************** MAIN CONTENT END **************** -->
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block head_content%}
+    <link rel="stylesheet" href="{% static 'css/accounts/message.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<main>
+    <div class="container">
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+              <li class="{{ message.tags }}">
+                  {{ message|safe }}
+                  <a href="{% url 'accounts:home' %}" class="close">x</a>
+              </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        
+        <h1>This is home page</h1>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block head_content%}
+    <link rel="stylesheet" href="{% static 'css/accounts/message.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+    <!-- Container START -->
+    <div class="container">
+      <div class="row g-4">
+        <!-- Main content START -->
+        <div class="col-lg-8">
+          <div class="bg-mode p-4">
+            <h1 class="h4 mb-4">最新のバイト情報</h1>
+            <!-- Blog item START -->
+            <div class="card bg-transparent border-0">
+              <div class="row g-3">
+                <div class="col-4">
+                  <!-- Blog image -->
+                  <img class="rounded" src="{% static 'images/job/restaurant.jpg' %}" alt="">
+                </div>
+                <div class="col-8">
+                  <!-- Blog caption -->
+                  <a href="#" class="badge bg-info bg-opacity-10 text-info mb-2 fw-bold">飲食店</a>
+                  <h5><a href="blog-details.html" class="btn-link stretched-link text-reset fw-bold">台北駅の裏の〇〇店でバイトをしてます</a></h5>
+                  <div class="d-none d-sm-inline-block">
+                    <p class="mb-2">最初は注文を受けるのも大変でしたが、今では問題なくできるようになりました。たまに、日本人のお客さんもいらっしゃるので人脈が広がります！</p>
+                    <!-- BLog date -->
+                    <a class="small text-secondary" href="#!"> <i class="bi bi-calendar-date pe-1"></i> Mar 07, 2022</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Blog item END -->
+            <hr class="my-4">
+            <!-- Blog item START -->
+            <div class="card bg-transparent border-0">
+              <div class="row g-3">
+                <div class="col-4">
+                  <!-- Blog image -->
+                  <img class="rounded" src="{% static 'images/job/event.jpg' %}" alt="">
+                </div>
+                <div class="col-8">
+                  <!-- Blog caption -->
+                  <a href="#" class="badge bg-success bg-opacity-10 text-success mb-2 fw-bold">イベント</a>
+                  <h5><a href="blog-details.html" class="btn-link stretched-link text-reset fw-bold">さまざまなイベントに関われる</a></h5>
+                  <div class="d-none d-sm-inline-block">
+                    <p class="mb-2">イベント開催の手伝いのバイトをしています。わからないことが多いですが、普通では体験できないようなことをやらせれもらえるのでとても楽しいです。</p>
+                    <!-- BLog date -->
+                    <a class="small text-secondary" href="#!"> <i class="bi bi-calendar-date pe-1"></i> Jun 17, 2022</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Blog item END -->
+            <hr class="my-4">
+            <!-- Blog item START -->
+            <div class="card bg-transparent border-0">
+              <div class="row g-3">
+                <div class="col-4">
+                  <!-- Blog image -->
+                  <img class="rounded" src="{% static 'images/job/translation.jpg' %}" alt="">
+                </div>
+                <div class="col-8">
+                  <!-- Blog caption -->
+                  <a href="#" class="badge bg-warning bg-opacity-10 text-warning mb-2 fw-bold">翻訳</a>
+                  <h5><a href="blog-details.html" class="btn-link stretched-link text-reset fw-bold">語学力が伸びる</a></h5>
+                  <div class="d-none d-sm-inline-block">
+                    <p class="mb-2">中国語と日本語の翻訳をしています。中国語と日本語の2つの知識が必要なので、難易度は高いですが、バイトをしながら自分の語学力UPに直接繋がるので、とてもおすすめです。興味ある方はぜひ、一緒にやりましょう！</p>
+                    <!-- BLog date -->
+                    <a class="small text-secondary" href="#!"> <i class="bi bi-calendar-date pe-1"></i> Nov 11, 2022</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Blog item END -->
+            <hr class="my-4">
+            <!-- Blog item START -->
+            <div class="card bg-transparent border-0">
+                <div class="row g-3">
+                  <div class="col-4">
+                    <!-- Blog image -->
+                    <img class="rounded" src="{% static 'images/job/teach.jpg' %}" alt="">
+                  </div>
+                  <div class="col-8">
+                    <!-- Blog caption -->
+                    <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">家庭教師</a>
+                    <h5><a href="blog-details.html" class="btn-link stretched-link text-reset fw-bold">SNSを利用して生徒を募集しよう</a></h5>
+                    <div class="d-none d-sm-inline-block">
+                      <p class="mb-2">Facebookなどを利用することで、あなたから学びたいという人が応募してくれます。たまに、変な人もいるで注意が必要です。</p>
+                      <!-- BLog date -->
+                      <a class="small text-secondary" href="#!"> <i class="bi bi-calendar-date pe-1"></i> Jan 22, 2022</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Blog item END -->
+            <!-- Pagination -->
+            <div class="mt-4">
+              <nav aria-label="navigation">
+                <ul class="pagination pagination-light d-inline-block d-md-flex justify-content-center">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#">Prev</a>
+                  </li>
+                  <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+                  <li class="page-item"><a class="page-link" href="#">15</a></li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <!-- Main content END -->
+    </div>
+</main>
+{% endblock %}
