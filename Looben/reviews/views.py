@@ -21,8 +21,8 @@ from .models import ReviewOfUniverity
 from .forms import ReviewForm
 
 
-class ReviewOfUniversityView(CreateView):
-    template_name = 'reviews/review_of_university.html'
+class CreateReviewOfUniversityView(CreateView):
+    template_name = 'reviews/create_review_of_university.html'
     form_class = ReviewForm
     success_message = 'レビューを作成しました'
     

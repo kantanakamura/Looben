@@ -116,11 +116,16 @@ class AccountSettingForm(forms.ModelForm):
         'placeholder': '大学 (任意)',
         'type': 'select',
         }))
+    state = forms.ChoiceField(label='所属', choices=(('now', '現役台湾留学生'), ('gra','台湾留学卒業生'), ('int','留学興味あり'),('ot','その他')), widget=forms.Select(attrs={
+        'class': 'form-control', 
+        'placeholder': '所属',
+        'type': 'select',
+        }))
     
     
     class Meta:
         model = Users
-        fields = ['picture', 'name', 'username', 'birthday', 'instagram_account_name', 'twitter_account_name', 'description', 'major', 'school']
+        fields = ['picture', 'name', 'username', 'birthday', 'instagram_account_name', 'twitter_account_name', 'description', 'major', 'school', 'state']
         
     def save(self, *args, **kwargs):
         obj = super(AccountSettingForm, self).save(commit=False)

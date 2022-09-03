@@ -1,15 +1,15 @@
 from django.db import models
-from accounts.models import Schools
+from accounts.models import Schools, Users
 
-# Create your models here.
+
 class ReviewOfUniverity(models.Model):
     title = models.CharField(max_length=100)
     review = models.TextField(max_length=600)
     user = models.ForeignKey(
-        'Users', on_delete=models.CASCADE
+        Users, on_delete=models.CASCADE
     )
     university = models.ForeignKey(
-        'Schools', on_delete=models.CASCADE
+        Schools, on_delete=models.CASCADE
     )
     
     class Meta:

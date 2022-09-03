@@ -47,6 +47,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
     description = models.TextField(max_length=150, blank=True)
     saved_users = models.ManyToManyField('self', symmetrical=False, blank=True)
     saved_university = models.ManyToManyField('Schools', symmetrical=False, blank=True, related_name='saved_university_users')
+    state = models.CharField(max_length=50, default='その他')
     major = models.ForeignKey(
         'Majors', on_delete=models.CASCADE, null=True
     )

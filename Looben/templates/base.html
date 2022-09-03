@@ -227,6 +227,11 @@
                         <i class="fa-fw bi bi-card-text me-2"></i>Documentation
                         </a> 
                     </li>
+                    <!-- superuserなら管理画面へのリンクを載せる -->
+                    {% if user.is_superuser %}
+                    <li class="dropdown-divider"></li>
+                    <li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'admin:index' %}"><i class="bi bi-power fa-fw me-2"></i>管理画面</a></li>
+                    {% endif %}
                     <li class="dropdown-divider"></li>
                     <li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'accounts:user_logout' %}"><i class="bi bi-power fa-fw me-2"></i>ログアウト</a></li>
                     <li> <hr class="dropdown-divider"></li>
