@@ -28,3 +28,8 @@ class CreateReviewOfUniversityView(CreateView):
     
     # def get_success_url(self):
     #     return reverse_lazy('reviews:user_login')  
+    
+    
+class ReviewInDashboardView(ListView):
+    model = ReviewOfUniverity
+    template_name = 'reviews/review_in_dashboard.html'

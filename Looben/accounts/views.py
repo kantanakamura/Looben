@@ -144,12 +144,33 @@ def save_users_view(request, *args, **kwargs):
 
 
 @login_required
+def unsave_users_view(request, *args, **kwargs):
+
+    try:
+        saver = Users.objects.get(username=request.user.username)
+        saved_user = Users.objects.get(username=kwargs['username'])
+        if saver == saved_user:
+            messages.warning(request, '自分自身の保存を解除できません')
+        else:
+            #保存しようとしている人(自分)×保存される人(相手)という組み合わせを削除する。
+            saver.saved_users.remove(saved_user)
+            messages.success(request, 'あなたは{}の保存を解除しました'.format(saved_user.username))
+    except Users.DoesNotExist:
+        messages.warning(request, '{}は存在しません'.format(kwargs['username']))
+        return HttpResponseRedirect(reverse_lazy('accounts:user_ranking'))
+    except Users.DoesNotExist:
+        messages.warning(request, 'あなたは{}を保存しませんでした'.format(saved_user.username))
+
+    return HttpResponseRedirect(reverse_lazy('accounts:user_ranking'))
+
+
+@login_required
 def save_university_view(request, *args, **kwargs):
     try:
         #request.user.username = ログインユーザーのユーザー名を渡す。
         saver = Users.objects.get(username=request.user.username)
         #kwargs['username'] = 保存対象のユーザー名を渡す。
-        saved_university = Schools.objects.get(username=kwargs['school_id'])
+        saved_university = Schools.objects.get(id=kwargs['school_id'])
         #例外処理：もし保存対象が存在しない場合、警告文を表示させる。
     except Users.DoesNotExist:
         messages.warning(request, '{}は存在しません'.format(kwargs['school_id']))
@@ -166,7 +187,23 @@ def save_university_view(request, *args, **kwargs):
     else:
         #保存済みのメッセージを表示させる。
         messages.warning(request, 'あなたはすでに{}を保存しています'.format(saved_university.name))
-    return HttpResponseRedirect(reverse_lazy('accounts:university_detail', kwargs={'username': saved_university.schoo_id}))
+    return HttpResponseRedirect(reverse_lazy('accounts:university_detail', kwargs={'pk': saved_university.id}))
+
+
+@login_required
+def unsave_university_view(request, *args, **kwargs):
+    try:
+        saver = Users.objects.get(username=request.user.username)
+        saved_university = Schools.objects.get(id=kwargs['school_id'])
+        #保存しようとしている人(自分)×保存される人(相手)という組み合わせを削除する。
+        saver.saved_university.remove(saved_university)
+        messages.success(request, 'あなたは{}の保存を解除しました'.format(saved_university.name))
+    except Users.DoesNotExist:
+        messages.warning(request, '{}は存在しません'.format(saved_university.name))
+        return HttpResponseRedirect(reverse_lazy('accounts:research_university'))
+    except Users.DoesNotExist:
+        messages.warning(request, 'あなたは{}を保存しませんでした'.format(saved_university.name))
+    return HttpResponseRedirect(reverse_lazy('accounts:research_university'))
 
 
 def page_not_found(request, exception):
@@ -190,7 +227,7 @@ class UserRankingView(LoginRequiredMixin, ListView):
     model = Users
     template_name = 'accounts/user_ranking.html'
     
-   
+     
 class ResearchUniversity(ListView):
     model = Schools
     template_name = 'accounts/research_university.html' 
@@ -219,11 +256,18 @@ class StudentsByUniversityView(LoginRequiredMixin, ListView):
             queryset = queryset.filter(school__id=id)
         return queryset
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        id = self.request.GET.get('id')
+        if id is not None:
+            context['school'] = Schools.objects.filter(id=id)
+        return context
+    
         
 class MessageView(TemplateView):
     template_name = 'accounts/messaging.html'     
     
     
-class JobView(TemplateView):
-    template_name = 'accounts/job.html'
+class ComingSoonView(TemplateView):
+    template_name = 'comingsoon.html'
     

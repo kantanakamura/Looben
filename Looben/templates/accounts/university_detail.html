@@ -104,7 +104,7 @@
               <!-- Students END -->
   
               <div class="mt-4 mt-sm-5" id="review">
-                <h4>在学生の声 </h4>
+                <div class="p-2"><h4>在学生の声 </h4></div>              
                 <div class="accordion accordion-icon" id="accordionschedules">
                   <!-- Accordion item -->
                   <div class="accordion-item mb-3">
@@ -289,6 +289,7 @@
                 </div>
               </div>
               <a href="{% url 'accounts:students_by_university' pk=object.id %}" style="text-align:right; margin-top:15px;">もっと見る</a>
+
               
               <!-- Statistics START -->
               <div class="card card-body p-4 mt-5">
