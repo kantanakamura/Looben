@@ -20,6 +20,8 @@ from django.http import HttpResponseRedirect
 from .models import ReviewOfUniverity
 from .forms import ReviewForm
 
+from accounts.models import Users
+
 
 class CreateReviewOfUniversityView(CreateView):
     template_name = 'reviews/create_review_of_university.html'
@@ -30,6 +32,3 @@ class CreateReviewOfUniversityView(CreateView):
     #     return reverse_lazy('reviews:user_login')  
     
     
-class ReviewInDashboardView(ListView):
-    model = ReviewOfUniverity
-    template_name = 'reviews/review_in_dashboard.html'

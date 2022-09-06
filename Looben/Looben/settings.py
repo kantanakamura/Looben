@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'accounts',
     'reviews',
+    'dashboard',
 ]
 
 AUTH_USER_MODEL = 'accounts.Users'

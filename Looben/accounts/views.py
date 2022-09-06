@@ -113,6 +113,32 @@ def connect_view(request, *args, **kwargs):
 
 
 @login_required
+def disconnect_view(request, *args, **kwargs):
+    try:
+        #request.user.username = ログインユーザーのユーザー名を渡す。
+        follower = Users.objects.get(username=request.user.username)
+        #kwargs['username'] = フォロー対象のユーザー名を渡す。
+        following = Users.objects.get(username=kwargs['username'])
+        #例外処理：もしフォロー対象が存在しない場合、警告文を表示させる。
+    except Users.DoesNotExist:
+        messages.warning(request, '{}は存在しません'.format(kwargs['username']))
+        return HttpResponseRedirect(reverse_lazy('accounts:dashboard', kwargs={'username': following.username}))
+        
+    #フォロー対象をすでにフォローしていれば、DBにフォロワー(自分)×フォロー(相手)という組み合わを削除する。
+    #alreadyにはTrueが入る
+    already_connected = follower.connection.filter(id=following.id)
+    #もしcreatedがTrueの場合、フォロー解除完了のメッセージを表示させる。
+    if already_connected:
+        follower.connection.remove(following)
+        messages.success(request, '{}の友達解除をしました'.format(following.username))
+        #まだフォロー相手をフォローしていなかった場合、already_connectedにはFalseが入る。
+    else:
+        #未フォローのメッセージを表示させる。
+        messages.warning(request, 'あなたはまだ{}と友達ではありません'.format(following.username))
+    return HttpResponseRedirect(reverse_lazy('accounts:dashboard', kwargs={'username': following.username}))
+
+
+@login_required
 def save_users_view(request, *args, **kwargs):
     try:
         #request.user.username = ログインユーザーのユーザー名を渡す。
@@ -213,15 +239,6 @@ def page_not_found(request, exception):
 def server_error(request):
     return render(request, 'accounts/500.html', status=500)
     
-
-class DashboardView(DetailView):
-    model = Users
-    template_name = 'accounts/dashboard.html'
-    #slug_field = urls.pyに渡すモデルのフィールド名
-    slug_field = 'username'
-    # urls.pyでのキーワードの名前
-    slug_url_kwarg = 'username'
-    
     
 class UserRankingView(LoginRequiredMixin, ListView):
     model = Users
@@ -230,20 +247,19 @@ class UserRankingView(LoginRequiredMixin, ListView):
      
 class ResearchUniversity(ListView):
     model = Schools
-    template_name = 'accounts/research_university.html' 
-    
+    template_name = 'accounts/research_university.html'    
     
     
 class UniversityDetailView(DetailView):
     model = Schools
     template_name = 'accounts/university_detail.html'
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         school = self.object
         context['users'] = Users.objects.filter(school=school)[:3]
         return context
-    
-    
+     
     
 class StudentsByUniversityView(LoginRequiredMixin, ListView):
     model = Users
