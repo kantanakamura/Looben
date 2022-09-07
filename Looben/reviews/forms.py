@@ -16,8 +16,8 @@ class ReviewForm(forms.ModelForm):
         }))
     review = forms.CharField(label='レビュー', widget=forms.Textarea(attrs={
         'class': 'form-control', 
-        'placeholder': 'レビュー',
-        'rows': '5',
+        'placeholder': '口コミ本文',
+        'rows': '8',
         'type': 'textarea',
         }))
     university = forms.ModelChoiceField(label='大学', queryset= Schools.objects.all(), widget=forms.Select(attrs={

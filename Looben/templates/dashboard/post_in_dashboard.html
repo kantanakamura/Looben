@@ -42,7 +42,7 @@
                     <!-- Info -->
                     <h1 class="mb-0 h5">{{ object.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h1>
                     <p>@{{ object.username }}</p>
-                    <p><strong>{{ object.number_of_friends }}</strong> connections</p>
+                    <p>フレンド<strong>{{ number_of_friends }}</strong>人</p>
                   </div>
                   <!-- Button -->
                   <div class="d-flex mt-3 justify-content-center ms-sm-auto">
@@ -64,8 +64,12 @@
                 </div>
                 <!-- List profile -->
                 <ul class="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">
-                  <li class="list-inline-item"><i class="bi bi-geo-alt me-1"></i> {{ object.school }}</li>
-                  <li class="list-inline-item"><i class="bi bi-pen me-1"></i> {{ object.major }}</li>
+                  <li class="list-inline-item"><i class="bi bi-person me-1"></i> {{ object.state }}</li>
+                  {% if object.state == '現役台湾留学生' or object.state == '台湾留学卒業生' %}
+                    <li class="list-inline-item"><i class="bi bi-geo-alt me-1"></i> {{ object.school }}</li>
+                    <li class="list-inline-item"><i class="bi bi-pen me-1"></i> {{ object.major }}</li>
+                  {% else %}
+                  {% endif %}
                 </ul>
               </div>
               <!-- Card body END -->
@@ -78,7 +82,7 @@
                   {% if object.state == '現役台湾留学生' or object.state == '台湾留学卒業生' %}
                   <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:review_in_dashboard' object.username %}"> 口コミ </a> </li>
                   {% endif %}
-                  <li class="nav-item"> <a class="nav-link" href="my-profile-connections.html"> 友達 <span class="badge bg-success bg-opacity-10 text-success small"> {{ object.number_of_friends }}</span> </a> </li>
+                  <li class="nav-item"> <a class="nav-link" href="my-profile-connections.html"> 友達 <span class="badge bg-success bg-opacity-10 text-success small"> {{ number_of_friends }}</span> </a> </li>
                 </ul>
               </div>
             </div>
@@ -473,9 +477,10 @@
                   <p></p>
                   <!-- Date time -->
                   <ul class="list-unstyled mt-3 mb-0">
-                    <li class="mb-2"> <i class="bi bi-calendar-date fa-fw pe-1"></i> Born: <strong> {{ object.birthday }} </strong> </li>
+                    <li class="mb-2"><i class="bi bi-calendar3 me-1"></i> Joined at: {{ object.joined_at }}</li>
+                    <li class="mb-2"> <i class="bi bi-calendar-date fa-fw pe-1"></i> Born: {{ object.birthday }} </li>
                     <li class="mb-2"> <i class="bi bi-instagram fa-fw pe-1"></i> Instagram: <a href="https://www.instagram.com/{{ object.instagram_account_name }}/"><strong> @{{ object.instagram_account_name}} </strong></a> </li>
-                    <li> <i class="bi bi-twitter fa-fw pe-1"></i> Twitter: <a href="https://twitter.com/{{ object.twitter_account_name }}"><strong> @{{ object.twitter_account_name }} </strong> </li>
+                    <li class="mb-2"> <i class="bi bi-twitter fa-fw pe-1"></i> Twitter: <a href="https://twitter.com/{{ object.twitter_account_name }}"><strong> @{{ object.twitter_account_name }} </strong> </li>
                   </ul>
                 </div>
                 <!-- Card body END -->
@@ -488,7 +493,7 @@
               <div class="card">
                 <!-- Card header START -->
                 <div class="card-header d-flex justify-content-between border-0">
-                  <h5 class="card-title">Experience</h5>
+                  <h5 class="card-title">Job Experiences</h5>
                   <a class="btn btn-primary-soft btn-sm" href="#!"> <i class="fa-solid fa-plus"></i> </a>
                 </div>
                 <!-- Card header END -->
@@ -547,7 +552,7 @@
               <div class="card">
                 <!-- Card header START -->
                 <div class="card-header d-sm-flex justify-content-between align-items-center border-0">
-                  <h5 class="card-title">Friends <span class="badge bg-danger bg-opacity-10 text-danger">230</span></h5>
+                  <h5 class="card-title">Friends <span class="badge bg-danger bg-opacity-10 text-danger">{{ number_of_friends }}</span></h5>
                   <a class="btn btn-primary-soft btn-sm" href="#!"> もっとみる</a>
                 </div>
                 <!-- Card header END -->
@@ -555,13 +560,13 @@
                 <div class="card-body position-relative pt-0">
                   <div class="row g-3">
   
-                    {% for connected_user in object.connection.all %}
+                    {% for connected_user in friends_sidebar_list %}
                     <div class="col-6">
                       <!-- Friends item START -->
                       <div class="card shadow-none text-center h-100">
                         <!-- Card body -->
                         <div class="card-body p-2 pb-0">
-                          <div class="avatar avatar-story avatar-xl">
+                          <div class="avatar avatar-xl">
                             <a href="#!"><img class="avatar-img rounded-circle" src="{{ connected_user.picture.url }}" alt="{{ connected_user.name }}"></a>
                           </div>
                           <h6 class="card-title mb-1 mt-3"> <a href="#!"> {{ connected_user.name }} </a></h6>

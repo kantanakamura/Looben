@@ -4,7 +4,7 @@ from accounts.models import Schools, Users
 
 class ReviewOfUniverity(models.Model):
     title = models.CharField(max_length=100)
-    review = models.TextField(max_length=600)
+    review = models.TextField(max_length=300)
     user = models.ForeignKey(
         Users, on_delete=models.CASCADE
     )
@@ -17,4 +17,4 @@ class ReviewOfUniverity(models.Model):
         verbose_name_plural = '口コミ'
         
     def __str__(self):
-        return self.title + ' : ' + self.user
+        return self.title + ' : ' + str(self.user)

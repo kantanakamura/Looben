@@ -1,6 +1,7 @@
 from tabnanny import verbose
 from tkinter import CASCADE
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser, PermissionsMixin
 )
@@ -39,7 +40,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    picture = models.FileField(blank=True, upload_to='pfp/', default='pfp/Looben.jpg')
+    picture = models.FileField(blank=True, upload_to='pfp/', default='pfp/unknown_user')
     name = models.CharField(max_length=130, blank=True)
     birthday = models.DateField(null=True)
     instagram_account_name = models.CharField(max_length=150, blank=True)
@@ -48,6 +49,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
     saved_users = models.ManyToManyField('self', symmetrical=False, blank=True)
     saved_university = models.ManyToManyField('Schools', symmetrical=False, blank=True, related_name='saved_university_users')
     state = models.CharField(max_length=50, default='その他')
+    joined_at = models.DateField(default=timezone.now)
     major = models.ForeignKey(
         'Majors', on_delete=models.CASCADE, null=True
     )

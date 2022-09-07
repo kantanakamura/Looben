@@ -1,4 +1,5 @@
 from multiprocessing import connection
+from urllib import request
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic.detail import DetailView
@@ -23,12 +24,23 @@ from .forms import ReviewForm
 from accounts.models import Users
 
 
-class CreateReviewOfUniversityView(CreateView):
-    template_name = 'reviews/create_review_of_university.html'
-    form_class = ReviewForm
-    success_message = 'レビューを作成しました'
+# class CreateReviewOfUniversityView(CreateView):
+#     template_name = 'reviews/create_review_of_university.html'
+#     form_class = ReviewForm
+#     success_message = 'レビューを作成しました'
     
-    # def get_success_url(self):
-    #     return reverse_lazy('reviews:user_login')  
+    
+def create_review_of_university(request):
+    create_review_form = ReviewForm(request.POST or None)
+    if create_review_form.is_valid():
+        create_review_form.instance.user = request.user
+        create_review_form.save()
+        messages.success(request, 'レビューを作成しました')
+        return redirect('accounts:research_university')
+    return render(
+        request, 'reviews/create_review_of_university.html', context={
+            'create_review_form': create_review_form
+        }
+    )
     
     

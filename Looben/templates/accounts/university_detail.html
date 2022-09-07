@@ -89,7 +89,7 @@
                     <!-- Students Item -->
                     <div class="d-flex align-items-center">
                       <div class="avatar avatar-lg me-3"> 
-                        <a href="{% url 'accounts:dashboard' student.username %}"><img class="avatar-img rounded-circle" src="{{ student.picture.url }}" alt="{{ student.name }}"></a>
+                        <a href="{% url 'dashboard:post_in_dashboard' student.username %}"><img class="avatar-img rounded-circle" src="{{ student.picture.url }}" alt="{{ student.name }}"></a>
                       </div>
                       <div>
                         <h6 class="mb-0">{{ student.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6>
