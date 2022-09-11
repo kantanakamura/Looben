@@ -8,22 +8,11 @@
 {% block content %}
 <!-- **************** MAIN CONTENT START **************** -->
 <main>
-    <!-- Container START -->
-    <div class="container">
-        {% if messages %}
-        <ul class="messages">
-          {% for message in messages %}
-              <li class="{{ message.tags }}">
-                  {{ message|safe }}
-                  <a href="{% url 'dashboard:review_in_dashboard' object.username %}" class="close">x</a>
-              </li>
-          {% endfor %}
-        </ul>
-        {% endif %}
-
-      <div class="row g-4">
-        <!-- Main content START -->
-        <div class="col-lg-8 vstack gap-4">
+  <!-- Container START -->
+  <div class="container">
+    <div class="row g-4">
+      <!-- Main content START -->
+      <div class="col-lg-8 vstack gap-4">
           <!-- My profile START -->
           <div class="card">
             <!-- Cover image -->
@@ -41,7 +30,20 @@
                   <!-- Info -->
                   <h1 class="mb-0 h5">{{ object.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h1>
                   <p>@{{ object.username }}</p>
-                  <p>フレンド<strong>{{ number_of_friends }}</strong>人</p>
+                  <p>
+                    <ul class="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">
+                      {% if number_of_followed_user == 0 %}
+                      <li class="list-inline-item">フォロワー<strong>0</strong>人</li>
+                      {% else %}
+                      <li class="list-inline-item">フォロワー<strong>{{ number_of_followed_user }}</strong>人</li>
+                      {% endif %}
+                      {% if number_of_following_user == 0 %}
+                      <li class="list-inline-item">フォロー中<strong>0</strong>人</li>
+                      {% else %}
+                      <li class="list-inline-item">フォロー中<strong>{{ number_of_following_user }}</strong>人</li>
+                      {% endif %}
+                    </ul>
+                  </p>
                 </div>
                 <!-- Button -->
                 <div class="d-flex mt-3 justify-content-center ms-sm-auto">
@@ -50,10 +52,10 @@
                   <a href="{% url 'accounts:account_setting' object.username  %}"><button class="btn btn-danger-soft me-2" type="button"> <i class="bi bi-pencil-fill pe-1"></i> 編集 </button></a>
                   {% elif object in user.connection.all %}
                   <!-- すでに友達になっているユーザーのダッシュボードのとき、友達解除ボタンを表示 -->
-                  <a href="{% url 'accounts:disconnect' object.username  %}"><button class="btn btn-info-soft me-2" type="button"> <i class="bi bi-person-heart pe-1"></i> 友達解除 </button></a>
+                  <a href="{% url 'accounts:disconnect' object.username  %}"><button class="btn btn-info-soft me-2" type="button"> <i class="bi bi-person-heart pe-1"></i> フォロー中 </button></a>
                   {% else %}
                   <!-- まだ、友達でないユーザーのダッシュボードのとき、友達登録ボタンを表示 -->
-                  <a href="{% url 'accounts:connect' object.username  %}"><button class="btn btn-info-soft me-2" type="button"> <i class="bi bi-person-heart pe-1"></i> 友達になる </button></a>
+                  <a href="{% url 'accounts:connect' object.username  %}"><button class="btn btn-info-soft me-2" type="button"> <i class="bi bi-person-heart pe-1"></i> フォローする </button></a>
                   {% endif %}
                 </div>
               </div>
@@ -81,223 +83,214 @@
                 {% if object.state == '現役台湾留学生' or object.state == '台湾留学卒業生' %}
                 <li class="nav-item"> <a class="nav-link active" href="{% url 'dashboard:review_in_dashboard' object.username %}"> 口コミ </a> </li>
                 {% endif %}
-                <li class="nav-item"> <a class="nav-link" href="my-profile-connections.html"> 友達 <span class="badge bg-success bg-opacity-10 text-success small"> {{ number_of_friends }}</span> </a> </li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:following_in_dashboard' object.username %}"> フォロー中 <span class="badge bg-success bg-opacity-10 text-success small"> {{ number_of_following_user }}</span> </a> </li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:followed_in_dashboard' object.username %}"> フォロワー <span class="badge bg-success bg-opacity-10 text-success small"> {{ number_of_followed_user }}</span> </a> </li>
               </ul>
             </div>
           </div>
           <!-- My profile END -->
-  
-            <!-- 口コミ START -->
-            <div class="card">
-                <!-- Card header START -->
-                <div class="card-header d-sm-flex align-items-center justify-content-between border-0 pb-0">
-                  <h5 class="card-title mb-sm-0">口コミ一覧</h5>
-                  {% if object.username == user.username %}
-                  <!-- もし、自分のダッシュボードを開いていたら、口コミ作成画面を表示 -->
-                  <!-- Button modal -->
-                  <a class="btn btn-primary-soft btn-sm" href="{% url 'reviews:create_review_of_university' %}"> <i class="fa-solid fa-plus pe-1"></i> 新しく作成</a>
-                  {% endif %}
-                </div>
-                <!-- Card header END -->
-                <!-- Card body START -->
-                <div class="card-body">
-                  <!-- Upcoming event START -->
-                  <div class="alert alert-success alert-dismissible fade show" role="alert">
-                      <strong>Upcoming event:</strong> The learning conference on Sep 19 2022
-                      <a href="events.html" class="btn btn-xs btn-success ms-md-4">View event</a>
-                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                  </div>
-                  <!-- Upcoming event END -->
-                  <div class="mt-4 mt-sm-5" id="review">              
-                    <div class="accordion accordion-icon" id="accordionschedules">
-                      {% for review in users.review_of_university_set.all%}
-                      <!-- review item -->
-                      <div class="accordion-item mb-3">
-                        <div class="accordion-header" id="scheduleOne">
-                          <button class="accordion-button pe-5 flex-wrap mb-0" type="button" data-bs-toggle="collapse" data-bs-target="#schedulecollapseOne" aria-expanded="true" aria-controls="schedulecollapseOne">
-                            <strong>{{ review.title }}</strong>
-                          </button>
-                        </div>
-                        <!-- review info -->
-                        <div id="schedulecollapseOne" class="accordion-collapse collapse show" aria-labelledby="scheduleOne" data-bs-parent="#accordionschedules">
-                          <div class="accordion-body">
-                            <p>{{ review.review }}</p>
-                            <div class="row g-4">
-                              <div class="col-12">
-                                <h5 class="mb-0">Speaker</h5>
-                              </div>
-                              <div class="col-sm-4 col-lg-3">
-                                <!-- Host Item -->
-                                <div class="card card-body text-center">
-                                  <div class="avatar avatar-lg mx-auto mb-3"> 
-                                    <img class="avatar-img rounded-circle" src="{{ review.user.picture.url }}" alt="{{ review.username }}">
-                                  </div>
-                                  <!-- Host name -->
-                                  <div>
-                                    <h6 class="mb-0">{{ review.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6>
-                                    <span>{{ review.user.school }}</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      {% endfor %}
-                    </div>
-                  </div>
-                </div>
-                <!-- Card body END -->
+
+          <!-- Events START -->
+          <div class="card">
+            <!-- Card header START -->
+            <div class="card-header d-sm-flex align-items-center justify-content-between border-0 pb-0">
+              <h5>@{{ object.username }}が作成した口コミ一覧</h5>
+              <!-- Button modal -->
+              {% if object == user %}
+              <!-- もし、自分のダッシュボードだったら、口コミ作成ボタンを設置　-->
+              <a class="btn btn-primary-soft btn-sm" href="{% url 'reviews:create_review_of_university' %}"> <i class="fa-solid fa-plus pe-1"></i> 口コミ作成</a>
+              {% else %}
+              <!-- もし、他人のダッシュボードだったら、何も表示しない　-->
+              {% endif %}
             </div>
-            <!-- 口コミ END -->
-        </div>
-        <!-- Main content END -->
-  
-        <!-- Right sidebar START -->
-        <div class="col-lg-4">
-  
-          <div class="row g-4">
-  
-            <!-- Card START -->
-            <div class="col-md-6 col-lg-12">
-              <div class="card">
-                <div class="card-header border-0 pb-0">
-                  <h5 class="card-title">About Me</h5>
-                  <!-- Button modal -->
-                </div>
-                <!-- Card body START -->
-                <div class="card-body position-relative pt-0">
-                  <p></p>
-                  <!-- Date time -->
-                  <ul class="list-unstyled mt-3 mb-0">
-                    <li class="mb-2"><i class="bi bi-calendar3 me-1"></i> Joined at: {{ object.joined_at }}</li>
-                    <li class="mb-2"> <i class="bi bi-calendar-date fa-fw pe-1"></i> Born: {{ object.birthday }} </li>
-                    <li class="mb-2"> <i class="bi bi-instagram fa-fw pe-1"></i> Instagram: <a href="https://www.instagram.com/{{ object.instagram_account_name }}/"><strong> @{{ object.instagram_account_name}} </strong></a> </li>
-                    <li class="mb-2"> <i class="bi bi-twitter fa-fw pe-1"></i> Twitter: <a href="https://twitter.com/{{ object.twitter_account_name }}"><strong> @{{ object.twitter_account_name }} </strong> </li>
-                  </ul>
-                </div>
-                <!-- Card body END -->
+            <!-- Card header END -->
+            <!-- Card body START -->
+            <div class="card-body">
+              <!-- Upcoming event START -->
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>大学口コミ一覧:</strong> 大学口コミ一覧はこちらから
+                <a href="events.html" class="btn btn-xs btn-success ms-md-4">一覧を見る</a>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>
-            </div>
-            <!-- Card END -->
-  
-            <!-- Card START -->
-            <div class="col-md-6 col-lg-12">
-              <div class="card">
-                <!-- Card header START -->
-                <div class="card-header d-flex justify-content-between border-0">
-                  <h5 class="card-title">Job Experiences</h5>
-                  <a class="btn btn-primary-soft btn-sm" href="#!"> <i class="fa-solid fa-plus"></i> </a>
+              <!-- Upcoming event END -->
+              <!-- Events list START -->
+              {% for student_review in reviews %}
+              <div class="row">
+                <div class="d-sm-flex align-items-center">
+                  <div class="ms-sm-4 mt-2 mt-sm-0">
+                    <!-- Info -->
+                    <h4 class="mb-1"><a href="event-details.html"> {{ student_review.title }} </a></h4>
+                    <ul class="nav nav-stack">
+                      <li class="nav-item">
+                        <p> {{  student_review.review }}</p>
+                      </li>
+                      <li class="nav-item">
+                        <i class="bi bi-building pe-1"></i> {{ student_review.university }}
+                      </li>
+                      <li class="nav-item">
+                        <i class="bi bi-calendar-check pe-1"></i> {{ student_review.created_at }} 
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-                <!-- Card header END -->
-                <!-- Card body START -->
-                <div class="card-body position-relative pt-0">
-                  <!-- Experience item START -->
-                  <div class="d-flex">
-                    <!-- Avatar -->
-                    <div class="avatar me-3">
-                      <a href="#!"> <img class="avatar-img rounded-circle" src="assets/images/logo/08.svg" alt=""> </a>
-                    </div>
-                    <!-- Info -->
-                    <div>
-                      <h6 class="card-title mb-0"><a href="#!"> Apple Computer, Inc. </a></h6>
-                      <p class="small">May 2015 – Present Employment Duration 8 mos <a class="btn btn-primary-soft btn-xs ms-2" href="#!">Edit </a></p>
-                    </div>
-                  </div>
-                  <!-- Experience item END -->
-  
-                  <!-- Experience item START -->
-                  <div class="d-flex">
-                    <!-- Avatar -->
-                    <div class="avatar me-3">
-                      <a href="#!"> <img class="avatar-img rounded-circle" src="assets/images/logo/09.svg" alt=""> </a>
-                    </div>
-                    <!-- Info -->
-                    <div>
-                      <h6 class="card-title mb-0"><a href="#!"> Microsoft Corporation </a></h6>
-                      <p class="small">May 2017 – Present Employment Duration 1 yrs 5 mos <a class="btn btn-primary-soft btn-xs ms-2" href="#!">Edit </a></p>
-                    </div>
-                  </div>
-                  <!-- Experience item END -->
-  
-                  <!-- Experience item START -->
-                  <div class="d-flex">
-                    <!-- Avatar -->
-                    <div class="avatar me-3">
-                      <a href="#!"> <img class="avatar-img rounded-circle" src="assets/images/logo/10.svg" alt=""> </a>
-                    </div>
-                    <!-- Info -->
-                    <div>
-                      <h6 class="card-title mb-0"><a href="#!"> Tata Consultancy Services. </a></h6>
-                      <p class="small mb-0">May 2022 – Present Employment Duration 6 yrs 10 mos <a class="btn btn-primary-soft btn-xs ms-2" href="#!">Edit </a></p>
-                    </div>
-                  </div>
-                  <!-- Experience item END -->
-  
-                </div>
-                <!-- Card body END -->
               </div>
+              <!-- Events list END -->
+              <hr>
+              {% empty %}
+              <p>口コミはまだありません。</p>
+              {% endfor %}
             </div>
-            <!-- Card END -->
-  
-            <!-- Card START -->
-            <div class="col-md-6 col-lg-12">
-              <div class="card">
-                <!-- Card header START -->
-                <div class="card-header d-sm-flex justify-content-between align-items-center border-0">
-                  <h5 class="card-title">Friends <span class="badge bg-danger bg-opacity-10 text-danger">{{ number_of_friends }}</span></h5>
-                  <a class="btn btn-primary-soft btn-sm" href="#!"> もっとみる</a>
-                </div>
-                <!-- Card header END -->
-                <!-- Card body START -->
-                <div class="card-body position-relative pt-0">
-                  <div class="row g-3">
-  
-                    {% for connected_user in friends_sidebar_list %}
-                    <div class="col-6">
-                      <!-- Friends item START -->
-                      <div class="card shadow-none text-center h-100">
-                        <!-- Card body -->
-                        <div class="card-body p-2 pb-0">
-                          <div class="avatar avatar-xl">
-                            <a href="#!"><img class="avatar-img rounded-circle" src="{{ connected_user.picture.url }}" alt="{{ connected_user.name }}"></a>
-                          </div>
-                          <h6 class="card-title mb-1 mt-3"> <a href="#!"> {{ connected_user.name }} </a></h6>
-                          <p class="mb-0 small lh-sm"> {{ connected_user.school }}</p>
-                        </div>
-                        <!-- Card footer -->
-                        <div class="card-footer p-2 border-0">
-                          {% if connected_user in user.connection.all %}
-                          <!-- もし、表示されているフレンドがすでにログインユーザーの友達だったら、友達解除ボタンを設置-->
-                          <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="メッセージを送る"> <i class="bi bi-chat-left-text"></i> </button>
-                          <a href="{% url 'accounts:disconnect' connected_user.username %}"><button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="友達解除"> <i class="bi bi-person-x"></i> </button></a>
-                          {% elif connected_user == user %}
-                          <!-- もし、表示されているフレンドが自分自身だったら、ボタンを何も設置しない -->
-                          {% else %}
-                          <!-- もし、表示されているフレンドがまだ、ログインユーザーの友達じゃなかったら、友達ボタンを設置-->
-                          <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="メッセージを送る"> <i class="bi bi-chat-left-text"></i> </button>
-                          <a href="{% url 'accounts:connect' connected_user.username %}"><button class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="友達になる"> <i class="bi bi-person-x"></i> </button></a>
-                          {% endif %}
-                        </div>
-                      </div>
-                      <!-- Friends item END -->
-                    </div>
-                    {% endfor %}      
-                  </div>
-                </div>
-                <!-- Card body END -->
-              </div>
-            </div>
-            <!-- Card END -->
+            <!-- Card body END -->
           </div>
-  
+          <!-- Events START -->
+      </div>
+      <!-- Main content END -->
+
+      <!-- Right sidebar START -->
+      <div class="col-lg-4">
+
+        <div class="row g-4">
+
+          <!-- Card START -->
+          <div class="col-md-6 col-lg-12">
+            <div class="card">
+              <div class="card-header border-0 pb-0">
+                <h5 class="card-title">各種SNS</h5>
+                <!-- Button modal -->
+              </div>
+              <!-- Card body START -->
+              <div class="card-body position-relative pt-0">
+                <p></p>
+                <!-- Date time -->
+                <ul class="list-unstyled mt-3 mb-0">
+                  <li class="mb-2"><i class="bi bi-calendar3 me-1"></i> Joined: {{ object.joined_at }}</li>
+                  <li class="mb-2"> <i class="bi bi-calendar-date fa-fw pe-1"></i> Born: {{ object.birthday }} </li>
+                  <li class="mb-2"> <i class="bi bi-instagram fa-fw pe-1"></i> Instagram: <a href="https://www.instagram.com/{{ object.instagram_account_name }}/"><strong> @{{ object.instagram_account_name}} </strong></a> </li>
+                  <li class="mb-2"> <i class="bi bi-twitter fa-fw pe-1"></i> Twitter: <a href="https://twitter.com/{{ object.twitter_account_name }}"><strong> @{{ object.twitter_account_name }} </strong> </li>
+                </ul>
+              </div>
+              <!-- Card body END -->
+            </div>
+          </div>
+          <!-- Card END -->
+
+          <!-- Card START -->
+          <div class="col-md-6 col-lg-12">
+            <div class="card">
+              <!-- Card header START -->
+              <div class="card-header d-flex justify-content-between border-0">
+                <h5 class="card-title">バイト・仕事経験</h5>
+                <a class="btn btn-primary-soft btn-sm" href="#!"> <i class="fa-solid fa-plus"></i> </a>
+              </div>
+              <!-- Card header END -->
+              <!-- Card body START -->
+              <div class="card-body position-relative pt-0">
+                <!-- Experience item START -->
+                <div class="d-flex">
+                  <!-- Avatar -->
+                  <div class="avatar me-3">
+                    <a href="#!"> <img class="avatar-img rounded-circle" src="assets/images/logo/08.svg" alt=""> </a>
+                  </div>
+                  <!-- Info -->
+                  <div>
+                    <h6 class="card-title mb-0"><a href="#!"> Apple Computer, Inc. </a></h6>
+                    <p class="small">May 2015 – Present Employment Duration 8 mos <a class="btn btn-primary-soft btn-xs ms-2" href="#!">Edit </a></p>
+                  </div>
+                </div>
+                <!-- Experience item END -->
+
+                <!-- Experience item START -->
+                <div class="d-flex">
+                  <!-- Avatar -->
+                  <div class="avatar me-3">
+                    <a href="#!"> <img class="avatar-img rounded-circle" src="assets/images/logo/09.svg" alt=""> </a>
+                  </div>
+                  <!-- Info -->
+                  <div>
+                    <h6 class="card-title mb-0"><a href="#!"> Microsoft Corporation </a></h6>
+                    <p class="small">May 2017 – Present Employment Duration 1 yrs 5 mos <a class="btn btn-primary-soft btn-xs ms-2" href="#!">Edit </a></p>
+                  </div>
+                </div>
+                <!-- Experience item END -->
+
+                <!-- Experience item START -->
+                <div class="d-flex">
+                  <!-- Avatar -->
+                  <div class="avatar me-3">
+                    <a href="#!"> <img class="avatar-img rounded-circle" src="assets/images/logo/10.svg" alt=""> </a>
+                  </div>
+                  <!-- Info -->
+                  <div>
+                    <h6 class="card-title mb-0"><a href="#!"> Tata Consultancy Services. </a></h6>
+                    <p class="small mb-0">May 2022 – Present Employment Duration 6 yrs 10 mos <a class="btn btn-primary-soft btn-xs ms-2" href="#!">Edit </a></p>
+                  </div>
+                </div>
+                <!-- Experience item END -->
+
+              </div>
+              <!-- Card body END -->
+            </div>
+          </div>
+          <!-- Card END -->
+
+
+          <!-- Card START -->
+          <div class="col-md-6 col-lg-12">
+            <div class="card">
+              <!-- Card header START -->
+              <div class="card-header d-sm-flex justify-content-between align-items-center border-0">
+                <h5 class="card-title">知り合いかも  <span class="badge bg-danger bg-opacity-10 text-danger">{{ number_of_friends }}</span></h5>
+                <a class="btn btn-primary-soft btn-sm" href="#!"> もっとみる</a>
+              </div>
+              <!-- Card header END -->
+              <!-- Card body START -->
+              <div class="card-body position-relative pt-0">
+                <div class="row g-3">
+
+                  {% for saved_user in saved_user_sidebar_list %}
+                  <div class="col-6">
+                    <!-- Friends item START -->
+                    <div class="card shadow-none text-center h-100">
+                      <!-- Card body -->
+                      <div class="card-body p-2 pb-0">
+                        <div class="avatar avatar-xl">
+                          <a href="{% url 'dashboard:post_in_dashboard' saved_user.username %}"><img class="avatar-img rounded-circle" src="{{ saved_user.picture.url }}" alt="{{ saved_user.name }}"></a>
+                        </div>
+                        <h6 class="card-title mb-1 mt-3"> <a href="{% url 'dashboard:post_in_dashboard' saved_user.username %}"> {{ saved_user.name }} </a></h6>
+                        <p class="mb-0 small lh-sm"> {{ saved_user.school }}</p>
+                      </div>
+                      <!-- Card footer -->
+                      <div class="card-footer p-2 border-0">
+                        {% if saved_user in user.connection.all %}
+                        <!-- もし、表示されているフレンドがすでにログインユーザーの友達だったら、友達解除ボタンを設置-->
+                        <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="メッセージを送る"> <i class="bi bi-chat-left-text"></i> </button>
+                        <a href="{% url 'accounts:unsave_user' saved_user.username %}"><button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="保存解除"> <i class="bi bi-person-x"></i> </button></a>
+                        {% elif saved_user == user %}
+                        <!-- もし、表示されているフレンドが自分自身だったら、ボタンを何も設置しない -->
+                        {% else %}
+                        <!-- もし、表示されているフレンドがまだ、ログインユーザーの友達じゃなかったら、友達ボタンを設置-->
+                        <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="メッセージを送る"> <i class="bi bi-chat-left-text"></i> </button>
+                        <a href="{% url 'accounts:save_user' saved_user.username %}"><button class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="保存する"> <i class="bi bi-person-plus"></i> </button></a>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <!-- Friends item END -->
+                  </div>
+                  {% endfor %}      
+                </div>
+              </div>
+              <!-- Card body END -->
+            </div>
+          </div>
+          <!-- Card END -->
         </div>
-        <!-- Right sidebar END -->
-  
-      </div> <!-- Row END -->
-    </div>
-    <!-- Container END -->
-  
+
+      </div>
+      <!-- Right sidebar END -->
+
+    </div> <!-- Row END -->
+  </div>
+  <!-- Container END -->
 </main>
 <!-- **************** MAIN CONTENT END **************** -->
 {% endblock %}

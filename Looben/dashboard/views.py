@@ -4,7 +4,7 @@ from django.views.generic.base import TemplateView, View
 from django.views.generic.list import ListView
 
 from accounts.models import Users
-from reviews.models import ReviewOfUniverity
+from reviews.models import ReviewOfUniversity
 
 class PostInDashboardView(DetailView):
     model = Users
@@ -16,11 +16,14 @@ class PostInDashboardView(DetailView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        number_of_friends = self.object.connection.all().count()
-        # ユーザーの友達の数
-        context['number_of_friends'] = number_of_friends
-        friends_sidebar_list = self.object.connection.all()[:4]
-        context['friends_sidebar_list'] = friends_sidebar_list
+        # フォローしている人の数
+        number_of_following_user = self.object.connection.all().count()
+        context['number_of_following_user'] = number_of_following_user
+        # フォローされている人の数
+        number_of_followed_user = self.object.connected_users.all().count()
+        context['number_of_followed_user'] = number_of_followed_user
+        saved_user_sidebar_list = self.object.saved_users.all()[:4]
+        context['saved_user_sidebar_list'] = saved_user_sidebar_list
         return context
     
     
@@ -34,9 +37,56 @@ class ReviewInDashboardView(DetailView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        number_of_friends = self.object.connection.all().count()
-        # ユーザーの友達の数
-        context['number_of_friends'] = number_of_friends
-        friends_sidbar_list = self.object.connection.all()[:4]
-        context['friends_sidbar_list'] = friends_sidbar_list
+        # フォローしている人の数
+        number_of_following_user = self.object.connection.all().count()
+        context['number_of_following_user'] = number_of_following_user
+        # フォローされている人の数
+        number_of_followed_user = self.object.connected_users.all().count()
+        context['number_of_followed_user'] = number_of_followed_user
+        saved_user_sidebar_list = self.object.saved_users.all()[:4]
+        context['saved_user_sidebar_list'] = saved_user_sidebar_list
+        user = self.object
+        context['reviews'] = ReviewOfUniversity.objects.filter(user=user).all()
+        return context
+    
+
+class FollowingInDashboardView(DetailView):
+    model = Users
+    template_name = 'dashboard/following_in_dashboard.html'
+    #slug_field = urls.pyに渡すモデルのフィールド名
+    slug_field = 'username'
+    # urls.pyでのキーワードの名前
+    slug_url_kwarg = 'username'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # フォローしている人の数
+        number_of_following_user = self.object.connection.all().count()
+        context['number_of_following_user'] = number_of_following_user
+        # フォローされている人の数
+        number_of_followed_user = self.object.connected_users.all().count()
+        context['number_of_followed_user'] = number_of_followed_user
+        saved_user_sidebar_list = self.object.saved_users.all()[:4]
+        context['saved_user_sidebar_list'] = saved_user_sidebar_list
+        return context
+    
+    
+class FollowedInDashboardView(DetailView):
+    model = Users
+    template_name = 'dashboard/followed_in_dashboard.html'
+    #slug_field = urls.pyに渡すモデルのフィールド名
+    slug_field = 'username'
+    # urls.pyでのキーワードの名前
+    slug_url_kwarg = 'username'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # フォローしている人の数
+        number_of_following_user = self.object.connection.all().count()
+        context['number_of_following_user'] = number_of_following_user
+        # フォローされている人の数
+        number_of_followed_user = self.object.connected_users.all().count()
+        context['number_of_followed_user'] = number_of_followed_user
+        saved_user_sidebar_list = self.object.saved_users.all()[:4]
+        context['saved_user_sidebar_list'] = saved_user_sidebar_list
         return context

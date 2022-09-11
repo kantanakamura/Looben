@@ -1,8 +1,8 @@
 from django.contrib import admin
 
 #　モデルをインポート
-from .models import ReviewOfUniverity
+from .models import ReviewOfUniversity
 
 #管理ツールに登録
-admin.site.register(ReviewOfUniverity)
+admin.site.register(ReviewOfUniversity)
 

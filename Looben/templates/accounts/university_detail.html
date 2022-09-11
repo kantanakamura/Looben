@@ -106,186 +106,78 @@
               <div class="mt-4 mt-sm-5" id="review">
                 <div class="p-2"><h4>在学生の声 </h4></div>              
                 <div class="accordion accordion-icon" id="accordionschedules">
-                  <!-- Accordion item -->
-                  <div class="accordion-item mb-3">
-                    <div class="accordion-header" id="scheduleOne">
-                      <button class="accordion-button pe-5 flex-wrap mb-0" type="button" data-bs-toggle="collapse" data-bs-target="#schedulecollapseOne" aria-expanded="true" aria-controls="schedulecollapseOne">
-                        <strong>ちょうどいい田舎、空港も近い</strong>
-                      </button>
-                    </div>
-                    <!-- Accordion info -->
-                    <div id="schedulecollapseOne" class="accordion-collapse collapse show" aria-labelledby="scheduleOne" data-bs-parent="#accordionschedules">
-                      <div class="accordion-body">
-                        <p>大学生活において、大学周辺の環境は大きな影響を及ぼしますがが、桃園には桃園空港にもタクシーで250元ほどでいけるほど近く、內壢駅にも近いため台北にもすぐにいけます。遊びたい人には向かないが、勉学に集中して息抜きにたまに遊びたい人にはピッタリです。</p>
-                        <div class="row g-4">
-                          <div class="col-12">
-                            <h5 class="mb-0">Speaker</h5>
-                          </div>
-                          <div class="col-sm-4 col-lg-3">
-                            <!-- Host Item -->
-                            <div class="card card-body text-center">
-                              <div class="avatar avatar-lg mx-auto mb-3"> 
-                                <img class="avatar-img rounded-circle" src="{% static 'images/Looben.jpg' %}" alt="">
-                              </div>
-                              <!-- Host name -->
-                              <div>
-                                <h6 class="mb-0">中村 幹太 <i class="bi bi-patch-check-fill text-primary small"></i></h6>
-                                <span>情報工学部</span>
-                              </div>
+                  {% for review in reviews %}
+                    {% if forloop.counter == 1 %}
+                    <!-- Accordion item -->
+                    <div class="accordion-item mb-3">
+                      <div class="accordion-header" id="schedule{{ review.title }}">
+                        <button class="accordion-button pe-5 flex-wrap fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#schedulecollapse{{ review.title }}" aria-expanded="true" aria-controls="schedulecollapse{{ review.title }}">
+                          <strong>{{ review.title }}</strong>
+                        </button>
+                      </div>
+                      <!-- Accordion info -->
+                      <div id="schedulecollapse{{ review.title }}" class="accordion-collapse collapse show" aria-labelledby="schedule{{ review.title }}" data-bs-parent="#accordionschedules">
+                        <div class="accordion-body">
+                          <p>{{ review.review }}</p>
+                          <p style="text-align:right;">{{ review.created_at }}</p>
+                          <div class="row g-4">
+                            <div class="col-12">
+                              <h5 class="mb-0">Speaker</h5>
                             </div>
-                          </div>
-                          <div class="col-sm-4 col-lg-3">
-                            <!-- Host Item -->
-                            <div class="card card-body text-center">
-                              <div class="avatar avatar-lg mx-auto mb-3"> 
-                                <img class="avatar-img rounded-circle" src="{% static 'images/avatar/akihito.jpg' %}" alt="">
-                              </div>
-                              <!-- Host name -->
-                              <div>
-                                <h6 class="mb-0">比嘉 秋人 <i class="bi bi-patch-check-fill text-primary small"></i></h6>
-                                <span>管理学部</span>
+                            <div class="col-sm-4 col-lg-3">
+                              <!-- Host Item -->
+                              <div class="card card-body text-center">
+                                <div class="avatar avatar-lg mx-auto mb-3"> 
+                                  <a href="{% url 'dashboard:post_in_dashboard' review.user.username %}"><img class="avatar-img rounded-circle" src="{{ review.user.picture.url }}" alt="{{ review.user.username }}"></a>
+                                </div>
+                                <!-- Host name -->
+                                <div>
+                                  <h6 class="mb-0">{{ review.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6>
+                                  <span>{{ review.user.school }}</span>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <!-- Accordion item -->
-                  <div class="accordion-item mb-3">
-                    <div class="accordion-header" id="scheduleTwo">
-                      <button class="accordion-button pe-5 flex-wrap mb-0 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#schedulecollapseTwo" aria-expanded="false" aria-controls="schedulecollapseTwo">
-                        <strong>日本人学生は近年増加傾向にある</strong>
-                      </button>
-                    </div>
-                    <!-- Accordion info -->
-                    <div id="schedulecollapseTwo" class="accordion-collapse collapse" aria-labelledby="scheduleTwo" data-bs-parent="#accordionschedules">
-                      <div class="accordion-body">
-                        <p>Particular way thoroughly unaffected projection favorable Mrs can be projecting own. Thirty it matter enable become admire in giving. See resolved goodness felicity shy civility domestic had but. Drawings offended yet answered Jennings perceive laughing six did far. </p>
-                        <div class="row g-4">
-                          <div class="col-12">
-                            <h5 class="mb-0">Speaker</h5>
-                          </div>
-                          <div class="col-sm-4 col-lg-3">
-                            <!-- Host Item -->
-                            <div class="card card-body text-center">
-                              <div class="avatar avatar-lg mx-auto mb-3"> 
-                                <img class="avatar-img rounded-circle" src="assets/images/avatar/03.jpg" alt="">
-                              </div>
-                              <!-- Host name -->
-                              <div>
-                                <h6 class="mb-0">Bryan Knight</h6>
-                                <span>Founder</span>
-                              </div>
+                    {% else %}
+                    <!-- Accordion item -->
+                    <div class="accordion-item mb-3">
+                      <div class="accordion-header" id="schedule{{ review.title }}">
+                        <button class="accordion-button pe-5 flex-wrap fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#schedulecollapse{{ review.title }}" aria-expanded="false" aria-controls="schedulecollapse{{ review.title }}">
+                          <strong>{{ review.title }}</strong>
+                        </button>
+                      </div>
+                      <!-- Accordion info -->
+                      <div id="schedulecollapse{{ review.title }}" class="accordion-collapse collapse" aria-labelledby="schedule{{ review.title }}" data-bs-parent="#accordionschedules">
+                        <div class="accordion-body">
+                          <p>{{ review.review }}</p>
+                          <p style="text-align:right;">{{ review.created_at }}</p>
+                          <div class="row g-4">
+                            <div class="col-12">
+                              <h5 class="mb-0">Speaker</h5>
                             </div>
-                          </div>
-                          <div class="col-sm-4 col-lg-3">
-                            <!-- Host Item -->
-                            <div class="card card-body text-center">
-                              <div class="avatar avatar-lg mx-auto mb-3"> 
-                                <img class="avatar-img rounded-circle" src="assets/images/avatar/04.jpg" alt="">
-                              </div>
-                              <!-- Host name -->
-                              <div>
-                                <h6 class="mb-0">Bryan Knight</h6>
-                                <span>Founder</span>
+                            <div class="col-sm-4 col-lg-3">
+                              <!-- Host Item -->
+                              <div class="card card-body text-center">
+                                <div class="avatar avatar-lg mx-auto mb-3"> 
+                                  <a href="{% url 'dashboard:post_in_dashboard' review.user.username %}"><img class="avatar-img rounded-circle" src="{{ review.user.picture.url }}" alt="{{ review.user.username }}"></a>
+                                </div>
+                                <!-- Host name -->
+                                <div>
+                                  <h6 class="mb-0">{{ review.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6>
+                                  <span>{{ review.user.school }}</span>
+                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                  <!-- Accordion item -->
-                  <div class="accordion-item mb-3">
-                    <div class="accordion-header" id="scheduleThree">
-                      <button class="accordion-button pe-5 flex-wrap mb-0 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#schedulecollapseThree" aria-expanded="false" aria-controls="schedulecollapseThree">
-                        <strong>海外留学生は、ベトナムとかインドネシアが多い</strong>
-                      </button>
-                    </div>
-                    <!-- Accordion info -->
-                    <div id="schedulecollapseThree" class="accordion-collapse collapse" aria-labelledby="scheduleThree" data-bs-parent="#accordionschedules">
-                      <div class="accordion-body">
-                        <p>Particular way thoroughly unaffected projection favorable Mrs can be projecting own. Thirty it matter enable become admire in giving. See resolved goodness felicity shy civility domestic had but. Drawings offended yet answered Jennings perceive laughing six did far. </p>
-                        <div class="row g-4">
-                          <div class="col-12">
-                            <h5 class="mb-0">Speaker</h5>
-                          </div>
-                          <div class="col-sm-4 col-lg-3">
-                            <!-- Host Item -->
-                            <div class="card card-body text-center">
-                              <div class="avatar avatar-lg mx-auto mb-3">
-                                <img class="avatar-img rounded-circle" src="assets/images/avatar/05.jpg" alt="">
-                              </div>
-                              <!-- Host name -->
-                              <div>
-                                <h6 class="mb-0">Bryan Knight</h6>
-                                <span>Founder</span>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-sm-4 col-lg-3">
-                            <!-- Host Item -->
-                            <div class="card card-body text-center">
-                              <div class="avatar avatar-lg mx-auto mb-3">
-                                <img class="avatar-img rounded-circle" src="assets/images/avatar/06.jpg" alt="">
-                              </div>
-                              <!-- Host name -->
-                              <div>
-                                <h6 class="mb-0">Bryan Knight</h6>
-                                <span>Founder</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- Accordion item -->
-                  <div class="accordion-item">
-                    <div class="accordion-header" id="scheduleFour">
-                      <button class="accordion-button pe-5 flex-wrap mb-0 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#schedulecollapseFour" aria-expanded="false" aria-controls="schedulecollapseFour">
-                        <strong>冬は思ったよりも寒いから、長袖は必須</strong>
-                      </button>
-                    </div>
-                    <!-- Accordion info -->
-                    <div id="schedulecollapseFour" class="accordion-collapse collapse" aria-labelledby="scheduleFour" data-bs-parent="#accordionschedules">
-                      <div class="accordion-body">
-                        <p>Particular way thoroughly unaffected projection favorable Mrs can be projecting own. Thirty it matter enable become admire in giving. See resolved goodness felicity shy civility domestic had but. Drawings offended yet answered Jennings perceive laughing six did far. </p>
-                        <div class="row g-4">
-                          <div class="col-12">
-                            <h5 class="mb-0">Speaker</h5>
-                          </div>
-                          <div class="col-sm-4 col-lg-3">
-                            <!-- Host Item -->
-                            <div class="card card-body text-center">
-                              <div class="avatar avatar-lg mx-auto mb-3"> 
-                                <img class="avatar-img rounded-circle" src="assets/images/avatar/07.jpg" alt="">
-                              </div>
-                              <!-- Host name -->
-                              <div>
-                                <h6 class="mb-0">Bryan Knight</h6>
-                                <span>Founder</span>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="col-sm-4 col-lg-3">
-                            <!-- Host Item -->
-                            <div class="card card-body text-center">
-                              <div class="avatar avatar-lg mx-auto mb-3"> 
-                                <img class="avatar-img rounded-circle" src="assets/images/avatar/08.jpg" alt="">
-                              </div>
-                              <!-- Host name -->
-                              <div>
-                                <h6 class="mb-0">Bryan Knight</h6>
-                                <span>Founder</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    {% endif %}
+                  {% empty %}
+                  {% endfor %}
                 </div>
               </div>
               <a href="{% url 'accounts:students_by_university' pk=object.id %}" style="text-align:right; margin-top:15px;">もっと見る</a>
@@ -299,28 +191,28 @@
                     <div class="d-flex">
                       <i class="bi bi-globe fs-4"></i>
                       <div class="ms-3">
-                        <h5 class="mb-0">125</h5>
-                        <p class="mb-0">Visitors</p>
+                        <h5 class="mb-0">{{ object.number_of_viewer }}</h5>
+                        <p class="mb-0">総閲覧数</p>
                       </div>
                     </div>
                   </div>
                   <div class="col-sm-4">
-                    <!-- Registred -->
+                    <!-- 登録済み学生数 -->
                     <div class="d-flex">
                       <i class="bi bi-person-plus fs-4"></i>
                       <div class="ms-3">
-                        <h5 class="mb-0">356</h5>
-                        <p class="mb-0">Registred</p>
+                        <h5 class="mb-0">{{ registed_students_number }}</h5>
+                        <p class="mb-0">登録済み学生数</p>
                       </div>
                     </div>
                   </div>
                   <div class="col-sm-4">
-                    <!-- Attendance -->
+                    <!-- 日本人学生数 -->
                     <div class="d-flex">
                       <i class="bi bi-people fs-4"></i>
                       <div class="ms-3">
-                        <h5 class="mb-0">350</h5>
-                        <p class="mb-0">Attendance</p>
+                        <h5 class="mb-0">35</h5>
+                        <p class="mb-0">日本人総学生数</p>
                       </div>
                     </div>
                   </div>

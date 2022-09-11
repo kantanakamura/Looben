@@ -1,10 +1,14 @@
+from time import timezone
 from django.db import models
+from django.utils import timezone
+
 from accounts.models import Schools, Users
 
 
-class ReviewOfUniverity(models.Model):
+class ReviewOfUniversity(models.Model):
     title = models.CharField(max_length=100)
     review = models.TextField(max_length=300)
+    created_at = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(
         Users, on_delete=models.CASCADE
     )

@@ -18,7 +18,7 @@ from django.urls import reverse_lazy
 from django.dispatch import receiver
 from django.http import HttpResponseRedirect
 
-from .models import ReviewOfUniverity
+from .models import ReviewOfUniversity
 from .forms import ReviewForm
 
 from accounts.models import Users

@@ -4,7 +4,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.admin.widgets import AdminDateWidget
 
-from .models import ReviewOfUniverity
+from .models import ReviewOfUniversity
 from accounts.models import Schools
 
 
@@ -27,5 +27,5 @@ class ReviewForm(forms.ModelForm):
         }))
     
     class Meta:
-        model = ReviewOfUniverity
+        model = ReviewOfUniversity
         fields = ['title', 'review', 'university'] 

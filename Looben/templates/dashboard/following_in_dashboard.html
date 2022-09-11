@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head_content%}
+{% endblock %}
+
+{% block content %}
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+    <!-- Container START -->
+    <div class="container">
+      <div class="row g-4">
+        <!-- Main content START -->
+        <div class="col-lg-8 vstack gap-4">
+            <!-- My profile START -->
+            <div class="card">
+              <!-- Cover image -->
+              <div class="h-200px rounded-top" style="background-image:url({% static 'images/bg/dashboard_bg.jpg' %}); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+              <!-- Card body START -->
+              <div class="card-body py-0">
+                <div class="d-sm-flex align-items-start text-center text-sm-start">
+                  <div>
+                    <!-- Avatar -->
+                    <div class="avatar avatar-xxl mt-n5 mb-3">
+                      <img class="avatar-img rounded-circle border border-white border-3" src="{{ object.picture.url }}" alt="プロフィール写真">
+                    </div>
+                  </div>
+                  <div class="ms-sm-4 mt-sm-3">
+                    <!-- Info -->
+                    <h1 class="mb-0 h5">{{ object.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h1>
+                    <p>@{{ object.username }}</p>
+                    <p>
+                      <ul class="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">
+                        {% if number_of_followed_user == 0 %}
+                        <li class="list-inline-item">フォロワー<strong>0</strong>人</li>
+                        {% else %}
+                        <li class="list-inline-item">フォロワー<strong>{{ number_of_followed_user }}</strong>人</li>
+                        {% endif %}
+                        {% if number_of_following_user == 0 %}
+                        <li class="list-inline-item">フォロー中<strong>0</strong>人</li>
+                        {% else %}
+                        <li class="list-inline-item">フォロー中<strong>{{ number_of_following_user }}</strong>人</li>
+                        {% endif %}
+                      </ul>
+                    </p>
+                  </div>
+                  <!-- Button -->
+                  <div class="d-flex mt-3 justify-content-center ms-sm-auto">
+                    {% if user.id == object.id %}
+                    <!-- 自分のダッシュボードの時、編集ボタンを表示-->
+                    <a href="{% url 'accounts:account_setting' object.username  %}"><button class="btn btn-danger-soft me-2" type="button"> <i class="bi bi-pencil-fill pe-1"></i> 編集 </button></a>
+                    {% elif object in user.connection.all %}
+                    <!-- すでに友達になっているユーザーのダッシュボードのとき、友達解除ボタンを表示 -->
+                    <a href="{% url 'accounts:disconnect' object.username  %}"><button class="btn btn-info-soft me-2" type="button"> <i class="bi bi-person-heart pe-1"></i> フォロー中 </button></a>
+                    {% else %}
+                    <!-- まだ、友達でないユーザーのダッシュボードのとき、友達登録ボタンを表示 -->
+                    <a href="{% url 'accounts:connect' object.username  %}"><button class="btn btn-info-soft me-2" type="button"> <i class="bi bi-person-heart pe-1"></i> フォローする </button></a>
+                    {% endif %}
+                  </div>
+                </div>
+                <!-- Description -->
+                <div>
+                    <p>{{ object.description }}</p>
+                </div>
+                <!-- List profile -->
+                <ul class="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">
+                  <li class="list-inline-item"><i class="bi bi-person me-1"></i> {{ object.state }}</li>
+                  {% if object.state == '現役台湾留学生' or object.state == '台湾留学卒業生' %}
+                    <li class="list-inline-item"><i class="bi bi-geo-alt me-1"></i> {{ object.school }}</li>
+                    <li class="list-inline-item"><i class="bi bi-pen me-1"></i> {{ object.major }}</li>
+                  {% else %}
+                  {% endif %}
+                </ul>
+              </div>
+              <!-- Card body END -->
+
+              <div class="card-footer mt-3 pt-2 pb-0">
+                <!-- Nav profile pages -->
+                <ul class="nav nav-bottom-line align-items-center justify-content-center justify-content-md-start mb-0 border-0">
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:post_in_dashboard' object.username %}"> 投稿記事 </a> </li>
+                  <!-- ユーザーの所属が現役台湾留学生or台湾留学卒業生なら、大学の口コミタブを表示 -->
+                  {% if object.state == '現役台湾留学生' or object.state == '台湾留学卒業生' %}
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:review_in_dashboard' object.username %}"> 口コミ </a> </li>
+                  {% endif %}
+                  <li class="nav-item"> <a class="nav-link active" href="{% url 'dashboard:following_in_dashboard' object.username %}"> フォロー中 <span class="badge bg-success bg-opacity-10 text-success small"> {{ number_of_following_user }}</span> </a> </li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:followed_in_dashboard' object.username %}"> フォロワー <span class="badge bg-success bg-opacity-10 text-success small"> {{ number_of_followed_user }}</span> </a> </li>
+                </ul>
+              </div>
+            </div>
+            <!-- My profile END -->
+  
+            <!-- Card Connections START -->
+            <div class="card">
+                <!-- Card header START -->
+                <div class="card-header border-0 pb-0">
+                <h5 class="card-title"> フォロー中</h5> 
+                </div>
+                <!-- Card header END -->
+                <!-- Card body START -->
+                <div class="card-body">
+                    {% for following_user in object.connection.all%}
+                    <!-- Connections Item -->
+                    <div class="d-md-flex align-items-center mb-4">
+                        <!-- Avatar -->
+                        <div class="avatar me-3 mb-3 mb-md-0">
+                            <a href="{% url 'dashboard:post_in_dashboard' following_user.username %}"> <img class="avatar-img rounded-circle" src="{{ following_user.picture.url }}" alt="{{ following_user.username }}"> </a>
+                        </div>
+                        <!-- Info -->
+                        <div class="w-100">
+                            <div class="d-sm-flex align-items-start">
+                            <h6 class="mb-0"><a href="{% url 'dashboard:post_in_dashboard' following_user.username %}">{{ following_user.name }} </a></h6>
+                            <p class="small ms-sm-2 mb-0">{{ following_user.state }}</p>
+                            </div>
+                            <!-- Connections START -->
+                            <ul class="avatar-group mt-1 list-unstyled align-items-sm-center">
+                            <li class="small">
+                                {{ following_user.school }} / {{ following_user.major }}
+                            </li>
+                            </ul>
+                            <!-- Connections END -->
+                        </div>
+                        <!-- Button -->
+                        <div class="ms-md-auto d-flex">
+                            {% if following_user == user %}
+                            {% elif following_user in user.connection.all %} 
+                            <a href="{% url 'accounts:disconnect' following_user.username %}"><button class="btn btn-danger-soft btn-sm mb-0 me-2"> unfollow </button></a>
+                            <button class="btn btn-primary-soft btn-sm mb-0"> Message </button>
+                            {% else %}
+                            <a href="{% url 'accounts:connect' following_user.username %}"><button class="btn btn-success-soft btn-sm mb-0 me-2"> follow </button></a>
+                            <button class="btn btn-primary-soft btn-sm mb-0"> Message </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- Card body END -->
+            </div>
+            <!-- Card Connections END -->
+        </div>
+        <!-- Main content END -->
+  
+
+        <!-- Right sidebar START -->
+        <div class="col-lg-4">
+  
+          <div class="row g-4">
+  
+            <!-- Card START -->
+            <div class="col-md-6 col-lg-12">
+              <div class="card">
+                <div class="card-header border-0 pb-0">
+                  <h5 class="card-title">各種SNS</h5>
+                  <!-- Button modal -->
+                </div>
+                <!-- Card body START -->
+                <div class="card-body position-relative pt-0">
+                  <p></p>
+                  <!-- Date time -->
+                  <ul class="list-unstyled mt-3 mb-0">
+                    <li class="mb-2"><i class="bi bi-calendar3 me-1"></i> Joined: {{ object.joined_at }}</li>
+                    <li class="mb-2"> <i class="bi bi-calendar-date fa-fw pe-1"></i> Born: {{ object.birthday }} </li>
+                    <li class="mb-2"> <i class="bi bi-instagram fa-fw pe-1"></i> Instagram: <a href="https://www.instagram.com/{{ object.instagram_account_name }}/"><strong> @{{ object.instagram_account_name}} </strong></a> </li>
+                    <li class="mb-2"> <i class="bi bi-twitter fa-fw pe-1"></i> Twitter: <a href="https://twitter.com/{{ object.twitter_account_name }}"><strong> @{{ object.twitter_account_name }} </strong> </li>
+                  </ul>
+                </div>
+                <!-- Card body END -->
+              </div>
+            </div>
+            <!-- Card END -->
+  
+            <!-- Card START -->
+            <div class="col-md-6 col-lg-12">
+              <div class="card">
+                <!-- Card header START -->
+                <div class="card-header d-flex justify-content-between border-0">
+                  <h5 class="card-title">バイト・仕事経験</h5>
+                  <a class="btn btn-primary-soft btn-sm" href="#!"> <i class="fa-solid fa-plus"></i> </a>
+                </div>
+                <!-- Card header END -->
+                <!-- Card body START -->
+                <div class="card-body position-relative pt-0">
+                  <!-- Experience item START -->
+                  <div class="d-flex">
+                    <!-- Avatar -->
+                    <div class="avatar me-3">
+                      <a href="#!"> <img class="avatar-img rounded-circle" src="assets/images/logo/08.svg" alt=""> </a>
+                    </div>
+                    <!-- Info -->
+                    <div>
+                      <h6 class="card-title mb-0"><a href="#!"> Apple Computer, Inc. </a></h6>
+                      <p class="small">May 2015 – Present Employment Duration 8 mos <a class="btn btn-primary-soft btn-xs ms-2" href="#!">Edit </a></p>
+                    </div>
+                  </div>
+                  <!-- Experience item END -->
+  
+                  <!-- Experience item START -->
+                  <div class="d-flex">
+                    <!-- Avatar -->
+                    <div class="avatar me-3">
+                      <a href="#!"> <img class="avatar-img rounded-circle" src="assets/images/logo/09.svg" alt=""> </a>
+                    </div>
+                    <!-- Info -->
+                    <div>
+                      <h6 class="card-title mb-0"><a href="#!"> Microsoft Corporation </a></h6>
+                      <p class="small">May 2017 – Present Employment Duration 1 yrs 5 mos <a class="btn btn-primary-soft btn-xs ms-2" href="#!">Edit </a></p>
+                    </div>
+                  </div>
+                  <!-- Experience item END -->
+  
+                  <!-- Experience item START -->
+                  <div class="d-flex">
+                    <!-- Avatar -->
+                    <div class="avatar me-3">
+                      <a href="#!"> <img class="avatar-img rounded-circle" src="assets/images/logo/10.svg" alt=""> </a>
+                    </div>
+                    <!-- Info -->
+                    <div>
+                      <h6 class="card-title mb-0"><a href="#!"> Tata Consultancy Services. </a></h6>
+                      <p class="small mb-0">May 2022 – Present Employment Duration 6 yrs 10 mos <a class="btn btn-primary-soft btn-xs ms-2" href="#!">Edit </a></p>
+                    </div>
+                  </div>
+                  <!-- Experience item END -->
+  
+                </div>
+                <!-- Card body END -->
+              </div>
+            </div>
+            <!-- Card END -->
+  
+            <!-- Card START -->
+            <div class="col-md-6 col-lg-12">
+              <div class="card">
+                <!-- Card header START -->
+                <div class="card-header d-sm-flex justify-content-between align-items-center border-0">
+                  <h5 class="card-title">知り合いかも  <span class="badge bg-danger bg-opacity-10 text-danger">{{ number_of_friends }}</span></h5>
+                  <a class="btn btn-primary-soft btn-sm" href="#!"> もっとみる</a>
+                </div>
+                <!-- Card header END -->
+                <!-- Card body START -->
+                <div class="card-body position-relative pt-0">
+                  <div class="row g-3">
+  
+                    {% for saved_user in saved_user_sidebar_list %}
+                    <div class="col-6">
+                      <!-- Friends item START -->
+                      <div class="card shadow-none text-center h-100">
+                        <!-- Card body -->
+                        <div class="card-body p-2 pb-0">
+                          <div class="avatar avatar-xl">
+                            <a href="{% url 'dashboard:post_in_dashboard' saved_user.username %}"><img class="avatar-img rounded-circle" src="{{ saved_user.picture.url }}" alt="{{ saved_user.name }}"></a>
+                          </div>
+                          <h6 class="card-title mb-1 mt-3"> <a href="{% url 'dashboard:post_in_dashboard' saved_user.username %}"> {{ saved_user.name }} </a></h6>
+                          <p class="mb-0 small lh-sm"> {{ saved_user.school }}</p>
+                        </div>
+                        <!-- Card footer -->
+                        <div class="card-footer p-2 border-0">
+                          {% if saved_user in user.connection.all %}
+                          <!-- もし、表示されているフレンドがすでにログインユーザーの友達だったら、友達解除ボタンを設置-->
+                          <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="メッセージを送る"> <i class="bi bi-chat-left-text"></i> </button>
+                          <a href="{% url 'accounts:unsave_user' saved_user.username %}"><button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="保存解除"> <i class="bi bi-person-x"></i> </button></a>
+                          {% elif saved_user == user %}
+                          <!-- もし、表示されているフレンドが自分自身だったら、ボタンを何も設置しない -->
+                          {% else %}
+                          <!-- もし、表示されているフレンドがまだ、ログインユーザーの友達じゃなかったら、友達ボタンを設置-->
+                          <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="メッセージを送る"> <i class="bi bi-chat-left-text"></i> </button>
+                          <a href="{% url 'accounts:save_user' saved_user.username %}"><button class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="保存する"> <i class="bi bi-person-plus"></i> </button></a>
+                          {% endif %}
+                        </div>
+                      </div>
+                      <!-- Friends item END -->
+                    </div>
+                    {% endfor %}      
+                  </div>
+                </div>
+                <!-- Card body END -->
+              </div>
+            </div>
+            <!-- Card END -->
+          </div>
+  
+        </div>
+        <!-- Right sidebar END -->
+  
+      </div> <!-- Row END -->
+    </div>
+    <!-- Container END -->
+</main>
+<!-- **************** MAIN CONTENT END **************** -->
+{% endblock %}

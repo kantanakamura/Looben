@@ -1,3 +1,4 @@
+import email
 from multiprocessing import connection
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, FormView, UpdateView
@@ -16,10 +17,12 @@ from django.core.exceptions import ValidationError
 from django.urls import reverse_lazy
 from django.dispatch import receiver
 from django.http import HttpResponseRedirect
+from django.contrib.auth import authenticate, login
 
 
 from .forms import RegistForm, UserLoginForm, AccountSettingForm, PasswordChangeForm
 from .models import Schools, Users
+from reviews.models import ReviewOfUniversity
 
 
 #　ホーム画面
@@ -36,6 +39,13 @@ class RegistUserView(CreateView):
     def get_success_url(self):
         return reverse_lazy('accounts:user_login')   
     
+    # def post(self, request, *args, **kwargs):
+    #     form = RegistForm(request.POST or None)
+    #     if form.is_valid():
+    #         form.save()
+    #         user = authenticate(email=self.request.POST['email'], password=self.request.POST['password'])
+    #         login(self.request, user)
+    #         return redirect('accounts:research_university')
 
 # ユーザーのログイン
 class UserLoginView(LoginView):
@@ -91,11 +101,11 @@ def connect_view(request, *args, **kwargs):
         #例外処理：もしフォロー対象が存在しない場合、警告文を表示させる。
     except Users.DoesNotExist:
         messages.warning(request, '{}は存在しません'.format(kwargs['username']))
-        return HttpResponseRedirect(reverse_lazy('accounts:dashboard', kwargs={'username': following.username}))
+        return HttpResponseRedirect(reverse_lazy('dashboard:post_in_dashboard', kwargs={'username': following.username}))
     #フォローしようとしている対象が自分の場合、警告文を表示させる。
     if follower == following:
         messages.warning(request, '自分自身はフォローできません')
-        return HttpResponseRedirect(reverse_lazy('accounts:dashboard', kwargs={'username': following.username}))
+        return HttpResponseRedirect(reverse_lazy('dashboard:post_in_dashboard', kwargs={'username': following.username}))
     else:
         #フォロー対象をまだフォローしていなければ、DBにフォロワー(自分)×フォロー(相手)という組み合わせで登録する。
         #alreadyにはTrueが入る
@@ -104,12 +114,12 @@ def connect_view(request, *args, **kwargs):
     #もしcreatedがTrueの場合、フォロー完了のメッセージを表示させる。
     if not already_connected:
         follower.connection.add(following)
-        messages.success(request, '{}と友達になりました'.format(following.username))
+        messages.success(request, '{}をフォローしました'.format(following.username))
         #既にフォロー相手をフォローしていた場合、already_connectedにはFalseが入る。
     else:
         #フォロー済みのメッセージを表示させる。
-        messages.warning(request, 'あなたはすでに{}と友達です'.format(following.username))
-    return HttpResponseRedirect(reverse_lazy('accounts:dashboard', kwargs={'username': following.username}))
+        messages.warning(request, 'あなたはすでに{}をフォローしています'.format(following.username))
+    return HttpResponseRedirect(reverse_lazy('dashboard:post_in_dashboard', kwargs={'username': following.username}))
 
 
 @login_required
@@ -122,7 +132,7 @@ def disconnect_view(request, *args, **kwargs):
         #例外処理：もしフォロー対象が存在しない場合、警告文を表示させる。
     except Users.DoesNotExist:
         messages.warning(request, '{}は存在しません'.format(kwargs['username']))
-        return HttpResponseRedirect(reverse_lazy('accounts:dashboard', kwargs={'username': following.username}))
+        return HttpResponseRedirect(reverse_lazy('dashboard:post_in_dashboard', kwargs={'username': following.username}))
         
     #フォロー対象をすでにフォローしていれば、DBにフォロワー(自分)×フォロー(相手)という組み合わを削除する。
     #alreadyにはTrueが入る
@@ -130,12 +140,12 @@ def disconnect_view(request, *args, **kwargs):
     #もしcreatedがTrueの場合、フォロー解除完了のメッセージを表示させる。
     if already_connected:
         follower.connection.remove(following)
-        messages.success(request, '{}の友達解除をしました'.format(following.username))
+        messages.success(request, '{}のフォロー解除をしました'.format(following.username))
         #まだフォロー相手をフォローしていなかった場合、already_connectedにはFalseが入る。
     else:
         #未フォローのメッセージを表示させる。
-        messages.warning(request, 'あなたはまだ{}と友達ではありません'.format(following.username))
-    return HttpResponseRedirect(reverse_lazy('accounts:dashboard', kwargs={'username': following.username}))
+        messages.warning(request, 'あなたはまだ{}をフォローしていません'.format(following.username))
+    return HttpResponseRedirect(reverse_lazy('dashboard:post_in_dashboard', kwargs={'username': following.username}))
 
 
 @login_required
@@ -171,7 +181,6 @@ def save_users_view(request, *args, **kwargs):
 
 @login_required
 def unsave_users_view(request, *args, **kwargs):
-
     try:
         saver = Users.objects.get(username=request.user.username)
         saved_user = Users.objects.get(username=kwargs['username'])
@@ -257,7 +266,16 @@ class UniversityDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         school = self.object
+        # この大学の在学生のアカウントを3つ取得
         context['users'] = Users.objects.filter(school=school)[:3]
+        # この大学のレビューを4つ取得
+        context['reviews'] = ReviewOfUniversity.objects.filter(university=school)[:4]
+        # Loobenにアカウント登録してる、この大学の在学生の数を取得
+        registed_students_number = Users.objects.filter(school=school).count()
+        context['registed_students_number'] = registed_students_number
+        # 詳細ページを訪れた人の数を１増やす
+        school.number_of_viewer += 1
+        school.save()
         return context
      
     
