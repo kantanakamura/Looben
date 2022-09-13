@@ -5,4 +5,5 @@ app_name = 'reviews'
 
 urlpatterns = [
     path('create_review/', views.create_review_of_university, name='create_review_of_university'),
+    path('review_list/<int:pk>', views.ReviewListOfUniversities.as_view(), name='review_list_of_universities'),
 ]

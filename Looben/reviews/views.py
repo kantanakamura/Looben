@@ -21,14 +21,9 @@ from django.http import HttpResponseRedirect
 from .models import ReviewOfUniversity
 from .forms import ReviewForm
 
-from accounts.models import Users
+from accounts.models import Users, Schools
 
 
-# class CreateReviewOfUniversityView(CreateView):
-#     template_name = 'reviews/create_review_of_university.html'
-#     form_class = ReviewForm
-#     success_message = 'レビューを作成しました'
-    
     
 def create_review_of_university(request):
     create_review_form = ReviewForm(request.POST or None)
@@ -43,4 +38,15 @@ def create_review_of_university(request):
         }
     )
     
+    
+class ReviewListOfUniversities(DetailView):
+    model = Schools
+    template_name = 'reviews/review_list_of_universities.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        school = self.object
+        # この大学のレビューを取得
+        context['reviews'] = ReviewOfUniversity.objects.filter(university=school)
+        return context
     

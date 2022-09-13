@@ -95,12 +95,13 @@
               <div class="d-flex mb-3">
                 <!-- Avatar -->
                 <div class="avatar avatar-xs me-2">
-                  <a href="#"> <img class="avatar-img rounded-circle" src="assets/images/avatar/07.jpg" alt=""> </a>
+                  <a href="#"> <img class="avatar-img rounded-circle" src="{{ object.picture.url }}" alt="{{ object.username }}"> </a>
                 </div>
-                <!-- Post input -->
+                {% comment %} <!-- Post input -->
                 <form class="w-100">
                   <input class="form-control pe-4 border-0" placeholder="Share your thoughts..." data-bs-toggle="modal" data-bs-target="#modalCreateFeed">
-                </form>
+                </form> {% endcomment %}
+                <p></p>
               </div>
               <!-- Share feed toolbar START -->
               <ul class="nav nav-pills nav-stack small fw-normal">
@@ -133,6 +134,8 @@
             </div>
             <!-- Share feed END -->
   
+
+            {% for article in object.blog_set.all %}
             <!-- Card feed item START -->
             <div class="card">
               <!-- Card header START -->
@@ -141,15 +144,15 @@
                   <div class="d-flex align-items-center">
                     <!-- Avatar -->
                     <div class="avatar avatar-story me-2">
-                      <a href="#!"> <img class="avatar-img rounded-circle" src="assets/images/avatar/04.jpg" alt=""> </a>
+                      <a href="#!"> <img class="avatar-img rounded-circle" src="{{ object.picture.url }}" alt="{{ object.username }}"> </a>
                     </div>
                     <!-- Info -->
                     <div>
                       <div class="nav nav-divider">
-                        <h6 class="nav-item card-title mb-0"> <a href="#!"> Lori Ferguson </a></h6>
+                        <h6 class="nav-item card-title mb-0"> <a href="#!"> {{ object.name }} </a></h6>
                         <span class="nav-item small"> 2hr</span>
                       </div>
-                      <p class="mb-0 small">Web Developer at Webestica</p>
+                      <p class="mb-0 small">{{ object.school }} / {{ object.major }}</p>
                     </div>
                   </div>
                   <!-- Card feed action dropdown START -->
@@ -173,7 +176,8 @@
               <!-- Card header END -->
               <!-- Card body START -->
               <div class="card-body">
-                <p>I'm thrilled to share that I've completed a graduate certificate course in project management with the president's honor roll.</p>
+                <h4>{{ article.title }}</h4>
+                <p>{{ article.get_content_as_markdown  }}</p>
                 <!-- Card img -->
                 <img class="card-img" src="assets/images/post/3by2/01.jpg" alt="Post">
                 <!-- Feed react START -->
@@ -370,6 +374,7 @@
               <!-- Card footer END -->
             </div>
             <!-- Card feed item END -->
+            {% endfor %}
   
             <!-- Card feed item START -->
             <div class="card">

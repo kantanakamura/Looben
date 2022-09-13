@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block head_content%}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+{% endblock %}
+
+
+{% block content %}
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+    <!-- Container START -->
+    <div class="container">
+      <div class="row">
+        <!-- Main content START -->
+        <div class="col-md-11 mx-auto">
+          <!-- Create a page START -->
+          <div class="card">
+            <!-- Title START -->
+            <div class="card-header border-0 pb-0">
+              <h1 class="h4 card-title mb-0">ブログ記事作成ページ</h1>
+            </div>
+            <!-- Title END -->
+
+            <!-- Create a page form START -->
+            <div class="card-body">
+              <form class="row g-3 mt-4" method="post" enctype="multipart/form-data">
+                {{ create_blog_form.non_field_errors }}
+                {% csrf_token %}
+
+                <!-- 口コミ大学 -->
+                <div class="col-8">
+                  <label class="form-label">タイトル</label>
+                  {{ create_blog_form.title }}
+                  <small>ブログ記事を簡単に表すようなタイトルを考えてみよう</small>
+                </div>
+                {{ create_blog_form.title.errors }}
+
+                <!-- サムネイル -->
+                <div class="col-8">
+                    <label class="form-label">サムネイル画像</label>
+                    {{ create_blog_form.top_image }}
+                    <small>ブログ検索の時に表示されます</small>
+                  </div>
+                  {{ create_blog_form.top_image.errors }}
+
+                <!-- タイトル -->
+                <div class="col-12">
+                  <label class="form-label">ブログ記事本文</label>
+                  {{ create_blog_form.content }}
+                  <small>markdown方式を利用しています
+                  </small>
+                </div>
+                {{ create_blog_form.content.errors }}
+
+                <!-- Button  -->
+                <div class="col-12 text-end">
+                  <button type="submit" class="btn btn-primary mb-0">ブログ記事を公開</button>
+                </div>
+              </form>
+            </div>
+            <!-- Create a page form END -->
+          </div>
+          <!-- Create a page END -->
+        </div>
+  
+      </div> <!-- Row END -->
+    </div>
+    <!-- Container END --> 
+</main>
+<!-- **************** MAIN CONTENT END **************** -->
+{% endblock %}
+
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<script>
+  var simplemde = new SimpleMDE();
+</script>
+{% endblock %}

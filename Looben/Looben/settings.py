@@ -50,7 +50,9 @@ INSTALLED_APPS = [
     'reviews',
     'dashboard',
     'job',
+    'blogs',
 ]
+
 
 AUTH_USER_MODEL = 'accounts.Users'
 
@@ -162,7 +164,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/user_login/'
 LOGIN_REDIRECT_URL = '/research_university/'
-LOGOUT_REDIRECT_URL = '/home/'
+LOGOUT_REDIRECT_URL = '/'
 
 
 SITE_ID = 1
