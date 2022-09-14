@@ -19,7 +19,7 @@ class CreateBlogForm(forms.ModelForm):
         'rows': '10',
         'type': 'textarea',
         }))
-    top_image = forms.FileField(label='サムネイル画像', widget=forms.FileInput(attrs={
+    top_image = forms.FileField(label='サムネイル画像', required=False, widget=forms.FileInput(attrs={
         'class': 'form-control', 
         'type': 'file',
         'id': 'formFile',
@@ -27,5 +27,5 @@ class CreateBlogForm(forms.ModelForm):
     
     class Meta:
         model = Blog
-        fields = ['title', 'content']
+        fields = ['title', 'content', 'top_image']
         

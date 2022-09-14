@@ -6,7 +6,7 @@ from .forms import CreateBlogForm
     
     
 def create_blog(request):
-    create_blog_form = CreateBlogForm(request.POST or None)
+    create_blog_form = CreateBlogForm(request.POST or None, files=request.FILES)
     if create_blog_form.is_valid():
         create_blog_form.instance.user = request.user
         create_blog_form.save()

@@ -78,7 +78,8 @@
               <div class="card-footer mt-3 pt-2 pb-0">
                 <!-- Nav profile pages -->
                 <ul class="nav nav-bottom-line align-items-center justify-content-center justify-content-md-start mb-0 border-0">
-                  <li class="nav-item"> <a class="nav-link active" href="{% url 'dashboard:post_in_dashboard' object.username %}"> 投稿記事 </a> </li>
+                  <li class="nav-item"> <a class="nav-link active" href="{% url 'dashboard:post_in_dashboard' object.username %}"> 投稿 </a> </li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'blogs:create_blog' %}"> ブログ </a> </li>
                   <!-- ユーザーの所属が現役台湾留学生or台湾留学卒業生なら、大学の口コミタブを表示 -->
                   {% if object.state == '現役台湾留学生' or object.state == '台湾留学卒業生' %}
                   <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:review_in_dashboard' object.username %}"> 口コミ </a> </li>
@@ -97,10 +98,10 @@
                 <div class="avatar avatar-xs me-2">
                   <a href="#"> <img class="avatar-img rounded-circle" src="{{ object.picture.url }}" alt="{{ object.username }}"> </a>
                 </div>
-                {% comment %} <!-- Post input -->
+                <!-- Post input -->
                 <form class="w-100">
-                  <input class="form-control pe-4 border-0" placeholder="Share your thoughts..." data-bs-toggle="modal" data-bs-target="#modalCreateFeed">
-                </form> {% endcomment %}
+                <input class="form-control pe-4 border-0" placeholder="Share your thoughts..." data-bs-toggle="modal" data-bs-target="#modalCreateFeed">
+                </form>
                 <p></p>
               </div>
               <!-- Share feed toolbar START -->
@@ -134,8 +135,6 @@
             </div>
             <!-- Share feed END -->
   
-
-            {% for article in object.blog_set.all %}
             <!-- Card feed item START -->
             <div class="card">
               <!-- Card header START -->
@@ -143,14 +142,14 @@
                 <div class="d-flex align-items-center justify-content-between">
                   <div class="d-flex align-items-center">
                     <!-- Avatar -->
-                    <div class="avatar avatar-story me-2">
+                    <div class="avatar me-2">
                       <a href="#!"> <img class="avatar-img rounded-circle" src="{{ object.picture.url }}" alt="{{ object.username }}"> </a>
                     </div>
                     <!-- Info -->
                     <div>
                       <div class="nav nav-divider">
                         <h6 class="nav-item card-title mb-0"> <a href="#!"> {{ object.name }} </a></h6>
-                        <span class="nav-item small"> 2hr</span>
+                        <span class="nav-item small"> 14時間前</span>
                       </div>
                       <p class="mb-0 small">{{ object.school }} / {{ object.major }}</p>
                     </div>
@@ -176,10 +175,9 @@
               <!-- Card header END -->
               <!-- Card body START -->
               <div class="card-body">
-                <h4>{{ article.title }}</h4>
-                <p>{{ article.get_content_as_markdown  }}</p>
+                <p>今回のイベントは自分にとって初めてのイベント開催でした。昨年開かれたたい和ん成人式を見て「自分もこんな素敵なイベントを開催した人たちと一緒に何かを創り上げてみたい」と思い今回のイベント開催に参加しました。<br>自分達新メンバーが取り組みやすい環境作りをしようと考えてくれる先輩方、わからないことだらけだけど何かを成し遂げたくてイベント開催に応募した新メンバー、そんな人達と一緒に大学生活の一つの成果として今回のイベントを共に開催できたことを本当に嬉しく思います。</p>
                 <!-- Card img -->
-                <img class="card-img" src="assets/images/post/3by2/01.jpg" alt="Post">
+                <img class="card-img" src="{% static 'images/job/job.jpg' %}" alt="Post" style="height:400px;">
                 <!-- Feed react START -->
                 <ul class="nav nav-stack py-3 small">
                   <li class="nav-item">
@@ -211,11 +209,11 @@
                 <div class="d-flex mb-3">
                   <!-- Avatar -->
                   <div class="avatar avatar-xs me-2">
-                    <a href="#!"> <img class="avatar-img rounded-circle" src="assets/images/avatar/12.jpg" alt=""> </a>
+                    <a href="#!"> <img class="avatar-img rounded-circle" src="{{ user.picture.url }}" alt="{{ user.username }}"> </a>
                   </div>
                   <!-- Comment box  -->
                   <form class="position-relative w-100">
-                    <textarea class="form-control pe-4 bg-light" rows="1" placeholder="Add a comment..."></textarea>
+                    <textarea class="form-control pe-4 bg-light" rows="1" placeholder="コメントする..."></textarea>
                   </form>
                 </div>
                 <!-- Comment wrap START -->
@@ -225,16 +223,16 @@
                     <div class="d-flex position-relative">
                       <!-- Avatar -->
                       <div class="avatar avatar-xs">
-                        <a href="#!"><img class="avatar-img rounded-circle" src="assets/images/avatar/05.jpg" alt=""></a>
+                        <a href="#!"><img class="avatar-img rounded-circle" src="{% static 'images/avatar/IMG_4023.jpg' %}" alt=""></a>
                       </div>
                       <div class="ms-2">
                         <!-- Comment by -->
                         <div class="bg-light rounded-start-top-0 p-3 rounded">
                           <div class="d-flex justify-content-between">
-                            <h6 class="mb-1"> <a href="#!"> Frances Guerrero </a></h6>
-                            <small class="ms-2">5hr</small>
+                            <h6 class="mb-1"> <a href="#!"> 高橋 優輝 </a></h6>
+                            <small class="ms-2">5時間前</small>
                           </div>
-                          <p class="small mb-0">Removed demands expense account in outward tedious do. Particular way thoroughly unaffected projection.</p>
+                          <p class="small mb-0">イベント楽しかったです。お疲れ様でした！</p>
                         </div>
                         <!-- Comment react -->
                         <ul class="nav nav-divider py-2 small">
@@ -257,16 +255,16 @@
                         <div class="d-flex">
                           <!-- Avatar -->
                           <div class="avatar avatar-xs">
-                            <a href="#!"><img class="avatar-img rounded-circle" src="assets/images/avatar/06.jpg" alt=""></a>
+                            <a href="#!"><img class="avatar-img rounded-circle" src="{% static 'images/avatar/IMG_4024.jpg' %}" alt=""></a>
                           </div>
                           <!-- Comment by -->
                           <div class="ms-2">
                             <div class="bg-light p-3 rounded">
                               <div class="d-flex justify-content-between">
-                                <h6 class="mb-1"> <a href="#!"> Lori Stevens </a> </h6>
-                                <small class="ms-2">2hr</small>
+                                <h6 class="mb-1"> <a href="#!"> 水上 海斗 </a> </h6>
+                                <small class="ms-2">5時間前</small>
                               </div>
-                              <p class="small mb-0">See resolved goodness felicity shy civility domestic had but Drawings offended yet answered Jennings perceive.</p>
+                              <p class="small mb-0">いろんな人と繋がりが作れて、参加してよかったと感じてます。また、イベントを開くときも一緒にいきたいですね。</p>
                             </div>
                             <!-- Comment react -->
                             <ul class="nav nav-divider py-2 small">
@@ -286,16 +284,16 @@
                         <div class="d-flex">
                           <!-- Avatar -->
                           <div class="avatar avatar-story avatar-xs">
-                            <a href="#!"><img class="avatar-img rounded-circle" src="assets/images/avatar/07.jpg" alt=""></a>
+                            <a href="#!"><img class="avatar-img rounded-circle" src="{% static 'images/avatar/IMG_4025.jpg' %}" alt=""></a>
                           </div>
                           <!-- Comment by -->
                           <div class="ms-2">
                             <div class="bg-light p-3 rounded">
                               <div class="d-flex justify-content-between">
-                                <h6 class="mb-1"> <a href="#!"> Billy Vasquez </a> </h6>
-                                <small class="ms-2">15min</small>
+                                <h6 class="mb-1"> <a href="#!"> 鈴木 優子 </a> </h6>
+                                <small class="ms-2">5時間前</small>
                               </div>
-                              <p class="small mb-0">Wishing calling is warrant settled was lucky.</p>
+                              <p class="small mb-0">海斗さん、当日はありがとうございました！</p>
                             </div>
                             <!-- Comment react -->
                             <ul class="nav nav-divider py-2 small">
@@ -328,16 +326,17 @@
                     <div class="d-flex">
                       <!-- Avatar -->
                       <div class="avatar avatar-xs">
-                      <a href="#!"><img class="avatar-img rounded-circle" src="assets/images/avatar/05.jpg" alt=""></a>
+                      <a href="#!"><img class="avatar-img rounded-circle" src="{% static 'images/avatar/IMG_4026.jpg' %}" alt=""></a>
                       </div>
                       <!-- Comment by -->
                       <div class="ms-2">
                         <div class="bg-light p-3 rounded">
                           <div class="d-flex justify-content-between">
-                            <h6 class="mb-1"> <a href="#!"> Frances Guerrero </a> </h6>
-                            <small class="ms-2">4min</small>
+                            <h6 class="mb-1"> <a href="#!"> 横澤 蒼 </a> </h6>
+                            <small class="ms-2">4時間前</small>
                           </div>
-                          <p class="small mb-0">Removed demands expense account in outward tedious do. Particular way thoroughly unaffected projection.</p>
+                          <p class="small mb-0">このイベントは大学とか関係なく、参加できる感じですか？
+                          </p>
                         </div>
                         <!-- Comment react -->
                         <ul class="nav nav-divider pt-2 small">
@@ -374,104 +373,12 @@
               <!-- Card footer END -->
             </div>
             <!-- Card feed item END -->
-            {% endfor %}
-  
-            <!-- Card feed item START -->
-            <div class="card">
-              
-              <div class="border-bottom">
-                <p class="small mb-0 px-4 py-2"><i class="bi bi-heart-fill text-danger pe-1"></i>Sam Lanson likes this post</p>
-              </div>
-              <!-- Card header START -->
-              <div class="card-header border-0 pb-0">
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="d-flex align-items-center">
-                    <!-- Avatar -->
-                    <div class="avatar me-2">
-                      <a href="#"> <img class="avatar-img rounded-circle" src="assets/images/logo/13.svg" alt=""> </a>
-                    </div>
-                    <!-- Title -->
-                    <div>
-                      <h6 class="card-title mb-0"> <a href="#!"> Apple Education </a></h6>
-                      <p class="mb-0 small">9 November at 23:29</p>
-                    </div>
-                  </div>
-                  <!-- Card share action menu -->
-                  <a href="#" class="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardShareAction5" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-three-dots"></i>
-                  </a>
-                  <!-- Card share action dropdown menu -->
-                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction5">
-                    <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
-                    <li><a class="dropdown-item" href="#"> <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow lori ferguson </a></li>
-                    <li><a class="dropdown-item" href="#"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
-                    <li><a class="dropdown-item" href="#"> <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#"> <i class="bi bi-flag fa-fw pe-2"></i>Report post</a></li>
-                  </ul>
-                </div>
-                  <!-- Card share action END -->
-              </div>
-              <!-- Card header START -->
-  
-              <!-- Card body START -->
-              <div class="card-body pb-0">
-                <p>Find out how you can save time in the classroom this year. Earn recognition while you learn new skills on iPad and Mac. Start  recognition your first Apple Teacher badge today!</p>
-                <!-- Feed react START -->
-                <ul class="nav nav-stack pb-2 small">
-                  <li class="nav-item">
-                    <a class="nav-link active text-secondary" href="#!"> <i class="bi bi-heart-fill me-1 icon-xs bg-danger text-white rounded-circle"></i> Louis, Billy and 126 others </a>
-                  </li>
-                  <li class="nav-item ms-sm-auto">
-                    <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>Comments (12)</a>
-                  </li>
-                </ul>
-                <!-- Feed react END -->
-              </div>
-              <!-- Card body END -->
-              <!-- Card Footer START -->
-              <div class="card-footer py-3">
-                <!-- Feed react START -->
-                <ul class="nav nav-fill nav-stack small">
-                  <li class="nav-item">
-                    <a class="nav-link mb-0 active" href="#!"> <i class="bi bi-heart pe-1"></i>Liked (56)</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link mb-0" href="#!"> <i class="bi bi-chat-fill pe-1"></i>Comments (12)</a>
-                  </li>
-                  <!-- Card share action dropdown START -->
-                  <li class="nav-item dropdown">
-                    <a href="#" class="nav-link mb-0" id="cardShareAction6" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="bi bi-reply-fill flip-horizontal ps-1"></i>Share (3)
-                    </a>
-                    <!-- Card share action dropdown menu -->
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction6">
-                      <li><a class="dropdown-item" href="#"> <i class="bi bi-envelope fa-fw pe-2"></i>Send via Direct Message</a></li>
-                      <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark-check fa-fw pe-2"></i>Bookmark </a></li>
-                      <li><a class="dropdown-item" href="#"> <i class="bi bi-link fa-fw pe-2"></i>Copy link to post</a></li>
-                      <li><a class="dropdown-item" href="#"> <i class="bi bi-share fa-fw pe-2"></i>Share post via …</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to News Feed</a></li>
-                    </ul>
-                  </li>
-                  <!-- Card share action dropdown END -->
-                  <li class="nav-item">
-                    <a class="nav-link mb-0" href="#!"> <i class="bi bi-send-fill pe-1"></i>Send</a>
-                  </li>
-                </ul>
-                <!-- Feed react END -->
-              </div>
-              <!-- Card Footer END -->
-            </div>
-            <!-- Card feed item END -->
         </div>
         <!-- Main content END -->
   
         <!-- Right sidebar START -->
         <div class="col-lg-4">
-  
           <div class="row g-4">
-  
             <!-- Card START -->
             <div class="col-md-6 col-lg-12">
               <div class="card">
@@ -510,12 +417,12 @@
                   <div class="d-flex">
                     <!-- Avatar -->
                     <div class="avatar me-3">
-                      <a href="#!"> <img class="avatar-img rounded-circle" src="assets/images/logo/08.svg" alt=""> </a>
+                      <a href="#!"> <img class="avatar-img rounded-circle" src="{% static 'images/logo/coconala.webp' %}" alt=""> </a>
                     </div>
                     <!-- Info -->
                     <div>
-                      <h6 class="card-title mb-0"><a href="#!"> Apple Computer, Inc. </a></h6>
-                      <p class="small">May 2015 – Present Employment Duration 8 mos <a class="btn btn-primary-soft btn-xs ms-2" href="#!">Edit </a></p>
+                      <h6 class="card-title mb-0"><a href="#!"> 株式会社ココナラ - coconala Inc. </a></h6>
+                      <p class="small">Aug 2022 - 3daysインターンシップ <a class="btn btn-primary-soft btn-xs ms-2" href="#!">Edit </a></p>
                     </div>
                   </div>
                   <!-- Experience item END -->
@@ -524,7 +431,7 @@
                   <div class="d-flex">
                     <!-- Avatar -->
                     <div class="avatar me-3">
-                      <a href="#!"> <img class="avatar-img rounded-circle" src="assets/images/logo/09.svg" alt=""> </a>
+                      <a href="#!"> <img class="avatar-img rounded-circle" src="{% static 'images/logo/09.svg' %}" alt=""> </a>
                     </div>
                     <!-- Info -->
                     <div>
@@ -538,7 +445,7 @@
                   <div class="d-flex">
                     <!-- Avatar -->
                     <div class="avatar me-3">
-                      <a href="#!"> <img class="avatar-img rounded-circle" src="assets/images/logo/10.svg" alt=""> </a>
+                      <a href="#!"> <img class="avatar-img rounded-circle" src="{% static 'images/logo/10.svg' %}" alt=""> </a>
                     </div>
                     <!-- Info -->
                     <div>
@@ -613,4 +520,63 @@
     <!-- Container END -->
 </main>
 <!-- **************** MAIN CONTENT END **************** -->
+<!-- Modal create Feed START -->
+<div class="modal fade" id="modalCreateFeed" tabindex="-1" aria-labelledby="modalLabelCreateFeed" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <!-- Modal feed header START -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabelCreateFeed">投稿作成</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <!-- Modal feed header END -->
+
+      <!-- Modal feed body START -->
+      <div class="modal-body">
+         <!-- Add Feed -->
+         <div class="d-flex mb-3">
+          <!-- Avatar -->
+          <div class="avatar avatar-xs me-2">
+            <img class="avatar-img rounded-circle" src="{{ object.picture.url }}" alt="{{ object.username }}">
+          </div>
+          <!-- Feed box  -->
+          <form class="w-100">
+            <textarea class="form-control pe-4 fs-3 lh-1 border-0" rows="4" placeholder="Share your thoughts..." autofocus></textarea>
+          </form>
+        </div>
+        <!-- Feed rect START -->
+        <div class="hstack gap-2">
+          <a class="icon-md bg-success bg-opacity-10 text-success rounded-circle" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Photo"> <i class="bi bi-image-fill"></i> </a>
+          <a class="icon-md bg-info bg-opacity-10 text-info rounded-circle" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Video"> <i class="bi bi-camera-reels-fill"></i> </a>
+          <a class="icon-md bg-danger bg-opacity-10 text-danger rounded-circle" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Events"> <i class="bi bi-calendar2-event-fill"></i> </a>
+          <a class="icon-md bg-warning bg-opacity-10 text-warning rounded-circle" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Feeling/Activity"> <i class="bi bi-emoji-smile-fill"></i> </a>
+          <a class="icon-md bg-light text-secondary rounded-circle" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Check in"> <i class="bi bi-geo-alt-fill"></i> </a>
+          <a class="icon-md bg-primary bg-opacity-10 text-primary rounded-circle" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Tag people on top"> <i class="bi bi-tag-fill"></i> </a>
+        </div>
+        <!-- Feed rect END -->
+      </div>
+      <!-- Modal feed body END -->
+      
+      <!-- Modal feed footer -->
+      <div class="modal-footer row justify-content-between">
+        <!-- Select -->
+        <div class="col-lg-3">
+          <select class="form-select js-choice" data-position="top" data-search-enabled="false">
+            <option value="PB">Public</option>
+            <option value="PV">Friends</option>
+            <option value="PV">Only me</option>
+            <option value="PV">Custom</option>
+          </select>
+        </div>
+        <!-- Button -->
+        <div class="col-lg-8 text-sm-end">
+          <button type="button" class="btn btn-success-soft">公開</button>
+        </div>
+      </div>
+      <!-- Modal feed footer -->
+
+    </div>
+  </div>
+</div>
+<!-- Modal create feed END -->
 {% endblock %}
