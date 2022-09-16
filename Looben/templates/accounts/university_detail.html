@@ -222,56 +222,85 @@
   
               <!-- Faqs START -->
               <div class="mt-4 mt-sm-5" id="faq">
-                <h4>よくある質問 </h4>
-                <!-- Faq accordion -->
+                <div class="p-2"><h4>よくある質問 </h4></div>              
                 <div class="accordion accordion-icon" id="accordionfaq">
-                  <!-- Faq accordion Item -->
-                  <div class="accordion-item mb-3">
-                    <div class="accordion-header" id="faqOne">
-                      <button class="accordion-button pe-5 flex-wrap fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faqcollapseOne" aria-expanded="true" aria-controls="faqcollapseOne">
-                        未来投資というクラスは4年で卒業できますか?
-                      </button>
-                    </div>
-                    <div id="faqcollapseOne" class="accordion-collapse collapse show" aria-labelledby="faqOne" data-bs-parent="#accordionfaq">
-                      <div class="accordion-body">
-                        <p>早くても卒業までに5年かかると思います。</p>
-                        <p class="mb-0">未来投資クラスとは普通のクラスとは違い、最初の1年間を中国語の向上と課外活動に費やすため、2年目からは他の学科の1年生として活動します。つまり卒業までに5年かかるということです。 </p>
+                  {% for review in reviews %}
+                    {% if forloop.counter == 1 %}
+                    <!-- Accordion item -->
+                    <div class="accordion-item mb-3">
+                      <div class="accordion-header" id="faq{{ review.title }}">
+                        <button class="accordion-button pe-5 flex-wrap fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faqcollapse{{ review.title }}" aria-expanded="true" aria-controls="faqcollapse{{ review.title }}">
+                          <strong>{{ review.title }}</strong>
+                        </button>
+                      </div>
+                      <!-- Accordion info -->
+                      <div id="faqcollapse{{ review.title }}" class="accordion-collapse collapse show" aria-labelledby="faq{{ review.title }}" data-bs-parent="#accordionfaq">
+                        <div class="accordion-body">
+                          <p>{{ review.review }}</p>
+                          <p style="text-align:right;">{{ review.created_at }}</p>
+                          <div class="row g-4">
+                            <div class="col-12">
+                              <h5 class="mb-0">Answered by</h5>
+                            </div>
+                            <div class="col-sm-4 col-lg-3">
+                              <!-- Host Item -->
+                              <div class="card card-body text-center">
+                                <div class="avatar avatar-lg mx-auto mb-3"> 
+                                  <a href="{% url 'dashboard:post_in_dashboard' review.user.username %}"><img class="avatar-img rounded-circle" src="{{ review.user.picture.url }}" alt="{{ review.user.username }}"></a>
+                                </div>
+                                <!-- Host name -->
+                                <div>
+                                  <h6 class="mb-0">{{ review.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6>
+                                  <span>{{ review.user.school }}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <!-- Faq accordion Item -->
-                  <div class="accordion-item mb-3">
-                    <div class="accordion-header" id="faqTwo">
-                      <button class="accordion-button pe-5 flex-wrap fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqcollapseTwo" aria-expanded="false" aria-controls="faqcollapseTwo">
-                        卒業までに必要な単位数はどれくらいでしょうか？
-                      </button>
-                    </div>
-                    <div id="faqcollapseTwo" class="accordion-collapse collapse" aria-labelledby="faqTwo" data-bs-parent="#accordionfaq">
-                      <div class="accordion-body">
-                        <p>全部で合わせて128単位必要です。</p>
-                        <p class="mb-0">卒業までには全部で、128単位必要ですが、そのほかにも体育、課外活動など、卒業のためにやらなければいけないことがあります。</p>
+                    {% else %}
+                    <!-- Accordion item -->
+                    <div class="accordion-item mb-3">
+                      <div class="accordion-header" id="faq{{ review.title }}">
+                        <button class="accordion-button pe-5 flex-wrap fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqcollapse{{ review.title }}" aria-expanded="false" aria-controls="faqcollapse{{ review.title }}">
+                          <strong>{{ review.title }}</strong>
+                        </button>
+                      </div>
+                      <!-- Accordion info -->
+                      <div id="faqcollapse{{ review.title }}" class="accordion-collapse collapse" aria-labelledby="faq{{ review.title }}" data-bs-parent="#accordionfaq">
+                        <div class="accordion-body">
+                          <p>{{ review.review }}</p>
+                          <p style="text-align:right;">{{ review.created_at }}</p>
+                          <div class="row g-4">
+                            <div class="col-12">
+                              <h5 class="mb-0">Answered by</h5>
+                            </div>
+                            <div class="col-sm-4 col-lg-3">
+                              <!-- Host Item -->
+                              <div class="card card-body text-center">
+                                <div class="avatar avatar-lg mx-auto mb-3"> 
+                                  <a href="{% url 'dashboard:post_in_dashboard' review.user.username %}"><img class="avatar-img rounded-circle" src="{{ review.user.picture.url }}" alt="{{ review.user.username }}"></a>
+                                </div>
+                                <!-- Host name -->
+                                <div>
+                                  <h6 class="mb-0">{{ review.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6>
+                                  <span>{{ review.user.school }}</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <!-- Faq accordion Item -->
-                  <div class="accordion-item mb-3">
-                    <div class="accordion-header" id="faqThree">
-                      <button class="accordion-button pe-5 flex-wrap fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqcollapseThree" aria-expanded="false" aria-controls="faqcollapseThree">
-                        寮について詳しく知りたいです。
-                      </button>
-                    </div>
-                    <div id="faqcollapseThree" class="accordion-collapse collapse" aria-labelledby="faqThree" data-bs-parent="#accordionfaq">
-                      <div class="accordion-body">
-                        <p>寮に関しては、基本的には四人部屋です。</p>
-                        <p class="mb-0">寮には２種類あり、トイレやシャワーが各部屋の中にある寮と、ない寮があります。それぞれ、机とベットがあります。部屋の中にトイレなどがあるのは便利ですが、掃除が大変などというデメリットもあります。 </p>
-                      </div>
-                    </div>
-                  </div>
+                    {% endif %}
+                  {% empty %}
+                  {% endfor %}
                 </div>
               </div>
-              <!-- Faqs END -->
               <a href="{% url 'reviews:review_list_of_universities' object.id %}" style="text-align:right; margin-top:15px;">もっと見る</a>
-  
+              <!-- Faqs END -->
+
             </div>
           </div>
         </div>

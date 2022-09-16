@@ -5,10 +5,12 @@ from .models import Post
 
 
 class PostForm(forms.ModelForm):
-    content = forms.CharField(label='投稿', widget=forms.TextInput(attrs={
-        'class': 'form-control', 
-        'placeholder': '投稿',
-        'type': 'text',
+    content = forms.CharField(label='投稿', widget=forms.Textarea(attrs={
+        'class': 'form-control pe-4 fs-3 lh-1 border-0', 
+        'placeholder': 'Share your thoughts...',
+        'rows': '5',
+        'type': 'textarea',
+        # 'autofocus': '',
         }))
 
     

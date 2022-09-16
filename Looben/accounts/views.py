@@ -18,6 +18,7 @@ from django.urls import reverse_lazy
 from django.dispatch import receiver
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login
+from django.db.models import Q # 検索機能のために追加
 
 
 from .forms import RegistForm, UserLoginForm, AccountSettingForm, PasswordChangeForm
@@ -256,7 +257,20 @@ class UserRankingView(LoginRequiredMixin, ListView):
      
 class ResearchUniversity(ListView):
     model = Schools
-    template_name = 'accounts/research_university.html'    
+    context_object_name = 'university_list'
+    template_name = 'accounts/research_university.html'
+    queryset = Schools.objects.order_by('id')
+    
+
+    def get_queryset(self): # 検索機能のために追加
+        queryset = Schools.objects.order_by('id')
+        query = self.request.GET.get('query')
+        if query:
+            queryset = queryset.filter(
+            Q(name__icontains=query) | Q(major__icontains=query)
+            )
+        return queryset
+    
     
     
 class UniversityDetailView(DetailView):

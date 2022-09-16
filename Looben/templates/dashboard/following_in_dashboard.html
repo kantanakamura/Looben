@@ -233,8 +233,14 @@
               <div class="card">
                 <!-- Card header START -->
                 <div class="card-header d-sm-flex justify-content-between align-items-center border-0">
-                  <h5 class="card-title">知り合いかも  <span class="badge bg-danger bg-opacity-10 text-danger">{{ number_of_friends }}</span></h5>
-                  <a class="btn btn-primary-soft btn-sm" href="#!"> もっとみる</a>
+                  {% if object == user %}
+                  <!-- 自分のダッシュボード時、保存したユーザーを表示 -->
+                  <h5 class="card-title">保存したユーザー <span class="badge bg-danger bg-opacity-10 text-danger">{{ number_of_friends }}</span></h5>
+                  <a class="btn btn-primary-soft btn-sm" href="{% url 'accounts:user_ranking' %}"> もっとみる</a>
+                  {% else %}
+                  <h5 class="card-title">知り合いかも <span class="badge bg-danger bg-opacity-10 text-danger">{{ number_of_friends }}</span></h5>
+                  <a class="btn btn-primary-soft btn-sm" href="{% url 'accounts:user_ranking' %}"> もっとみる</a>
+                  {% endif %}
                 </div>
                 <!-- Card header END -->
                 <!-- Card body START -->
@@ -255,15 +261,15 @@
                         </div>
                         <!-- Card footer -->
                         <div class="card-footer p-2 border-0">
-                          {% if saved_user in user.connection.all %}
+                          {% if saved_user in user.saved_users.all %}
                           <!-- もし、表示されているフレンドがすでにログインユーザーの友達だったら、友達解除ボタンを設置-->
-                          <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="メッセージを送る"> <i class="bi bi-chat-left-text"></i> </button>
+                          <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="詳細をみる"> <i class="bi bi-incognito"></i> </button>
                           <a href="{% url 'accounts:unsave_user' saved_user.username %}"><button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="保存解除"> <i class="bi bi-person-x"></i> </button></a>
                           {% elif saved_user == user %}
                           <!-- もし、表示されているフレンドが自分自身だったら、ボタンを何も設置しない -->
                           {% else %}
                           <!-- もし、表示されているフレンドがまだ、ログインユーザーの友達じゃなかったら、友達ボタンを設置-->
-                          <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="メッセージを送る"> <i class="bi bi-chat-left-text"></i> </button>
+                          <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="詳細をみる"> <i class="bi bi-incognito"></i> </button>
                           <a href="{% url 'accounts:save_user' saved_user.username %}"><button class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="保存する"> <i class="bi bi-person-plus"></i> </button></a>
                           {% endif %}
                         </div>

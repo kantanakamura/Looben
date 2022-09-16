@@ -10,16 +10,6 @@
 <main>
     <!-- Container START -->
     <div class="container">
-      {% if messages %}
-      <ul class="messages">
-        {% for message in messages %}
-            <li class="{{ message.tags }}">
-                {{ message|safe }}
-                <a href="{% url 'accounts:account_setting' user.username %}" class="close">x</a>
-            </li>
-        {% endfor %}
-      </ul>
-      {% endif %}
 
       <div class="row"> 
         <!-- Sidenav START -->

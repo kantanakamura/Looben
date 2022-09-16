@@ -52,6 +52,7 @@
                     <a href="{% url 'accounts:account_setting' object.username  %}"><button class="btn btn-danger-soft me-2" type="button"> <i class="bi bi-pencil-fill pe-1"></i> 編集 </button></a>
                     {% elif object in user.connection.all %}
                     <!-- すでに友達になっているユーザーのダッシュボードのとき、友達解除ボタンを表示 -->
+                    <a href=""><button class="btn btn-primary-soft me-2" type="button"> <i class="bi bi-chat-dots-fill pe-1"></i> メッセージ </button></a>
                     <a href="{% url 'accounts:disconnect' object.username  %}"><button class="btn btn-info-soft me-2" type="button"> <i class="bi bi-person-heart pe-1"></i> フォロー中 </button></a>
                     {% else %}
                     <!-- まだ、友達でないユーザーのダッシュボードのとき、友達登録ボタンを表示 -->
@@ -91,6 +92,8 @@
             </div>
             <!-- My profile END -->
   
+            <!-- もし、自分のダッシュボードなら投稿画面を表示-->
+            {% if object == user %}
             <!-- Share feed START -->
             <div class="card card-body">
               <div class="d-flex mb-3">
@@ -134,6 +137,7 @@
               <!-- Share feed toolbar END -->
             </div>
             <!-- Share feed END -->
+            {% endif %}
   
             <!-- Card feed item START -->
             <div class="card">
@@ -466,8 +470,14 @@
               <div class="card">
                 <!-- Card header START -->
                 <div class="card-header d-sm-flex justify-content-between align-items-center border-0">
+                  {% if object == user %}
+                  <!-- 自分のダッシュボード時、保存したユーザーを表示 -->
+                  <h5 class="card-title">保存したユーザー <span class="badge bg-danger bg-opacity-10 text-danger">{{ number_of_friends }}</span></h5>
+                  <a class="btn btn-primary-soft btn-sm" href="{% url 'accounts:user_ranking' %}"> もっとみる</a>
+                  {% else %}
                   <h5 class="card-title">知り合いかも <span class="badge bg-danger bg-opacity-10 text-danger">{{ number_of_friends }}</span></h5>
-                  <a class="btn btn-primary-soft btn-sm" href="#!"> もっとみる</a>
+                  <a class="btn btn-primary-soft btn-sm" href="{% url 'accounts:user_ranking' %}"> もっとみる</a>
+                  {% endif %}
                 </div>
                 <!-- Card header END -->
                 <!-- Card body START -->
@@ -488,15 +498,15 @@
                         </div>
                         <!-- Card footer -->
                         <div class="card-footer p-2 border-0">
-                          {% if saved_user in user.connection.all %}
+                          {% if saved_user in user.saved_users.all %}
                           <!-- もし、表示されているフレンドがすでにログインユーザーの友達だったら、友達解除ボタンを設置-->
-                          <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="メッセージを送る"> <i class="bi bi-chat-left-text"></i> </button>
+                          <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="詳細をみる"> <i class="bi bi-incognito"></i> </button>
                           <a href="{% url 'accounts:unsave_user' saved_user.username %}"><button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="保存解除"> <i class="bi bi-person-x"></i> </button></a>
                           {% elif saved_user == user %}
                           <!-- もし、表示されているフレンドが自分自身だったら、ボタンを何も設置しない -->
                           {% else %}
                           <!-- もし、表示されているフレンドがまだ、ログインユーザーの友達じゃなかったら、友達ボタンを設置-->
-                          <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="メッセージを送る"> <i class="bi bi-chat-left-text"></i> </button>
+                          <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="詳細をみる"> <i class="bi bi-incognito"></i> </button>
                           <a href="{% url 'accounts:save_user' saved_user.username %}"><button class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="保存する"> <i class="bi bi-person-plus"></i> </button></a>
                           {% endif %}
                         </div>
@@ -520,6 +530,8 @@
     <!-- Container END -->
 </main>
 <!-- **************** MAIN CONTENT END **************** -->
+
+
 <!-- Modal create Feed START -->
 <div class="modal fade" id="modalCreateFeed" tabindex="-1" aria-labelledby="modalLabelCreateFeed" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -533,15 +545,18 @@
 
       <!-- Modal feed body START -->
       <div class="modal-body">
-         <!-- Add Feed -->
-         <div class="d-flex mb-3">
+        <!-- Add Feed -->
+        <div class="d-flex mb-3">
           <!-- Avatar -->
           <div class="avatar avatar-xs me-2">
             <img class="avatar-img rounded-circle" src="{{ object.picture.url }}" alt="{{ object.username }}">
           </div>
           <!-- Feed box  -->
-          <form class="w-100">
-            <textarea class="form-control pe-4 fs-3 lh-1 border-0" rows="4" placeholder="Share your thoughts..." autofocus></textarea>
+          <form method="post" class="w-100">
+            {{ form.non_field_errors }}
+            {% csrf_token %}
+            {{ form.content }}
+            {{ form.content.errors }}
           </form>
         </div>
         <!-- Feed rect START -->
@@ -558,19 +573,9 @@
       <!-- Modal feed body END -->
       
       <!-- Modal feed footer -->
-      <div class="modal-footer row justify-content-between">
-        <!-- Select -->
-        <div class="col-lg-3">
-          <select class="form-select js-choice" data-position="top" data-search-enabled="false">
-            <option value="PB">Public</option>
-            <option value="PV">Friends</option>
-            <option value="PV">Only me</option>
-            <option value="PV">Custom</option>
-          </select>
-        </div>
-        <!-- Button -->
+      <div class="modal-footer row justify-content-right">
         <div class="col-lg-8 text-sm-end">
-          <button type="button" class="btn btn-success-soft">公開</button>
+          <button class="btn btn-success-soft" type="submit">公開</button>
         </div>
       </div>
       <!-- Modal feed footer -->

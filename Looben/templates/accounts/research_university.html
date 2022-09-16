@@ -18,8 +18,8 @@
               <!-- Title -->
               <h1 class="text-white">自分に合った台湾の大学を探す.</h1>
               <!-- Search form START -->
-              <form class="rounded position-relative">
-                <input class="form-control form-control-lg ps-5" type="search" placeholder="検索" aria-label="Search">
+              <form class="rounded position-relative" method="get">
+                <input class="form-control form-control-lg ps-5" type="search" placeholder="検索" aria-label="Search" value="{{ request.GET.query }}" name="query">
                 <button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit"><i class="bi bi-search fs-5 ps-1"> </i></button>
               </form>
               <!-- Search form END -->
@@ -52,6 +52,52 @@
       </div>
       
       <div class="tab-content mb-0 pb-0">
+
+        {% comment %} {% if university_list %}
+        {% for reseach_university in university_list %}
+        <div class="row g-4">
+          <!-- Main content START -->
+          <div class="col-sm-6 col-lg-4">
+              <!-- Card feed item START -->
+              <div class="card h-100">
+                <img class="card-img-top" src="{{ reseach_university.picture.url }}" alt="{{ reseach_university.name }}" style="height:210px;">
+                <!-- Card header END -->
+                <!-- Card body START -->
+                <div class="card-body">
+                  <!-- Info -->
+                  <p class="text-body"><strong>{{ reseach_university.name }}</strong> {% if reseach_university.national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                  <a class="text-body" href="{% url 'accounts:university_detail' pk=reseach_university.id %}">{{ reseach_university.description }}</a>
+                  <!-- Feed react START -->
+                  <ul class="nav nav-stack flex-wrap small mt-3">
+                    <li class="nav-item">
+                      <a class="nav-link active" href="#!"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>(102)</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>(65)</a>
+                    </li>
+                    <!-- 保存　button START -->
+                    <li class="nav-item ms-sm-auto">
+                      <!-- もし、ログインユーザーがこの大学を保存していたら、保存解除ボタンを設置 -->
+                      {% if reseach_university in user.saved_university.all %}
+                      <a href="{% url 'accounts:unsave_university' reseach_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
+                      {% else %}
+                      <!-- もし、ログインユーザーがこの大学を保存していなかったら、保存ボタンを設置 -->
+                      <a href="{% url 'accounts:save_university' reseach_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                      {% endif %}
+                    </li>
+                    <!-- 保存　button END -->
+                  </ul>
+                  <!-- Feed react END -->
+                </div>
+                <!-- Card body END -->
+              </div>
+              <!-- Card feed item END -->
+          </div>
+          <!-- Main content END -->
+        </div> 
+        <!-- Row END -->
+        {% endfor %}
+        {% endif %} {% endcomment %}
 
         <!-- おすすめ tab START -->
         <div class="tab-pane fade show active" id="tab-1">
