@@ -138,7 +138,9 @@
             </div>
             <!-- Share feed END -->
             {% endif %}
-  
+
+
+            {% for post in object.post_set.all %}
             <!-- Card feed item START -->
             <div class="card">
               <!-- Card header START -->
@@ -153,7 +155,7 @@
                     <div>
                       <div class="nav nav-divider">
                         <h6 class="nav-item card-title mb-0"> <a href="#!"> {{ object.name }} </a></h6>
-                        <span class="nav-item small"> 14時間前</span>
+                        <span class="nav-item small"> {{ post.created_at }}</span>
                       </div>
                       <p class="mb-0 small">{{ object.school }} / {{ object.major }}</p>
                     </div>
@@ -179,9 +181,9 @@
               <!-- Card header END -->
               <!-- Card body START -->
               <div class="card-body">
-                <p>今回のイベントは自分にとって初めてのイベント開催でした。昨年開かれたたい和ん成人式を見て「自分もこんな素敵なイベントを開催した人たちと一緒に何かを創り上げてみたい」と思い今回のイベント開催に参加しました。<br>自分達新メンバーが取り組みやすい環境作りをしようと考えてくれる先輩方、わからないことだらけだけど何かを成し遂げたくてイベント開催に応募した新メンバー、そんな人達と一緒に大学生活の一つの成果として今回のイベントを共に開催できたことを本当に嬉しく思います。</p>
+                <p>{{ post.content }}</p>
                 <!-- Card img -->
-                <img class="card-img" src="{% static 'images/job/job.jpg' %}" alt="Post" style="height:400px;">
+                <img class="card-img" src="" alt="Post" style="height:400px;">
                 <!-- Feed react START -->
                 <ul class="nav nav-stack py-3 small">
                   <li class="nav-item">
@@ -283,79 +285,8 @@
                         </div>
                       </li>
                       <!-- Comment item END -->
-                      <!-- Comment item START -->
-                      <li class="comment-item">
-                        <div class="d-flex">
-                          <!-- Avatar -->
-                          <div class="avatar avatar-story avatar-xs">
-                            <a href="#!"><img class="avatar-img rounded-circle" src="{% static 'images/avatar/IMG_4025.jpg' %}" alt=""></a>
-                          </div>
-                          <!-- Comment by -->
-                          <div class="ms-2">
-                            <div class="bg-light p-3 rounded">
-                              <div class="d-flex justify-content-between">
-                                <h6 class="mb-1"> <a href="#!"> 鈴木 優子 </a> </h6>
-                                <small class="ms-2">5時間前</small>
-                              </div>
-                              <p class="small mb-0">海斗さん、当日はありがとうございました！</p>
-                            </div>
-                            <!-- Comment react -->
-                            <ul class="nav nav-divider py-2 small">
-                              <li class="nav-item">
-                                <a class="nav-link" href="#!"> Like</a>
-                              </li>
-                              <li class="nav-item">
-                                <a class="nav-link" href="#!"> Reply</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </li>
-                      <!-- Comment item END -->
                     </ul>
-                    <!-- Load more replies -->
-                    <a href="#!" role="button" class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center mb-3 ms-5" data-bs-toggle="button" aria-pressed="true">
-                      <div class="spinner-dots me-2">
-                        <span class="spinner-dot"></span>
-                        <span class="spinner-dot"></span>
-                        <span class="spinner-dot"></span>
-                      </div>
-                      Load more replies 
-                    </a>
                     <!-- Comment item nested END -->
-                  </li>
-                  <!-- Comment item END -->
-                  <!-- Comment item START -->
-                  <li class="comment-item">
-                    <div class="d-flex">
-                      <!-- Avatar -->
-                      <div class="avatar avatar-xs">
-                      <a href="#!"><img class="avatar-img rounded-circle" src="{% static 'images/avatar/IMG_4026.jpg' %}" alt=""></a>
-                      </div>
-                      <!-- Comment by -->
-                      <div class="ms-2">
-                        <div class="bg-light p-3 rounded">
-                          <div class="d-flex justify-content-between">
-                            <h6 class="mb-1"> <a href="#!"> 横澤 蒼 </a> </h6>
-                            <small class="ms-2">4時間前</small>
-                          </div>
-                          <p class="small mb-0">このイベントは大学とか関係なく、参加できる感じですか？
-                          </p>
-                        </div>
-                        <!-- Comment react -->
-                        <ul class="nav nav-divider pt-2 small">
-                          <li class="nav-item">
-                            <a class="nav-link" href="#!"> Like (1)</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href="#!"> Reply</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href="#!"> View 6 replies</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
                   </li>
                   <!-- Comment item END -->
                 </ul>
@@ -377,6 +308,7 @@
               <!-- Card footer END -->
             </div>
             <!-- Card feed item END -->
+            {% endfor %}
         </div>
         <!-- Main content END -->
   
@@ -500,13 +432,13 @@
                         <div class="card-footer p-2 border-0">
                           {% if saved_user in user.saved_users.all %}
                           <!-- もし、表示されているフレンドがすでにログインユーザーの友達だったら、友達解除ボタンを設置-->
-                          <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="詳細をみる"> <i class="bi bi-incognito"></i> </button>
+                          <a href="{% url 'dashboard:post_in_dashboard' saved_user.username %}"><button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="詳細をみる"> <i class="bi bi-incognito"></i> </button></a>
                           <a href="{% url 'accounts:unsave_user' saved_user.username %}"><button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="保存解除"> <i class="bi bi-person-x"></i> </button></a>
                           {% elif saved_user == user %}
                           <!-- もし、表示されているフレンドが自分自身だったら、ボタンを何も設置しない -->
                           {% else %}
                           <!-- もし、表示されているフレンドがまだ、ログインユーザーの友達じゃなかったら、友達ボタンを設置-->
-                          <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="詳細をみる"> <i class="bi bi-incognito"></i> </button>
+                          <a href="{% url 'dashboard:post_in_dashboard' saved_user.username %}"><button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="詳細をみる"> <i class="bi bi-incognito"></i> </button></a>
                           <a href="{% url 'accounts:save_user' saved_user.username %}"><button class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="保存する"> <i class="bi bi-person-plus"></i> </button></a>
                           {% endif %}
                         </div>
@@ -533,6 +465,7 @@
 
 
 <!-- Modal create Feed START -->
+<form method="post" class="w-100">
 <div class="modal fade" id="modalCreateFeed" tabindex="-1" aria-labelledby="modalLabelCreateFeed" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
@@ -552,12 +485,10 @@
             <img class="avatar-img rounded-circle" src="{{ object.picture.url }}" alt="{{ object.username }}">
           </div>
           <!-- Feed box  -->
-          <form method="post" class="w-100">
-            {{ form.non_field_errors }}
-            {% csrf_token %}
-            {{ form.content }}
-            {{ form.content.errors }}
-          </form>
+          {{ form.non_field_errors }}
+          {% csrf_token %}
+          {{ form.content }}
+          {{form.content.errors }}
         </div>
         <!-- Feed rect START -->
         <div class="hstack gap-2">
@@ -583,5 +514,6 @@
     </div>
   </div>
 </div>
+</form>
 <!-- Modal create feed END -->
 {% endblock %}

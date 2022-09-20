@@ -51,6 +51,7 @@
                     <a href="{% url 'accounts:account_setting' object.username  %}"><button class="btn btn-danger-soft me-2" type="button"> <i class="bi bi-pencil-fill pe-1"></i> 編集 </button></a>
                     {% elif object in user.connection.all %}
                     <!-- すでに友達になっているユーザーのダッシュボードのとき、友達解除ボタンを表示 -->
+                    <a href=""><button class="btn btn-primary-soft me-2" type="button"> <i class="bi bi-chat-dots-fill pe-1"></i> メッセージ </button></a>
                     <a href="{% url 'accounts:disconnect' object.username  %}"><button class="btn btn-info-soft me-2" type="button"> <i class="bi bi-person-heart pe-1"></i> フォロー中 </button></a>
                     {% else %}
                     <!-- まだ、友達でないユーザーのダッシュボードのとき、友達登録ボタンを表示 -->

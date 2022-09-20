@@ -25,7 +25,12 @@ class ReviewForm(forms.ModelForm):
         'placeholder': 'レビューを書く大学',
         'type': 'select',
         }))
+    star = forms.ChoiceField(label='総合評価', choices=((1, 'とても良くない'), (2, '良くない'), (3, '普通'), (4, '良い'), (5, 'とても良い')), widget=forms.Select(attrs={
+        'class': 'form-control', 
+        'placeholder': '総合評価',
+        'type': 'select',
+        }))
     
     class Meta:
         model = ReviewOfUniversity
-        fields = ['title', 'review', 'university'] 
+        fields = ['title', 'review', 'university', 'star'] 

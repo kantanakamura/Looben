@@ -53,6 +53,18 @@
               <a class="btn btn-primary w-100" href="{{ object.homepage }}"> ホームページを見る </a>
               <div class="mt-4">
                 <ul class="list-unstyled mb-4">
+                  <li class="d-flex justify-content-between mb-3"> <strong class="w-150px">総合評価:</strong> <span class="text-end">
+                  {% with range=''|center:5 %}
+                  {% for _ in range %}
+                    {% if forloop.counter <= object.star_rating %}
+                    <i class="fas fa-star" style="color:#F7E36C;"></i>
+                    {% else %}
+                    <i class="fas fa-star" style="color:#D8DDEA;"></i>
+                    {% endif %}
+                  {% endfor %}
+                  <span style="color:#FF1474;">{{ object.star_rating }}.0</span>
+                  {% endwith %}
+                  </span></li>
                   <li class="d-flex justify-content-between mb-3"> <strong class="w-150px">生徒数:</strong> <span class="text-end"> 約{{ object.number_of_students }}人</span></li>
                   <li class="d-flex justify-content-between mb-3"> <strong class="w-150px">学費:</strong> <span class="text-end"> {{ object.average_academic_fee}} </span></li>
                   <li class="d-flex justify-content-between mb-3"> <strong class="w-150px">寮費:</strong> <span class="text-end"> {{ object.average_domitary_fee}} </span></li>
@@ -113,6 +125,21 @@
                       <div class="accordion-header" id="schedule{{ review.title }}">
                         <button class="accordion-button pe-5 flex-wrap fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#schedulecollapse{{ review.title }}" aria-expanded="true" aria-controls="schedulecollapse{{ review.title }}">
                           <strong>{{ review.title }}</strong>
+                          <!-- Start review -->
+                          <div>
+                            <div>
+                            {% with range=''|center:5 %}
+                            {% for _ in range %}
+                              {% if forloop.counter <= review.star %}
+                              <i class="fas fa-star" style="color:#F7E36C;"></i>
+                              {% else %}
+                              <i class="fas fa-star" style="color:#D8DDEA;"></i>
+                              {% endif %}
+                            {% endfor %}
+                            {% endwith %}
+                            <span style="color:#FF1474;">{{ review.star }}.0</span>
+                            </div>
+                          </div>
                         </button>
                       </div>
                       <!-- Accordion info -->
@@ -147,6 +174,21 @@
                       <div class="accordion-header" id="schedule{{ review.title }}">
                         <button class="accordion-button pe-5 flex-wrap fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#schedulecollapse{{ review.title }}" aria-expanded="false" aria-controls="schedulecollapse{{ review.title }}">
                           <strong>{{ review.title }}</strong>
+                          <!-- Start review -->
+                          <div>
+                            <div>
+                            {% with range=''|center:5 %}
+                            {% for _ in range %}
+                              {% if forloop.counter <= review.star %}
+                              <i class="fas fa-star" style="color:#F7E36C;"></i>
+                              {% else %}
+                              <i class="fas fa-star" style="color:#D8DDEA;"></i>
+                              {% endif %}
+                            {% endfor %}
+                            {% endwith %}
+                            <span style="color:#FF1474;">{{ review.star }}.0</span>
+                            </div>
+                          </div>
                         </button>
                       </div>
                       <!-- Accordion info -->

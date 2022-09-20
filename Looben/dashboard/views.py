@@ -32,7 +32,18 @@ class PostInDashboardView(DetailView):
         context['saved_user_sidebar_list'] = saved_user_sidebar_list
         context['form'] = PostForm()
         return context
-            
+    
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = PostForm(request.POST or None)
+        if form.is_valid():
+            form.instance.user = request.user
+            form.save()
+            return redirect('dashboard:post_in_dashboard', username=request.user.username)
+        else:
+            context = self.get_context_data()
+            context['form'] = form  # form.is_validしたフォームを渡さないと、フォームのエラーを表示できない
+            return render(request, 'dashboard/post_in_dashboard.html', context)    
     
     
 class ReviewInDashboardView(DetailView):

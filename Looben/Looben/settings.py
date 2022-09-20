@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'dashboard',
     'job',
     'blogs',
+    'questions',
 ]
 
 
@@ -90,6 +91,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Looben.wsgi.application'
+
+ASGI_APPLICATION = 'Looben.asgi.application'
 
 
 # Database

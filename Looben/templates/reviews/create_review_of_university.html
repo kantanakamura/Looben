@@ -107,6 +107,14 @@
                 </div>
                 {{ create_review_form.university.errors }}
 
+                <!-- 総合評価 -->
+                <div class="col-8">
+                  <label class="form-label">総合評価(おすすめ度)</label>
+                  {{ create_review_form.star }}
+                  <small>この評価は、大学の総合評価に反映されます</small>
+                </div>
+                {{ create_review_form.star.errors }}
+
                 <!-- タイトル -->
                 <div class="col-12">
                   <label class="form-label">タイトル</label>

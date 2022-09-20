@@ -1,4 +1,4 @@
-import email
+# import email
 from multiprocessing import connection
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, FormView, UpdateView
@@ -223,7 +223,7 @@ def save_university_view(request, *args, **kwargs):
     else:
         #保存済みのメッセージを表示させる。
         messages.warning(request, 'あなたはすでに{}を保存しています'.format(saved_university.name))
-    return HttpResponseRedirect(reverse_lazy('accounts:university_detail', kwargs={'pk': saved_university.id}))
+    return HttpResponseRedirect(reverse_lazy('accounts:research_university'))
 
 
 @login_required
@@ -260,6 +260,12 @@ class ResearchUniversity(ListView):
     context_object_name = 'university_list'
     template_name = 'accounts/research_university.html'
     queryset = Schools.objects.order_by('id')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # この大学の在学生のアカウントを3つ取得
+        context['school'] = Schools.objects.order_by('star_rating').reverse()[:12]
+        return context
     
 
     def get_queryset(self): # 検索機能のために追加

@@ -50,7 +50,16 @@
                       <!-- Info -->
                       <h5 class="mb-0"> <a href="#!">{{ object.name }} </a> </h5>
                       <p>{{ object.sub_title }}</p>
-
+                      {% with range=''|center:5 %}
+                      {% for _ in range %}
+                        {% if forloop.counter <= object.star_rating %}
+                        <i class="fas fa-star" style="color:#F7E36C;"></i>
+                        {% else %}
+                        <i class="fas fa-star" style="color:#D8DDEA;"></i>
+                        {% endif %}
+                      {% endfor %}
+                      <span style="color:#FF1474;"><strong>{{ object.star_rating }}.0</strong></span>
+                      {% endwith %}
                     </div>
                     <!-- Divider -->
                     <hr>
@@ -104,6 +113,20 @@
                           <div class="accordion-header" id="schedule{{ review.title }}">
                             <button class="accordion-button pe-5 flex-wrap fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#schedulecollapse{{ review.title }}" aria-expanded="true" aria-controls="schedulecollapse{{ review.title }}">
                               <strong>{{ review.title }}</strong>
+                              <div>
+                                <div>
+                                {% with range=''|center:5 %}
+                                {% for _ in range %}
+                                  {% if forloop.counter <= review.star %}
+                                  <i class="fas fa-star" style="color:#F7E36C;"></i>
+                                  {% else %}
+                                  <i class="fas fa-star" style="color:#D8DDEA;"></i>
+                                  {% endif %}
+                                {% endfor %}
+                                {% endwith %}
+                                <span style="color:#FF1474;">{{ review.star }}.0</span>
+                                </div>
+                              </div>
                             </button>
                           </div>
                           <!-- Accordion info -->
@@ -138,6 +161,20 @@
                           <div class="accordion-header" id="schedule{{ review.title }}">
                             <button class="accordion-button pe-5 flex-wrap fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#schedulecollapse{{ review.title }}" aria-expanded="false" aria-controls="schedulecollapse{{ review.title }}">
                               <strong>{{ review.title }}</strong>
+                              <div>
+                                <div>
+                                {% with range=''|center:5 %}
+                                {% for _ in range %}
+                                  {% if forloop.counter <= review.star %}
+                                  <i class="fas fa-star" style="color:#F7E36C;"></i>
+                                  {% else %}
+                                  <i class="fas fa-star" style="color:#D8DDEA;"></i>
+                                  {% endif %}
+                                {% endfor %}
+                                {% endwith %}
+                                <span style="color:#FF1474;">{{ review.star }}.0</span>
+                                </div>
+                              </div>
                             </button>
                           </div>
                           <!-- Accordion info -->
