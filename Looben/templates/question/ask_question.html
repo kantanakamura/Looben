@@ -96,6 +96,14 @@
                 <form class="row g-3 mt-4" method="post">
                     {{ ask_question_form.non_field_errors }}
                     {% csrf_token %}
+                    
+                    <div class="form-check">
+                        {{ ask_question_form.is_anonymous}}
+                        <label class="form-check-label" for="is_anonymous">
+                            匿名で質問
+                        </label>
+                    </div>
+                    {{ ask_question_form.is_anonymous.errors }}
 
                     <!-- カテゴリー -->
                     <div class="col-8">

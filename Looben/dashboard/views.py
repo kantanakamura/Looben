@@ -112,3 +112,22 @@ class FollowedInDashboardView(DetailView):
         return context
 
     
+class QuestionInDashboardView(DetailView):
+    model = Users
+    template_name = 'dashboard/question_in_dashboard.html'
+    #slug_field = urls.pyに渡すモデルのフィールド名
+    slug_field = 'username'
+    # urls.pyでのキーワードの名前
+    slug_url_kwarg = 'username'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # フォローしている人の数
+        number_of_following_user = self.object.connection.all().count()
+        context['number_of_following_user'] = number_of_following_user
+        # フォローされている人の数
+        number_of_followed_user = self.object.connected_users.all().count()
+        context['number_of_followed_user'] = number_of_followed_user
+        saved_user_sidebar_list = self.object.saved_users.all()[:4]
+        context['saved_user_sidebar_list'] = saved_user_sidebar_list
+        return context

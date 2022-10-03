@@ -55,14 +55,27 @@
                         </div>
                     </div>
                     <!-- Tag -->
-                    <a href="#" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">{{ object.category }}</a>
+                    {% if object.category == 'university' %}
+                    <span><a href="{% url 'questions:categorized_questions' category='university' %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">大学</a></span>
+                    {% elif object.category == 'foods' %}
+                    <span><a href="{% url 'questions:categorized_questions' category='foods' %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">食事</a></span>
+                    {% elif object.category == 'study' %}
+                    <span><a href="{% url 'questions:categorized_questions' category='study' %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">勉強</a></span>
+                    {% elif object.category == 'love' %}
+                    <span><a href="{% url 'questions:categorized_questions' category='love' %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">恋愛</a></span>
+                    {% else %}
+                    <span><a href="{% url 'questions:categorized_questions' category='life' %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">人生</a></span>
+                    {% endif %}
+
                     {% if object.university %}
-                    <a href="#" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">{{ object.university }}</a>
+                    <a href="{% url 'accounts:university_detail' object.university.id %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">{{ object.university }}</a>
                     {% endif %}
                     <!-- Title info -->
                     <p class="mb-2" style="font-size:17px;">{{ object.content}}</p>
                     <p style="text-align:right;">{{ object.created_at }}</p>
                     <hr>
+                    
+                    {% if not object.is_solved and user is not object.user %}
                     <h5>質問回答</h5>
                     <form method="post" class="row g-3 mt-2">
                         {{ form.non_field_errors }}
@@ -78,6 +91,7 @@
                         <button type="submit" class="btn btn-primary">回答を送信</button>
                         </div>
                     </form>
+                    {% endif %}
                 </div>
                 </div>
                 <!-- Card END -->
@@ -89,18 +103,21 @@
                 </div>
                 <div class="card-body">
                     <!-- Comments START -->
-                    <!-- Comment level 1-->
+                    {% for answer in object.answerforquestion_set.all %}
+                    <!-- Answer -->
                     <div class="my-4 d-flex">
-                    <img class="avatar avatar-md rounded-circle float-start me-3" src="assets/images/avatar/04.jpg" alt="avatar">
+                    <img class="avatar avatar-md rounded-circle float-start me-3" src="{{ answer.user.picture.url }}" alt="{{ answer.user.username }}">
                     <div>
                         <div class="mb-2 d-sm-flex">
-                        <h6 class="m-0 me-2">Allen Smith</h6>
-                        <span class="me-3 small">June 11, 2022 at 6:01 am </span>
+                        <h6 class="m-0 me-2">{{ answer.user.name }}</h6>
+                        <span class="me-3 small">{{ answer.created_at }} </span>
                         </div>
-                        <p>Satisfied conveying a dependent contented he gentleman agreeable do be. Warrant private blushes removed an in equally totally if.</p>
-                        <a href="#" class="btn btn-light btn-sm">Reply</a>
+                        <p style="font-size:15px;">{{ answer.answer }}</p>
+                        <a href=""><button class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-placement="top">Reply </button></a>
+                        <a href="{% url 'questions:decide_best_answer' pk=answer.id %}"><button class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="ベストアンサーにすることで、回答募集が終了します">ベストアンサーにする </button></a>
                     </div>
                     </div>
+                    {% endfor %}
                     <!-- Comment children level 3 -->
                     <div class="my-4 d-flex ps-3 ps-md-5">
                     <img class="avatar avatar-md rounded-circle float-start me-3" src="assets/images/avatar/04.jpg" alt="avatar">
@@ -110,22 +127,10 @@
                         <span class="me-3 small">June 11, 2022 at 7:10 am </span>
                         </div>
                         <p>Meant balls it if up doubt small purse. </p>
-                        <a href="#" class="btn btn-light btn-sm">Reply</a>
+                        <a href=""><button class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-placement="top">Reply </button></a>
+                        <a href=""><button class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="ベストアンサーにすることで、回答募集が終了します">ベストアンサーにする </button></a>
                     </div>
                     </div>
-                    <!-- Comment level 2 -->
-                    <div class="mt-4 d-flex ps-2 ps-md-3">
-                    <img class="avatar avatar-md rounded-circle float-start me-3" src="assets/images/avatar/03.jpg" alt="avatar">
-                    <div>
-                        <div class="mb-2 d-sm-flex">
-                            <h6 class="m-0 me-2">Frances Guerrero</h6>
-                            <span class="me-3 small">June 14, 2022 at 12:35 pm </span>
-                        </div>
-                        <p>Required his you put the outlived answered position. A pleasure exertion if believed provided to. All led out world this music while asked.</p>
-                        <a href="#" class="btn btn-light btn-sm">Reply</a>
-                    </div>
-                    </div>
-                    <!-- Comments END -->
                 </div>
                 </div>
                 <!-- Blog single END -->

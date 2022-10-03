@@ -372,18 +372,18 @@
     
         <!-- 回答募集中 START -->
         <section class="bg-mode py-5">
-        <div class="container pt-5">
-            <div class="row">
+            <div class="container pt-5">
+                <div class="row">
                 <div class="col-12 mb-3">
                     <div class="d-sm-flex justify-content-between">
                     <!-- Title -->
                     <h4>回答募集中</h4>
-                    <a class="btn btn-link" href="events-2.html">もっと見る</a>
+                    <a class="btn btn-link" href="{% url 'questions:categorized_questions' category='university' %}">もっと見る</a>
                     </div>
                 </div>
                 </div>
-                <div class="row g-4">
                 {% if not question_seeking_answers %}
+                <div class="row g-4">
                     <!-- Event item END -->
                     <div class="row justify-content-center">
                         <!-- Title -->
@@ -393,21 +393,42 @@
                         <a href="{% url 'questions:ask_question' %}"><button class="btn btn-primary">質問してみる</button></a>
                         </div>
                     </div>
+                </div>
                 {% else %}
+                <div class="row g-4">
                     {% for question in question_seeking_answers %}
                     <div class="col-sm-6 col-lg-3">
                         <!-- Event item START -->
                         <div class="card h-100">
+                            <!-- 本来なら、写真を背景に設置できるが、デフォルトではしない -->
+                            <div class="position-relative">
+                                <img class="img-fluid rounded-top" src="" alt="">
+                                <div class="badge mt-2 me-2 position-absolute top-0 end-0">
+                                </div>
+                            </div>
                         <!-- Card body START -->
-                        <div class="card-body">
+                        <div class="card-body position-relative pt-0">
                             <!-- Tag -->
-                            <a class="btn btn-xs btn-primary mt-n3" href="event-details-2.html">{{ question.category }} </a>
+                            {% if question.category == 'university' %}
+                            <span><a href="{% url 'questions:categorized_questions' category='university' %}" class="btn btn-xs btn-primary mt-n3">大学</a></span>
+                            {% elif question.category == 'foods' %}
+                            <span><a href="{% url 'questions:categorized_questions' category='foods' %}" class="btn btn-xs btn-primary mt-n3">食事</a></span>
+                            {% elif question.category == 'study' %}
+                            <span><a href="{% url 'questions:categorized_questions' category='study' %}" class="btn btn-xs btn-primary mt-n3">勉強</a></span>
+                            {% elif question.category == 'love' %}
+                            <span><a href="{% url 'questions:categorized_questions' category='love' %}" class="btn btn-xs btn-primary mt-n3">恋愛</a></span>
+                            {% else %}
+                            <span><a href="{% url 'questions:categorized_questions' category='life' %}" class="btn btn-xs btn-primary mt-n3">人生</a></span>
+                            {% endif %}
+
                             <p class="mt-3">{{ question.content }}</p>
                             <!-- Date time -->
                             <p class="mb-0 small"> <i class="bi bi-calendar-check pe-1"></i> {{ question.created_at }} </p>
+
                             {% if question.university %}
                             <p class="small"> <i class="bi bi-geo-alt pe-1"></i> {{ question.university }} </p>
                             {% endif %}
+                            
                             <!-- Avatar group START -->
                             <ul class="avatar-group list-unstyled align-items-center mb-0">
                             <li class="avatar avatar-xs">
@@ -438,46 +459,79 @@
                                 <li><a class="dropdown-item" href="#"> <i class="bi bi-person fa-fw pe-1"></i> Share on a friend's profile</a></li>
                                 </ul>
                             </div>
-                            </div>
+                        </div>
                         </div>
                         <!-- Card body END -->
                     </div>
                     <!-- Event item END -->
+                    </div>
                     {% endfor %}
-                {% endif %}
                 </div>
+                {% endif %}
             </div>
-        </div>
         </section>
         <!-- 回答募集中 END -->
+
     
         <!-- 最新の解決済み START -->
         <section class="bg-mode py-5">
             <div class="container pt-5">
                 <div class="row">
-                    <div class="col-12 mb-3">
-                        <div class="d-sm-flex justify-content-between">
+                <div class="col-12 mb-3">
+                    <div class="d-sm-flex justify-content-between">
+                    <!-- Title -->
+                    <h4>最新の解決済み</h4>
+                    <a class="btn btn-link" href="{% url 'questions:categorized_questions' category='university' %}">もっと見る</a>
+                    </div>
+                </div>
+                </div>
+                {% if not solved_questions %}
+                <div class="row g-4">
+                    <!-- Event item END -->
+                    <div class="row justify-content-center">
                         <!-- Title -->
-                        <h4>最新の解決済み</h4>
-                        <a class="btn btn-link" href="events-2.html">もっと見る</a>
+                        <div class="col-lg-12 text-center mb-4">
+                        <h5>現在、最新の解決済みの質問はありません</h5>
+                        <!-- button -->
+                        <a href="{% url 'questions:ask_question' %}"><button class="btn btn-primary">質問してみる</button></a>
                         </div>
                     </div>
-                    </div>
-                    <div class="row g-4">
+                </div>
+                {% else %}
+                <div class="row g-4">
                     {% for question in solved_questions %}
                     <div class="col-sm-6 col-lg-3">
                         <!-- Event item START -->
                         <div class="card h-100">
+                            <!-- 本来なら、写真を背景に設置できるが、デフォルトではしない -->
+                            <div class="position-relative">
+                                <img class="img-fluid rounded-top" src="" alt="">
+                                <div class="badge mt-2 me-2 position-absolute top-0 end-0">
+                                </div>
+                            </div>
                         <!-- Card body START -->
-                        <div class="card-body">
+                        <div class="card-body position-relative pt-0">
                             <!-- Tag -->
-                            <a class="btn btn-xs btn-primary mt-n3" href="event-details-2.html">{{ question.category }} </a>
+                            {% if question.category == 'university' %}
+                            <span><a href="{% url 'questions:categorized_questions' category='university' %}" class="btn btn-xs btn-primary mt-n3">大学</a></span>
+                            {% elif question.category == 'foods' %}
+                            <span><a href="{% url 'questions:categorized_questions' category='foods' %}" class="btn btn-xs btn-primary mt-n3">食事</a></span>
+                            {% elif question.category == 'study' %}
+                            <span><a href="{% url 'questions:categorized_questions' category='study' %}" class="btn btn-xs btn-primary mt-n3">勉強</a></span>
+                            {% elif question.category == 'love' %}
+                            <span><a href="{% url 'questions:categorized_questions' category='love' %}" class="btn btn-xs btn-primary mt-n3">恋愛</a></span>
+                            {% else %}
+                            <span><a href="{% url 'questions:categorized_questions' category='life' %}" class="btn btn-xs btn-primary mt-n3">人生</a></span>
+                            {% endif %}
+
                             <p class="mt-3">{{ question.content }}</p>
                             <!-- Date time -->
                             <p class="mb-0 small"> <i class="bi bi-calendar-check pe-1"></i> {{ question.created_at }} </p>
+
                             {% if question.university %}
                             <p class="small"> <i class="bi bi-geo-alt pe-1"></i> {{ question.university }} </p>
                             {% endif %}
+                            
                             <!-- Avatar group START -->
                             <ul class="avatar-group list-unstyled align-items-center mb-0">
                             <li class="avatar avatar-xs">
@@ -508,14 +562,15 @@
                                 <li><a class="dropdown-item" href="#"> <i class="bi bi-person fa-fw pe-1"></i> Share on a friend's profile</a></li>
                                 </ul>
                             </div>
-                            </div>
+                        </div>
                         </div>
                         <!-- Card body END -->
                     </div>
                     <!-- Event item END -->
-                    {% endfor %}
                     </div>
+                    {% endfor %}
                 </div>
+                {% endif %}
             </div>
         </section>
         <!-- 最新の解決済み END -->      

@@ -10,6 +10,7 @@ class Questions(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     category = models.CharField(max_length=50, default='未記入')
     is_solved = models.BooleanField(default=False)
+    is_anonymous = models.BooleanField(default=False)
     user = models.ForeignKey(
         Users, on_delete=models.CASCADE
     )

@@ -9,4 +9,5 @@ urlpatterns = [
     path('<slug:username>/review_in_dashboard', views.ReviewInDashboardView.as_view(), name='review_in_dashboard'),
     path('<slug:username>/following_in_dashboard', views.FollowingInDashboardView.as_view(), name='following_in_dashboard'),
     path('<slug:username>/followed_in_dashboard', views.FollowedInDashboardView.as_view(), name='followed_in_dashboard'),
+    path('<slug:username>/question_in_dashboard', views.QuestionInDashboardView.as_view(), name='question_in_dashboard'),
 ]

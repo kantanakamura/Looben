@@ -22,11 +22,16 @@ class QuestionForm(forms.ModelForm):
         'placeholder': 'カテゴリー',
         'type': 'select',
     }))
-    
+    is_anonymous = forms.BooleanField(label='匿名', widget=forms.CheckboxInput(attrs={
+        'class': 'form-check-input', 
+        'placeholder': '匿名',
+        'type': 'checkbox',
+        'id': 'flexCheckDefault',
+    }))
     
     class Meta:
         model = Questions
-        fields = ['content', 'university', 'category']
+        fields = ['content', 'university', 'category', 'is_anonymous']
         
         
 class AnswerForQuestionForm(forms.ModelForm):
