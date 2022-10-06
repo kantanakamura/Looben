@@ -63,8 +63,8 @@ class QuestionDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # 質問に対する回答の数
-        number_of_answer = self.object.answerforquestion_set.all().count()
-        context['number_of_answer'] = number_of_answer
+        context['number_of_answer'] = self.object.answerforquestion_set.all().count()
+        context['best_answer'] = self.object.answerforquestion_set.filter(is_best_answer=True).first()
         context['form'] = AnswerForQuestionForm()
         return context
     
@@ -97,8 +97,7 @@ class CategorizedQuestionsView(DetailView):
         # 選択されたカテゴリーの質問を取得
         context['categorized_questions'] = Questions.objects.filter(category=self.object.category)
         # 質問に対する回答の数
-        number_of_answer = self.object.answerforquestion_set.all().count()
-        context['number_of_answer'] = number_of_answer
+        context['number_of_answer'] = self.object.answerforquestion_set.all().count()
         return context
 
 
@@ -106,21 +105,23 @@ class CategorizedQuestionsView(DetailView):
 def decide_best_answer(request, *args, **kwargs):
     try:
         # ベストアンサーの回答を渡す
-        best_answer = AnswerForQuestion.objects.get(id=kwargs['id'])
+        best_answer = AnswerForQuestion.objects.get(id=kwargs['pk'])
     # 例外処理：もし、回答が存在しない場合、警告文を表示させる。
     except AnswerForQuestion.DoesNotExist:
         messages.warning(request, 'この解答はすでに削除されています')
-        return HttpResponseRedirect(reverse_lazy('questions:question_detail', kwargs={'id': best_answer.question.id}))
+        return HttpResponseRedirect(reverse_lazy('questions:question_detail', kwargs={'pk': best_answer.question.id}))
     # 自分の回答をベストアンサーに選ぼうとしている時、エラーを出す
     if request.user == best_answer.user:
         messages.warning(request, '自分自身の回答はベストアンサーにできません')
-        return HttpResponseRedirect(reverse_lazy('questions:question_detail', kwargs={'id': best_answer.question.id}))
+        return HttpResponseRedirect(reverse_lazy('questions:question_detail', kwargs={'pk': best_answer.question.id}))
     else:
         # 
-        if best_answer.quetion.is_solved:
+        if best_answer.question.is_solved:
             messages.warning(request, 'ベストアンサーはすでに選ばれています')
-            return HttpResponseRedirect(reverse_lazy('questions:question_detail', kwargs={'id': best_answer.question.id}))
+            return HttpResponseRedirect(reverse_lazy('questions:question_detail', kwargs={'pk': best_answer.question.id}))
         else:
             best_answer.is_best_answer = True
             best_answer.question.is_solved = True
-    return HttpResponseRedirect(reverse_lazy('questions:question_detail', kwargs={'id': best_answer.question.id}))
+            best_answer.save()
+            best_answer.question.save()
+    return HttpResponseRedirect(reverse_lazy('questions:question_detail', kwargs={'pk': best_answer.question.id}))

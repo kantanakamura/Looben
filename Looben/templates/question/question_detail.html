@@ -91,6 +91,18 @@
                         <button type="submit" class="btn btn-primary">回答を送信</button>
                         </div>
                     </form>
+                    {% elif best_answer %}
+                    <h5><img src="{% static 'images/logo/medal.png' %}" style="width:50px;">ベストアンサー</h5>
+                    <div class="my-4 d-flex">
+                        <a href="{% url 'dashboard:post_in_dashboard' best_answer.user.username %}"><img class="avatar avatar-md rounded-circle float-start me-3" src="{{ best_answer.user.picture.url }}" alt="{{ best_answer.user.username }}"></a>
+                        <div>
+                            <div class="mb-2 d-sm-flex">
+                            <h6 class="m-0 me-2"><a href="{% url 'dashboard:post_in_dashboard' best_answer.user.username %}">{{ best_answer.user.name }}</a></h6>
+                            <span class="me-3 small">{{ best_answer.created_at }} </span>
+                            </div>
+                            <p style="font-size:15px;">{{ best_answer.answer }}</p>
+                        </div>
+                    </div>
                     {% endif %}
                 </div>
                 </div>
@@ -104,19 +116,24 @@
                 <div class="card-body">
                     <!-- Comments START -->
                     {% for answer in object.answerforquestion_set.all %}
+                    {% if not answer.is_best_answer %}
                     <!-- Answer -->
                     <div class="my-4 d-flex">
-                    <img class="avatar avatar-md rounded-circle float-start me-3" src="{{ answer.user.picture.url }}" alt="{{ answer.user.username }}">
+                    <a href="{% url 'dashboard:post_in_dashboard' answer.user.username %}"><img class="avatar avatar-md rounded-circle float-start me-3" src="{{ answer.user.picture.url }}" alt="{{ answer.user.username }}"></a>
                     <div>
                         <div class="mb-2 d-sm-flex">
-                        <h6 class="m-0 me-2">{{ answer.user.name }}</h6>
+                        <h6 class="m-0 me-2"><a href="{% url 'dashboard:post_in_dashboard' answer.user.username %}">{{ answer.user.name }}</h6></a>
                         <span class="me-3 small">{{ answer.created_at }} </span>
                         </div>
                         <p style="font-size:15px;">{{ answer.answer }}</p>
+                        {% if not object.is_solved %}
                         <a href=""><button class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-placement="top">Reply </button></a>
                         <a href="{% url 'questions:decide_best_answer' pk=answer.id %}"><button class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="ベストアンサーにすることで、回答募集が終了します">ベストアンサーにする </button></a>
+                        {% endif %}
                     </div>
                     </div>
+                    <hr>
+                    {% endif %}
                     {% endfor %}
                     <!-- Comment children level 3 -->
                     <div class="my-4 d-flex ps-3 ps-md-5">

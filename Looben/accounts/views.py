@@ -254,7 +254,7 @@ class UserRankingView(LoginRequiredMixin, ListView):
     model = Users
     template_name = 'accounts/user_ranking.html'
     
-     
+    
 class ResearchUniversity(ListView):
     model = Schools
     context_object_name = 'university_list'
