@@ -1,4 +1,5 @@
 from multiprocessing import connection
+from tkinter.messagebox import QUESTION
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic.detail import DetailView
@@ -17,10 +18,12 @@ from django.urls import reverse_lazy
 from django.dispatch import receiver
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login
-from django.db.models import Q # 検索機能のために追加
+from django.db.models import Q, Prefetch
 
 from .forms import QuestionForm, AnswerForQuestionForm
 from .models import Questions, AnswerForQuestion
+
+from accounts.models import Schools
 
 
 class QuestionView(ListView):
@@ -30,11 +33,12 @@ class QuestionView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # 回答募集中の質問を4つ取得
-        question_seeking_answers = Questions.objects.filter(is_solved=False).all()[:4]
-        context['question_seeking_answers'] = question_seeking_answers    
+        context['question_seeking_answers'] = Questions.objects.filter(is_solved=False).all()[:4]  
         # 最新の解決済みの質問を4つ取得  
-        solved_questions = Questions.objects.filter(is_solved=True).all()[:4]
-        context['solved_questions'] = solved_questions
+        context['solved_questions'] = Questions.objects.filter(is_solved=True).prefetch_related(
+            Prefetch('answerforquestion_set', queryset=AnswerForQuestion.objects.filter(is_best_answer=True))
+        )[:4]
+        
         return context
     
     
@@ -98,6 +102,10 @@ class CategorizedQuestionsView(DetailView):
         context['categorized_questions'] = Questions.objects.filter(category=self.object.category)
         # 質問に対する回答の数
         context['number_of_answer'] = self.object.answerforquestion_set.all().count()
+        # 最新の解決済みの質問を取得  
+        context['solved_questions'] = Questions.objects.filter(is_solved=True, category=self.object.category).prefetch_related(
+            Prefetch('answerforquestion_set', queryset=AnswerForQuestion.objects.filter(is_best_answer=True))
+        ).all()
         return context
 
 
@@ -125,3 +133,16 @@ def decide_best_answer(request, *args, **kwargs):
             best_answer.save()
             best_answer.question.save()
     return HttpResponseRedirect(reverse_lazy('questions:question_detail', kwargs={'pk': best_answer.question.id}))
+
+
+class ListOfQuestionsForEachUniversity(DetailView):
+    model = Schools
+    template_name = 'question/list_of_questions_for_each_university.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        school = self.object
+        context['solved_questions'] = Questions.objects.filter(university=school, is_solved=True).prefetch_related(
+            Prefetch('answerforquestion_set', queryset=AnswerForQuestion.objects.filter(is_best_answer=True))
+        )
+        return context

@@ -18,12 +18,12 @@ from django.urls import reverse_lazy
 from django.dispatch import receiver
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login
-from django.db.models import Q # 検索機能のために追加
-
+from django.db.models import Q, Prefetch
 
 from .forms import RegistForm, UserLoginForm, AccountSettingForm, PasswordChangeForm
 from .models import Schools, Users
 from reviews.models import ReviewOfUniversity
+from questions.models import AnswerForQuestion ,Questions
 
 
 #　ホーム画面
@@ -290,21 +290,24 @@ class UniversityDetailView(DetailView):
         context['users'] = Users.objects.filter(school=school)[:3]
         # この大学のレビューを4つ取得
         context['reviews'] = ReviewOfUniversity.objects.filter(university=school)[:4]
+        # この大学の質問を4つ取得
+        context['questions'] = Questions.objects.filter(university=school, is_solved=True).prefetch_related(
+            Prefetch('answerforquestion_set', queryset=AnswerForQuestion.objects.filter(is_best_answer=True))
+        )[:4]
         # Loobenにアカウント登録してる、この大学の在学生の数を取得
-        registed_students_number = Users.objects.filter(school=school).count()
-        context['registed_students_number'] = registed_students_number
+        context['registed_students_number'] = Users.objects.filter(school=school).count()
         # 詳細ページを訪れた人の数を１増やす
         school.number_of_viewer += 1
         school.save()
         return context
-     
+
     
 class StudentsByUniversityView(LoginRequiredMixin, ListView):
     model = Users
     template_name = 'accounts/students_by_university.html'
     
     def get_queryset(self, **kwargs):
-        queryset = super().get_queryset(**kwargs) # Users.objects.all() と同じ結果
+        queryset = super().get_queryset(**kwargs) 
         id = self.request.GET.get('id')
         if id is not None:
             queryset = queryset.filter(school__id=id)

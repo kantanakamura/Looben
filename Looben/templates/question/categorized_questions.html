@@ -252,8 +252,7 @@
                         <div class="card">
                             <!-- Create a page form START -->
                             <div class="card-body">
-                                {% for question in categorized_questions %}
-                                {% if question.is_solved %}
+                                {% for question in solved_questions %}
                                 <div class="row">
                                     <div class="d-sm-flex align-items-center">
                                         <div class="ms-sm-4 mt-2 mt-sm-0">
@@ -271,6 +270,10 @@
                                             <br>
                                             <!-- Info -->
                                             <strong><a href="{% url 'questions:question_detail' question.id %}"> {{ question.content }} </a></strong>
+                                            {% for answer in question.answerforquestion_set.all %}
+                                                <p style="font-size:13px;"><i class="bi bi-award-fill" style="color:#F3F23F;"></i>ベストアンサー: {{ answer.answer }}</p>
+                                            {% endfor %}
+                                            
                                             <ul class="nav nav-stack" style="margin-top:3px;">
                                                 <li class="nav-item">
                                                     <span style="color:#FF1474;">{{ number_of_answer }}</span>回答 
@@ -283,7 +286,6 @@
                                     </div>
                                 </div>
                                 <hr>
-                                {% endif %}
                                 {% endfor %}
                             </div>
                             <!-- Create a page form END -->

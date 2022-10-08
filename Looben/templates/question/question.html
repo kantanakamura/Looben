@@ -340,28 +340,25 @@
                 </div>
             </div>
             <!-- Row START -->
-            <div class="row g-4 g-lg-5">
+            <div class="row g-4 g-lg-5" style="margin-top:3px;">
                 <!-- Feature START -->
                 <div class="col-md-4 text-center">
-                <img class="h-100px mb-4" src="assets/images/elements/02.svg" alt="">
-                <h4>Voice and video calls</h4>
-                <p class="mb-0">Place voice no arises along to. Parlors waiting so against me no. Wishing calling is warrant settled was lucky.</p>
+                <h4>なんでも質問</h4>
+                <p class="mb-0">台湾留学生に聞きたいことは、いつでもいくらでも質問できます。</p>
                 </div>
                 <!-- Feature END -->
 
                 <!-- Feature START -->
                 <div class="col-md-4 text-center">
-                <img class="h-100px mb-4" src="assets/images/elements/07.svg" alt="">
-                <h4>Auto save contacts</h4>
-                <p class="mb-0">Handsome met debating sir dwelling age material. As style lived he worse dried. visitors subjects distance.</p>
+                <h4>知りたい情報がここに</h4>
+                <p class="mb-0">キーワード検索で、他の人の質問から知りたい情報をすぐに見つけられます。</p>
                 </div>
                 <!-- Feature END -->
 
                 <!-- Feature START -->
                 <div class="col-md-4 text-center">
-                <img class="h-100px mb-4" src="assets/images/elements/01.svg" alt="">
-                <h4>End to end encryption</h4>
-                <p class="mb-0">Yet uncommonly his ten who diminution astonished. Demesne new manners savings staying had. </p>
+                <h4>プライベートな質問は匿名で</h4>
+                <p class="mb-0">質問したいことがあるけど他の人に見られたくないときは、匿名で質問できます。</p>
                 </div>
                 <!-- Feature END -->
             </div>
@@ -421,7 +418,7 @@
                             <span><a href="{% url 'questions:categorized_questions' category='life' %}" class="btn btn-xs btn-primary mt-n3">人生</a></span>
                             {% endif %}
 
-                            <a href="{% url 'questions:question_detail' question.id %}"><p class="mt-3">{{ question.content }}</p></a>
+                            <strong><a href="{% url 'questions:question_detail' question.id %}"><p class="mt-3">{{ question.content }}</p></a></strong>
                             <!-- Date time -->
                             <p class="mb-0 small"> <i class="bi bi-calendar-check pe-1"></i> {{ question.created_at }} </p>
 
@@ -524,12 +521,15 @@
                             <span><a href="{% url 'questions:categorized_questions' category='life' %}" class="btn btn-xs btn-primary mt-n3">人生</a></span>
                             {% endif %}
 
-                            <a href="{% url 'questions:question_detail' question.id %}"><p class="mt-3">{{ question.content }}</p></a>
+                            <strong><a href="{% url 'questions:question_detail' question.id %}"><p class="mt-3">{{ question.content }}</p></a></strong>
+                            {% for answer in question.answerforquestion_set.all %}
+                                <p class="mt-3" style="font-size:13px;"><i class="bi bi-award-fill" style="color:#F3F23F;"></i>ベストアンサー: {{ answer.answer }}</p>
+                            {% endfor %}
                             <!-- Date time -->
                             <p class="mb-0 small"> <i class="bi bi-calendar-check pe-1"></i> {{ question.created_at }} </p>
 
                             {% if question.university %}
-                            <p class="small"> <i class="bi bi-geo-alt pe-1"></i> {{ question.university }} </p>
+                            <p class="small"><i class="bi bi-geo-alt pe-1"></i> {{ question.university }} </p>
                             {% endif %}
                             
                             <!-- Avatar group START -->

@@ -266,20 +266,21 @@
               <div class="mt-4 mt-sm-5" id="faq">
                 <div class="p-2"><h4>よくある質問 </h4></div>              
                 <div class="accordion accordion-icon" id="accordionfaq">
-                  {% for review in reviews %}
+                  {% for question in questions %}
                     {% if forloop.counter == 1 %}
                     <!-- Accordion item -->
                     <div class="accordion-item mb-3">
-                      <div class="accordion-header" id="faq{{ review.title }}">
-                        <button class="accordion-button pe-5 flex-wrap fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faqcollapse{{ review.title }}" aria-expanded="true" aria-controls="faqcollapse{{ review.title }}">
-                          <strong>{{ review.title }}</strong>
+                      <div class="accordion-header" id="faq{{ question.content }}">
+                        <button class="accordion-button pe-5 flex-wrap fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faqcollapse{{ question.content }}" aria-expanded="true" aria-controls="faqcollapse{{ question.content }}">
+                          <strong>{{ question.content }}</strong>
                         </button>
                       </div>
                       <!-- Accordion info -->
-                      <div id="faqcollapse{{ review.title }}" class="accordion-collapse collapse show" aria-labelledby="faq{{ review.title }}" data-bs-parent="#accordionfaq">
+                      <div id="faqcollapse{{ question.content }}" class="accordion-collapse collapse show" aria-labelledby="faq{{ question.content }}" data-bs-parent="#accordionfaq">
+                        {% for answer in question.answerforquestion_set.all %}
                         <div class="accordion-body">
-                          <p>{{ review.review }}</p>
-                          <p style="text-align:right;">{{ review.created_at }}</p>
+                          <p>{{ answer.answer }}</p>
+                          <p style="text-align:right;">{{ question.created_at }}</p>
                           <div class="row g-4">
                             <div class="col-12">
                               <h5 class="mb-0">Answered by</h5>
@@ -288,32 +289,34 @@
                               <!-- Host Item -->
                               <div class="card card-body text-center">
                                 <div class="avatar avatar-lg mx-auto mb-3"> 
-                                  <a href="{% url 'dashboard:post_in_dashboard' review.user.username %}"><img class="avatar-img rounded-circle" src="{{ review.user.picture.url }}" alt="{{ review.user.username }}"></a>
+                                  <a href="{% url 'dashboard:post_in_dashboard' answer.user.username %}"><img class="avatar-img rounded-circle" src="{{ answer.user.picture.url }}" alt="{{ answer.user.username }}"></a>
                                 </div>
                                 <!-- Host name -->
                                 <div>
-                                  <h6 class="mb-0">{{ review.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6>
-                                  <span>{{ review.user.school }}</span>
+                                  <h6 class="mb-0">{{ answer.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6>
+                                  <span>{{ answer.user.school }}</span>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
+                        {% endfor %}
                       </div>
                     </div>
                     {% else %}
                     <!-- Accordion item -->
                     <div class="accordion-item mb-3">
-                      <div class="accordion-header" id="faq{{ review.title }}">
-                        <button class="accordion-button pe-5 flex-wrap fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqcollapse{{ review.title }}" aria-expanded="false" aria-controls="faqcollapse{{ review.title }}">
-                          <strong>{{ review.title }}</strong>
+                      <div class="accordion-header" id="faq{{ question.content }}">
+                        <button class="accordion-button pe-5 flex-wrap fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faqcollapse{{ question.content }}" aria-expanded="false" aria-controls="faqcollapse{{ question.content }}">
+                          <strong>{{ question.content }}</strong>
                         </button>
                       </div>
                       <!-- Accordion info -->
-                      <div id="faqcollapse{{ review.title }}" class="accordion-collapse collapse" aria-labelledby="faq{{ review.title }}" data-bs-parent="#accordionfaq">
+                      <div id="faqcollapse{{ question.content }}" class="accordion-collapse collapse" aria-labelledby="faq{{ question.content }}" data-bs-parent="#accordionfaq">
+                        {% for answer in question.answerforquestion_set.all %}
                         <div class="accordion-body">
-                          <p>{{ review.review }}</p>
-                          <p style="text-align:right;">{{ review.created_at }}</p>
+                          <p>{{ answer.answer }}</p>
+                          <p style="text-align:right;">{{ question.created_at }}</p>
                           <div class="row g-4">
                             <div class="col-12">
                               <h5 class="mb-0">Answered by</h5>
@@ -322,17 +325,18 @@
                               <!-- Host Item -->
                               <div class="card card-body text-center">
                                 <div class="avatar avatar-lg mx-auto mb-3"> 
-                                  <a href="{% url 'dashboard:post_in_dashboard' review.user.username %}"><img class="avatar-img rounded-circle" src="{{ review.user.picture.url }}" alt="{{ review.user.username }}"></a>
+                                  <a href="{% url 'dashboard:post_in_dashboard' answer.user.username %}"><img class="avatar-img rounded-circle" src="{{ answer.user.picture.url }}" alt="{{ answer.user.username }}"></a>
                                 </div>
                                 <!-- Host name -->
                                 <div>
-                                  <h6 class="mb-0">{{ review.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6>
-                                  <span>{{ review.user.school }}</span>
+                                  <h6 class="mb-0">{{ answer.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6>
+                                  <span>{{ answer.user.school }}</span>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
+                        {% endfor %}
                       </div>
                     </div>
                     {% endif %}
@@ -340,7 +344,7 @@
                   {% endfor %}
                 </div>
               </div>
-              <a href="{% url 'reviews:review_list_of_universities' object.id %}" style="text-align:right; margin-top:15px;">もっと見る</a>
+              <a href="{% url 'questions:list_of_questions_for_each_university' object.id %}" style="text-align:right; margin-top:15px;">もっと見る</a>
               <!-- Faqs END -->
 
             </div>
