@@ -34,14 +34,23 @@
                     <div class="d-md-flex align-items-center mb-4">
                         <!-- Avatar -->
                         <div class="avatar me-3 mb-3 mb-md-0">
+                            {% if object.is_anonymous %}
+                            <img class="avatar-img rounded-circle" src="{% static 'images/avatar/anonymous_user.png' %}" alt="質問者">
+                            {% else %}
                             <a href="{% url 'dashboard:post_in_dashboard' object.user.username %}"> <img class="avatar-img rounded-circle" src="{{ object.user.picture.url }}" alt="{{ object.user.username }}"> </a>
+                            {% endif %}
                         </div>
                         <!-- Info -->
                         <div class="w-100">
+                            {% if object.is_anonymous %}
                             <div class="d-sm-flex align-items-start">
-                            <h6 class="mb-0"><a href="{% url 'dashboard:post_in_dashboard' object.user.username %}">{{ object.user.name }}</a></h6>
+                                <h6 class="mb-0">匿名質問者</h6>
                             </div>
-                            <!-- Connections START -->
+                            {% else %}
+                            <div class="d-sm-flex align-items-start">
+                                <h6 class="mb-0"><a href="{% url 'dashboard:post_in_dashboard' object.user.username %}">{{ object.user.name }}</a></h6>
+                            </div>
+                            <!-- university and major START -->
                             <ul class="avatar-group mt-1 list-unstyled align-items-sm-center">
                             <li class="small">
                                 {% if object.user.state == '現役台湾留学生' or '台湾留学卒業生' %}
@@ -51,7 +60,8 @@
                                 {% endif %}
                             </li>
                             </ul>
-                            <!-- Connections END -->
+                            <!-- university and major END -->
+                            {% endif %}
                         </div>
                     </div>
                     <!-- Tag -->
@@ -103,7 +113,7 @@
                             <div class="d-sm-flex align-items-start">
                             <h6 class="mb-0"><a href="{% url 'dashboard:post_in_dashboard' best_answer.user.username %}">{{ best_answer.user.name }}</a></h6>
                             </div>
-                            <!-- Connections START -->
+                            <!-- university and major START -->
                             <ul class="avatar-group mt-1 list-unstyled align-items-sm-center">
                             <li class="small">
                                 {% if best_answer.user.state == '現役台湾留学生' or '台湾留学卒業生' %}
@@ -113,7 +123,7 @@
                                 {% endif %}
                             </li>
                             </ul>
-                            <!-- Connections END -->
+                            <!-- university and major END -->
                         </div>
                     </div>
                     <p style="font-size:15px;">{{ best_answer.answer }}</p>

@@ -7,7 +7,7 @@
   <!-- Container START -->
   <div class="py-5">
     <div class="container">
-      <h1>{{ school.name }}</h1>
+      <!--<h1>{{ object.name }}</h1>-->
   
       <div class="row g-4">
         <div class="col-12">
@@ -33,10 +33,10 @@
                 <div class="card shadow-none text-center h-100">
                 <!-- Card body -->
                 <div class="card-body p-2 pb-0">
-                    <div class="avatar avatar-story avatar-xl">
-                    <a href="#!"><img class="avatar-img rounded-circle" src="{{ student.picture.url }}" alt="{{ student.name }}"></a>
+                    <div class="avatar avatar-xl">
+                    <a href="{% url 'dashboard:post_in_dashboard' student.username %}"><img class="avatar-img rounded-circle" src="{{ student.picture.url }}" alt="{{ student.name }}"></a>
                     </div>
-                    <h6 class="card-title mb-1 mt-3"> <a href="#!"> {{ student.name }} <i class="bi bi-patch-check-fill text-primary small"></i></a></h6>
+                    <h6 class="card-title mb-1 mt-3"> <a href="{% url 'dashboard:post_in_dashboard' student.username %}"> {{ student.name }} <i class="bi bi-patch-check-fill text-primary small"></i></a></h6>
                     <p class="mb-0 small lh-sm">{{ student.major }}</p>
                 </div>
                 <!-- Card footer -->
@@ -73,10 +73,10 @@
                   <div class="card shadow-none text-center h-100">
                   <!-- Card body -->
                   <div class="card-body p-2 pb-0">
-                      <div class="avatar avatar-story avatar-xl">
-                      <a href="#!"><img class="avatar-img rounded-circle" src="{{ saved_student.picture.url }}" alt="{{ saved_student.name }}"></a>
+                      <div class="avatar avatar-xl">
+                      <a href="{% url 'dashboard:post_in_dashboard' saved_student.username %}"><img class="avatar-img rounded-circle" src="{{ saved_student.picture.url }}" alt="{{ saved_student.name }}"></a>
                       </div>
-                      <h6 class="card-title mb-1 mt-3"> <a href="#!"> {{ saved_student.name }} <i class="bi bi-patch-check-fill text-primary small"></i></a></h6>
+                      <h6 class="card-title mb-1 mt-3"> <a href="{% url 'dashboard:post_in_dashboard' saved_student.username %}"> {{ saved_student.name }} <i class="bi bi-patch-check-fill text-primary small"></i></a></h6>
                       <p class="mb-0 small lh-sm">{{ saved_student.major }}</p>
                   </div>
                   <!-- Card footer -->

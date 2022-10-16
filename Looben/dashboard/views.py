@@ -98,4 +98,5 @@ class QuestionInDashboardView(DetailView):
         context['number_of_following_user'] = user.connection.all().count()
         context['number_of_followed_user'] = user.connected_users.all().count()
         context['saved_user_sidebar_list'] = user.saved_users.all()[:4]
+        context['asked_questions'] = user.questions_set.filter(is_anonymous=False).all()
         return context

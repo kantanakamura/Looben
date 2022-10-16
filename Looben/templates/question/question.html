@@ -429,7 +429,11 @@
                             <!-- Avatar group START -->
                             <ul class="avatar-group list-unstyled align-items-center mb-0">
                             <li class="avatar avatar-xs">
+                                {% if question.is_anonymous %}
+                                <img class="avatar-img rounded-circle" src="{% static 'images/avatar/anonymous_user.png' %}" alt="質問者">
+                                {% else %}
                                 <a href="{% url 'dashboard:post_in_dashboard' question.user.username %}"><img class="avatar-img rounded-circle" src="{{ question.user.picture.url }}" alt="{{ question.user.username }}"></a>
+                                {% endif %}
                             </li>
                             <li class="ms-3">
                                 <small> 質問者</small>
@@ -535,7 +539,11 @@
                             <!-- Avatar group START -->
                             <ul class="avatar-group list-unstyled align-items-center mb-0">
                             <li class="avatar avatar-xs">
+                                {% if question.is_anonymous %}
+                                <img class="avatar-img rounded-circle" src="{% static 'images/avatar/anonymous_user.png' %}" alt="質問者">
+                                {% else %}
                                 <a href="{% url 'dashboard:post_in_dashboard' question.user.username %}"><img class="avatar-img rounded-circle" src="{{ question.user.picture.url }}" alt="{{ question.user.username }}"></a>
+                                {% endif %}
                             </li>
                             <li class="ms-3">
                                 <small> 質問者</small>
