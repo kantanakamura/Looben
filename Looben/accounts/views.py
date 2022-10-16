@@ -26,12 +26,10 @@ from reviews.models import ReviewOfUniversity
 from questions.models import AnswerForQuestion ,Questions
 
 
-#　ホーム画面
 class HomeView(TemplateView):
     template_name= 'accounts/home.html'
     
 
-#　アカウント作成画面
 class RegistUserView(CreateView):
     template_name = 'accounts/regist.html'
     form_class = RegistForm
@@ -40,21 +38,12 @@ class RegistUserView(CreateView):
     def get_success_url(self):
         return reverse_lazy('accounts:user_login')   
     
-    # def post(self, request, *args, **kwargs):
-    #     form = RegistForm(request.POST or None)
-    #     if form.is_valid():
-    #         form.save()
-    #         user = authenticate(email=self.request.POST['email'], password=self.request.POST['password'])
-    #         login(self.request, user)
-    #         return redirect('accounts:research_university')
 
-# ユーザーのログイン
 class UserLoginView(LoginView):
     template_name = 'accounts/user_login.html'
     authentication_form = UserLoginForm
     
 
-# ユーザーのログアウト
 class UserLogoutView(LogoutView):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -62,23 +51,18 @@ class UserLogoutView(LogoutView):
         return super().dispatch(request, *args, **kwargs)  
     
 
-# アカウントの詳細設定
 class AccountSettingView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     template_name = 'accounts/account_setting.html'
     form_class = AccountSettingForm
     model = Users
     success_message = '更新に成功しました'
-    #slug_field = urls.pyに渡すモデルのフィールド名
     slug_field = 'username'
-    # urls.pyでのキーワードの名前
     slug_url_kwarg = 'username'
     
     def get_success_url(self):
         return reverse_lazy('accounts:account_setting', kwargs={'username': self.object.username})
     
     
-
-#　ユーザーのパスワード変更画面
 @login_required
 def password_change(request):
     password_change_form = PasswordChangeForm(request.POST or None, instance=request.user)
@@ -253,6 +237,7 @@ def server_error(request):
 class UserRankingView(LoginRequiredMixin, ListView):
     model = Users
     template_name = 'accounts/user_ranking.html'
+    ordering = ['-contributed_points']
     
     
 class ResearchUniversity(ListView):
@@ -263,7 +248,6 @@ class ResearchUniversity(ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # この大学の在学生のアカウントを3つ取得
         context['school'] = Schools.objects.order_by('star_rating').reverse()[:12]
         return context
     
@@ -278,7 +262,6 @@ class ResearchUniversity(ListView):
         return queryset
     
     
-    
 class UniversityDetailView(DetailView):
     model = Schools
     template_name = 'accounts/university_detail.html'
@@ -286,17 +269,12 @@ class UniversityDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         school = self.object
-        # この大学の在学生のアカウントを3つ取得
         context['users'] = Users.objects.filter(school=school)[:3]
-        # この大学のレビューを4つ取得
         context['reviews'] = ReviewOfUniversity.objects.filter(university=school)[:4]
-        # この大学の質問を4つ取得
         context['questions'] = Questions.objects.filter(university=school, is_solved=True).prefetch_related(
             Prefetch('answerforquestion_set', queryset=AnswerForQuestion.objects.filter(is_best_answer=True))
         )[:4]
-        # Loobenにアカウント登録してる、この大学の在学生の数を取得
         context['registed_students_number'] = Users.objects.filter(school=school).count()
-        # 詳細ページを訪れた人の数を１増やす
         school.number_of_viewer += 1
         school.save()
         return context

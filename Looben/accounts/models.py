@@ -1,19 +1,20 @@
-from tabnanny import verbose
-from tkinter import CASCADE
-from django.db import models
-from django.utils import timezone
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser, PermissionsMixin
 )
+from django.db import models
 from django.urls import reverse_lazy
+from django.utils import timezone
+from email.policy import default
+from tabnanny import verbose
+from tkinter import CASCADE
 
 
 class UserManager(BaseUserManager):
     def create_user(self, username, email, password=None):
         if not email:
-            raise ValueError('Users must have an email address')
+            raise ValueError('メールアドレスを必ず入力してください')
         elif not username:
-            raise ValueError('Users must have an username')
+            raise ValueError('ユーザーネームを入力してください')
         user = self.model(
             username=username,
             email=email
@@ -40,6 +41,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    individual_theme_color = models.CharField(max_length=10, default='#D5E9FF')
     picture = models.FileField(blank=True, upload_to='pfp/', default='pfp/unknown_user.png')
     name = models.CharField(max_length=130, blank=True)
     birthday = models.DateField(null=True)
@@ -50,6 +52,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
     saved_university = models.ManyToManyField('Schools', symmetrical=False, blank=True, related_name='saved_university_users')
     state = models.CharField(max_length=50, default='その他')
     joined_at = models.DateField(default=timezone.now)
+    contributed_points = models.IntegerField(default=0)
     major = models.ForeignKey(
         'Majors', on_delete=models.CASCADE, null=True
     )
@@ -72,7 +75,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
         return self.username + ' : ' + str(self.school)
         
 
-#　大学
+
 class Schools(models.Model):
     name = models.CharField(max_length=150)
     major = models.ManyToManyField('Majors')
@@ -99,7 +102,7 @@ class Schools(models.Model):
         return self.name
         
 
-# 学部・学科
+
 class Majors(models.Model):
     name = models.CharField(max_length=150)
     

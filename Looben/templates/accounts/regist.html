@@ -60,13 +60,8 @@
                     <label for="floatingInput">Enter password again</label>
                     <small>確認として、パスワードを再入力してください。</small>
                 </div>
-                    {{ form.confirm_password.errors }}
+                {{ form.confirm_password.errors }}
                     
-                <!-- Keep me signed in -->
-                <div class="mb-3 text-start">
-                    <input type="checkbox" class="form-check-input" id="keepsingnedCheck">
-                    <label class="form-check-label" for="keepsingnedCheck"> Keep me signed in</label>
-                </div>
 
                 <!-- 新規登録ボタン -->
                 <div class="d-grid"><button type="submit" class="btn btn-lg btn-primary">新規登録</button></div>

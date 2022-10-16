@@ -15,7 +15,7 @@
             <!-- My profile START -->
             <div class="card">
                 <!-- Cover image -->
-                <div class="h-200px rounded-top" style="background-image:url({% static 'images/bg/dashboard_bg.jpg' %}); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+                <div class="h-200px rounded-top" style="background-color:{{ object.individual_theme_color }}; background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
                 <!-- Card body START -->
                 <div class="card-body py-0">
                 <div class="d-sm-flex align-items-start text-center text-sm-start">
@@ -119,17 +119,17 @@
                         {% if asked_question.category == 'university' %}
                         <span><a href="{% url 'questions:categorized_questions' category='university' %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">大学</a></span>
                         {% elif asked_question.category == 'foods' %}
-                        <span>><a href="{% url 'questions:categorized_questions' category='foods' %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">食事</a></span>
+                        <span><a href="{% url 'questions:categorized_questions' category='foods' %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">食事</a></span>
                         {% elif asked_question.category == 'study' %}
-                        <span>><a href="{% url 'questions:categorized_questions' category='study' %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">勉強</a></span>
+                        <span><a href="{% url 'questions:categorized_questions' category='study' %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">勉強</a></span>
                         {% elif asked_question.category == 'love' %}
-                        <span>><a href="{% url 'questions:categorized_questions' category='love' %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">恋愛</a></span>
+                        <span><a href="{% url 'questions:categorized_questions' category='love' %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">恋愛</a></span>
                         {% else %}
-                        <span>><a href="{% url 'questions:categorized_questions' category='life' %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">人生</a></span>
+                        <span><a href="{% url 'questions:categorized_questions' category='life' %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">人生</a></span>
                         {% endif %}
 
                         {% if asked_question.university %}
-                        <span><a href="{% url 'accounts:university_detail' pk=asked_question.university.id %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">{{ asked_question.university }}</a></span>
+                        <span><a href="{% url 'questions:list_of_questions_for_each_university' pk=asked_question.university.id %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">{{ asked_question.university }}</a></span>
                         {% endif %}
 
                         <ul class="nav nav-stack">

@@ -1,5 +1,6 @@
 from multiprocessing import connection
 from tkinter.messagebox import QUESTION
+from unicodedata import category
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic.detail import DetailView
@@ -20,10 +21,10 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login
 from django.db.models import Q, Prefetch
 
-from .forms import QuestionForm, AnswerForQuestionForm
-from .models import Questions, AnswerForQuestion
+from .forms import AnswerForQuestionForm, CommentToAnswerForm, QuestionForm
+from .models import AnswerForQuestion, CommentToBestAnswer, Questions
 
-from accounts.models import Schools
+from accounts.models import Users, Schools
 
 
 class QuestionView(ListView):
@@ -32,13 +33,11 @@ class QuestionView(ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # 回答募集中の質問を4つ取得
         context['question_seeking_answers'] = Questions.objects.filter(is_solved=False).all()[:4]  
-        # 最新の解決済みの質問を4つ取得  
-        context['solved_questions'] = Questions.objects.filter(is_solved=True).prefetch_related(
+        context['solved_questions'] = Questions.objects.filter(is_solved=True).order_by('-created_at').prefetch_related(
             Prefetch('answerforquestion_set', queryset=AnswerForQuestion.objects.filter(is_best_answer=True))
         )[:4]
-        
+        context['reliable_answerers'] = Users.objects.order_by('-contributed_points').all()[:3] 
         return context
     
     
@@ -47,11 +46,12 @@ def ask_question(request):
     ask_question_form = QuestionForm(request.POST or None)
     if ask_question_form.is_valid():
         ask_question_form.instance.user = request.user
+        ask_question_form.instance.user.contributed_points += 1
+        ask_question_form.instance.user.save()
         if ask_question_form['is_anonymous'] == 'on':
             ask_question_form.instance.is_anonymous = True
-        else:
-            ask_question_form.instance.is_anonymous = False
         ask_question_form.save()
+        ask_question_form.instance.save()
         return redirect('questions:question')
     return render(
         request, 'question/ask_question.html', context={
@@ -66,73 +66,45 @@ class QuestionDetailView(LoginRequiredMixin, DetailView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # 質問に対する回答の数
         context['number_of_answer'] = self.object.answerforquestion_set.all().count()
-        context['best_answer'] = self.object.answerforquestion_set.filter(is_best_answer=True).first()
-        context['form'] = AnswerForQuestionForm()
+        if self.object.is_solved:           
+            best_answer = self.object.answerforquestion_set.filter(is_best_answer=True).first()
+            context['best_answer'] = best_answer
+            context['comment_to_best_answer'] = best_answer.commenttobestanswer_set.first()
+        context['answer_form'] = AnswerForQuestionForm()
         return context
     
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        form = AnswerForQuestionForm(request.POST or None)
-        if form.is_valid():
-            form.instance.question = self.object
-            form.instance.user = request.user
-            form.save()
+        answer_form = AnswerForQuestionForm(request.POST or None)
+        if answer_form.is_valid():
+            answer_form.instance.question = self.object
+            answer_form.instance.user = request.user
+            answer_form.instance.user.contributed_points += 0.1
+            answer_form.save()
+            answer_form.instance.user.save()
             return redirect('questions:question_detail', pk=self.object.id)
         else:
             context = self.get_context_data()
-            context['form'] = form  # form.is_validしたフォームを渡さないと、フォームのエラーを表示できない
+            context['answer_form'] = answer_form  # form.is_validしたフォームを渡さないと、フォームのエラーを表示できない
             return render(request, 'questions:question_detail', context)
+        
     
     
-class CategorizedQuestionsView(DetailView):
+class CategorizedQuestionsView(ListView):
     model = Questions
     template_name = 'question/categorized_questions.html'
-    
-    #slug_field = urls.pyに渡すモデルのフィールド名
     slug_field = 'category'
-    # urls.pyでのキーワードの名前
     slug_url_kwarg = 'category'
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        self.object = self.get_object()
-        # 選択されたカテゴリーの質問を取得
-        context['categorized_questions'] = Questions.objects.filter(category=self.object.category)
-        # 質問に対する回答の数
-        context['number_of_answer'] = self.object.answerforquestion_set.all().count()
-        # 最新の解決済みの質問を取得  
-        context['solved_questions'] = Questions.objects.filter(is_solved=True, category=self.object.category).prefetch_related(
+        context['unsolved_questions'] = Questions.objects.filter(is_solved=False, category=self.kwargs.get('category')).all()
+        context['solved_questions'] = Questions.objects.filter(is_solved=True, category=self.kwargs.get('category')).prefetch_related(
             Prefetch('answerforquestion_set', queryset=AnswerForQuestion.objects.filter(is_best_answer=True))
         ).all()
+        context['category'] = self.kwargs.get('category')
         return context
-
-
-@login_required
-def decide_best_answer(request, *args, **kwargs):
-    try:
-        # ベストアンサーの回答を渡す
-        best_answer = AnswerForQuestion.objects.get(id=kwargs['pk'])
-    # 例外処理：もし、回答が存在しない場合、警告文を表示させる。
-    except AnswerForQuestion.DoesNotExist:
-        messages.warning(request, 'この解答はすでに削除されています')
-        return HttpResponseRedirect(reverse_lazy('questions:question_detail', kwargs={'pk': best_answer.question.id}))
-    # 自分の回答をベストアンサーに選ぼうとしている時、エラーを出す
-    if request.user == best_answer.user:
-        messages.warning(request, '自分自身の回答はベストアンサーにできません')
-        return HttpResponseRedirect(reverse_lazy('questions:question_detail', kwargs={'pk': best_answer.question.id}))
-    else:
-        # 
-        if best_answer.question.is_solved:
-            messages.warning(request, 'ベストアンサーはすでに選ばれています')
-            return HttpResponseRedirect(reverse_lazy('questions:question_detail', kwargs={'pk': best_answer.question.id}))
-        else:
-            best_answer.is_best_answer = True
-            best_answer.question.is_solved = True
-            best_answer.save()
-            best_answer.question.save()
-    return HttpResponseRedirect(reverse_lazy('questions:question_detail', kwargs={'pk': best_answer.question.id}))
 
 
 class ListOfQuestionsForEachUniversity(DetailView):
@@ -141,8 +113,42 @@ class ListOfQuestionsForEachUniversity(DetailView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        school = self.object
-        context['solved_questions'] = Questions.objects.filter(university=school, is_solved=True).prefetch_related(
+        context['solved_questions'] = Questions.objects.filter(university=self.object, is_solved=True).prefetch_related(
             Prefetch('answerforquestion_set', queryset=AnswerForQuestion.objects.filter(is_best_answer=True))
         )
         return context
+        
+        
+class DecideAndCommentToBestAnswer(DetailView):
+    model = AnswerForQuestion
+    template_name = 'question/comment_to_best_answer.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comment_to_answer_form'] = CommentToAnswerForm()
+        context['question'] = Questions.objects.get(id=self.object.question.id)
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        best_answer = self.get_object()
+        comment_to_answer_form = CommentToAnswerForm(request.POST or None)
+        if comment_to_answer_form.is_valid():
+            if best_answer.question.is_solved:
+                messages.warning(request, 'ベストアンサーはすでに選ばれています')
+                return HttpResponseRedirect(reverse_lazy('questions:question_detail', kwargs={'pk': best_answer.question.id}))
+            else:
+                best_answer.is_best_answer = True
+                best_answer.save()
+                best_answer.question.is_solved = True
+                best_answer.question.save()
+                best_answer.user.contributed_points += 3
+                best_answer.user.save()
+                comment_to_answer_form.instance.answer = best_answer
+                comment_to_answer_form.instance.commenter = request.user
+                comment_to_answer_form.save()
+            return redirect('questions:question_detail', pk=best_answer.question.id)
+        else:
+            context = self.get_context_data()
+            context['comment_to_answer_form'] = comment_to_answer_form  # form.is_validしたフォームを渡さないと、フォームのエラーを表示できない
+            return render(request, 'questions:question_detail', context)
+    

@@ -48,7 +48,7 @@
                         <a href="#!"><img class="avatar-img rounded border border-white border-3" src="{% static 'images/Yuan_Ze_University_Logo.png' %}" alt="{{ object.name }}"></a>
                       </div>
                       <!-- Info -->
-                      <h5 class="mb-0"> <a href="#!">{{ object.name }} </a> </h5>
+                      <h5 class="mb-0"> <a href="{% url 'accounts:university_detail' object.id %}">{{ object.name }} </a> </h5>
                       <p>{{ object.sub_title }}</p>
                       {% with range=''|center:5 %}
                       {% for _ in range %}
@@ -146,7 +146,7 @@
                                     </div>
                                     <!-- Host name -->
                                     <div>
-                                      <h6 class="mb-0">{{ review.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6>
+                                      <a href="{% url 'dashboard:post_in_dashboard' review.user.username %}"><h6 class="mb-0">{{ review.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6></a>
                                       <span>{{ review.user.school }}</span>
                                     </div>
                                   </div>
@@ -194,7 +194,7 @@
                                     </div>
                                     <!-- Host name -->
                                     <div>
-                                      <h6 class="mb-0">{{ review.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6>
+                                      <a href="{% url 'dashboard:post_in_dashboard' review.user.username %}"><h6 class="mb-0">{{ review.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6></a>
                                       <span>{{ review.user.school }}</span>
                                     </div>
                                   </div>

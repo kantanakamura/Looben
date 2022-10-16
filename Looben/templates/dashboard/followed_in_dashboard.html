@@ -15,7 +15,7 @@
             <!-- My profile START -->
             <div class="card">
               <!-- Cover image -->
-              <div class="h-200px rounded-top" style="background-image:url({% static 'images/bg/dashboard_bg.jpg' %}); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+              <div class="h-200px rounded-top" style="background-color:{{ object.individual_theme_color }}; background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
               <!-- Card body START -->
               <div class="card-body py-0">
                 <div class="d-sm-flex align-items-start text-center text-sm-start">
@@ -126,7 +126,7 @@
                         <div class="ms-md-auto d-flex">
                             {% if followed_user == user %}
                             {% elif followed_user in user.connection.all %} 
-                            <a href="{% url 'accounts:disconnect' followed_user.username %}"><button class="btn btn-danger-soft btn-sm mb-0 me-2"> unfollow </button></a>
+                            <a href="{% url 'accounts:disconnect' followed_user.username %}"><button class="btn btn-danger-soft btn-sm mb-0 me-2"> following </button></a>
                             <button class="btn btn-primary-soft btn-sm mb-0"> Message </button>
                             {% else %}
                             <a href="{% url 'accounts:connect' followed_user.username %}"><button class="btn btn-success-soft btn-sm mb-0 me-2"> follow </button></a>

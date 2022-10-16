@@ -71,21 +71,21 @@
                     <a href="{% url 'accounts:university_detail' object.university.id %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">{{ object.university }}</a>
                     {% endif %}
                     <!-- Title info -->
-                    <p class="mb-2" style="font-size:17px;">{{ object.content}}</p>
+                    <p class="mb-2" style="font-size:17px;">{{ object.content }}</p>
                     <p style="text-align:right;">{{ object.created_at }}</p>
                     <hr>
                     
                     {% if not object.is_solved and user is not object.user %}
                     <h5>質問回答</h5>
                     <form method="post" class="row g-3 mt-2">
-                        {{ form.non_field_errors }}
+                        {{ answer_form.non_field_errors }}
                         {% csrf_token %}
                         <!-- answer -->
                         <div class="col-12">
-                        {{ form.answer }}
+                        {{ answer_form.answer }}
                         <small>個人を特定できる、他人を傷つけるようなコメントは避けましょう。</small>
                         </div>
-                        {{ form.answer.error }}
+                        {{ answer_form.answer.error }}
                         <!-- Button -->
                         <div class="col-12">
                         <button type="submit" class="btn btn-primary">回答を送信</button>
@@ -93,16 +93,34 @@
                     </form>
                     {% elif best_answer %}
                     <h5><img src="{% static 'images/logo/medal.png' %}" style="width:50px;">ベストアンサー</h5>
-                    <div class="my-4 d-flex">
-                        <a href="{% url 'dashboard:post_in_dashboard' best_answer.user.username %}"><img class="avatar avatar-md rounded-circle float-start me-3" src="{{ best_answer.user.picture.url }}" alt="{{ best_answer.user.username }}"></a>
-                        <div>
-                            <div class="mb-2 d-sm-flex">
-                            <h6 class="m-0 me-2"><a href="{% url 'dashboard:post_in_dashboard' best_answer.user.username %}">{{ best_answer.user.name }}</a></h6>
-                            <span class="me-3 small">{{ best_answer.created_at }} </span>
+                    <div class="d-md-flex align-items-center mb-4">
+                        <!-- Avatar -->
+                        <div class="avatar me-3 mb-3 mb-md-0">
+                            <a href="{% url 'dashboard:post_in_dashboard' best_answer.user.username %}"> <img class="avatar-img rounded-circle" src="{{ best_answer.user.picture.url }}" alt="{{ best_answer.user.username }}"> </a>
+                        </div>
+                        <!-- Info -->
+                        <div class="w-100">
+                            <div class="d-sm-flex align-items-start">
+                            <h6 class="mb-0"><a href="{% url 'dashboard:post_in_dashboard' best_answer.user.username %}">{{ best_answer.user.name }}</a></h6>
                             </div>
-                            <p style="font-size:15px;">{{ best_answer.answer }}</p>
+                            <!-- Connections START -->
+                            <ul class="avatar-group mt-1 list-unstyled align-items-sm-center">
+                            <li class="small">
+                                {% if best_answer.user.state == '現役台湾留学生' or '台湾留学卒業生' %}
+                                {{ best_answer.user.school }} / {{ best_answer.user.major }}
+                                {% else %}
+                                {{ best_answer.user.state }}
+                                {% endif %}
+                            </li>
+                            </ul>
+                            <!-- Connections END -->
                         </div>
                     </div>
+                    <p style="font-size:15px;">{{ best_answer.answer }}</p>
+                    <p style="text-align:right;">{{ best_answer.created_at }}</p>
+                    <hr>
+                    <h5>質問者からのベストアンサーへのコメント</h5>
+                    <p style="font-size:15px;">{{ comment_to_best_answer.comment }}</p>
                     {% endif %}
                 </div>
                 </div>
@@ -118,36 +136,37 @@
                     {% for answer in object.answerforquestion_set.all %}
                     {% if not answer.is_best_answer %}
                     <!-- Answer -->
-                    <div class="my-4 d-flex">
-                    <a href="{% url 'dashboard:post_in_dashboard' answer.user.username %}"><img class="avatar avatar-md rounded-circle float-start me-3" src="{{ answer.user.picture.url }}" alt="{{ answer.user.username }}"></a>
-                    <div>
-                        <div class="mb-2 d-sm-flex">
-                        <h6 class="m-0 me-2"><a href="{% url 'dashboard:post_in_dashboard' answer.user.username %}">{{ answer.user.name }}</h6></a>
-                        <span class="me-3 small">{{ answer.created_at }} </span>
+                    <div class="d-md-flex align-items-center mb-4">
+                        <!-- Avatar -->
+                        <div class="avatar me-3 mb-3 mb-md-0">
+                            <a href="{% url 'dashboard:post_in_dashboard' answer.user.username %}"> <img class="avatar-img rounded-circle" src="{{ answer.user.picture.url }}" alt="{{ answer.user.username }}"> </a>
                         </div>
-                        <p style="font-size:15px;">{{ answer.answer }}</p>
-                        {% if not object.is_solved %}
-                        <a href=""><button class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-placement="top">Reply </button></a>
-                        <a href="{% url 'questions:decide_best_answer' pk=answer.id %}"><button class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="ベストアンサーにすることで、回答募集が終了します">ベストアンサーにする </button></a>
-                        {% endif %}
+                        <!-- Info -->
+                        <div class="w-100">
+                            <div class="d-sm-flex align-items-start">
+                            <h6 class="mb-0"><a href="{% url 'dashboard:post_in_dashboard' answer.user.username %}">{{ answer.user.name }}</a></h6>
+                            </div>
+                            <!-- Connections START -->
+                            <ul class="avatar-group mt-1 list-unstyled align-items-sm-center">
+                            <li class="small">
+                                {% if answer.user.state == '現役台湾留学生' or '台湾留学卒業生' %}
+                                {{ answer.user.school }} / {{ answer.user.major }}
+                                {% else %}
+                                {{ answer.user.state }}
+                                {% endif %}
+                            </li>
+                            </ul>
+                            <!-- Connections END -->
+                        </div>
                     </div>
-                    </div>
+                    <p style="font-size:15px;">{{ answer.answer }}</p>
+                    {% if user == object.user and not object.is_solved %}
+                        <a href="{% url 'questions:decide_and_comment_to_best_answer' answer.id %}"><button class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="ベストアンサーにすることで、回答募集が終了します">ベストアンサーにする </button></a>
+                    {% endif %}
+                    <p style="text-align:right;">{{ answer.created_at }}</p>
                     <hr>
                     {% endif %}
                     {% endfor %}
-                    <!-- Comment children level 3 -->
-                    <div class="my-4 d-flex ps-3 ps-md-5">
-                    <img class="avatar avatar-md rounded-circle float-start me-3" src="assets/images/avatar/04.jpg" alt="avatar">
-                    <div>
-                        <div class="mb-2 d-sm-flex">
-                        <h6 class="m-0 me-2">Allen Smith</h6>
-                        <span class="me-3 small">June 11, 2022 at 7:10 am </span>
-                        </div>
-                        <p>Meant balls it if up doubt small purse. </p>
-                        <a href=""><button class="btn btn-sm btn-light" data-bs-toggle="tooltip" data-bs-placement="top">Reply </button></a>
-                        <a href=""><button class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="ベストアンサーにすることで、回答募集が終了します">ベストアンサーにする </button></a>
-                    </div>
-                    </div>
                 </div>
                 </div>
                 <!-- Blog single END -->

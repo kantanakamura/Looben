@@ -43,3 +43,17 @@ class AnswerForQuestion(models.Model):
         
     def __str__(self):
         return str(self.user)
+    
+    
+class CommentToBestAnswer(models.Model):
+    comment = models.TextField(max_length=250)
+    answer = models.ForeignKey(
+        AnswerForQuestion, on_delete=models.CASCADE
+    )
+    commenter = models.ForeignKey(
+        Users, on_delete=models.CASCADE
+    )
+    
+    class Meta:
+        db_table = 'comment_to_answer'
+        verbose_name_plural = '回答に対する質問'

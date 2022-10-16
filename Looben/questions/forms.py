@@ -2,7 +2,7 @@ from dataclasses import field
 from unicodedata import category
 from django import forms
 
-from .models import Questions, AnswerForQuestion
+from .models import AnswerForQuestion, CommentToBestAnswer,Questions
 from accounts.models import Schools, Users
 
 
@@ -22,7 +22,7 @@ class QuestionForm(forms.ModelForm):
         'placeholder': 'カテゴリー',
         'type': 'select',
     }))
-    is_anonymous = forms.BooleanField(label='匿名', widget=forms.CheckboxInput(attrs={
+    is_anonymous = forms.BooleanField(label='匿名', required=False, widget=forms.CheckboxInput(attrs={
         'class': 'form-check-input', 
         'placeholder': '匿名',
         'type': 'checkbox',
@@ -44,3 +44,15 @@ class AnswerForQuestionForm(forms.ModelForm):
     class Meta:
         model = AnswerForQuestion
         fields = ['answer']
+        
+        
+class CommentToAnswerForm(forms.ModelForm):
+    comment = forms.CharField(label='回答にコメント', widget=forms.Textarea(attrs={
+        'class': 'form-control', 
+        'placeholder': '回答にコメント',
+        'type': 'textarea',
+    }))
+    
+    class Meta:
+        model = CommentToBestAnswer
+        fields = ['comment']

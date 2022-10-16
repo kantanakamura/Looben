@@ -90,6 +90,10 @@ class AccountSettingForm(forms.ModelForm):
         'placeholder': '2001-05-04 (必須)',
         'type': 'select',
         }))
+    individual_theme_color = forms.CharField(label='テーマカラー', required=False, widget=forms.TextInput(attrs={
+        'class': 'form-control', 
+        'type': 'color',
+        }))
     instagram_account_name = forms.CharField(label='Instagram', required=False, widget=forms.TextInput(attrs={
         'class': 'form-control', 
         'placeholder': 'looben_taiwan (任意)',
@@ -125,7 +129,7 @@ class AccountSettingForm(forms.ModelForm):
     
     class Meta:
         model = Users
-        fields = ['picture', 'name', 'username', 'birthday', 'instagram_account_name', 'twitter_account_name', 'description', 'major', 'school', 'state']
+        fields = ['picture', 'name', 'username', 'birthday', 'instagram_account_name', 'twitter_account_name', 'description', 'major', 'school', 'state', 'individual_theme_color']
         
     def save(self, *args, **kwargs):
         obj = super(AccountSettingForm, self).save(commit=False)

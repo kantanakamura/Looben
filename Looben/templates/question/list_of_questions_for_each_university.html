@@ -46,7 +46,7 @@
                             <a href="#!"><img class="avatar-img rounded border border-white border-3" src="{% static 'images/Yuan_Ze_University_Logo.png' %}" alt="{{ object.name }}"></a>
                         </div>
                         <!-- Info -->
-                        <h5 class="mb-0"> <a href="#!">{{ object.name }} </a> </h5>
+                        <h5 class="mb-0"> <a href="{% url 'accounts:university_detail' object.id %}">{{ object.name }} </a> </h5>
                         <p>{{ object.sub_title }}</p>
                         {% with range=''|center:5 %}
                         {% for _ in range %}
@@ -96,7 +96,7 @@
             <div class="card">
                 <!-- Title START -->
                 <div class="card-header border-0 pb-0">
-                <h1 class="h4 card-title mb-0">大学口コミ一覧</h1>
+                <h1 class="h4 card-title mb-0">大学質問一覧</h1>
                 </div>
                 <!-- Title END -->
 
@@ -108,13 +108,13 @@
                             {% if forloop.counter == 1 %}
                             <!-- Accordion item -->
                             <div class="accordion-item mb-3">
-                            <div class="accordion-header" id="schedule{{ solved_question.content }}">
-                                <button class="accordion-button pe-5 flex-wrap fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#schedulecollapse{{ solved_question.content }}" aria-expanded="true" aria-controls="schedulecollapse{{ solved_question.content }}">
+                            <div class="accordion-header" id="schedule{{ solved_question.id }}">
+                                <button class="accordion-button pe-5 flex-wrap fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#schedulecollapse{{ solved_question.id }}" aria-expanded="true" aria-controls="schedulecollapse{{ solved_question.id }}">
                                 <strong>{{ solved_question.content }}</strong>
                                 </button>
                             </div>
                             <!-- Accordion info -->
-                            <div id="schedulecollapse{{ solved_question.content }}" class="accordion-collapse collapse show" aria-labelledby="schedule{{ solved_question.content }}" data-bs-parent="#accordionschedules">
+                            <div id="schedulecollapse{{ solved_question.id }}" class="accordion-collapse collapse show" aria-labelledby="schedule{{ solved_question.id }}" data-bs-parent="#accordionschedules">
                                 {% for answer in solved_question.answerforquestion_set.all %}
                                 <div class="accordion-body">
                                 <p>{{ answer.answer }}</p>
@@ -131,7 +131,7 @@
                                         </div>
                                         <!-- Host name -->
                                         <div>
-                                        <h6 class="mb-0">{{ answer.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6>
+                                        <a href="{% url 'dashboard:post_in_dashboard' answer.user.username %}"><h6 class="mb-0">{{ answer.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6></a>
                                         <span>{{ answer.user.school }}</span>
                                         </div>
                                     </div>
@@ -144,13 +144,13 @@
                             {% else %}
                             <!-- Accordion item -->
                             <div class="accordion-item mb-3">
-                            <div class="accordion-header" id="schedule{{ solved_question.content }}">
-                                <button class="accordion-button pe-5 flex-wrap fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#schedulecollapse{{ solved_question.content }}" aria-expanded="false" aria-controls="schedulecollapse{{ solved_question.content }}">
+                            <div class="accordion-header" id="schedule{{ solved_question.id }}">
+                                <button class="accordion-button pe-5 flex-wrap fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#schedulecollapse{{ solved_question.id }}" aria-expanded="false" aria-controls="schedulecollapse{{ solved_question.id }}">
                                 <strong>{{ solved_question.content }}</strong>
                                 </button>
                             </div>
                             <!-- Accordion info -->
-                            <div id="schedulecollapse{{ solved_question.content }}" class="accordion-collapse collapse" aria-labelledby="schedule{{ solved_question.content }}" data-bs-parent="#accordionschedules">
+                            <div id="schedulecollapse{{ solved_question.id }}" class="accordion-collapse collapse" aria-labelledby="schedule{{ solved_question.id }}" data-bs-parent="#accordionschedules">
                                 {% for answer in solved_question.answerforquestion_set.all %}
                                 <div class="accordion-body">
                                 <p>{{ answer.answer }}</p>
@@ -167,7 +167,7 @@
                                         </div>
                                         <!-- Host name -->
                                         <div>
-                                        <h6 class="mb-0">{{ answer.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6>
+                                        <a href="{% url 'dashboard:post_in_dashboard' answer.user.username %}"><h6 class="mb-0">{{ answer.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6></a>
                                         <span>{{ answer.user.school }}</span>
                                         </div>
                                     </div>

@@ -15,7 +15,7 @@
           <!-- My profile START -->
           <div class="card">
             <!-- Cover image -->
-            <div class="h-200px rounded-top" style="background-image:url({% static 'images/bg/dashboard_bg.jpg' %}); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+            <div class="h-200px rounded-top" style="background-color:{{ object.individual_theme_color }}; background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
             <!-- Card body START -->
             <div class="card-body py-0">
               <div class="d-sm-flex align-items-start text-center text-sm-start">
@@ -111,7 +111,7 @@
               <!-- Upcoming event START -->
               <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong>大学口コミ一覧:</strong> 大学口コミ一覧はこちらから
-                <a href="events.html" class="btn btn-xs btn-success ms-md-4">一覧を見る</a>
+                <a href="{% url 'reviews:review_list_of_universities' object.school.id %}" class="btn btn-xs btn-success ms-md-4">一覧を見る</a>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>
               <!-- Upcoming event END -->
@@ -121,7 +121,7 @@
                 <div class="d-sm-flex align-items-center">
                   <div class="ms-sm-4 mt-2 mt-sm-0">
                     <!-- Info -->
-                    <h4 class="mb-1"><a href="event-details.html"> {{ student_review.title }} </a></h4>
+                    <h4 class="mb-1"><a href="{% url 'reviews:review_list_of_universities' student_review.university.id %}"> {{ student_review.title }} </a></h4>
                     <div>
                       <div>
                       {% with range=''|center:5 %}

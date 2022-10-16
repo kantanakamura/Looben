@@ -20,7 +20,7 @@
             <div class="d-flex align-items-center d-lg-none">
                 <button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
                 <i class="btn btn-primary fw-bold fa-solid fa-sliders-h"></i>
-                <span class="h6 mb-0 fw-bold d-lg-none ms-2">マイプロフィール</span>
+                <span class="h6 mb-0 fw-bold d-lg-none ms-2">質問カテゴリー</span>
                 </button>
             </div>
             <!-- Advanced filter responsive toggler END -->
@@ -59,16 +59,16 @@
                                 <a class="nav-link" href="{% url 'questions:categorized_questions' category='university' %}"><img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bank-outline-filled.svg' %}" alt="人生"><span>大学 </span></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'questions:categorized_questions' category='foods' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/burger-outline-filled.svg' %}" alt=""><span>食事 </span></a>
+                                <a class="nav-link" href="{% url 'questions:categorized_questions' category='foods' %}"><img class="me-2 h-20px fa-fw" src="{% static 'images/icon/burger-outline-filled.svg' %}" alt=""><span>食事 </span></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'questions:categorized_questions' category='study' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bookmark-open-outline-filled.svg' %}" alt=""><span>勉強 </span></a>
+                                <a class="nav-link" href="{% url 'questions:categorized_questions' category='study' %}"><img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bookmark-open-outline-filled.svg' %}" alt=""><span>勉強 </span></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'questions:categorized_questions' category='love' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/heart-outline-filled.svg' %}" alt=""><span>恋愛 </span></a>
+                                <a class="nav-link" href="{% url 'questions:categorized_questions' category='love' %}"><img class="me-2 h-20px fa-fw" src="{% static 'images/icon/heart-outline-filled.svg' %}" alt=""><span>恋愛 </span></a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'questions:categorized_questions' category='life' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/globe-outline-filled.svg' %}" alt=""><span>人生 </span></a>
+                                <a class="nav-link" href="{% url 'questions:categorized_questions' category='life' %}"><img class="me-2 h-20px fa-fw" src="{% static 'images/icon/globe-outline-filled.svg' %}" alt=""><span>人生 </span></a>
                             </li>
                         </ul>
                         <!-- Side Nav END -->
@@ -96,53 +96,57 @@
             <div class="card">
                 <!-- Title START -->
                 <div class="card-header border-0 pb-0">
-                <h1 class="h4 card-title mb-0">質問作成ページ</h1>
+                <h1 class="h4 card-title mb-0">ベストアンサーへのコメント作成ページ</h1>
                 </div>
                 <!-- Title END -->
 
                 <!-- Create a page form START -->
                 <div class="card-body">
-                <form class="row g-3 mt-4" method="post">
-                    {{ ask_question_form.non_field_errors }}
-                    {% csrf_token %}
-                    
-                    <div class="form-check">
-                        {{ ask_question_form.is_anonymous}}
-                        <label class="form-check-label" for="is_anonymous">
-                            匿名で質問
-                        </label>
-                    </div>
-                    {{ ask_question_form.is_anonymous.errors }}
+                    <h5><i class="bi bi-patch-question-fill" style="color:#1E99FF;"></i> 質問</h5>
+                    <a href="{% url 'questions:question_detail' question.id %}"><p>{{ question.content }}</p></a>
+                    <hr>
 
-                    <!-- カテゴリー -->
-                    <div class="col-8">
-                    <label class="form-label">カテゴリー</label>
-                    {{ ask_question_form.category }}
-                    <small>カテゴリーを選択すると質問に回答されやすくなります。</small>
+                    <div class="d-md-flex align-items-center mb-4">
+                        <!-- Avatar -->
+                        <div class="avatar me-3 mb-3 mb-md-0">
+                            <a href="{% url 'dashboard:post_in_dashboard' object.user.username %}"> <img class="avatar-img rounded-circle" src="{{ object.user.picture.url }}" alt="{{ object.user.username }}"> </a>
+                        </div>
+                        <!-- Info -->
+                        <div class="w-100">
+                            <div class="d-sm-flex align-items-start">
+                            <h6 class="mb-0"><a href="{% url 'dashboard:post_in_dashboard' object.user.username %}">{{ object.user.name }} </a></h6>
+                            <p class="small ms-sm-2 mb-0">{{ object.user.state }}</p>
+                            </div>
+                            <!-- Connections START -->
+                            <ul class="avatar-group mt-1 list-unstyled align-items-sm-center">
+                            <li class="small">
+                                {{ object.user.school }} / {{ object.user.major }}
+                            </li>
+                            </ul>
+                            <!-- Connections END -->
+                        </div>
                     </div>
-                    {{ ask_question_form.category.errors }}
+                    <p><img src="{% static 'images/logo/medal.png' %}" style="width:50px;">{{ object.answer }}</p>
+                    <hr>
 
-                    <!-- 質問に関係ある大学（任意） -->
-                    <div class="col-8">
-                    <label class="form-label">質問に関係のある大学（任意）</label>
-                    {{ ask_question_form.university }}
-                    <small>質問の内容に関係ある大学がある場合は、その大学を選択してください。</small>
-                    </div>
-                    {{ ask_question_form.university.errors }}
+                
+                    <form class="row g-3 mt-4" method="post">
+                        {{ comment_to_answer_form.non_field_errors }}
+                        {% csrf_token %}
 
-                    <!-- タイトル -->
-                    <div class="col-12">
-                    <label class="form-label">質問内容</label>
-                    {{ ask_question_form.content }}
-                    <small>質問内容は自由。さあ、質問してみよう。</small>
-                    </div>
-                    {{ ask_question_form.content.errors }}
+                        <!-- カテゴリー -->
+                        <div class="col-12">
+                        <label class="form-label">回答者へのコメント</label>
+                        {{ comment_to_answer_form.comment }}
+                        <small>感謝の言葉や、回答に対する感想を書いて、思いを伝えましょう。</small>
+                        </div>
+                        {{ comment_to_answer_form.comment.errors }}
 
-                    <!-- Button  -->
-                    <div class="col-12 text-end">
-                    <button type="submit" class="btn btn-primary mb-0">質問を公開</button>
-                    </div>
-                </form>
+                        <!-- Button  -->
+                        <div class="col-12 text-end">
+                        <button type="submit" class="btn btn-primary mb-0">ベストアンサーにする</button>
+                        </div>
+                    </form>
                 </div>
                 <!-- Create a page form END -->
             </div>
