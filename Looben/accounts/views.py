@@ -248,7 +248,13 @@ class ResearchUniversity(ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['school'] = Schools.objects.order_by('star_rating').reverse()[:12]
+        context['high_rated_universities'] = Schools.objects.order_by('star_rating').reverse()[:12]
+        context['national_universities'] = Schools.objects.filter(national=True).all()
+        context['non_national_universities'] = Schools.objects.filter(national=False).all()
+        context['north_universities'] = Schools.objects.filter(place='北部').all()
+        context['middle_universities'] = Schools.objects.filter(place='中部').all()
+        context['east_universities'] = Schools.objects.filter(place='東部').all()
+        context['south_universities'] = Schools.objects.filter(place='南部').all()
         return context
     
 

@@ -70,7 +70,7 @@
                         <a class="nav-link" href="{% url 'accounts:account_setting' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/settings-outline-filled.svg'%}" alt=""><span>設定 </span></a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="{% url 'accounts:account_setting' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-outline-filled.svg'%}" alt=""><span>友達 </span></a>
+                        <a class="nav-link" href="{% url 'accounts:students_by_university' object.id %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-outline-filled.svg'%}" alt=""><span>在校生 </span></a>
                       </li>
                     </ul>
                     <!-- Side Nav END -->

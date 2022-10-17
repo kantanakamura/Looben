@@ -99,43 +99,44 @@
         {% endfor %}
         {% endif %} {% endcomment %}
 
-        <!-- おすすめ tab START -->
+        <!-- 評価の高い大学 tab START -->
         <div class="tab-pane fade show active" id="tab-1">
           <div class="row g-4">
-            {% for popular_school in school %}
+            {% for high_rated_university in high_rated_universities %}
             <!-- Main content START -->
             <div class="col-sm-6 col-lg-4">
                 <!-- Card feed item START -->
                 <div class="card h-100">
-                  <img class="card-img-top" src="{{ popular_school.picture.url }}" alt="{{ opopular_school.name }}" style="height:210px;">
+                  <img class="card-img-top" src="{{ high_rated_university.picture.url }}" alt="{{ high_rated_university.name }}" style="height:210px;">
                   <!-- Card header END -->
                   <!-- Card body START -->
                   <div class="card-body">
                     <!-- Info -->
-                    <p class="text-body"><strong>{{ popular_school.name }}</strong> <i class="bi bi-patch-check-fill text-success small"></i></p>
+                    <p class="text-body"><strong>{{ high_rated_university.name }}</strong> <i class="bi bi-patch-check-fill text-success small"></i></p>
                     <div>
                     {% with range=''|center:5 %}
                     {% for _ in range %}
-                      {% if forloop.counter <= popular_school.star_rating %}
+                      {% if forloop.counter <= high_rated_university.star_rating %}
                       <i class="fas fa-star" style="color:#F7E36C;"></i>
                       {% else %}
                       <i class="fas fa-star" style="color:#D8DDEA;"></i>
                       {% endif %}
                     {% endfor %}
-                    <span style="color:#FF1474;"><strong>{{ popular_school.star_rating }}.0</strong></span>
+                    <span style="color:#FF1474;"><strong>{{ high_rated_university.star_rating }}.0</strong></span>
                     {% endwith %}
                     </div>
-                    <a class="text-body" href="{% url 'accounts:university_detail' pk=popular_school.id %}">{{ popular_school.description }}</a>
+                    <a class="text-body" href="{% url 'accounts:university_detail' pk=high_rated_university.id %}">{{ high_rated_university.description }}</a>
                     <!-- Feed react START -->
                     <ul class="nav nav-stack flex-wrap small mt-3">
+                      <li class="nav-item">
+                        <a href="{% url 'accounts:university_detail' high_rated_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"> 詳細をみる</button></a>
+                      </li>
                       <!-- 保存　button START -->
                       <li class="nav-item ms-sm-auto">
-                        <!-- もし、ログインユーザーがこの大学を保存していたら、保存解除ボタンを設置 -->
-                        {% if popular_school in user.saved_university.all %}
-                        <a href="{% url 'accounts:unsave_university' popular_school.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
+                        {% if high_rated_university in user.saved_university.all %}
+                        <a href="{% url 'accounts:unsave_university' high_rated_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
                         {% else %}
-                        <!-- もし、ログインユーザーがこの大学を保存していなかったら、保存ボタンを設置 -->
-                        <a href="{% url 'accounts:save_university' popular_school.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                        <a href="{% url 'accounts:save_university' high_rated_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
                         {% endif %}
                       </li>
                       <!-- 保存　button END -->
@@ -151,48 +152,47 @@
           </div> 
           <!-- Row END -->
         </div>
-        <!-- おすすめ tab END -->
+        <!-- 評価の高い大学 tab END -->
   
 
         <!-- 国立 tab START -->
         <div class="tab-pane fade" id="tab-2">
             
           <div class="row g-4">
-            {% for object in object_list %}
-            {% if object.national %}
+            {% for national_university in national_universities %}
             <!-- Main content START -->
             <div class="col-sm-6 col-lg-4">
                 <!-- Card feed item START -->
                 <div class="card h-100">
-                  <img class="card-img-top" src="{{ object.picture.url }}" alt="{{ object.name }}" style="height:210px;">
+                  <img class="card-img-top" src="{{ national_university.picture.url }}" alt="{{ national_university.name }}" style="height:210px;">
                   <!-- Card header END -->
                   <!-- Card body START -->
                   <div class="card-body">
                     <!-- Info -->
-                    <p class="text-body"><strong>{{ object.name }}</strong> <i class="bi bi-patch-check-fill text-success small"></i></p>
+                    <p class="text-body"><strong>{{ national_university.name }}</strong> <i class="bi bi-patch-check-fill text-success small"></i></p>
                     <div>
                     {% with range=''|center:5 %}
                     {% for _ in range %}
-                      {% if forloop.counter <= object.star_rating %}
+                      {% if forloop.counter <= national_university.star_rating %}
                       <i class="fas fa-star" style="color:#F7E36C;"></i>
                       {% else %}
                       <i class="fas fa-star" style="color:#D8DDEA;"></i>
                       {% endif %}
                     {% endfor %}
-                    <span style="color:#FF1474;"><strong>{{ object.star_rating }}.0</strong></span>
+                    <span style="color:#FF1474;"><strong>{{ national_university.star_rating }}.0</strong></span>
                     {% endwith %}
                     </div>
-                    <a class="text-body" href="{% url 'accounts:university_detail' pk=object.id %}">{{ object.description }}</a>
+                    <a class="text-body" href="{% url 'accounts:university_detail' pk=national_university.id %}">{{ national_university.description }}</a>
                     <!-- Feed react START -->
                     <ul class="nav nav-stack flex-wrap small mt-3">
                       <!-- 保存　button START -->
                       <li class="nav-item ms-sm-auto">
                         <!-- もし、ログインユーザーがこの大学を保存していたら、保存解除ボタンを設置 -->
-                        {% if object in user.saved_university.all %}
-                        <a href="{% url 'accounts:unsave_university' object.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
+                        {% if national_university in user.saved_university.all %}
+                        <a href="{% url 'accounts:unsave_university' national_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
                         {% else %}
                         <!-- もし、ログインユーザーがこの大学を保存していなかったら、保存ボタンを設置 -->
-                        <a href="{% url 'accounts:save_university' object.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                        <a href="{% url 'accounts:save_university' national_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
                         {% endif %}
                       </li>
                       <!-- 保存　button END -->
@@ -204,7 +204,6 @@
                 <!-- Card feed item END -->
             </div>
             <!-- Main content END -->
-            {% endif %}
             {% endfor %}
           </div> <!-- Row END -->
         </div>
@@ -215,41 +214,40 @@
         <div class="tab-pane fade" id="tab-3">
             
             <div class="row g-4">
-              {% for object in object_list %}
-              {% if not object.national and not object.name == '小学生' and not object.name == '中学生' and not object.name == '高校生' and not object.name == '大学生' and not object.name == '社会人' and not object.name == 'その他'%}
+              {% for non_national_university in non_national_universities %}
               <!-- Main content START -->
               <div class="col-sm-6 col-lg-4">
                   <!-- Card feed item START -->
                   <div class="card h-100">
-                    <img class="card-img-top" src="{{ object.picture.url }}" alt="{{ object.name }}" style="height:210px;">
+                    <img class="card-img-top" src="{{ non_national_university.picture.url }}" alt="{{ non_national_university.name }}" style="height:210px;">
                     <!-- Card header END -->
                     <!-- Card body START -->
                     <div class="card-body">
                       <!-- Info -->
-                      <p class="text-body"><strong>{{ object.name }}</strong> <i class="bi bi-patch-check-fill text-warning small"></i></p>
+                      <p class="text-body"><strong>{{ non_national_university.name }}</strong> <i class="bi bi-patch-check-fill text-warning small"></i></p>
                       <div>
                         {% with range=''|center:5 %}
                         {% for _ in range %}
-                          {% if forloop.counter <= object.star_rating %}
+                          {% if forloop.counter <= non_national_university.star_rating %}
                           <i class="fas fa-star" style="color:#F7E36C;"></i>
                           {% else %}
                           <i class="fas fa-star" style="color:#D8DDEA;"></i>
                           {% endif %}
                         {% endfor %}
-                        <span style="color:#FF1474;"><strong>{{ object.star_rating }}.0</strong></span>
+                        <span style="color:#FF1474;"><strong>{{ non_national_university.star_rating }}.0</strong></span>
                         {% endwith %}
                       </div>
-                      <a class="text-body" href="{% url 'accounts:university_detail' pk=object.id %}">{{ object.description }}</a>
+                      <a class="text-body" href="{% url 'accounts:university_detail' pk=non_national_university.id %}">{{ non_national_university.description }}</a>
                       <!-- Feed react START -->
                       <ul class="nav nav-stack flex-wrap small mt-3">
                         <!-- 保存　button START -->
                         <li class="nav-item ms-sm-auto">
                           <!-- もし、ログインユーザーがこの大学を保存していたら、保存解除ボタンを設置 -->
-                          {% if object in user.saved_university.all %}
-                          <a href="{% url 'accounts:unsave_university' object.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
+                          {% if non_national_university in user.saved_university.all %}
+                          <a href="{% url 'accounts:unsave_university' non_national_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
                           {% else %}
                           <!-- もし、ログインユーザーがこの大学を保存していなかったら、保存ボタンを設置 -->
-                          <a href="{% url 'accounts:save_university' object.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                          <a href="{% url 'accounts:save_university' non_national_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
                           {% endif %}
                         </li>
                         <!-- 保存　button END -->
@@ -261,7 +259,6 @@
                   <!-- Card feed item END -->
               </div>
               <!-- Main content END -->
-              {% endif %}
               {% endfor %}
             </div> <!-- Row END -->
         </div>
@@ -272,41 +269,40 @@
         <div class="tab-pane fade" id="tab-4">
             
             <div class="row g-4">
-              {% for object in object_list %}
-              {% if object.place == '北部' %}
+              {% for north_university in north_universities %}
               <!-- Main content START -->
               <div class="col-sm-6 col-lg-4">
                   <!-- Card feed item START -->
                   <div class="card h-100">
-                    <img class="card-img-top" src="{{ object.picture.url }}" alt="{{ object.name }}" style="height:210px;">
+                    <img class="card-img-top" src="{{ north_university.picture.url }}" alt="{{ north_university.name }}" style="height:210px;">
                     <!-- Card header END -->
                     <!-- Card body START -->
                     <div class="card-body">
                       <!-- Info -->
-                      <p class="text-body"><strong>{{ object.name }}</strong> {% if object.national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                      <p class="text-body"><strong>{{ north_university.name }}</strong> {% if north_university.national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
                       <div>
                         {% with range=''|center:5 %}
                         {% for _ in range %}
-                          {% if forloop.counter <= object.star_rating %}
+                          {% if forloop.counter <= north_university.star_rating %}
                           <i class="fas fa-star" style="color:#F7E36C;"></i>
                           {% else %}
                           <i class="fas fa-star" style="color:#D8DDEA;"></i>
                           {% endif %}
                         {% endfor %}
-                        <span style="color:#FF1474;"><strong>{{ object.star_rating }}.0</strong></span>
+                        <span style="color:#FF1474;"><strong>{{ north_university.star_rating }}.0</strong></span>
                         {% endwith %}
                       </div>
-                      <a class="text-body" href="{% url 'accounts:university_detail' pk=object.id %}">{{ object.description }}</a>
+                      <a class="text-body" href="{% url 'accounts:university_detail' pk=north_university.id %}">{{ north_university.description }}</a>
                       <!-- Feed react START -->
                       <ul class="nav nav-stack flex-wrap small mt-3">
                         <!-- 保存　button START -->
                         <li class="nav-item ms-sm-auto">
                           <!-- もし、ログインユーザーがこの大学を保存していたら、保存解除ボタンを設置 -->
-                          {% if object in user.saved_university.all %}
-                          <a href="{% url 'accounts:unsave_university' object.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
+                          {% if north_university in user.saved_university.all %}
+                          <a href="{% url 'accounts:unsave_university' north_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
                           {% else %}
                           <!-- もし、ログインユーザーがこの大学を保存していなかったら、保存ボタンを設置 -->
-                          <a href="{% url 'accounts:save_university' object.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                          <a href="{% url 'accounts:save_university' north_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
                           {% endif %}
                         </li>
                         <!-- 保存　button END -->
@@ -318,7 +314,6 @@
                   <!-- Card feed item END -->
               </div>
               <!-- Main content END -->
-              {% endif %}
               {% endfor %}
             </div> <!-- Row END -->
         </div>
@@ -328,41 +323,40 @@
         <div class="tab-pane fade" id="tab-5">
             
             <div class="row g-4">
-              {% for object in object_list %}
-              {% if object.place == '中部' %}
+              {% for middle_university in middle_universities %}
               <!-- Main content START -->
               <div class="col-sm-6 col-lg-4">
                   <!-- Card feed item START -->
                   <div class="card h-100">
-                    <img class="card-img-top" src="{{ object.picture.url }}" alt="{{ object.name }}" style="height:210px;">
+                    <img class="card-img-top" src="{{ middle_university.picture.url }}" alt="{{ middle_university.name }}" style="height:210px;">
                     <!-- Card header END -->
                     <!-- Card body START -->
                     <div class="card-body">
                       <!-- Info -->
-                      <p class="text-body"><strong>{{ object.name }}</strong> {% if object.national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                      <p class="text-body"><strong>{{ middle_university.name }}</strong> {% if middle_university.national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
                       <div>
                         {% with range=''|center:5 %}
                         {% for _ in range %}
-                          {% if forloop.counter <= object.star_rating %}
+                          {% if forloop.counter <= middle_university.star_rating %}
                           <i class="fas fa-star" style="color:#F7E36C;"></i>
                           {% else %}
                           <i class="fas fa-star" style="color:#D8DDEA;"></i>
                           {% endif %}
                         {% endfor %}
-                        <span style="color:#FF1474;"><strong>{{ object.star_rating }}.0</strong></span>
+                        <span style="color:#FF1474;"><strong>{{ middle_university.star_rating }}.0</strong></span>
                         {% endwith %}
                       </div>
-                      <a class="text-body" href="{% url 'accounts:university_detail' pk=object.id %}">{{ object.description }}</a>
+                      <a class="text-body" href="{% url 'accounts:university_detail' pk=middle_university.id %}">{{ middle_university.description }}</a>
                       <!-- Feed react START -->
                       <ul class="nav nav-stack flex-wrap small mt-3">
                         <!-- 保存　button START -->
                         <li class="nav-item ms-sm-auto">
                           <!-- もし、ログインユーザーがこの大学を保存していたら、保存解除ボタンを設置 -->
-                          {% if object in user.saved_university.all %}
-                          <a href="{% url 'accounts:unsave_university' object.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
+                          {% if middle_university in user.saved_university.all %}
+                          <a href="{% url 'accounts:unsave_university' middle_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
                           {% else %}
                           <!-- もし、ログインユーザーがこの大学を保存していなかったら、保存ボタンを設置 -->
-                          <a href="{% url 'accounts:save_university' object.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                          <a href="{% url 'accounts:save_university' middle_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
                           {% endif %}
                         </li>
                         <!-- 保存　button END -->
@@ -374,7 +368,6 @@
                   <!-- Card feed item END -->
               </div>
               <!-- Main content END -->
-              {% endif %}
               {% endfor %}
             </div> <!-- Row END -->
         </div>
@@ -384,41 +377,40 @@
         <div class="tab-pane fade" id="tab-6">
             
             <div class="row g-4">
-              {% for object in object_list %}
-              {% if object.place == '東部' %}
+              {% for east_university in east_universities %}
               <!-- Main content START -->
               <div class="col-sm-6 col-lg-4">
                   <!-- Card feed item START -->
                   <div class="card h-100">
-                    <img class="card-img-top" src="{{ object.picture.url }}" alt="{{ object.name }}" style="height:210px;">
+                    <img class="card-img-top" src="{{ east_university.picture.url }}" alt="{{ east_university.name }}" style="height:210px;">
                     <!-- Card header END -->
                     <!-- Card body START -->
                     <div class="card-body">
                       <!-- Info -->
-                      <p class="text-body"><strong>{{ object.name }}</strong> {% if object.national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                      <p class="text-body"><strong>{{ east_university.name }}</strong> {% if east_university.national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
                       <div>
                         {% with range=''|center:5 %}
                         {% for _ in range %}
-                          {% if forloop.counter <= object.star_rating %}
+                          {% if forloop.counter <= east_university.star_rating %}
                           <i class="fas fa-star" style="color:#F7E36C;"></i>
                           {% else %}
                           <i class="fas fa-star" style="color:#D8DDEA;"></i>
                           {% endif %}
                         {% endfor %}
-                        <span style="color:#FF1474;"><strong>{{ object.star_rating }}.0</strong></span>
+                        <span style="color:#FF1474;"><strong>{{ east_university.star_rating }}.0</strong></span>
                         {% endwith %}
                       </div>
-                      <a class="text-body" href="{% url 'accounts:university_detail' pk=object.id %}">{{ object.description }}</a>
+                      <a class="text-body" href="{% url 'accounts:university_detail' pk=east_university.id %}">{{ east_university.description }}</a>
                       <!-- Feed react START -->
                       <ul class="nav nav-stack flex-wrap small mt-3">
                         <!-- 保存　button START -->
                         <li class="nav-item ms-sm-auto">
                           <!-- もし、ログインユーザーがこの大学を保存していたら、保存解除ボタンを設置 -->
-                          {% if object in user.saved_university.all %}
-                          <a href="{% url 'accounts:unsave_university' object.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
+                          {% if east_university in user.saved_university.all %}
+                          <a href="{% url 'accounts:unsave_university' east_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
                           {% else %}
                           <!-- もし、ログインユーザーがこの大学を保存していなかったら、保存ボタンを設置 -->
-                          <a href="{% url 'accounts:save_university' object.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                          <a href="{% url 'accounts:save_university' east_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
                           {% endif %}
                         </li>
                         <!-- 保存　button END -->
@@ -430,7 +422,6 @@
                   <!-- Card feed item END -->
               </div>
               <!-- Main content END -->
-              {% endif %}
               {% endfor %}
             </div> <!-- Row END -->
         </div>
@@ -440,41 +431,40 @@
         <div class="tab-pane fade" id="tab-7">
             
             <div class="row g-4">
-              {% for object in object_list %}
-              {% if object.place == '南部' %}
+              {% for south_university in south_universities %}
               <!-- Main content START -->
               <div class="col-sm-6 col-lg-4">
                   <!-- Card feed item START -->
                   <div class="card h-100">
-                    <img class="card-img-top" src="{{ object.picture.url }}" alt="{{ object.name }}" style="height:210px;">
+                    <img class="card-img-top" src="{{ south_university.picture.url }}" alt="{{ south_university.name }}" style="height:210px;">
                     <!-- Card header END -->
                     <!-- Card body START -->
                     <div class="card-body">
                       <!-- Info -->
-                      <p class="text-body"><strong>{{ object.name }}</strong> {% if object.national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                      <p class="text-body"><strong>{{ south_university.name }}</strong> {% if south_university.national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
                       <div>
                         {% with range=''|center:5 %}
                         {% for _ in range %}
-                          {% if forloop.counter <= object.star_rating %}
+                          {% if forloop.counter <= south_university.star_rating %}
                           <i class="fas fa-star" style="color:#F7E36C;"></i>
                           {% else %}
                           <i class="fas fa-star" style="color:#D8DDEA;"></i>
                           {% endif %}
                         {% endfor %}
-                        <span style="color:#FF1474;"><strong>{{ object.star_rating }}.0</strong></span>
+                        <span style="color:#FF1474;"><strong>{{ south_university.star_rating }}.0</strong></span>
                         {% endwith %}
                       </div>
-                      <a class="text-body" href="{% url 'accounts:university_detail' pk=object.id %}">{{ object.description }}</a>
+                      <a class="text-body" href="{% url 'accounts:university_detail' pk=south_university.id %}">{{ south_university.description }}</a>
                       <!-- Feed react START -->
                       <ul class="nav nav-stack flex-wrap small mt-3">
                         <!-- 保存　button START -->
                         <li class="nav-item ms-sm-auto">
                           <!-- もし、ログインユーザーがこの大学を保存していたら、保存解除ボタンを設置 -->
-                          {% if object in user.saved_university.all %}
-                          <a href="{% url 'accounts:unsave_university' object.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
+                          {% if south_university in user.saved_university.all %}
+                          <a href="{% url 'accounts:unsave_university' south_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
                           {% else %}
                           <!-- もし、ログインユーザーがこの大学を保存していなかったら、保存ボタンを設置 -->
-                          <a href="{% url 'accounts:save_university' object.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
+                          <a href="{% url 'accounts:save_university' south_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
                           {% endif %}
                         </li>
                         <!-- 保存　button END -->
@@ -486,7 +476,6 @@
                   <!-- Card feed item END -->
               </div>
               <!-- Main content END -->
-              {% endif %}
               {% endfor %}
             </div> <!-- Row END -->
         </div>
