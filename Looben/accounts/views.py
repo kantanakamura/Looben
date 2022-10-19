@@ -1,4 +1,3 @@
-# import email
 from multiprocessing import connection
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, FormView, UpdateView
@@ -20,10 +19,20 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login
 from django.db.models import Q, Prefetch
 
+
 from .forms import RegistForm, UserLoginForm, AccountSettingForm, PasswordChangeForm
 from .models import Schools, Users
 from reviews.models import ReviewOfUniversity
 from questions.models import AnswerForQuestion ,Questions
+
+
+def getFriendsList(username):
+    try:
+        user = Users.objects.get(username=username)
+        friends = list(user.connection_users.all())
+        return friends
+    except:
+        return []
 
 
 class HomeView(TemplateView):
@@ -240,32 +249,40 @@ class UserRankingView(LoginRequiredMixin, ListView):
     ordering = ['-contributed_points']
     
     
-class ResearchUniversity(ListView):
-    model = Schools
-    context_object_name = 'university_list'
-    template_name = 'accounts/research_university.html'
-    queryset = Schools.objects.order_by('id')
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['high_rated_universities'] = Schools.objects.order_by('star_rating').reverse()[:12]
-        context['national_universities'] = Schools.objects.filter(national=True).all()
-        context['non_national_universities'] = Schools.objects.filter(national=False).all()
-        context['north_universities'] = Schools.objects.filter(place='北部').all()
-        context['middle_universities'] = Schools.objects.filter(place='中部').all()
-        context['east_universities'] = Schools.objects.filter(place='東部').all()
-        context['south_universities'] = Schools.objects.filter(place='南部').all()
-        return context
-    
-
-    def get_queryset(self): # 検索機能のために追加
-        queryset = Schools.objects.order_by('id')
-        query = self.request.GET.get('query')
-        if query:
-            queryset = queryset.filter(
-            Q(name__icontains=query) | Q(major__icontains=query)
-            )
-        return queryset
+class ResearchUniversity(View):
+    def get(self, request, *args, **kwargs):
+        high_rated_universities = Schools.objects.order_by('star_rating').reverse()[:12]
+        national_universities = Schools.objects.filter(national=True).all()
+        non_national_universities = Schools.objects.filter(national=False).all()
+        north_universities = Schools.objects.filter(place='北部').all()
+        middle_universities = Schools.objects.filter(place='中部').all()
+        east_universities = Schools.objects.filter(place='東部').all()
+        south_universities = Schools.objects.filter(place='南部').all()
+        if 'search' in self.request.GET:
+            query = request.GET.get("search")
+            universities = list(Schools.objects.all())
+            searched_universities = []
+            for university in universities:
+                if query.capitalize() in university.name:
+                    searched_universities.append(university)
+            number_of_searched_universities = len(searched_universities)
+            user_searched_anything = True
+        else:
+            searched_universities = []
+            number_of_searched_universities = 0
+            user_searched_anything = False
+        return render(request, "accounts/research_university.html", {
+            'searched_universities': searched_universities, 
+            'high_rated_universities': high_rated_universities, 
+            'national_universities': national_universities, 
+            'non_national_universities': non_national_universities, 
+            'north_universities': north_universities, 
+            'middle_universities': middle_universities, 
+            'east_universities': east_universities, 
+            'south_universities': south_universities,
+            'number_of_searched_universities': number_of_searched_universities,
+            'user_searched_anything': user_searched_anything,
+            })
     
     
 class UniversityDetailView(DetailView):
