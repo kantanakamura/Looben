@@ -27,18 +27,36 @@ from .models import AnswerForQuestion, CommentToBestAnswer, Questions
 from accounts.models import Users, Schools
 
 
-class QuestionView(ListView):
-    template_name = 'question/question.html'
-    model = Questions
+class QuestionView(View):
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['question_seeking_answers'] = Questions.objects.filter(is_solved=False).all()[:4]  
-        context['solved_questions'] = Questions.objects.filter(is_solved=True).order_by('-created_at').prefetch_related(
+    def get(self, request, *args, **kwargs):
+        question_seeking_answers = Questions.objects.filter(is_solved=False).all()[:4]  
+        solved_questions = Questions.objects.filter(is_solved=True).order_by('-created_at').prefetch_related(
             Prefetch('answerforquestion_set', queryset=AnswerForQuestion.objects.filter(is_best_answer=True))
         )[:4]
-        context['reliable_answerers'] = Users.objects.order_by('-contributed_points').all()[:3] 
-        return context
+        reliable_answerers = Users.objects.order_by('-contributed_points').all()[:3] 
+        if 'search' in self.request.GET:
+            keyword_query = request.GET.get("search")
+            questions = list(Questions.objects.all())
+            searched_questions = []
+            for question in questions:
+                if keyword_query in question.content:
+                    searched_questions.append(question)
+            number_of_searched_questions = len(searched_questions)
+            user_searched_anything = True
+        else:
+            searched_questions = []
+            number_of_searched_questions = 0
+            user_searched_anything = False
+        return render(request, "question/question.html", {
+            'question_seeking_answers': question_seeking_answers,
+            'solved_questions': solved_questions,
+            'reliable_answerers': reliable_answerers,
+            'searched_questions': searched_questions,
+            'user_searched_anything': user_searched_anything,
+            'number_of_searched_questions': number_of_searched_questions,
+            'searched_questions': searched_questions,
+            })
     
     
 @login_required
