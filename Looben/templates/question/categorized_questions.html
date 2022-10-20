@@ -143,6 +143,7 @@
                                             {% else %}
                                             <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">人生</a>
                                             {% endif %}
+                                            <span><a class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">回答募集中</a></span>
                                             <br>
                                             <!-- Info -->
                                             <strong><a href="{% url 'questions:question_detail' unsolved_question.id %}"> {{ unsolved_question.content }} </a></strong>
