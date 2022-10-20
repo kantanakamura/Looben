@@ -26,15 +26,6 @@ from reviews.models import ReviewOfUniversity
 from questions.models import AnswerForQuestion ,Questions
 
 
-def getFriendsList(username):
-    try:
-        user = Users.objects.get(username=username)
-        friends = list(user.connection_users.all())
-        return friends
-    except:
-        return []
-
-
 class HomeView(TemplateView):
     template_name= 'accounts/home.html'
     
@@ -320,11 +311,7 @@ class StudentsByUniversityView(LoginRequiredMixin, ListView):
         if id is not None:
             context['school'] = Schools.objects.filter(id=id)
         return context
-    
         
-class MessageView(TemplateView):
-    template_name = 'accounts/messaging.html'     
-    
     
 class ComingSoonView(TemplateView):
     template_name = 'comingsoon.html'
