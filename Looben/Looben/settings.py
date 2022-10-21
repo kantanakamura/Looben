@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'blogs',
     'chat',
     'questions',
+    'rest_framework',
 ]
 
 
