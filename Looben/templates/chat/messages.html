@@ -133,37 +133,40 @@
                     <!-- Chat time -->
                     <div class="text-center small my-2">9/16, 2022, 06:15 am</div>
     
-                    {% for message in messages %}
-                    {% if conversation_partner == message.sender_name %}
-                    <!-- Chat message left -->
-                    <div class="d-flex mb-1">
-                      <div class="flex-shrink-0 avatar avatar-xs me-2">
-                        <a href="{% url 'dashboard:post_in_dashboard' conversation_partner.username %}"><img class="avatar-img rounded-circle" src="{{ conversation_partner.picture.url }}" alt="{{ conversation_partner.username }}"></a>
+                    <div id="board">
+                      {% for message in messages %}
+                      {% if conversation_partner == message.sender_name %}
+                      <!-- Chat message left -->
+                      <div class="d-flex mb-1">
+                        <div class="flex-shrink-0 avatar avatar-xs me-2">
+                          <a href="{% url 'dashboard:post_in_dashboard' conversation_partner.username %}"><img class="avatar-img rounded-circle" src="{{ conversation_partner.picture.url }}" alt="{{ conversation_partner.username }}"></a>
+                        </div>
+                        <div class="flex-grow-1">
+                          <div class="w-100">
+                            <div class="d-flex flex-column align-items-start">
+                              <div class="bg-light text-secondary p-2 px-3 rounded-2">{{ message.description }}</div>
+                              <div class="small my-2">{{ message.time }}</div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <div class="flex-grow-1">
+                      {% else %}
+                      <!-- Chat message right -->
+                      <div class="d-flex justify-content-end text-end mb-1">
                         <div class="w-100">
-                          <div class="d-flex flex-column align-items-start">
-                            <div class="bg-light text-secondary p-2 px-3 rounded-2">{{ message.discription }}</div>
-                            <div class="small my-2">{{ message.time }}</div>
+                          <div class="d-flex flex-column align-items-end">
+                            <div class="bg-primary text-white p-2 px-3 rounded-2">{{ message.description }}</div>
+                            <div class="d-flex my-2">
+                              <div class="small text-secondary time_date">{{ message.time }}</div>
+                              <div class="small ms-2"><i class="fa-solid fa-check-double text-info"></i></div>
+                            </div>
                           </div>
                         </div>
                       </div>
+                      {% endif %}
+                      {% endfor %}
                     </div>
-                    {% else %}
-                    <!-- Chat message right -->
-                    <div class="d-flex justify-content-end text-end mb-1">
-                      <div class="w-100">
-                        <div class="d-flex flex-column align-items-end">
-                          <div class="bg-primary text-white p-2 px-3 rounded-2">{{ message.discription }}</div>
-                          <div class="d-flex my-2">
-                            <div class="small text-secondary">{{ message.time }}</div>
-                            <div class="small ms-2"><i class="fa-solid fa-check-double text-info"></i></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    {% endif %}
-                    {% endfor %}
+
                   </div>
                   <!-- Chat conversation END -->
                 </div>
@@ -172,11 +175,14 @@
               </div>
             </div>
             <div class="card-footer">
-              <div class="d-sm-flex align-items-end">
-                <textarea class="form-control mb-sm-0 mb-3" data-autoresize placeholder="メッセージを入力してください" rows="1"></textarea>
-                <button class="btn btn-sm btn-danger-soft ms-sm-2"><i class="fa-solid fa-face-smile fs-6"></i></button>
-                <button class="btn btn-sm btn-primary ms-2"><i class="fa-solid fa-paper-plane fs-6"></i></button>
-              </div>
+              <form method="post" id="chat-box">
+                {% csrf_token %}
+                <div class="d-sm-flex align-items-end">
+                  <input class="form-control mb-sm-0 mb-3" data-autoresize placeholder="メッセージを入力してください" rows="1" type="text" name="message" id="msg_field">
+                  <button class="btn btn-sm btn-danger-soft ms-sm-2"><i class="fa-solid fa-face-smile fs-6"></i></button>
+                  <button class="btn btn-sm btn-primary ms-2" type="submit" name="send"><i class="fa-solid fa-paper-plane fs-6"></i></button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -189,4 +195,45 @@
   
 </main>
 <!-- **************** MAIN CONTENT END **************** -->
+{% endblock %}
+
+{% block javascript %}
+<script>
+  // メッセージの送信者（会話相手）と受信者（自分自身）を取得しておく
+  sender_id = "{{ conversation_partner.id }}";
+  receiver_id = "{{ current_user.id }}";
+  // 画面上に追加するメッセージの定義
+  const text_box = '<div class="d-flex justify-content-end text-end mb-1">' +
+      '<div class="w-100">' +
+      '<div class="d-flex flex-column align-items-end">' +
+      '<div class="bg-primary text-white p-2 px-3 rounded-2">{ description }</div>' +
+      '<div class="d-flex my-2">' +
+      '<div class="small text-secondary time_date">{ time }</div>' +
+      '<div class="small ms-2"><i class="fa-solid fa-check-double text-info"></i></div>' +
+      '</div>' +
+      '</div>' +
+      '</div>' +
+      '</div>'
+  // 送信ボタンクリック時の処理を定義
+  $(function () {
+      $('#chat-box').on('submit', function (event) {
+          event.preventDefault();  // ページノリロードを防止
+          let message = $('#msg_field');
+          // sendメソッドを実行
+          send('{{ current_user.id }}', '{{ conversation_partner.id }}', message.val());
+          message.val(''); // メッセージ入力欄をリセット
+      })
+  })
+  function send(sender, receiver, message){
+      // メッセージ送信
+      $.post('/api/messages', '{"sender_name": "' + sender + '", "receiver_name": "' +
+              receiver + '","description": "' + message + '" }', function (data) {
+          let field = text_box.replace('{description}', message);
+          let today = new Date();
+          let time = today.getHours() + ":" + today.getMinutes();
+          field = field.replace('{time}', time);
+          $('#board').append(field);
+      })
+  }
+</script>
 {% endblock %}
