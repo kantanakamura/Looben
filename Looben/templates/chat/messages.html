@@ -129,7 +129,7 @@
                   <!-- Top avatar and status END -->
                   <hr>
                   <!-- Chat conversation START -->
-                  <div class="chat-conversation-content custom-scrollbar">
+                  <div class="chat-conversation-content custom-scrollbar msg_history" style="overflow-y: auto;">
                     <!-- Chat time -->
                     <div class="text-center small my-2">9/16, 2022, 06:15 am</div>
     
@@ -158,7 +158,9 @@
                             <div class="bg-primary text-white p-2 px-3 rounded-2">{{ message.description }}</div>
                             <div class="d-flex my-2">
                               <div class="small text-secondary time_date">{{ message.time }}</div>
+                              {% if message.seen %}
                               <div class="small ms-2"><i class="fa-solid fa-check-double text-info"></i></div>
+                              {% endif %}
                             </div>
                           </div>
                         </div>
@@ -174,7 +176,7 @@
 
               </div>
             </div>
-            <div class="card-footer">
+            <div class="card-footer type-msg">
               <form method="post" id="chat-box">
                 {% csrf_token %}
                 <div class="d-sm-flex align-items-end">
@@ -198,6 +200,16 @@
       // メッセージの送信者（会話相手）と受信者（自分自身）を取得しておく
       sender_id = "{{ conversation_partner.id }}";
       receiver_id = "{{ current_user.id }}";
+      
+      // スクロールバーを自動で下まで移動する処理を定義
+      let messageBody = document.querySelector('.msg_history');
+      messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+      function scrolltoend() {
+          $('#board').stop().animate({
+              scrollTop: $('#board')[0].scrollHeight
+          }, 800);
+      }
+
       // 画面上に追加するメッセージの定義
       const text_box = '<div class="d-flex justify-content-end text-end mb-1">' +
           '<div class="w-100">' +
@@ -210,6 +222,7 @@
           '</div>' +
           '</div>' +
           '</div>'
+
       // 送信ボタンクリック時の処理を定義
       $(function () {
           $('#chat-box').on('submit', function (event) {
@@ -229,6 +242,41 @@
               let time = today.getHours() + ":" + today.getMinutes();
               field = field.replace('{time}', time);
               $('#board').append(field);
+              scrolltoend();
+          })
+      }
+
+      $(function () {
+        setInterval(receive, 1000, '{{conversation_partner.picture.url}}', '{{conversation_partner.username}}')
+      })
+
+      const text = '<div class="d-flex mb-1">' +
+        '<div class="flex-shrink-0 avatar avatar-xs me-2">' +
+        '<a href="{% url "dashboard:post_in_dashboard" {username}"><img class="avatar-img rounded-circle" src="{picture}" alt="{username}"></a>' +
+        '</div>' +
+        '<div class="flex-grow-1">' +
+        '<div class="w-100">' +
+        '<div class="d-flex flex-column align-items-start">' +
+        '<div class="bg-light text-secondary p-2 px-3 rounded-2">{description}</div>' +
+        '<div class="small my-2">{time}</div>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
+        '</div>'
+        
+      function receive(picture, username){
+          $.get('/api/messages/' + sender_id + '/' + receiver_id, function(data){
+              if(data.length !== 0){
+                  for(var i = 0; i < data.length; i++){
+                      var field = text.replace('{description}', data[i].description);
+                      var time = data[i].time.slice(0, 5)
+                      field = field.replace('{time}', time);
+                      field = field.replace('{picture}', picture);
+                      field = field.replace('{username}', username);
+                      $('#board').append(field);
+                      scrolltoend();
+                  }
+              }
           })
       }
     </script>

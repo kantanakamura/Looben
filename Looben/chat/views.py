@@ -64,3 +64,13 @@ class UpdateMessage(View):
             return JsonResponse(serializer.data, status=201)
         
         return JsonResponse(serializer.errors, status=400)
+    
+    def get(self, request, *args, **kwargs):
+        sender = self.kwargs.get('sender')
+        receiver =  self.kwargs.get('receiver')
+        messages = Messages.objects.filter(sender_name=sender, receiver_name=receiver, seen=False)
+        for message in messages:
+            message.seen = True
+            message.save()
+        serializer = MessageSerializer(instance=messages, many=True)
+        return JsonResponse(serializer.data, safe=False)
