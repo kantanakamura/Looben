@@ -30,6 +30,10 @@ def get_message(request, username):
                Messages.objects.filter(sender_name=conversation_partner.id, receiver_name=current_user.id)
     amount_of_friends = request.user.connection.all().count()
     friends_list = getFriendsList(request.user.username)
+    for message in messages:
+        if message.sender_name == conversation_partner:
+            message.seen = True
+            message.save()
     return render(request, "chat/messages.html", {
         'messages': messages,
         'friends_list': friends_list,
