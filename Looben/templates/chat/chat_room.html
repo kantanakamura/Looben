@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block head_content%}
+    <!--<link rel="stylesheet" href="{% static 'css/accounts/message.css' %}">-->
+{% endblock %}
+
+
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+
+{% block content %}
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+    <!-- Container START -->
+    <div class="container">
+        <div class="row">
+            <!-- Main content START -->
+            <div class="col-md-8 mx-auto">
+                <div class="card">
+                <!-- Title START -->
+                <div class="card-header border-0 pb-0">
+                    <div class="d-flex mb-2 mb-sm-0">
+                        <h1 class="h5 mb-0">チャットルーム<span class="badge bg-success bg-opacity-10 text-success">{{ amount_of_friends }}</span></h1>
+                    </div>
+                    <hr>
+                </div>
+                <!-- Title END -->
+
+                <!-- Chat list START -->
+                <div class="mt-4 h-100">
+                    <!-- Search chat START -->
+                    {% csrf_token %}
+                    <form class="rounded position-relative" method="get" style="margin: 0px 30px 15px 30px;">
+                        <input class="form-control form-control-lg ps-5" type="search" placeholder="検索" aria-label="Search" name="search">
+                        <button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit"><i class="bi bi-search fs-5 ps-1"> </i></button>
+                    </form>
+                    <!-- Search chat END -->
+
+
+                    <div class="chat-tab-list custom-scrollbar">
+                    <ul class="nav flex-column nav-pills nav-pills-soft">
+
+                        {% for friend in friends_list %}
+                        <li data-bs-dismiss="offcanvas">
+                        <!-- Chat user tab item -->
+                        <a href="{% url 'chat:get_message' friend.username %}" class="nav-link text-start">
+                            <div class="d-flex">
+                            <div class="flex-shrink-0 avatar me-2">
+                                <img class="avatar-img rounded-circle" src="{{ friend.picture.url }}" alt="{{ friend.username }}">
+                            </div>
+                            <div class="flex-grow-1 d-block">
+                                <h6 class="mb-0 mt-1">{{ friend.name }} </h6>
+                                <div class="small text-secondary"></div>
+                            </div>
+                            </div>
+                        </a>
+                        </li>
+                        {% endfor %}
+                        
+                    </ul>
+                    </div>
+                </div>
+                <!-- Chat list  END -->
+                </div>
+            </div>
+
+        </div> <!-- Row END -->
+    </div>
+    <!-- Container END --> 
+</main>
+<!-- **************** MAIN CONTENT END **************** -->
+{% endblock %}

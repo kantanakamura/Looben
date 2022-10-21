@@ -16,6 +16,7 @@ urlpatterns = [
     path('', include('job.urls')),
     path('', include('blogs.urls')),
     path('', include('questions.urls')),
+    path('', include('chat.urls')),
 ]
 
 handler404 = page_not_found

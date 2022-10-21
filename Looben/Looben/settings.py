@@ -51,7 +51,9 @@ INSTALLED_APPS = [
     'dashboard',
     'job',
     'blogs',
+    'chat',
     'questions',
+    'rest_framework',
 ]
 
 
