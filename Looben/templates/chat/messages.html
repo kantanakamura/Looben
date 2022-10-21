@@ -26,14 +26,14 @@
           <div class="d-flex align-items-center mb-4 d-lg-none">
             <button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
             <i class="btn btn-primary fw-bold fa-solid fa-sliders"></i>
-            <span class="h6 mb-0 fw-bold d-lg-none ms-2">トークルーム</span>
+            <span class="h6 mb-0 fw-bold d-lg-none ms-2">チャットルーム</span>
             </button>
           </div>
           <!-- Advanced filter responsive toggler END -->
 
           <div class="card card-body border-end-0 border-bottom-0 rounded-bottom-0">
             <div class=" d-flex justify-content-between align-items-center">
-              <h1 class="h5 mb-0">トークルーム<span class="badge bg-success bg-opacity-10 text-success">6</span></h1>
+              <h1 class="h5 mb-0">チャットルーム<span class="badge bg-success bg-opacity-10 text-success">{{ amount_of_friends }}</span></h1>
               <!-- Chat new create message item START -->
               <div class="dropend position-relative">
                 <div class="nav">
@@ -56,8 +56,8 @@
                 <div class="card card-chat-list rounded-end-lg-0 card-body border-end-lg-0 rounded-top-0">
                   
                   <!-- Search chat START -->
-                  <form class="position-relative">
-                    <input class="form-control py-2" type="search" placeholder="検索" aria-label="Search">
+                  <form class="position-relative" mothod="get">
+                    <input class="form-control py-2" type="search" placeholder="検索" aria-label="search">
                     <button class="btn bg-transparent text-secondary px-2 py-0 position-absolute top-50 end-0 translate-middle-y" type="submit">
                       <i class="bi bi-search fs-5"></i>
                     </button>
@@ -67,120 +67,41 @@
                   <div class="mt-4 h-100">
                     <div class="chat-tab-list custom-scrollbar">
                       <ul class="nav flex-column nav-pills nav-pills-soft">
+
                         <li data-bs-dismiss="offcanvas">
                           <!-- Chat user tab item -->
-                          <a href="#chat-1" class="nav-link active text-start" id="chat-1-tab" data-bs-toggle="pill" role="tab">
+                          <a href="{% url 'chat:get_message' conversation_partner.username %}" class="nav-link active text-start">
                             <div class="d-flex">
-                              <div class="flex-shrink-0 avatar avatar-story me-2 status-online">
-                                <img class="avatar-img rounded-circle" src="{% static 'images/avatar/IMG_4023.jpg' %}" alt="">
+                              <div class="flex-shrink-0 avatar me-2 status-online">
+                                <img class="avatar-img rounded-circle" src="{{ conversation_partner.picture.url }}" alt="{{ conversation_partner.username }}">
                               </div>
                               <div class="flex-grow-1 d-block">
-                                <h6 class="mb-0 mt-1">高橋 優輝 </h6>
+                                <h6 class="mb-0 mt-1">{{ conversation_partner.name }} </h6>
                                 <div class="small text-secondary"></div>
                               </div>
                             </div>
                           </a>
                         </li>
-                        <!-- Chat user tab item -->
+
+                        {% for friend in friends_list %}
+                        {% if not friend == conversation_partner %}
                         <li data-bs-dismiss="offcanvas">
-                          <a href="#chat-2" class="nav-link text-start" id="chat-2-tab" data-bs-toggle="pill" role="tab">
+                          <!-- Chat user tab item -->
+                          <a href="{% url 'chat:get_message' friend.username %}" class="nav-link text-start">
                             <div class="d-flex">
-                              <div class="flex-shrink-0 avatar me-2 status-offline">
-                                <img class="avatar-img rounded-circle" src="{% static 'images/avatar/IMG_4024.jpg' %}" alt="">
+                              <div class="flex-shrink-0 avatar me-2 status-online">
+                                <img class="avatar-img rounded-circle" src="{{ friend.picture.url }}" alt="{{ friend.username }}">
                               </div>
                               <div class="flex-grow-1 d-block">
-                                <h6 class="mb-0 mt-1">比嘉 秋人</h6>
-                                <div class="small text-secondary">比嘉 秋人が写真を送信しました</div>
+                                <h6 class="mb-0 mt-1">{{ friend.name }} </h6>
+                                <div class="small text-secondary"></div>
                               </div>
                             </div>
                           </a>
                         </li>
-                        <!-- Chat user tab item -->
-                        <li data-bs-dismiss="offcanvas">
-                          <a href="#chat-3" class="nav-link text-start" id="chat-3-tab" data-bs-toggle="pill" role="tab">
-                            <div class="d-flex">
-                              <div class="flex-shrink-0 avatar avatar-story me-2">
-                                <img class="avatar-img rounded-circle" src="{% static 'images/avatar/IMG_4025.jpg' %}" alt="">
-                              </div>
-                              <div class="flex-grow-1 d-block">
-                                <h6 class="mb-0 mt-1">芦澤 悠太</h6>
-                                <div class="small text-secondary">あなた: なるほど</div>
-                              </div>
-                            </div>
-                          </a>
-                        </li>
-                        <!-- Chat user tab item -->
-                        <li data-bs-dismiss="offcanvas">
-                          <a href="#chat-4" class="nav-link text-start" id="chat-4-tab" data-bs-toggle="pill" role="tab">
-                            <div class="d-flex">
-                              <div class="flex-shrink-0 avatar me-2">
-                                <ul class="avatar-group avatar-group-two">
-                                  <li class="avatar avatar-xs">
-                                    <img class="avatar-img rounded-circle" src="{% static 'images/avatar/IMG_4026.jpg' %}" alt="avatar">
-                                  </li>
-                                  <li class="avatar avatar-xs">
-                                    <img class="avatar-img rounded-circle" src="{% static 'images/avatar/IMG_4025.jpg' %}" alt="avatar">
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="flex-grow-1 d-block">
-                                <h6 class="mb-0 mt-1">市原 歩, 芦澤 悠太</h6>
-                                <div class="small text-secondary">市原 歩: 楽しみだね</div>
-                              </div>
-                            </div>
-                          </a>
-                        </li>
-                        <!-- Chat user tab item -->
-                        <li data-bs-dismiss="offcanvas">
-                          <a href="#chat-5" class="nav-link text-start" id="chat-5-tab" data-bs-toggle="pill" role="tab">
-                            <div class="d-flex">
-                              <div class="flex-shrink-0 avatar me-2">
-                                <ul class="avatar-group avatar-group-three">
-                                  <li class="avatar avatar-xs">
-                                    <img class="avatar-img rounded-circle" src="{% static 'images/avatar/IMG_4023.jpg' %}" alt="avatar">
-                                  </li>
-                                  <li class="avatar avatar-xs">
-                                    <img class="avatar-img rounded-circle" src="{% static 'images/avatar/IMG_4027.jpg' %}" alt="avatar">
-                                  </li>
-                                  <li class="avatar avatar-xs">
-                                    <img class="avatar-img rounded-circle" src="{% static 'images/avatar/hayato.jpg' %}" alt="avatar">
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="flex-grow-1 d-block">
-                                <h6 class="mb-0 mt-1">中村 幹太, 櫻井 愛, 光武 あや</h6>
-                                <div class="small text-secondary">櫻井 愛: 準備するものある？</div>
-                              </div>
-                            </div>
-                          </a>
-                        </li>
-                        <!-- Chat user tab item -->
-                        <li data-bs-dismiss="offcanvas">
-                          <a href="#chat-6" class="nav-link text-start" id="chat-6-tab" data-bs-toggle="pill" role="tab">
-                            <div class="d-flex">
-                              <div class="flex-shrink-0 avatar me-2">
-                                <ul class="avatar-group avatar-group-four">
-                                  <li class="avatar avatar-xxs">
-                                    <img class="avatar-img rounded-circle" src="{% static 'images/avatar/09.jpg' %}" alt="avatar">
-                                  </li>
-                                  <li class="avatar avatar-xxs">
-                                    <img class="avatar-img rounded-circle" src="{% static 'images/avatar/11.jpg' %}" alt="avatar">
-                                  </li>
-                                  <li class="avatar avatar-xxs">
-                                    <img class="avatar-img rounded-circle" src="{% static 'images/avatar/03.jpg' %}" alt="avatar">
-                                  </li>
-                                  <li class="avatar avatar-xxs">
-                                    <img class="avatar-img rounded-circle" src="{% static 'images/avatar/02.jpg' %}" alt="avatar">
-                                  </li>
-                                </ul>
-                              </div>
-                              <div class="flex-grow-1 d-block overflow-hidden">
-                                <h6 class="mb-0 mt-1 text-truncate w-75">元智大學新一年</h6>
-                                <div class="small text-secondary">あなた: 了解, ありがとう</div>
-                              </div>
-                            </div>
-                          </a>
-                        </li>
+                        {% endif %}
+                        {% endfor %}
+                        
                       </ul>
                     </div>
                   </div>
@@ -197,17 +118,17 @@
         <div class="col-lg-8 col-xxl-9">
           <div class="card card-chat rounded-start-lg-0 border-start-lg-0">
             <div class="card-body h-100">
-              <div class="tab-content py-0 mb-0 h-100" id="chatTabsContent">
+              <div class="py-0 mb-0 h-100">
                 <!-- Conversation item START -->
-                <div class="fade tab-pane show active h-100" id="chat-1" role="tabpanel" aria-labelledby="chat-1-tab">
+                <div class="h-100">
                   <!-- Top avatar and status START -->
                   <div class="d-sm-flex justify-content-between align-items-center">
                     <div class="d-flex mb-2 mb-sm-0">
                       <div class="flex-shrink-0 avatar me-2">
-                        <img class="avatar-img rounded-circle" src="{{ friend.picture.url }}" alt="{{ friend.username }}">
+                        <img class="avatar-img rounded-circle" src="{{ conversation_partner.picture.url }}" alt="{{ conversation_partner.username }}">
                       </div>
                       <div class="d-block flex-grow-1">
-                        <h6 class="mb-0 mt-1">{{ friend.name }}</h6>
+                        <h6 class="mb-0 mt-1">{{ conversation_partner.name }}</h6>
                         <div class="small text-secondary"><i class="fa-solid fa-circle text-success me-1"></i>Online</div>
                       </div>
                     </div>
@@ -238,11 +159,11 @@
                     <div class="text-center small my-2">9/16, 2022, 06:15 am</div>
     
                     {% for message in messages %}
-                    {% if friend == message.sender_name %}
+                    {% if conversation_partner == message.sender_name %}
                     <!-- Chat message left -->
                     <div class="d-flex mb-1">
                       <div class="flex-shrink-0 avatar avatar-xs me-2">
-                        <img class="avatar-img rounded-circle" src="{{ friend.picture.url }}" alt="{{ friend.username }}">
+                        <img class="avatar-img rounded-circle" src="{{ conversation_partner.picture.url }}" alt="{{ conversation_partner.username }}">
                       </div>
                       <div class="flex-grow-1">
                         <div class="w-100">

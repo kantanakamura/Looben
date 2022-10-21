@@ -19,16 +19,18 @@ def get_message(request, username):
     """
     特定ユーザ間のチャット情報を取得する
     """
-    friend = Users.objects.get(username=username)
+    conversation_partner = Users.objects.get(username=username)
     current_user = Users.objects.get(username=request.user.username)
-    messages = Messages.objects.filter(sender_name=current_user.id, receiver_name=friend.id) | \
-               Messages.objects.filter(sender_name=friend.id, receiver_name=current_user.id)
+    messages = Messages.objects.filter(sender_name=current_user.id, receiver_name=conversation_partner.id) | \
+               Messages.objects.filter(sender_name=conversation_partner.id, receiver_name=current_user.id)
+    amount_of_friends = request.user.connection.all().count()
     friends_list = getFriendsList(request.user.username)
     return render(request, "chat/messages.html", {
         'messages': messages,
         'friends_list': friends_list,
         'current_user': current_user, 
-        'friend': friend
+        'conversation_partner': conversation_partner,
+        'amount_of_friends': amount_of_friends,
         })
     
     
