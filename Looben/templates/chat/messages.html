@@ -192,48 +192,48 @@
   
     </div>
     <!-- Container END -->
+
+    
+    <script>
+      // メッセージの送信者（会話相手）と受信者（自分自身）を取得しておく
+      sender_id = "{{ conversation_partner.id }}";
+      receiver_id = "{{ current_user.id }}";
+      // 画面上に追加するメッセージの定義
+      const text_box = '<div class="d-flex justify-content-end text-end mb-1">' +
+          '<div class="w-100">' +
+          '<div class="d-flex flex-column align-items-end">' +
+          '<div class="bg-primary text-white p-2 px-3 rounded-2">{description}</div>' +
+          '<div class="d-flex my-2">' +
+          '<div class="small text-secondary time_date">{time}</div>' +
+          '<div class="small ms-2"><i class="fa-solid fa-check-double text-info"></i></div>' +
+          '</div>' +
+          '</div>' +
+          '</div>' +
+          '</div>'
+      // 送信ボタンクリック時の処理を定義
+      $(function () {
+          $('#chat-box').on('submit', function (event) {
+              event.preventDefault();  // ページノリロードを防止
+              let message = $('#msg_field');
+              // sendメソッドを実行
+              send('{{ current_user.id }}', '{{ conversation_partner.id }}', message.val());
+              message.val(''); // メッセージ入力欄をリセット
+          })
+      })
+      function send(sender, receiver, message){
+          // メッセージ送信
+          $.post('/api/messages', '{"sender_name": "' + sender + '", "receiver_name": "' +
+                  receiver + '","description": "' + message + '" }', function (data) {
+              let field = text_box.replace('{description}', message);
+              let today = new Date();
+              let time = today.getHours() + ":" + today.getMinutes();
+              field = field.replace('{time}', time);
+              $('#board').append(field);
+          })
+      }
+    </script>
   
 </main>
 <!-- **************** MAIN CONTENT END **************** -->
 {% endblock %}
 
-{% block javascript %}
-<script>
-  // メッセージの送信者（会話相手）と受信者（自分自身）を取得しておく
-  sender_id = "{{ conversation_partner.id }}";
-  receiver_id = "{{ current_user.id }}";
-  // 画面上に追加するメッセージの定義
-  const text_box = '<div class="d-flex justify-content-end text-end mb-1">' +
-      '<div class="w-100">' +
-      '<div class="d-flex flex-column align-items-end">' +
-      '<div class="bg-primary text-white p-2 px-3 rounded-2">{ description }</div>' +
-      '<div class="d-flex my-2">' +
-      '<div class="small text-secondary time_date">{ time }</div>' +
-      '<div class="small ms-2"><i class="fa-solid fa-check-double text-info"></i></div>' +
-      '</div>' +
-      '</div>' +
-      '</div>' +
-      '</div>'
-  // 送信ボタンクリック時の処理を定義
-  $(function () {
-      $('#chat-box').on('submit', function (event) {
-          event.preventDefault();  // ページノリロードを防止
-          let message = $('#msg_field');
-          // sendメソッドを実行
-          send('{{ current_user.id }}', '{{ conversation_partner.id }}', message.val());
-          message.val(''); // メッセージ入力欄をリセット
-      })
-  })
-  function send(sender, receiver, message){
-      // メッセージ送信
-      $.post('/api/messages', '{"sender_name": "' + sender + '", "receiver_name": "' +
-              receiver + '","description": "' + message + '" }', function (data) {
-          let field = text_box.replace('{description}', message);
-          let today = new Date();
-          let time = today.getHours() + ":" + today.getMinutes();
-          field = field.replace('{time}', time);
-          $('#board').append(field);
-      })
-  }
-</script>
-{% endblock %}

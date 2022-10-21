@@ -1,6 +1,11 @@
 from django.shortcuts import render
 from django.views.generic.detail import DetailView
-
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+from django.http.response import JsonResponse
+from rest_framework.parsers import JSONParser
+from chat.serializers import MessageSerializer
+from django.views.generic.base import View
 
 from accounts.models import Users
 from chat.models import Messages
@@ -46,3 +51,16 @@ class ChatRoomView(DetailView):
         context['friends_list'] = getFriendsList(user.username)
         context['amount_of_friends'] = user.connection.all().count()
         return context
+        
+        
+class UpdateMessage(View):
+
+    def post(self, request, *args, **kwargs):
+        data = JSONParser().parse(request)
+        serializer = MessageSerializer(data=data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(serializer.data, status=201)
+        
+        return JsonResponse(serializer.errors, status=400)
