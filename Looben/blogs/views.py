@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView
+from django.views.generic.base import TemplateView, View
 from django.urls import reverse_lazy
 
 from .forms import CreateBlogForm
@@ -16,3 +17,7 @@ def create_blog(request):
             'create_blog_form': create_blog_form
         }
     )
+    
+    
+class BlogListView(TemplateView):
+    template_name = 'blog/blog_list.html'
