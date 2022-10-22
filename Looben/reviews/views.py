@@ -23,9 +23,14 @@ def create_review_of_university(request):
         create_review_form.instance.user.save()
         messages.success(request, 'レビューを作成しました')
         # Schoolsの星評価にこのレビューの評価を反映させる
-        # number_of_review = ReviewOfUniversity.objects.filter(university=create_review_form.cleaned_data.get('university')).count()
         target_university = Schools.objects.get(id=create_review_form.cleaned_data.get('university').id)
-        target_university.star_rating = (target_university.star_rating + int(create_review_form.cleaned_data.get('star'))) / 2
+        review_list_for_target_university = ReviewOfUniversity.objects.filter(university=target_university).all()
+        # get the value of total added rating
+        total_added_rating_value = int(create_review_form.cleaned_data.get('star'))
+        number_of_review = len(review_list_for_target_university) + 1
+        for review in review_list_for_target_university:
+            total_added_rating_value += int(review.star)
+        target_university.star_rating = total_added_rating_value / number_of_review
         target_university.save()
         return redirect('accounts:research_university')
     return render(
