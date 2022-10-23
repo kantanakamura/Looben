@@ -1,0 +1,671 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+
+{% block content %}
+<main> 
+
+    <!-- Container START -->
+    <div class="container-fluid">
+
+        <!-- Sidenav START -->
+        <div class="navbar navbar-vertical navbar-light">
+            <div class="offcanvas offcanvas-start custom-scrollbar rounded pt-3" tabindex="-1" id="navbarVerticaloffcanvas">
+            <div class="offcanvas-body pt-5 pt-lg-0">
+                <!-- Card START -->
+                
+                <!-- Avatar -->
+                <div class="avatar avatar-lg mb-3">
+                    <a href="{% url 'dashboard:post_in_dashboard' user.username %}"><img class="avatar-img rounded-circle border border-white border-3" src="{{ user.picture.url }}" alt="{{ user.username }}"></a>
+                </div>
+                <!-- Info -->
+                <h5 class="mb-0"> <a href="{% url 'dashboard:post_in_dashboard' user.username %}">{{ user.name }} </a> </h5>
+                <small>{{ user.school }}</small>
+                <!-- User stat START -->
+                <div class="hstack gap-2 gap-xl-3 mt-3">
+                    <!-- User stat item -->
+                    <div>
+                    <h6 class="mb-0">{{ number_of_blog_post }}</h6>
+                    <small>Post</small>
+                    </div>
+                    <!-- Divider -->
+                    <div class="vr"></div>
+                    <!-- User stat item -->
+                    <div>
+                    <h6 class="mb-0">{{ number_of_followed_user }}</h6>
+                    <small>Followers</small>
+                    </div>
+                    <!-- Divider -->
+                    <div class="vr"></div>
+                    <!-- User stat item -->
+                    <div>
+                    <h6 class="mb-0">{{ number_of_following_user }}</h6>
+                    <small>Following</small>
+                    </div>
+                </div>
+                <!-- User stat END -->
+    
+                <!-- Divider -->
+                <hr>
+    
+                <!-- Side Nav START -->
+                <ul class="nav nav-link-secondary flex-column fw-bold gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard:post_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/earth-outline-filled.svg' %}" alt="post"><span>投稿 </span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'blogs:create_blog' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/certificate-outline-filled.svg' %}" alt="blog"><span>ブログ </span></a>
+                    </li>
+                    {% if object.state == '現役台湾留学生' or object.state == '台湾留学卒業生' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard:review_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/clipboard-list-outline-filled.svg' %}" alt="review"><span>口コミ </span></a>
+                    </li>                    
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard:following_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-outline-filled.svg' %}" alt="following"><span>フォロー中 </span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard:followed_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-girl-outline-filled.svg' %}" alt="followd"><span>フォロワー </span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard:question_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bulb-curvy-outline-filled.svg' %}" alt="question"><span>質問 </span></a>
+                    </li>
+                </ul>
+                <!-- Side Nav END -->
+                </div>
+            </div>
+            </div>
+            <!-- Sidenav END -->
+    
+            <!-- Main content START -->
+            <div class="page-content">
+            <div class="row mb-4">
+                <div class="col-12">
+                <!-- Video main feed -->
+                <div class="rounded py-4 py-sm-5 overflow-hidden position-relative" style="background-image:url({% static 'images/bg/wave.jpg' %}); background-position: center center; background-size: cover; background-repeat: no-repeat;">
+                    <div class="bg-overlay bg-dark opacity-5"></div>
+                    <div class="p-4 p-sm-5 position-relative">
+                    <h1 class="text-white">知りたい情報がここにある</h1>
+                    <p class="text-white">あなたも、Loobenでブログ記事を作ってみませんか? <a href="{% url 'blogs:create_blog' %}">記事を作ってみる</a></p>
+                    <!-- Form START -->
+                    {% csrf_token %}
+                    <form class="row g-3" method="get">
+                    <div class="col-md-6">
+                        <!-- Where -->
+                        <div class="input-group">
+                        <input class="form-control form-control-lg me-1 pe-5" type="search" placeholder="キーワード" name="search">
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-grid">
+                        <!-- Search -->
+                        <button class="btn btn-lg btn-primary" type="submit">検索</button>
+                    </div>
+                    </form>
+                    <!-- Form END -->
+                    </div>
+                </div>
+                <!-- Video main END -->
+                </div>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-12 mt-4">
+                <div class="d-sm-flex justify-content-between align-items-center">
+                    <h5 class="mb-md-0">トレンド記事 </h5>
+                </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
+                <!-- Video START -->
+                <div class="card position-relative h-100">
+                    <!-- Video image -->
+                    <div class="card-image">
+                    <img class="card-img-top" src="assets/images/post/16by9/large/01.jpg" alt="">
+                    <!-- Play icon -->
+                    <div class="card-element-hover position-absolute top-50 start-50 translate-middle">
+                        <a class="icon-md bg-mode text-secondary rounded-circle" href="video-details.html"> <i class="bi bi-play-fill fs-5"> </i> </a>
+                    </div>
+                    <!-- Duration -->
+                    <div class="position-absolute bottom-0 start-0 p-3 d-flex w-100">
+                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small">10:20</span>
+                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small ms-auto"><i class="fa-solid fa-heart"></i></span>
+                    </div>
+                    </div>
+                    <!-- Video info -->
+                    <div class="card-body">
+                    <!-- Video title  -->
+                    <h6> <a class="stretched-link" href="video-details.html"> Should you become a web designer in 2022? </a> </h6>
+                    <div class="d-flex mt-3">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xxs me-2">
+                        <img class="avatar-img rounded-circle" src="assets/images/avatar/01.jpg" alt="">
+                        </div>
+                        <!-- Avatar name -->
+                        <div>
+                        <h6 class="mb-0 lh-1"> <a href="#!"> Frances Guerrero </a> </h6>
+                        <span class="ms-auto small"> 156.9K views</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- Video END -->
+                </div>
+                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
+                <!-- Video START -->
+                <div class="card position-relative h-100">
+                    <!-- Video image -->
+                    <div class="card-image">
+                    <div class="ratio ratio-16x9 card-img-top overflow-hidden">
+                        <iframe src="https://www.youtube.com/embed/CgEZNJSeofs" title="YouTube video" allowfullscreen></iframe>
+                    </div>
+                    </div>
+                    <!-- Video info -->
+                    <div class="card-body position-relative">
+                    <h6> <a class="stretched-link" href="video-details.html"> Learn web development as an absolute beginner </a> </h6>
+                    <div class="d-flex mt-3">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xxs me-2">
+                        <img class="avatar-img rounded-circle" src="assets/images/avatar/02.jpg" alt="">
+                        </div>
+                        <!-- Avatar name -->
+                        <div>
+                        <h6 class="mb-0 lh-1"> <a href="#!"> Lori Ferguson <i class="bi bi-patch-check-fill text-success small"></i> </a> </h6>
+                        <span class="ms-auto small"> 458.4K views</span>
+                        </div>
+                    </div>
+                    <!-- Video title  -->
+                    </div>
+                </div>
+                <!-- Video END -->
+                </div>
+                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
+                <!-- Video START -->
+                <div class="card position-relative h-100">
+                    <!-- Video image -->
+                    <div class="card-image">
+                    <img class="card-img-top" src="assets/images/post/16by9/large/02.jpg" alt="">
+                    <!-- Play icon -->
+                    <div class="card-element-hover position-absolute top-50 start-50 translate-middle">
+                        <a class="icon-md bg-mode text-secondary rounded-circle" href="video-details.html"> <i class="bi bi-play-fill fs-5"> </i> </a>
+                    </div>
+                    <!-- Duration -->
+                    <div class="position-absolute bottom-0 start-0 p-3 d-flex w-100">
+                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small">03:40</span>
+                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small ms-auto"><i class="fa-solid fa-heart"></i></span>
+                    </div>
+                    </div>
+                    <!-- Video info -->
+                    <div class="card-body">
+                    <!-- Video title  -->
+                    <h6> <a class="stretched-link" href="video-details.html"> Python tutorial - Python for beginners [full course] </a> </h6>
+                    <div class="d-flex mt-3">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xxs me-2">
+                        <img class="avatar-img rounded-circle" src="assets/images/avatar/03.jpg" alt="">
+                        </div>
+                        <!-- Avatar name -->
+                        <div>
+                        <h6 class="mb-0 lh-1"> <a href="#!"> Louis Crawford </a> </h6>
+                        <span class="ms-auto small"> 235.4K views</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- Video END -->
+                </div>
+                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
+                <!-- Video START -->
+                <div class="card position-relative h-100">
+                    <!-- Video image -->
+                    <div class="card-image">
+                    <img class="card-img-top" src="assets/images/post/16by9/large/03.jpg" alt="">
+                    <!-- Play icon -->
+                    <div class="card-element-hover position-absolute top-50 start-50 translate-middle">
+                        <a class="icon-md bg-mode text-secondary rounded-circle" href="video-details.html"> <i class="bi bi-play-fill fs-5"> </i> </a>
+                    </div>
+                    <!-- Duration -->
+                    <div class="position-absolute bottom-0 start-0 p-3 d-flex w-100">
+                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small">06:12</span>
+                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small ms-auto"><i class="fa-solid fa-heart"></i></span>
+                    </div>
+                    </div>
+                    <!-- Video info -->
+                    <div class="card-body">
+                    <!-- Video title  -->
+                    <h6> <a class="stretched-link" href="video-details.html"> One of the greatest speeches ever | Steve Jobs </a> </h6>
+                    <div class="d-flex mt-3">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xxs me-2">
+                        <img class="avatar-img rounded-circle" src="assets/images/avatar/04.jpg" alt="">
+                        </div>
+                        <!-- Avatar name -->
+                        <div>
+                        <h6 class="mb-0 lh-1"> <a href="#!"> Larry Lawson </a> </h6>
+                        <span class="ms-auto small"> 891.7K views</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- Video END -->
+                </div>
+                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
+                <!-- Video START -->
+                <div class="card position-relative h-100">
+                    <!-- Video image -->
+                    <div class="card-image">
+                    <img class="card-img-top" src="assets/images/post/16by9/large/04.jpg" alt="">
+                    <!-- Play icon -->
+                    <div class="card-element-hover position-absolute top-50 start-50 translate-middle">
+                        <a class="icon-md bg-mode text-secondary rounded-circle" href="video-details.html"> <i class="bi bi-play-fill fs-5"> </i> </a>
+                    </div>
+                    <!-- Duration -->
+                    <div class="position-absolute bottom-0 start-0 p-3 d-flex w-100">
+                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small">03:45</span>
+                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small ms-auto"><i class="fa-solid fa-heart"></i></span>
+                    </div>
+                    </div>
+                    <!-- Video info -->
+                    <div class="card-body">
+                    <!-- Video title  -->
+                    <h6> <a class="stretched-link" href="video-details.html"> A trading platform - an easy start in trading </a> </h6>
+                    <div class="d-flex mt-3">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xxs me-2">
+                        <img class="avatar-img rounded-circle" src="assets/images/avatar/05.jpg" alt="">
+                        </div>
+                        <!-- Avatar name -->
+                        <div>
+                        <h6 class="mb-0 lh-1"> <a href="#!"> Joan Wallace </a> </h6>
+                        <span class="ms-auto small"> 457.2K views</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- Video END -->
+                </div>
+                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
+                <!-- Video START -->
+                <div class="card position-relative h-100">
+                    <!-- Video image -->
+                    <div class="card-image">
+                    <img class="card-img-top" src="assets/images/post/16by9/large/05.jpg" alt="">
+                    <!-- Play icon -->
+                    <div class="card-element-hover position-absolute top-50 start-50 translate-middle">
+                        <a class="icon-md bg-mode text-secondary rounded-circle" href="video-details.html"> <i class="bi bi-play-fill fs-5"> </i> </a>
+                    </div>
+                    <!-- Duration -->
+                    <div class="position-absolute bottom-0 start-0 p-3 d-flex w-100">
+                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small">10:20</span>
+                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small ms-auto"><i class="fa-solid fa-heart"></i></span>
+                    </div>
+                    </div>
+                    <!-- Video info -->
+                    <div class="card-body">
+                    <!-- Video title  -->
+                    <h6> <a class="stretched-link" href="video-details.html"> 8 shocking bitcoin crypto predictions for 2022 </a> </h6>
+                    <div class="d-flex mt-3">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xxs me-2">
+                        <img class="avatar-img rounded-circle" src="assets/images/avatar/07.jpg" alt="">
+                        </div>
+                        <!-- Avatar name -->
+                        <div>
+                        <h6 class="mb-0 lh-1"> <a href="#!"> Carolyn Ortiz </a> </h6>
+                        <span class="ms-auto small"> 876.2K views</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- Video END -->
+                </div>
+            </div>
+    
+            <!-- Official trailer START -->
+            <div class="row g-3 mb-4">
+                <div class="col-12 mt-4">
+                <div class="d-sm-flex justify-content-between align-items-center">
+                    <h5 class="mb-md-0">オフィシャル記事 </h5>
+                    <a class="btn btn-sm btn-primary" href="#!">もっとみる</a>
+                </div>
+                </div>
+                <div class="col-sm-6 col-lg-4">
+                <!-- Video START -->
+                <div class="card position-relative h-100">
+                    <!-- Video image -->
+                    <div class="card-image">
+                    <div class="overflow-hidden fullscreen-video w-100">
+                        <!-- HTML video START -->
+                        <div class="player-wrapper card-img-top overflow-hidden">
+                        <video class="player-html" controls crossorigin="anonymous" poster="assets/images/videos/poster.jpg">
+                            <source src="assets/images/videos/video-feed.mp4" type="video/mp4">
+                        </video>
+                        </div>
+                        <!-- HTML video END -->
+                    </div>
+                    </div>
+                    <!-- Video info -->
+                    <div class="card-body position-relative">
+                    <!-- Video title  -->
+                    <h6> <a class="stretched-link" href="video-details.html"> New movie trailers (2021 - 2022) September </a> </h6>
+                    <div class="d-flex mt-3">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xxs me-2">
+                        <img class="avatar-img rounded-circle" src="assets/images/avatar/01.jpg" alt="">
+                        </div>
+                        <!-- Avatar name -->
+                        <div>
+                        <h6 class="mb-0 lh-1"> <a href="#!"> Frances Guerrero </a> </h6>
+                        <span class="ms-auto small"> 145.2K views</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- Video END -->
+                </div>
+                <div class="col-sm-6 col-lg-4">
+                <!-- Video START -->
+                <div class="card h-100">
+                    <!-- Video image -->
+                    <div class="card-image">
+                    <div class="ratio ratio-16x9 card-img-top overflow-hidden">
+                        <iframe src="https://www.youtube.com/embed/7E45f46yDFI" title="YouTube video" allowfullscreen></iframe>
+                    </div>
+                    </div>
+                    <!-- Video info -->
+                    <div class="card-body position-relative">
+                    <!-- Video title  -->
+                    <h6> <a class="stretched-link" href="video-details.html"> 15 useful apps for android smartphones users </a> </h6>
+                    <div class="d-flex mt-2">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xxs me-2">
+                        <img class="avatar-img rounded-circle" src="assets/images/avatar/02.jpg" alt="">
+                        </div>
+                        <!-- Avatar name -->
+                        <div>
+                        <h6 class="mb-0 lh-1"> <a href="#!"> Lori Ferguson <i class="bi bi-patch-check-fill text-success small"></i> </a> </h6>
+                        <span class="ms-auto small"> 235.8K views</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- Video END -->
+                </div>
+                <div class="col-sm-6 col-lg-4">
+                <!-- Video START -->
+                <div class="card position-relative h-100">
+                    <!-- Video image -->
+                    <div class="card-image">
+                    <div class="ratio ratio-16x9 card-img-top overflow-hidden">
+                        <iframe src="https://player.vimeo.com/video/225888984?h=65630c41c6" title="Vimeo video" allowfullscreen></iframe>
+                    </div>
+                    </div>
+                    <!-- Video info -->
+                    <div class="card-body position-relative">
+                    <!-- Video title  -->
+                    <h6> <a class="stretched-link" href="video-details.html"> The Red notice | Official teaser | Netflix </a> </h6>
+                    <div class="d-flex mt-3">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xxs me-2">
+                        <img class="avatar-img rounded-circle" src="assets/images/avatar/03.jpg" alt="">
+                        </div>
+                        <!-- Avatar name -->
+                        <div>
+                        <h6 class="mb-0 lh-1"> <a href="#!"> Louis Crawford </a> </h6>
+                        <span class="ms-auto small"> 785.2K views</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- Video END -->
+                </div>
+            </div>
+            <!-- Official trailer END -->
+    
+            <div class="row g-3 mb-4">
+                <div class="col-12 mt-4">
+                <div class="d-sm-flex justify-content-between align-items-center">
+                    <h5 class="mb-md-0">人気記事 </h5>
+                    <a class="btn btn-sm btn-primary" href="#!">もっとみる</a>
+                </div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
+                <!-- Video START -->
+                <div class="card position-relative h-100">
+                    <!-- Video image -->
+                    <div class="card-image">
+                    <img class="card-img-top" src="assets/images/post/16by9/large/01.jpg" alt="">
+                    <!-- Play icon -->
+                    <div class="card-element-hover position-absolute top-50 start-50 translate-middle">
+                        <a class="icon-md bg-mode text-secondary rounded-circle" href="video-details.html"> <i class="bi bi-play-fill fs-5"> </i> </a>
+                    </div>
+                    <!-- Duration -->
+                    <div class="position-absolute bottom-0 start-0 p-3 d-flex w-100">
+                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small">10:20</span>
+                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small ms-auto"><i class="fa-solid fa-heart"></i></span>
+                    </div>
+                    </div>
+                    <!-- Video info -->
+                    <div class="card-body">
+                    <!-- Video title  -->
+                    <h6> <a class="stretched-link" href="video-details.html"> Should you become a web designer in 2022? </a> </h6>
+                    <div class="d-flex mt-3">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xxs me-2">
+                        <img class="avatar-img rounded-circle" src="assets/images/avatar/01.jpg" alt="">
+                        </div>
+                        <!-- Avatar name -->
+                        <div>
+                        <h6 class="mb-0 lh-1"> <a href="#!"> Frances Guerrero </a> </h6>
+                        <span class="ms-auto small"> 156.9K views</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- Video END -->
+                </div>
+                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
+                <!-- Video START -->
+                <div class="card position-relative h-100">
+                    <!-- Video image -->
+                    <div class="card-image">
+                    <div class="ratio ratio-16x9 card-img-top overflow-hidden">
+                        <iframe src="https://www.youtube.com/embed/CgEZNJSeofs" title="YouTube video" allowfullscreen></iframe>
+                    </div>
+                    </div>
+                    <!-- Video info -->
+                    <div class="card-body position-relative">
+                    <h6> <a class="stretched-link" href="video-details.html"> Learn web development as an absolute beginner </a> </h6>
+                    <div class="d-flex mt-3">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xxs me-2">
+                        <img class="avatar-img rounded-circle" src="assets/images/avatar/02.jpg" alt="">
+                        </div>
+                        <!-- Avatar name -->
+                        <div>
+                        <h6 class="mb-0 lh-1"> <a href="#!"> Lori Ferguson <i class="bi bi-patch-check-fill text-success small"></i> </a> </h6>
+                        <span class="ms-auto small"> 458.4K views</span>
+                        </div>
+                    </div>
+                    <!-- Video title  -->
+                    </div>
+                </div>
+                <!-- Video END -->
+                </div>
+                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
+                <!-- Video START -->
+                <div class="card position-relative h-100">
+                    <!-- Video image -->
+                    <div class="card-image">
+                    <img class="card-img-top" src="assets/images/post/16by9/large/02.jpg" alt="">
+                    <!-- Play icon -->
+                    <div class="card-element-hover position-absolute top-50 start-50 translate-middle">
+                        <a class="icon-md bg-mode text-secondary rounded-circle" href="video-details.html"> <i class="bi bi-play-fill fs-5"> </i> </a>
+                    </div>
+                    <!-- Duration -->
+                    <div class="position-absolute bottom-0 start-0 p-3 d-flex w-100">
+                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small">03:40</span>
+                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small ms-auto"><i class="fa-solid fa-heart"></i></span>
+                    </div>
+                    </div>
+                    <!-- Video info -->
+                    <div class="card-body">
+                    <!-- Video title  -->
+                    <h6> <a class="stretched-link" href="video-details.html"> Python tutorial - Python for beginners [full course] </a> </h6>
+                    <div class="d-flex mt-3">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xxs me-2">
+                        <img class="avatar-img rounded-circle" src="assets/images/avatar/03.jpg" alt="">
+                        </div>
+                        <!-- Avatar name -->
+                        <div>
+                        <h6 class="mb-0 lh-1"> <a href="#!"> Louis Crawford </a> </h6>
+                        <span class="ms-auto small"> 235.4K views</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- Video END -->
+                </div>
+                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
+                <!-- Video START -->
+                <div class="card position-relative h-100">
+                    <!-- Video image -->
+                    <div class="card-image">
+                    <img class="card-img-top" src="assets/images/post/16by9/large/03.jpg" alt="">
+                    <!-- Play icon -->
+                    <div class="card-element-hover position-absolute top-50 start-50 translate-middle">
+                        <a class="icon-md bg-mode text-secondary rounded-circle" href="video-details.html"> <i class="bi bi-play-fill fs-5"> </i> </a>
+                    </div>
+                    <!-- Duration -->
+                    <div class="position-absolute bottom-0 start-0 p-3 d-flex w-100">
+                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small">06:12</span>
+                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small ms-auto"><i class="fa-solid fa-heart"></i></span>
+                    </div>
+                    </div>
+                    <!-- Video info -->
+                    <div class="card-body">
+                    <!-- Video title  -->
+                    <h6> <a class="stretched-link" href="video-details.html"> One of the greatest speeches ever | Steve Jobs </a> </h6>
+                    <div class="d-flex mt-3">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xxs me-2">
+                        <img class="avatar-img rounded-circle" src="assets/images/avatar/04.jpg" alt="">
+                        </div>
+                        <!-- Avatar name -->
+                        <div>
+                        <h6 class="mb-0 lh-1"> <a href="#!"> Larry Lawson </a> </h6>
+                        <span class="ms-auto small"> 891.7K views</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- Video END -->
+                </div>
+                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
+                <!-- Video START -->
+                <div class="card position-relative h-100">
+                    <!-- Video image -->
+                    <div class="card-image">
+                    <img class="card-img-top" src="assets/images/post/16by9/large/04.jpg" alt="">
+                    <!-- Play icon -->
+                    <div class="card-element-hover position-absolute top-50 start-50 translate-middle">
+                        <a class="icon-md bg-mode text-secondary rounded-circle" href="video-details.html"> <i class="bi bi-play-fill fs-5"> </i> </a>
+                    </div>
+                    <!-- Duration -->
+                    <div class="position-absolute bottom-0 start-0 p-3 d-flex w-100">
+                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small">03:45</span>
+                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small ms-auto"><i class="fa-solid fa-heart"></i></span>
+                    </div>
+                    </div>
+                    <!-- Video info -->
+                    <div class="card-body">
+                    <!-- Video title  -->
+                    <h6> <a class="stretched-link" href="video-details.html"> A trading platform - an easy start in trading </a> </h6>
+                    <div class="d-flex mt-3">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xxs me-2">
+                        <img class="avatar-img rounded-circle" src="assets/images/avatar/05.jpg" alt="">
+                        </div>
+                        <!-- Avatar name -->
+                        <div>
+                        <h6 class="mb-0 lh-1"> <a href="#!"> Joan Wallace </a> </h6>
+                        <span class="ms-auto small"> 457.2K views</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- Video END -->
+                </div>
+                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
+                <!-- Video START -->
+                <div class="card position-relative h-100">
+                    <!-- Video image -->
+                    <div class="card-image">
+                    <img class="card-img-top" src="assets/images/post/16by9/large/05.jpg" alt="">
+                    <!-- Play icon -->
+                    <div class="card-element-hover position-absolute top-50 start-50 translate-middle">
+                        <a class="icon-md bg-mode text-secondary rounded-circle" href="video-details.html"> <i class="bi bi-play-fill fs-5"> </i> </a>
+                    </div>
+                    <!-- Duration -->
+                    <div class="position-absolute bottom-0 start-0 p-3 d-flex w-100">
+                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small">10:20</span>
+                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small ms-auto"><i class="fa-solid fa-heart"></i></span>
+                    </div>
+                    </div>
+                    <!-- Video info -->
+                    <div class="card-body">
+                    <!-- Video title  -->
+                    <h6> <a class="stretched-link" href="video-details.html"> 8 shocking bitcoin crypto predictions for 2022 </a> </h6>
+                    <div class="d-flex mt-3">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xxs me-2">
+                        <img class="avatar-img rounded-circle" src="assets/images/avatar/07.jpg" alt="">
+                        </div>
+                        <!-- Avatar name -->
+                        <div>
+                        <h6 class="mb-0 lh-1"> <a href="#!"> Carolyn Ortiz </a> </h6>
+                        <span class="ms-auto small"> 876.2K views</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- Video END -->
+                </div>
+            </div>
+    
+            <!-- footer START -->
+            <footer class="card card-body">
+                <div class="row g-4">
+                <div class="col-md-8">
+                    <!-- Footer nav START -->
+                    <ul class="nav lh-1">
+                    <li class="nav-item">
+                        <a class="nav-link ps-0" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" target="_blank" href="#">Support </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Privacy & terms</a>
+                    </li>
+                    </ul>
+                    <!-- Footer nav START -->
+                    <!-- Copyright START -->
+                    <p class="mb-0 mt-4">©2022 Looben, All Rights Reserved.</p>
+                    <!-- Copyright END -->
+                </div>
+            </footer>
+            <!-- footer END -->
+        </div>
+        <!-- Main content END -->
+
+    </div>
+    <!-- Container END -->
+</main>
+<!-- **************** MAIN CONTENT END **************** -->
+
+{% endblock %}

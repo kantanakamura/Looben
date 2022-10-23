@@ -41,17 +41,17 @@
 
                 <!-- Nav item 2 Post -->
                 <li class="nav-item">
-                <a class="nav-link" href="{% url 'accounts:comingsoon' %}">バイト</a>
+                    <a class="nav-link" href="{% url 'questions:question' %}">質問部屋</a>
                 </li>  
-
+    
                 <!-- Nav item 3 Post -->
                 <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">留学生とつながる</a>
-                <ul class="dropdown-menu">
-                    <li> <a class="dropdown-item" href="{% url 'questions:question' %}"><i class="bi bi-patch-question"></i> 質問部屋</a></li>
-                    <li> <a class="dropdown-item" href="create-page.html"><i class="bi  bi-newspaper"></i> ブログ記事一覧</a></li>
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">留学生とつながる</a>
+                    <ul class="dropdown-menu">
+                    <li> <a class="dropdown-item" href="{% url 'blogs:blog_list' %}"><i class="bi  bi-newspaper"></i> ブログ記事一覧</a></li>
                     <li> <a class="dropdown-item" href="{% url 'accounts:user_ranking' %}"><i class="bi bi-file-earmark-person"></i> 留学生ランキング</a></li>
-                </ul>
+                    <li> <a class="dropdown-item" href="{% url 'accounts:comingsoon' %}"><i class="bi bi-briefcase"></i> バイト</a></li>
+                    </ul>
                 </li>
             <ul>
             </div>
