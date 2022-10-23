@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView
+from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView, View
 from django.urls import reverse_lazy
 
@@ -33,3 +34,10 @@ class BlogListView(View):
             'number_of_followed_user': number_of_followed_user,
             'number_of_blog_post': number_of_blog_post,
             })
+        
+        
+class BlogDetailView(DetailView):
+    template_name = 'blog/blog_detail.html'
+    model = Blog
+    
+    
