@@ -3,7 +3,9 @@ from django.views.generic.edit import CreateView
 from django.views.generic.base import TemplateView, View
 from django.urls import reverse_lazy
 
+
 from .forms import CreateBlogForm
+from .models import Blog
     
     
 def create_blog(request):
@@ -19,5 +21,15 @@ def create_blog(request):
     )
     
     
-class BlogListView(TemplateView):
-    template_name = 'blog/blog_list.html'
+class BlogListView(View):
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        number_of_following_user = user.connection.all().count()
+        number_of_followed_user = user.connected_users.all().count()
+        number_of_blog_post = Blog.objects.filter(user=user).all().count()
+        return render(request, 'blog/blog_list.html', {
+            'number_of_following_user': number_of_following_user,
+            'number_of_followed_user': number_of_followed_user,
+            'number_of_blog_post': number_of_blog_post,
+            })

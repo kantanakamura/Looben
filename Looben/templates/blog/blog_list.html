@@ -12,6 +12,7 @@
 
     <!-- Container START -->
     <div class="container-fluid">
+
         <!-- Sidenav START -->
         <div class="navbar navbar-vertical navbar-light">
             <div class="offcanvas offcanvas-start custom-scrollbar rounded pt-3" tabindex="-1" id="navbarVerticaloffcanvas">
@@ -20,30 +21,30 @@
                 
                 <!-- Avatar -->
                 <div class="avatar avatar-lg mb-3">
-                    <a href="#!"><img class="avatar-img rounded-circle border border-white border-3" src="assets/images/avatar/07.jpg" alt=""></a>
+                    <a href="{% url 'dashboard:post_in_dashboard' user.username %}"><img class="avatar-img rounded-circle border border-white border-3" src="{{ user.picture.url }}" alt="{{ user.username }}"></a>
                 </div>
                 <!-- Info -->
-                <h5 class="mb-0"> <a href="#!">Sam Lanson </a> </h5>
-                <small>Web Developer at Webestica</small>
+                <h5 class="mb-0"> <a href="{% url 'dashboard:post_in_dashboard' user.username %}">{{ user.name }} </a> </h5>
+                <small>{{ user.school }}</small>
                 <!-- User stat START -->
                 <div class="hstack gap-2 gap-xl-3 mt-3">
                     <!-- User stat item -->
                     <div>
-                    <h6 class="mb-0">256</h6>
+                    <h6 class="mb-0">{{ number_of_blog_post }}</h6>
                     <small>Post</small>
                     </div>
                     <!-- Divider -->
                     <div class="vr"></div>
                     <!-- User stat item -->
                     <div>
-                    <h6 class="mb-0">2.5K</h6>
+                    <h6 class="mb-0">{{ number_of_followed_user }}</h6>
                     <small>Followers</small>
                     </div>
                     <!-- Divider -->
                     <div class="vr"></div>
                     <!-- User stat item -->
                     <div>
-                    <h6 class="mb-0">365</h6>
+                    <h6 class="mb-0">{{ number_of_following_user }}</h6>
                     <small>Following</small>
                     </div>
                 </div>
@@ -55,31 +56,24 @@
                 <!-- Side Nav START -->
                 <ul class="nav nav-link-secondary flex-column fw-bold gap-2">
                     <li class="nav-item">
-                    <a class="nav-link" href="#!"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/home-outline-filled.svg" alt=""><span>Feed </span></a>
+                        <a class="nav-link" href="{% url 'dashboard:post_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/earth-outline-filled.svg' %}" alt="post"><span>投稿 </span></a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="#!"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/medal-outline-filled.svg" alt=""><span>Popular </span></a>
+                        <a class="nav-link" href="{% url 'blogs:create_blog' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/certificate-outline-filled.svg' %}" alt="blog"><span>ブログ </span></a>
+                    </li>
+                    {% if object.state == '現役台湾留学生' or object.state == '台湾留学卒業生' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard:review_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/clipboard-list-outline-filled.svg' %}" alt="review"><span>口コミ </span></a>
+                    </li>                    
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard:following_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-outline-filled.svg' %}" alt="following"><span>フォロー中 </span></a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="#!"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/clock-outline-filled.svg" alt=""><span>Recent </span></a>
+                        <a class="nav-link" href="{% url 'dashboard:followed_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-girl-outline-filled.svg' %}" alt="followd"><span>フォロワー </span></a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="#!"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/like-outline-filled.svg" alt=""><span>Subscriptions </span></a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="#!"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/star-outline-filled.svg" alt=""><span>My favorites </span></a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="#!"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/task-done-outline-filled.svg" alt=""><span>Wishlist </span></a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="#!"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/notification-outlined-filled.svg" alt=""><span>Notifications </span></a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="#!"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/cog-outline-filled.svg" alt=""><span>Settings </span></a>
-                    </li>
-                    <li class="nav-item">
-                    <a class="nav-link" href="#!"> <img class="me-2 h-20px fa-fw" src="assets/images/icon/arrow-boxed-outline-filled.svg" alt=""><span>Logout </span></a>
+                        <a class="nav-link" href="{% url 'dashboard:question_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bulb-curvy-outline-filled.svg' %}" alt="question"><span>質問 </span></a>
                     </li>
                 </ul>
                 <!-- Side Nav END -->
