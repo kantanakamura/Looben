@@ -17,6 +17,7 @@ urlpatterns = [
     path('', include('blogs.urls')),
     path('', include('questions.urls')),
     path('', include('chat.urls')),
+    path(r'mdeditor/', include('mdeditor.urls')),
 ]
 
 handler404 = page_not_found

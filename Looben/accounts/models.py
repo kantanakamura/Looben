@@ -72,7 +72,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = 'ユーザー'
         
     def __str__(self):
-        return self.username + ' : ' + str(self.school)
+        return self.username
         
 
 

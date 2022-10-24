@@ -14,7 +14,7 @@ def create_blog(request):
     if create_blog_form.is_valid():
         create_blog_form.instance.user = request.user
         create_blog_form.save()
-        return redirect('accounts:research_university')
+        return redirect('blogs:blog_list')
     return render(
         request, 'blog/create_blog.html', context={
             'create_blog_form': create_blog_form
