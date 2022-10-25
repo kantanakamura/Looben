@@ -11,65 +11,131 @@
 {% block content %}
 <!-- **************** MAIN CONTENT START **************** -->
 <main>
-
     <!-- Container START -->
     <div class="container">
         <div class="row g-4">
-            <!-- Main content START -->
-            <div class="col-lg-8 mx-auto">
-            <div class="vstack gap-4">
-                <!-- Blog single START -->
-                <div class="card card-body">
-                <img class="rounded" src="{{ object.top_image.url }}" alt="looben_">
-                <div class="mt-4">
-                    <!-- Tag -->
-                    <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">Lifestyle</a>
-                    <!-- Title info -->
-                    <h1 class="mb-2 h2">{{ object.title }}</h1>
-                    <ul class="nav nav-stack gap-3 align-items-center">
-                    <li class="nav-item">
-                        <div class="nav-link">
-                        by <a href="{% url 'dashboard:post_in_dashboard' object.user.username %}" class="text-reset btn-link">{{ object.user }}</a>
+
+        <!-- Sidenav START -->
+        <div class="col-lg-3">
+            <!-- Advanced filter responsive toggler START -->
+            <div class="d-flex align-items-center d-lg-none">
+                <button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
+                <i class="btn btn-primary fw-bold fa-solid fa-sliders-h"></i>
+                <span class="h6 mb-0 fw-bold d-lg-none ms-2">著者プロフィール</span>
+                </button>
+            </div>
+            <!-- Advanced filter responsive toggler END -->
+            
+            <!-- Navbar START-->
+            <nav class="navbar navbar-expand-lg mx-0"> 
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSideNavbar">
+                <!-- Offcanvas header -->
+                <div class="offcanvas-header">
+                    <button type="button" class="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+    
+                <!-- Offcanvas body -->
+                <div class="offcanvas-body d-block px-2 px-lg-0">
+                    <!-- Card START -->
+                    <div class="card overflow-hidden">
+                    <!-- Cover image -->
+                    <div class="h-50px" style="background-image:url({% static 'images/bg/create_review.jpg' %}); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+                        <!-- Card body START -->
+                        <div class="card-body pt-0">
+                        <div class="text-center">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-lg mt-n5 mb-3">
+                            <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}"><img class="avatar-img rounded border border-white border-3" src="{{ object.author.picture.url }}" alt="{{ object.author.username }}"></a>
                         </div>
-                    </li>
-                    <li class="nav-item"> <i class="bi bi-calendar-date pe-1"></i>{{ object.created_at }}</li>
-                    </ul>
-                    <!-- description -->
-                    <p class="mt-4"><span class="dropcap">A</span> pleasure exertion if believed provided to. All led out world this music while asked. Paid mind even sons does he door no. Attended overcame repeated it is perceived Marianne in. I think on style child of. Servants moreover in sensible it ye possible. </p>
-                    <h4 class="mt-4">The pros and cons of business agency</h4>
-                    <!-- Row START -->
-                    <div class="row mb-4">
-                    <div class="col-md-6">
-                        <p>Fulfilled direction use continual set him propriety continued. Saw met applauded favorite deficient engrossed concealed and her. </p>
-                        <p>Concluded boy perpetual old supposing. Farther related bed and passage comfort civilly. Dashwoods see frankness objection abilities.</p>
-                    </div>
-                    <div class="col-md-6">
-                        <ul>
-                        <li>Our Firmament living replenish Them Created after divide said Have give</li>
-                        <li>Dominion light without days face saw wherein land</li>
-                        <li>Fifth have Seas made lights Very Day saw Seed herb sixth light whales</li>
-                        <li>Saying unto Place it seed you're Isn't heaven </li>
+                        <!-- Info -->
+                        <h5 class="mb-0"> <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}">{{ object.author.name }} </a> </h5>
+                        <p>{{ object.author.university }}</p>
+                        <p>{{ object.author.major }}</p>
+                        <p>{{ object.author.description }}</p>
+                        <div class="hstack gap-2 gap-xl-3 mt-3">
+                            <!-- User stat item -->
+                            <div>
+                            <h6 class="mb-0">{{ number_of_blog_post }}</h6>
+                            <small>Post</small>
+                            </div>
+                            <!-- Divider -->
+                            <div class="vr"></div>
+                            <!-- User stat item -->
+                            <div>
+                            <h6 class="mb-0">{{ number_of_followed_user }}</h6>
+                            <small>Followers</small>
+                            </div>
+                            <!-- Divider -->
+                            <div class="vr"></div>
+                            <!-- User stat item -->
+                            <div>
+                            <h6 class="mb-0">{{ number_of_following_user }}</h6>
+                            <small>Following</small>
+                            </div>
+                        </div>
+                        </div>
+                        <!-- Divider -->
+                        <hr>
+    
+                        <!-- Side Nav START -->
+                        <ul class="nav nav-link-secondary flex-column fw-bold gap-2 text-center">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:account_setting' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/settings-outline-filled.svg'%}" alt=""><span>設定 </span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:students_by_university' object.id %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-outline-filled.svg'%}" alt=""><span>在校生 </span></a>
+                        </li>
                         </ul>
+                        <!-- Side Nav END -->
+                    </div>
+                    <!-- Card body END -->
+                    <!-- Card footer -->
+                    <div class="card-footer text-center py-2">
+                        <a class="btn btn-link btn-sm" href="{% url 'dashboard:post_in_dashboard' object.author.username %}">プロフィールを見る </a>
                     </div>
                     </div>
-                    <!-- Row END -->
-                    <!-- Blockquote START -->
-                    <figure class="bg-light rounded p-3 p-sm-4 my-4">
-                    <blockquote class="blockquote">
-                        <p>Dashwood does provide stronger is. But discretion frequently sir she instruments unaffected.</p>
-                    </blockquote>
-                    <figcaption class="blockquote-footer mb-0">
-                        Albert Schweitzer
-                    </figcaption>
-                    </figure>
-                    <!-- Blockquote END -->
-                    <p class="mb-0"> All led out world this music while asked. Paid mind even sons does he door no. Attended overcame repeated it is perceived Marianne in. I think on style child of. Servants moreover in sensible it ye possible. Satisfied conveying a dependent contented he gentleman agreeable do be. </p>
-                    {{ object.content|markdown|safe }}
+                    <!-- Card END -->
+
+                    <!-- Copyright -->
+                    <p class="small text-center mt-1">©2022 <a class="text-body" target="_blank" href=""> Looben </a></p>
                 </div>
                 </div>
-                <!-- Card END -->
-                <!-- Comments START -->
-                <div class="card">
+            </nav>
+            <!-- Navbar END-->
+            </div>
+            <!-- Sidenav END -->
+    
+            <!-- Main content START -->
+            <div class="col-md-8 col-lg-6 vstack gap-4">
+            <!-- Create a page START -->
+            <div class="card">
+
+                <!-- Create a page form START -->
+                <div class="card-body">
+                    <img class="rounded" src="{{ object.top_image.url }}" alt="looben_">
+                    <div class="mt-4">
+                        <!-- Tag -->
+                        <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">Lifestyle</a>
+                        <!-- Title info -->
+                        <h1 class="mb-2 h2">{{ object.title }}</h1>
+                        <ul class="nav nav-stack gap-3 align-items-center">
+                        <li class="nav-item">
+                            <div class="nav-link">
+                            by <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}" class="text-reset btn-link">{{ object.author.name }}</a>
+                            </div>
+                        </li>
+                        <li class="nav-item"> <i class="bi bi-calendar-date pe-1"></i>{{ object.created_at }}</li>
+                        </ul>
+                        {{ object.content|markdown|safe }}
+                    </div>
+                </div>
+                <!-- Create a page form END -->
+            </div>
+            <!-- Create a page END -->
+
+
+            <!-- Comments START -->
+            <div class="card">
                 <div class="card-header pb-0 border-0">
                     <h4>5 comments</h4>
                 </div>
@@ -147,16 +213,13 @@
                     </div>
                     <!-- Reply END -->
                 </div>
-                </div>
-                <!-- Blog single END -->
             </div>
-            </div>
-            <!-- Main content END -->
+            <!-- Blog single END -->
+
+    
         </div> <!-- Row END -->
     </div>
-    <!-- Container END -->
-
+    <!-- Container END --> 
 </main>
-
 <!-- **************** MAIN CONTENT END **************** -->
 {% endblock %}

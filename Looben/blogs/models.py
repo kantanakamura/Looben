@@ -9,7 +9,7 @@ class Blog(models.Model):
     top_image = models.FileField('サムネイル画像', upload_to='blog/top_image/', default='blog/top_image/top_image.png')
     created_at = models.DateField('作成日', auto_now_add=True)
     updated_at = models.DateField('更新日', auto_now=True)
-    user = models.ForeignKey(
+    author = models.ForeignKey(
         Users, on_delete=models.CASCADE
     )
 
