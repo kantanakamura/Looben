@@ -109,30 +109,50 @@
             <div class="col-md-8 col-lg-6 vstack gap-4">
             <!-- Create a page START -->
             <div class="card">
-
+                <div class="card-header border-0 pb-0">
+                    <p class="card-title mb-0" style="color:gray;">{{ number_of_like_for_blog_post }}件のいいね</p>
+                </div>
+                <hr>
                 <!-- Create a page form START -->
                 <div class="card-body">
+                    
                     <img class="rounded" src="{{ object.top_image.url }}" alt="looben">
                     <div class="mt-4">
                         <!-- Tag -->
                         <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">Lifestyle</a>
                         <!-- Title info -->
                         <h1 class="mb-2 h2">{{ object.title }}</h1>
-                        <ul class="nav nav-stack gap-3 align-items-center">
-                        <li class="nav-item">
-                            <div class="nav-link">
-                                <div class="my-4 d-flex">
-                                    <img class="avatar avatar-md rounded-circle float-start me-3" src="{{ object.author.picture.url }}" alt="{{ object.author.username }}">
-                                    <div>
-                                        <div class="mb-2 d-sm-flex">
-                                        <h6 class="m-0 me-2">{{ object.author.name }}</h6>
-                                        </div>
-                                        <span class="me-3 small"> <i class="bi bi-calendar-date pe-1"></i>{{ object.created_at }}</span>
-                                    </div>
-                                </div>
+
+                        <div class="d-md-flex align-items-center mb-4">
+                            <!-- Avatar -->
+                            <div class="avatar me-3 mb-3 mb-md-0">
+                                <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}"> <img class="avatar-img rounded-circle" src="{{ object.author.picture.url }}" alt="{{ object.author.username }}"> </a>
                             </div>
-                        </li>
-                        </ul>
+                            <!-- Info -->
+                            <div class="w-100">
+                                <div class="d-sm-flex align-items-start">
+                                <h6 class="mb-0"><a href="{% url 'dashboard:post_in_dashboard' object.author.username %}">{{ object.author.name }} </a></h6>
+                                </div>
+                                <!-- Connections START -->
+                                <ul class="avatar-group mt-1 list-unstyled align-items-sm-center">
+                                <li class="small">
+                                    {{ object.created_at }}
+                                </li>
+                                </ul>
+                                <!-- Connections END -->
+                            </div>
+                            <!-- Button -->
+                            {% if is_user_liked_for_post %}
+                            <div class="ms-md-auto d-flex ">
+                                <p style="color:gray;"> {{ number_of_like_for_blog_post }}</p><i class="bi bi-heart-fill" style="color:#F73641"></i>
+                            </div>
+                            {% else %}
+                            <div class="ms-md-auto d-flex ">
+                                <p style="color:gray;"> {{ number_of_like_for_blog_post }}</p><i class="bi bi-heart" style="color:#F73641"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+
                         {{ object.content|markdown|safe }}
                     </div>
                 </div>
