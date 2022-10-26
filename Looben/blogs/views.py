@@ -32,11 +32,13 @@ class BlogListView(View):
         number_of_followed_user = user.connected_users.all().count()
         number_of_blog_post = Blog.objects.filter(author=user).all().count()
         newest_blog_posts = Blog.objects.order_by('-created_at')[:6]
+        most_viewed_posts = Blog.objects.order_by('-total_number_of_view')[:6]
         return render(request, 'blog/blog_list.html', {
             'number_of_following_user': number_of_following_user,
             'number_of_followed_user': number_of_followed_user,
             'number_of_blog_post': number_of_blog_post,
             'newest_blog_posts': newest_blog_posts,
+            'most_viewed_posts': most_viewed_posts,
             })
         
         
@@ -47,6 +49,8 @@ class BlogDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.object.author
+        self.object.total_number_of_view += 1
+        self.object.save()
         context['number_of_following_user'] = user.connection.all().count()
         context['number_of_followed_user'] = user.connected_users.all().count()
         context['number_of_blog_post'] = Blog.objects.filter(author=user).all().count()
