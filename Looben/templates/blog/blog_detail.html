@@ -1,0 +1,269 @@
+{% extends 'base.html'%}
+{% load static %}
+{% load markdown_extras %}
+
+
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+
+{% block content %}
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+    <!-- Container START -->
+    <div class="container">
+        <div class="row g-4">
+
+        <!-- Sidenav START -->
+        <div class="col-lg-3">
+            <!-- Advanced filter responsive toggler START -->
+            <div class="d-flex align-items-center d-lg-none">
+                <button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
+                <i class="btn btn-primary fw-bold fa-solid fa-sliders-h"></i>
+                <span class="h6 mb-0 fw-bold d-lg-none ms-2">著者プロフィール</span>
+                </button>
+            </div>
+            <!-- Advanced filter responsive toggler END -->
+            
+            <!-- Navbar START-->
+            <nav class="navbar navbar-expand-lg mx-0"> 
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSideNavbar">
+                <!-- Offcanvas header -->
+                <div class="offcanvas-header">
+                    <button type="button" class="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+    
+                <!-- Offcanvas body -->
+                <div class="offcanvas-body d-block px-2 px-lg-0">
+                    <!-- Card START -->
+                    <div class="card overflow-hidden">
+                    <!-- Cover image -->
+                    <div class="h-50px" style="background-image:url({% static 'images/bg/create_review.jpg' %}); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+                        <!-- Card body START -->
+                        <div class="card-body pt-0">
+                        <div class="text-center">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-lg mt-n5 mb-3">
+                            <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}"><img class="avatar-img rounded border border-white border-3" src="{{ object.author.picture.url }}" alt="{{ object.author.username }}"></a>
+                        </div>
+                        <!-- Info -->
+                        <h5 class="mb-0"> <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}">{{ object.author.name }} </a> </h5>
+                        <p>{{ object.author.university }}</p>
+                        <p>{{ object.author.major }}</p>
+                        <p>{{ object.author.description }}</p>
+                        <div class="hstack gap-2 gap-xl-3 mt-3">
+                            <!-- User stat item -->
+                            <div>
+                            <h6 class="mb-0">{{ number_of_blog_post }}</h6>
+                            <small>Post</small>
+                            </div>
+                            <!-- Divider -->
+                            <div class="vr"></div>
+                            <!-- User stat item -->
+                            <div>
+                            <h6 class="mb-0">{{ number_of_followed_user }}</h6>
+                            <small>Followers</small>
+                            </div>
+                            <!-- Divider -->
+                            <div class="vr"></div>
+                            <!-- User stat item -->
+                            <div>
+                            <h6 class="mb-0">{{ number_of_following_user }}</h6>
+                            <small>Following</small>
+                            </div>
+                        </div>
+                        </div>
+                        <!-- Divider -->
+                        <hr>
+    
+                        <!-- Side Nav START -->
+                        <ul class="nav nav-link-secondary flex-column fw-bold gap-2 text-center">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:account_setting' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/settings-outline-filled.svg'%}" alt=""><span>設定 </span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'accounts:students_by_university' object.id %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-outline-filled.svg'%}" alt=""><span>在校生 </span></a>
+                        </li>
+                        </ul>
+                        <!-- Side Nav END -->
+                    </div>
+                    <!-- Card body END -->
+                    <!-- Card footer -->
+                    <div class="card-footer text-center py-2">
+                        <a class="btn btn-link btn-sm" href="{% url 'dashboard:post_in_dashboard' object.author.username %}">プロフィールを見る </a>
+                    </div>
+                    </div>
+                    <!-- Card END -->
+
+                    <!-- Copyright -->
+                    <p class="small text-center mt-1">©2022 <a class="text-body" target="_blank" href=""> Looben </a></p>
+                </div>
+                </div>
+            </nav>
+            <!-- Navbar END-->
+            </div>
+            <!-- Sidenav END -->
+    
+            <!-- Main content START -->
+            <div class="col-md-8 col-lg-6 vstack gap-4">
+            <!-- Create a page START -->
+            <div class="card">
+
+                <!-- Create a page form START -->
+                <div class="card-body">
+                    <img class="rounded" src="{{ object.top_image.url }}" alt="looben">
+                    <div class="mt-4">
+                        <!-- Tag -->
+                        <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">Lifestyle</a>
+                        <!-- Title info -->
+                        <h1 class="mb-2 h2">{{ object.title }}</h1>
+                        <ul class="nav nav-stack gap-3 align-items-center">
+                        <li class="nav-item">
+                            <div class="nav-link">
+                                <div class="my-4 d-flex">
+                                    <img class="avatar avatar-md rounded-circle float-start me-3" src="{{ object.author.picture.url }}" alt="{{ object.author.username }}">
+                                    <div>
+                                        <div class="mb-2 d-sm-flex">
+                                        <h6 class="m-0 me-2">{{ object.author.name }}</h6>
+                                        </div>
+                                        <span class="me-3 small"> <i class="bi bi-calendar-date pe-1"></i>{{ object.created_at }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        </ul>
+                        {{ object.content|markdown|safe }}
+                    </div>
+                </div>
+                <!-- Create a page form END -->
+            </div>
+            <!-- Create a page END -->
+
+
+            <!-- Comments START -->
+            <div class="card">
+                <div class="card-header pb-0 border-0">
+                    <h4>関連記事</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Blog item START -->
+                    <div class="card bg-transparent border-0">
+                        <div class="row g-3">
+                        <div class="col-4">
+                            <!-- Blog image -->
+                            <img class="rounded" src="assets/images/post/4by3/03.jpg" alt="">
+                        </div>
+                        <div class="col-8">
+                            <!-- Blog caption -->
+                            <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">Lifestyle</a>
+                            <h5><a href="blog-details.html" class="btn-link stretched-link text-reset fw-bold">Social guides the way in 2022 app performance report</a></h5>
+                            <div class="d-none d-sm-inline-block">
+                            <p class="mb-2">Speedily say has suitable disposal add boy. On forth doubt miles of child. Exercise joy man children rejoiced.</p>
+                            <!-- BLog date -->
+                            <a class="small text-secondary" href="#!"> <i class="bi bi-calendar-date pe-1"></i> Jan 22, 2022</a>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <!-- Blog item END -->
+                    <hr class="my-4">
+                    <!-- Blog item START -->
+                    <div class="card bg-transparent border-0">
+                        <div class="row g-3">
+                        <div class="col-4">
+                            <!-- Blog image -->
+                            <img class="rounded" src="assets/images/post/4by3/03.jpg" alt="">
+                        </div>
+                        <div class="col-8">
+                            <!-- Blog caption -->
+                            <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">Lifestyle</a>
+                            <h5><a href="blog-details.html" class="btn-link stretched-link text-reset fw-bold">Social guides the way in 2022 app performance report</a></h5>
+                            <div class="d-none d-sm-inline-block">
+                            <p class="mb-2">Speedily say has suitable disposal add boy. On forth doubt miles of child. Exercise joy man children rejoiced.</p>
+                            <!-- BLog date -->
+                            <a class="small text-secondary" href="#!"> <i class="bi bi-calendar-date pe-1"></i> Jan 22, 2022</a>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <!-- Blog item END -->
+                    <hr class="my-4">
+                    <!-- Blog item START -->
+                    <div class="card bg-transparent border-0">
+                        <div class="row g-3">
+                        <div class="col-4">
+                            <!-- Blog image -->
+                            <img class="rounded" src="assets/images/post/4by3/03.jpg" alt="">
+                        </div>
+                        <div class="col-8">
+                            <!-- Blog caption -->
+                            <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">Lifestyle</a>
+                            <h5><a href="blog-details.html" class="btn-link stretched-link text-reset fw-bold">Social guides the way in 2022 app performance report</a></h5>
+                            <div class="d-none d-sm-inline-block">
+                            <p class="mb-2">Speedily say has suitable disposal add boy. On forth doubt miles of child. Exercise joy man children rejoiced.</p>
+                            <!-- BLog date -->
+                            <a class="small text-secondary" href="#!"> <i class="bi bi-calendar-date pe-1"></i> Jan 22, 2022</a>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <!-- Blog item END -->
+                    <hr class="my-4">
+                    <!-- Blog item START -->
+                    <div class="card bg-transparent border-0">
+                        <div class="row g-3">
+                        <div class="col-4">
+                            <!-- Blog image -->
+                            <img class="rounded" src="assets/images/post/4by3/03.jpg" alt="">
+                        </div>
+                        <div class="col-8">
+                            <!-- Blog caption -->
+                            <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">Lifestyle</a>
+                            <h5><a href="blog-details.html" class="btn-link stretched-link text-reset fw-bold">Social guides the way in 2022 app performance report</a></h5>
+                            <div class="d-none d-sm-inline-block">
+                            <p class="mb-2">Speedily say has suitable disposal add boy. On forth doubt miles of child. Exercise joy man children rejoiced.</p>
+                            <!-- BLog date -->
+                            <a class="small text-secondary" href="#!"> <i class="bi bi-calendar-date pe-1"></i> Jan 22, 2022</a>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <!-- Blog item END -->
+                </div>
+            </div>
+            <!-- Blog single END -->
+
+    
+        </div> <!-- Row END -->
+    </div>
+    <!-- Container END --> 
+</main>
+<!-- **************** MAIN CONTENT END **************** -->
+
+<!-- footer START -->
+<footer class="bg-mode py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+            <!-- Footer nav START -->
+            <ul class="nav justify-content-center justify-content-md-start lh-1">
+                <li class="nav-item">
+                <a class="nav-link" href="">About</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" target="_blank" href="">Support </a>
+                </li>
+            </ul>
+            <!-- Footer nav START -->
+            </div>
+            <div class="col-md-6">
+            <!-- Copyright START -->
+            <p class="text-center text-md-end mb-0">©2022 Looben, All rights reserved.</p>
+            <!-- Copyright END -->
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- footer END -->
+{% endblock %}

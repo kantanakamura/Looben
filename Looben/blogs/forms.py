@@ -4,6 +4,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.admin.widgets import AdminDateWidget
 from django.contrib.auth.forms import PasswordChangeForm
+from mdeditor.fields import MDTextFormField
 
 from .models import Blog
 
@@ -13,7 +14,7 @@ class CreateBlogForm(forms.ModelForm):
         'placeholder': 'タイトル記入欄', 
         'id': '',
         }))
-    content = forms.CharField(label='記事内容', widget=forms.Textarea(attrs={
+    content = MDTextFormField(label='記事内容', widget=forms.Textarea(attrs={
         'class': 'form-control', 
         'placeholder': '記事記入欄',
         'rows': '10',

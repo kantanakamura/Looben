@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'mdeditor', 
     'accounts',
     'reviews',
     'dashboard',
@@ -58,6 +59,10 @@ INSTALLED_APPS = [
 
 
 AUTH_USER_MODEL = 'accounts.Users'
+
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

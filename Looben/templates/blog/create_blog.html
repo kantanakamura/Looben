@@ -32,6 +32,7 @@
             <div class="card-body">
               <form class="row g-3 mt-4" method="post" enctype="multipart/form-data">
                 {{ create_blog_form.non_field_errors }}
+                {{ create_blog_form.media }}
                 {% csrf_token %}
 
                 <!-- 口コミ大学 -->
