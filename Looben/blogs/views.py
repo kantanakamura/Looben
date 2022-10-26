@@ -3,10 +3,12 @@ from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView, View
 from django.urls import reverse_lazy
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404 
 
 
 from .forms import CreateBlogForm
-from .models import Blog
+from .models import Blog, LikeForBlog
     
     
 def create_blog(request):
@@ -56,6 +58,19 @@ class BlogDetailView(DetailView):
         return context
     
 
+def like_for_post(request):
+    post_pk = request.POST.get('post_pk')
+    context = {
+        'user': f'{request.user.username}',
+    }
+    post = get_object_or_404(Blog, pk=post_pk)
+    like = LikeForBlog.objects.filter(target=post, user=request.user)
 
-
-    
+    if like.exists():
+        like.delete()
+        context['method'] = 'delete'
+    else:
+        like.create(target=post, user=request.user)
+        context['method'] = 'create'
+    context['like_for_post_count'] = post.likeforblog_set.count()
+    return JsonResponse(context)
