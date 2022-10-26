@@ -79,12 +79,26 @@
     
                         <!-- Side Nav START -->
                         <ul class="nav nav-link-secondary flex-column fw-bold gap-2 text-center">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'accounts:account_setting' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/settings-outline-filled.svg'%}" alt=""><span>設定 </span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'accounts:students_by_university' object.id %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-outline-filled.svg'%}" alt=""><span>在校生 </span></a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dashboard:post_in_dashboard' object.author.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/earth-outline-filled.svg' %}" alt="post"><span>投稿 </span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'blogs:create_blog' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/certificate-outline-filled.svg' %}" alt="blog"><span>ブログ </span></a>
+                            </li>
+                            {% if object.author.state == '現役台湾留学生' or object.author.state == '台湾留学卒業生' %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dashboard:review_in_dashboard' object.author.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/clipboard-list-outline-filled.svg' %}" alt="review"><span>口コミ </span></a>
+                            </li>                    
+                            {% endif %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dashboard:following_in_dashboard' object.author.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-outline-filled.svg' %}" alt="following"><span>フォロー中 </span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dashboard:followed_in_dashboard' object.author.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-girl-outline-filled.svg' %}" alt="followd"><span>フォロワー </span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dashboard:question_in_dashboard' object.author.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bulb-curvy-outline-filled.svg' %}" alt="question"><span>質問 </span></a>
+                            </li>
                         </ul>
                         <!-- Side Nav END -->
                     </div>
@@ -109,30 +123,48 @@
             <div class="col-md-8 col-lg-6 vstack gap-4">
             <!-- Create a page START -->
             <div class="card">
-
                 <!-- Create a page form START -->
                 <div class="card-body">
+                    
                     <img class="rounded" src="{{ object.top_image.url }}" alt="looben">
                     <div class="mt-4">
                         <!-- Tag -->
                         <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">Lifestyle</a>
                         <!-- Title info -->
                         <h1 class="mb-2 h2">{{ object.title }}</h1>
-                        <ul class="nav nav-stack gap-3 align-items-center">
-                        <li class="nav-item">
-                            <div class="nav-link">
-                                <div class="my-4 d-flex">
-                                    <img class="avatar avatar-md rounded-circle float-start me-3" src="{{ object.author.picture.url }}" alt="{{ object.author.username }}">
-                                    <div>
-                                        <div class="mb-2 d-sm-flex">
-                                        <h6 class="m-0 me-2">{{ object.author.name }}</h6>
-                                        </div>
-                                        <span class="me-3 small"> <i class="bi bi-calendar-date pe-1"></i>{{ object.created_at }}</span>
+                        
+                        <div class="d-flex align-items-center justify-content-between" style="margin-bottom:5px;">
+                            <div class="d-flex align-items-center">
+                                <!-- Avatar -->
+                                <div class="avatar me-2">
+                                    <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}"> <img class="avatar-img rounded-circle" src="{{ object.author.picture.url }}" alt="{{ object.author.username }}"> </a>
+                                </div>
+                                <!-- Info -->
+                                <div>
+                                    <div class="nav nav-divider">
+                                    <h6 class="nav-item card-title mb-0"> <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}"> {{ object.author.name }} </a></h6>
                                     </div>
+                                    <p class="mb-0 small">{{ object.created_at }}</p>
                                 </div>
                             </div>
-                        </li>
-                        </ul>
+                            {% if is_user_liked_for_post %}
+                            <div class="ms-md-auto d-flex">
+                                <span style="color:gray;" id="like-for-post-count"> {{ number_of_like_for_blog_post }}</span>
+                                <button type="button" id="ajax-like-for-post" style="border:none;background:none">
+                                    <i class="bi bi-heart-fill" id="like-for-post-icon" style="color:#F73641"></i>
+                                </button>
+                            </div>
+                            {% else %}
+                            <div class="ms-md-auto d-flex">
+                                <span style="color:gray;" id="like-for-post-count"> {{ number_of_like_for_blog_post }}</span>
+                                <button type="button" id="ajax-like-for-post" style="border:none;background:none">
+                                    <i class="bi bi-heart" id="like-for-post-icon" style="color:#F73641"></i>
+                                </button>
+                            </div>
+                            {% endif %}
+                            <!-- Card feed action dropdown END -->
+                        </div>
+
                         {{ object.content|markdown|safe }}
                     </div>
                 </div>
@@ -238,6 +270,44 @@
         </div> <!-- Row END -->
     </div>
     <!-- Container END --> 
+    
+    <script type="text/javascript">
+        /* ポストに対するイイね */
+        document.getElementById('ajax-like-for-post').addEventListener('click', e => {
+            e.preventDefault();
+            const url = '{% url "blogs:like_for_post" %}';
+            fetch(url, {
+                method: 'POST',
+                body: `post_pk={{object.pk}}`,
+                headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+                'X-CSRFToken': '{{ csrf_token }}',
+                },
+            }).then(response => {
+                return response.json();
+            }).then(response => {
+                // イイね数を書き換える
+                const counter = document.getElementById('like-for-post-count')
+                counter.textContent = response.like_for_post_count
+                const icon = document.getElementById('like-for-post-icon')
+                // 作成した場合はハートを塗る
+                if (response.method == 'create') {
+                icon.classList.remove('bi-heart')
+                icon.classList.add('bi-heart-fill')
+                icon.id = 'like-for-post-icon'
+                } else {
+                icon.classList.remove('bi-heart-fill')
+                icon.classList.add('bi-heart')
+                icon.id = 'like-for-post-icon'
+                }
+                console.log(response);
+            }).catch(error => {
+                console.log(error);
+            });
+        });
+
+    </script>
+
 </main>
 <!-- **************** MAIN CONTENT END **************** -->
 

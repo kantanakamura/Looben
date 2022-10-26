@@ -1,4 +1,5 @@
 from email.policy import default
+from tkinter import CASCADE
 from django.db import models
 from mdeditor.fields import MDTextField
 from accounts.models import Users
@@ -11,6 +12,7 @@ class Blog(models.Model):
     created_at = models.DateField('作成日', auto_now_add=True)
     updated_at = models.DateField('更新日', auto_now=True)
     is_official = models.BooleanField(default=False)
+    total_number_of_view = models.IntegerField(default=0)
     author = models.ForeignKey(
         Users, on_delete=models.CASCADE
     )
@@ -34,3 +36,4 @@ class LikeForBlog(models.Model):
     class Meta:
         verbose_name = 'ブログいいね'
     
+

@@ -3,10 +3,12 @@ from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView, View
 from django.urls import reverse_lazy
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404 
 
 
 from .forms import CreateBlogForm
-from .models import Blog
+from .models import Blog, LikeForBlog
     
     
 def create_blog(request):
@@ -29,10 +31,14 @@ class BlogListView(View):
         number_of_following_user = user.connection.all().count()
         number_of_followed_user = user.connected_users.all().count()
         number_of_blog_post = Blog.objects.filter(author=user).all().count()
+        newest_blog_posts = Blog.objects.order_by('-created_at')[:6]
+        most_viewed_posts = Blog.objects.order_by('-total_number_of_view')[:6]
         return render(request, 'blog/blog_list.html', {
             'number_of_following_user': number_of_following_user,
             'number_of_followed_user': number_of_followed_user,
             'number_of_blog_post': number_of_blog_post,
+            'newest_blog_posts': newest_blog_posts,
+            'most_viewed_posts': most_viewed_posts,
             })
         
         
@@ -43,9 +49,32 @@ class BlogDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.object.author
+        self.object.total_number_of_view += 1
+        self.object.save()
         context['number_of_following_user'] = user.connection.all().count()
         context['number_of_followed_user'] = user.connected_users.all().count()
         context['number_of_blog_post'] = Blog.objects.filter(author=user).all().count()
+        context['number_of_like_for_blog_post'] = self.object.likeforblog_set.count()
+        if self.object.likeforblog_set.filter(user=self.request.user).exists():
+                context['is_user_liked_for_post'] = True
+        else:
+            context['is_user_liked_for_post'] = False
         return context
     
-    
+
+def like_for_post(request):
+    post_pk = request.POST.get('post_pk')
+    context = {
+        'user': f'{request.user.username}',
+    }
+    post = get_object_or_404(Blog, pk=post_pk)
+    like = LikeForBlog.objects.filter(target=post, user=request.user)
+
+    if like.exists():
+        like.delete()
+        context['method'] = 'delete'
+    else:
+        like.create(target=post, user=request.user)
+        context['method'] = 'create'
+    context['like_for_post_count'] = post.likeforblog_set.count()
+    return JsonResponse(context)
