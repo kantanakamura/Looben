@@ -79,12 +79,26 @@
     
                         <!-- Side Nav START -->
                         <ul class="nav nav-link-secondary flex-column fw-bold gap-2 text-center">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'accounts:account_setting' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/settings-outline-filled.svg'%}" alt=""><span>設定 </span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'accounts:students_by_university' object.id %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-outline-filled.svg'%}" alt=""><span>在校生 </span></a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dashboard:post_in_dashboard' object.author.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/earth-outline-filled.svg' %}" alt="post"><span>投稿 </span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'blogs:create_blog' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/certificate-outline-filled.svg' %}" alt="blog"><span>ブログ </span></a>
+                            </li>
+                            {% if object.author.state == '現役台湾留学生' or object.author.state == '台湾留学卒業生' %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dashboard:review_in_dashboard' object.author.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/clipboard-list-outline-filled.svg' %}" alt="review"><span>口コミ </span></a>
+                            </li>                    
+                            {% endif %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dashboard:following_in_dashboard' object.author.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-outline-filled.svg' %}" alt="following"><span>フォロー中 </span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dashboard:followed_in_dashboard' object.author.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-girl-outline-filled.svg' %}" alt="followd"><span>フォロワー </span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'dashboard:question_in_dashboard' object.author.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bulb-curvy-outline-filled.svg' %}" alt="question"><span>質問 </span></a>
+                            </li>
                         </ul>
                         <!-- Side Nav END -->
                     </div>
@@ -135,7 +149,7 @@
                             </div>
                             {% if is_user_liked_for_post %}
                             <div class="ms-md-auto d-flex">
-                                <p style="color:gray;" id="like-for-post-count"> {{ number_of_like_for_blog_post }}</p>
+                                <span style="color:gray;" id="like-for-post-count"> {{ number_of_like_for_blog_post }}</span>
                                 <button type="button" id="ajax-like-for-post" style="border:none;background:none">
                                     <i class="bi bi-heart-fill" id="like-for-post-icon" style="color:#F73641"></i>
                                 </button>

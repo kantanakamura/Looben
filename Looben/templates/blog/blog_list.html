@@ -126,10 +126,6 @@
                     <!-- Video image -->
                     <div class="card-image">
                     <a href="{% url 'blogs:blog_detail' newest_blog_post.id %}"><img class="card-img-top" src="{{ newest_blog_post.top_image.url }}" alt="blog_top_image"></a>
-                    <!-- Duration -->
-                    <div class="position-absolute bottom-0 start-0 p-3 d-flex w-100">
-                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small ms-auto"><i class="fa-solid fa-heart"></i></span>
-                    </div>
                     </div>
                     <!-- Video info -->
                     <div class="card-body">
@@ -494,6 +490,7 @@
 
     </div>
     <!-- Container END -->
+    
 </main>
 <!-- **************** MAIN CONTENT END **************** -->
 
