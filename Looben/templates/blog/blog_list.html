@@ -124,8 +124,8 @@
                 <!-- Video START -->
                 <div class="card position-relative h-100">
                     <!-- Video image -->
-                    <div class="card-image"><
-                    <a href=""><img class="card-img-top" src="{{ newest_blog_post.top_image.url }}" alt="blog_top_image"></a>
+                    <div class="card-image">
+                    <a href="{% url 'blogs:blog_detail' newest_blog_post.id %}"><img class="card-img-top" src="{{ newest_blog_post.top_image.url }}" alt="blog_top_image"></a>
                     <!-- Duration -->
                     <div class="position-absolute bottom-0 start-0 p-3 d-flex w-100">
                         <span class="bg-dark bg-opacity-50 px-2 rounded text-white small ms-auto"><i class="fa-solid fa-heart"></i></span>
@@ -134,7 +134,7 @@
                     <!-- Video info -->
                     <div class="card-body">
                     <!-- Video title  -->
-                    <h6> <a class="stretched-link" href="video-details.html"> {{ newest_blog_post.title }} </a> </h6>
+                    <h6> <a class="stretched-link" href="{% url 'blogs:blog_detail' newest_blog_post.id %}"> {{ newest_blog_post.title }} </a> </h6>
                     <div class="d-flex mt-3">
                         <!-- Avatar -->
                         <div class="avatar avatar-xxs me-2">
@@ -142,7 +142,7 @@
                         </div>
                         <!-- Avatar name -->
                         <div>
-                        <h6 class="mb-0 lh-1"> <a href="#!"> {{ newest_blog_post.author.name }} </a> </h6>
+                        <h6 class="mb-0 lh-1"> <a href="{% url 'dashboard:post_in_dashboard' newest_blog_post.author.username %}"> {{ newest_blog_post.author.name }} </a> </h6>
                         <span class="ms-auto small"> 156.9K views</span>
                         </div>
                     </div>

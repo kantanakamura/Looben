@@ -48,8 +48,14 @@ class BlogDetailView(DetailView):
         context['number_of_following_user'] = user.connection.all().count()
         context['number_of_followed_user'] = user.connected_users.all().count()
         context['number_of_blog_post'] = Blog.objects.filter(author=user).all().count()
+        context['like_for_post_count'] = self.object.likeforblog_set.count()
+        if self.object.likeforblog_set.filter(user=self.request.user).exists():
+                context['is_user_liked_for_post'] = True
+        else:
+            context['is_user_liked_for_post'] = False
         return context
     
-    
+
+
 
     
