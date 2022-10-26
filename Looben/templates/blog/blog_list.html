@@ -116,37 +116,33 @@
             <div class="row g-3 mb-4">
                 <div class="col-12 mt-4">
                 <div class="d-sm-flex justify-content-between align-items-center">
-                    <h5 class="mb-md-0">トレンド記事 </h5>
+                    <h5 class="mb-md-0">最新記事 </h5>
                 </div>
                 </div>
+                {% for newest_blog_post in newest_blog_posts %}
                 <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
                 <!-- Video START -->
                 <div class="card position-relative h-100">
                     <!-- Video image -->
-                    <div class="card-image">
-                    <img class="card-img-top" src="assets/images/post/16by9/large/01.jpg" alt="">
-                    <!-- Play icon -->
-                    <div class="card-element-hover position-absolute top-50 start-50 translate-middle">
-                        <a class="icon-md bg-mode text-secondary rounded-circle" href="video-details.html"> <i class="bi bi-play-fill fs-5"> </i> </a>
-                    </div>
+                    <div class="card-image"><
+                    <a href=""><img class="card-img-top" src="{{ newest_blog_post.top_image.url }}" alt="blog_top_image"></a>
                     <!-- Duration -->
                     <div class="position-absolute bottom-0 start-0 p-3 d-flex w-100">
-                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small">10:20</span>
                         <span class="bg-dark bg-opacity-50 px-2 rounded text-white small ms-auto"><i class="fa-solid fa-heart"></i></span>
                     </div>
                     </div>
                     <!-- Video info -->
                     <div class="card-body">
                     <!-- Video title  -->
-                    <h6> <a class="stretched-link" href="video-details.html"> Should you become a web designer in 2022? </a> </h6>
+                    <h6> <a class="stretched-link" href="video-details.html"> {{ newest_blog_post.title }} </a> </h6>
                     <div class="d-flex mt-3">
                         <!-- Avatar -->
                         <div class="avatar avatar-xxs me-2">
-                        <img class="avatar-img rounded-circle" src="assets/images/avatar/01.jpg" alt="">
+                        <img class="avatar-img rounded-circle" src="{{ newest_blog_post.author.picture.url }}" alt="{{ newest_blog_post.author.username }}">
                         </div>
                         <!-- Avatar name -->
                         <div>
-                        <h6 class="mb-0 lh-1"> <a href="#!"> Frances Guerrero </a> </h6>
+                        <h6 class="mb-0 lh-1"> <a href="#!"> {{ newest_blog_post.author.name }} </a> </h6>
                         <span class="ms-auto small"> 156.9K views</span>
                         </div>
                     </div>
@@ -154,174 +150,7 @@
                 </div>
                 <!-- Video END -->
                 </div>
-                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
-                <!-- Video START -->
-                <div class="card position-relative h-100">
-                    <!-- Video image -->
-                    <div class="card-image">
-                    <div class="ratio ratio-16x9 card-img-top overflow-hidden">
-                        <iframe src="https://www.youtube.com/embed/CgEZNJSeofs" title="YouTube video" allowfullscreen></iframe>
-                    </div>
-                    </div>
-                    <!-- Video info -->
-                    <div class="card-body position-relative">
-                    <h6> <a class="stretched-link" href="video-details.html"> Learn web development as an absolute beginner </a> </h6>
-                    <div class="d-flex mt-3">
-                        <!-- Avatar -->
-                        <div class="avatar avatar-xxs me-2">
-                        <img class="avatar-img rounded-circle" src="assets/images/avatar/02.jpg" alt="">
-                        </div>
-                        <!-- Avatar name -->
-                        <div>
-                        <h6 class="mb-0 lh-1"> <a href="#!"> Lori Ferguson <i class="bi bi-patch-check-fill text-success small"></i> </a> </h6>
-                        <span class="ms-auto small"> 458.4K views</span>
-                        </div>
-                    </div>
-                    <!-- Video title  -->
-                    </div>
-                </div>
-                <!-- Video END -->
-                </div>
-                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
-                <!-- Video START -->
-                <div class="card position-relative h-100">
-                    <!-- Video image -->
-                    <div class="card-image">
-                    <img class="card-img-top" src="assets/images/post/16by9/large/02.jpg" alt="">
-                    <!-- Play icon -->
-                    <div class="card-element-hover position-absolute top-50 start-50 translate-middle">
-                        <a class="icon-md bg-mode text-secondary rounded-circle" href="video-details.html"> <i class="bi bi-play-fill fs-5"> </i> </a>
-                    </div>
-                    <!-- Duration -->
-                    <div class="position-absolute bottom-0 start-0 p-3 d-flex w-100">
-                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small">03:40</span>
-                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small ms-auto"><i class="fa-solid fa-heart"></i></span>
-                    </div>
-                    </div>
-                    <!-- Video info -->
-                    <div class="card-body">
-                    <!-- Video title  -->
-                    <h6> <a class="stretched-link" href="video-details.html"> Python tutorial - Python for beginners [full course] </a> </h6>
-                    <div class="d-flex mt-3">
-                        <!-- Avatar -->
-                        <div class="avatar avatar-xxs me-2">
-                        <img class="avatar-img rounded-circle" src="assets/images/avatar/03.jpg" alt="">
-                        </div>
-                        <!-- Avatar name -->
-                        <div>
-                        <h6 class="mb-0 lh-1"> <a href="#!"> Louis Crawford </a> </h6>
-                        <span class="ms-auto small"> 235.4K views</span>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                <!-- Video END -->
-                </div>
-                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
-                <!-- Video START -->
-                <div class="card position-relative h-100">
-                    <!-- Video image -->
-                    <div class="card-image">
-                    <img class="card-img-top" src="assets/images/post/16by9/large/03.jpg" alt="">
-                    <!-- Play icon -->
-                    <div class="card-element-hover position-absolute top-50 start-50 translate-middle">
-                        <a class="icon-md bg-mode text-secondary rounded-circle" href="video-details.html"> <i class="bi bi-play-fill fs-5"> </i> </a>
-                    </div>
-                    <!-- Duration -->
-                    <div class="position-absolute bottom-0 start-0 p-3 d-flex w-100">
-                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small">06:12</span>
-                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small ms-auto"><i class="fa-solid fa-heart"></i></span>
-                    </div>
-                    </div>
-                    <!-- Video info -->
-                    <div class="card-body">
-                    <!-- Video title  -->
-                    <h6> <a class="stretched-link" href="video-details.html"> One of the greatest speeches ever | Steve Jobs </a> </h6>
-                    <div class="d-flex mt-3">
-                        <!-- Avatar -->
-                        <div class="avatar avatar-xxs me-2">
-                        <img class="avatar-img rounded-circle" src="assets/images/avatar/04.jpg" alt="">
-                        </div>
-                        <!-- Avatar name -->
-                        <div>
-                        <h6 class="mb-0 lh-1"> <a href="#!"> Larry Lawson </a> </h6>
-                        <span class="ms-auto small"> 891.7K views</span>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                <!-- Video END -->
-                </div>
-                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
-                <!-- Video START -->
-                <div class="card position-relative h-100">
-                    <!-- Video image -->
-                    <div class="card-image">
-                    <img class="card-img-top" src="assets/images/post/16by9/large/04.jpg" alt="">
-                    <!-- Play icon -->
-                    <div class="card-element-hover position-absolute top-50 start-50 translate-middle">
-                        <a class="icon-md bg-mode text-secondary rounded-circle" href="video-details.html"> <i class="bi bi-play-fill fs-5"> </i> </a>
-                    </div>
-                    <!-- Duration -->
-                    <div class="position-absolute bottom-0 start-0 p-3 d-flex w-100">
-                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small">03:45</span>
-                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small ms-auto"><i class="fa-solid fa-heart"></i></span>
-                    </div>
-                    </div>
-                    <!-- Video info -->
-                    <div class="card-body">
-                    <!-- Video title  -->
-                    <h6> <a class="stretched-link" href="video-details.html"> A trading platform - an easy start in trading </a> </h6>
-                    <div class="d-flex mt-3">
-                        <!-- Avatar -->
-                        <div class="avatar avatar-xxs me-2">
-                        <img class="avatar-img rounded-circle" src="assets/images/avatar/05.jpg" alt="">
-                        </div>
-                        <!-- Avatar name -->
-                        <div>
-                        <h6 class="mb-0 lh-1"> <a href="#!"> Joan Wallace </a> </h6>
-                        <span class="ms-auto small"> 457.2K views</span>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                <!-- Video END -->
-                </div>
-                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
-                <!-- Video START -->
-                <div class="card position-relative h-100">
-                    <!-- Video image -->
-                    <div class="card-image">
-                    <img class="card-img-top" src="assets/images/post/16by9/large/05.jpg" alt="">
-                    <!-- Play icon -->
-                    <div class="card-element-hover position-absolute top-50 start-50 translate-middle">
-                        <a class="icon-md bg-mode text-secondary rounded-circle" href="video-details.html"> <i class="bi bi-play-fill fs-5"> </i> </a>
-                    </div>
-                    <!-- Duration -->
-                    <div class="position-absolute bottom-0 start-0 p-3 d-flex w-100">
-                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small">10:20</span>
-                        <span class="bg-dark bg-opacity-50 px-2 rounded text-white small ms-auto"><i class="fa-solid fa-heart"></i></span>
-                    </div>
-                    </div>
-                    <!-- Video info -->
-                    <div class="card-body">
-                    <!-- Video title  -->
-                    <h6> <a class="stretched-link" href="video-details.html"> 8 shocking bitcoin crypto predictions for 2022 </a> </h6>
-                    <div class="d-flex mt-3">
-                        <!-- Avatar -->
-                        <div class="avatar avatar-xxs me-2">
-                        <img class="avatar-img rounded-circle" src="assets/images/avatar/07.jpg" alt="">
-                        </div>
-                        <!-- Avatar name -->
-                        <div>
-                        <h6 class="mb-0 lh-1"> <a href="#!"> Carolyn Ortiz </a> </h6>
-                        <span class="ms-auto small"> 876.2K views</span>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                <!-- Video END -->
-                </div>
+                {% endfor %}
             </div>
     
             <!-- Official trailer START -->
