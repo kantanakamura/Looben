@@ -112,6 +112,45 @@
                 <!-- Video main END -->
                 </div>
             </div>
+                
+
+            {% if user_searched_something %}
+            <div class="row g-3 mb-4">
+                <div class="col-12 mt-4">
+                <div class="d-sm-flex justify-content-between align-items-center">
+                    <h5 class="mb-md-0">検索結果<strong style="color:#FF1474;">{{ number_of_searched_blogs }}</strong>件</h5>
+                </div>
+                </div>
+                {% for searched_blog in searched_blogs %}
+                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
+                <!-- Video START -->
+                <div class="card position-relative h-100">
+                    <!-- Video image -->
+                    <div class="card-image">
+                    <a href="{% url 'blogs:blog_detail' searched_blog.id %}"><img class="card-img-top" src="{{ searched_blog.top_image.url }}" alt="blog_top_image"></a>
+                    </div>
+                    <!-- Video info -->
+                    <div class="card-body">
+                    <!-- Video title  -->
+                    <h6> <a class="stretched-link" href="{% url 'blogs:blog_detail' searched_blog.id %}"> {{ searched_blog.title }} </a> </h6>
+                    <div class="d-flex mt-3">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xxs me-2">
+                        <img class="avatar-img rounded-circle" src="{{ searched_blog.author.picture.url }}" alt="{{ searched_blog.author.username }}">
+                        </div>
+                        <!-- Avatar name -->
+                        <div>
+                        <h6 class="mb-0 lh-1"> <a href="{% url 'dashboard:post_in_dashboard' searched_blog.author.username %}"> {{ searched_blog.author.name }} </a> </h6>
+                        <span class="ms-auto small"> {{ searched_blog.total_number_of_view }} views</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- Video END -->
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
 
             <div class="row g-3 mb-4">
                 <div class="col-12 mt-4">
@@ -139,7 +178,7 @@
                         <!-- Avatar name -->
                         <div>
                         <h6 class="mb-0 lh-1"> <a href="{% url 'dashboard:post_in_dashboard' newest_blog_post.author.username %}"> {{ newest_blog_post.author.name }} </a> </h6>
-                        <span class="ms-auto small"> 156.9K views</span>
+                        <span class="ms-auto small"> {{ newest_blog_post.total_number_of_view }} views</span>
                         </div>
                     </div>
                     </div>
@@ -263,12 +302,12 @@
                 <div class="card position-relative h-100">
                     <!-- Video image -->
                     <div class="card-image">
-                    <img class="card-img-top" src="{{ most_viewed_post.top_image.url }}" alt="blog_image">
+                    <a href="{% url 'blogs:blog_detail' most_viewed_post.id %}"><img class="card-img-top" src="{{ most_viewed_post.top_image.url }}" alt="blog_image"></a>
                     </div>
                     <!-- Video info -->
                     <div class="card-body">
                     <!-- Video title  -->
-                    <h6> <a class="stretched-link" href="video-details.html"> {{ most_viewed_post.title }} </a> </h6>
+                    <h6> <a class="stretched-link" href="{% url 'blogs:blog_detail' most_viewed_post.id %}"> {{ most_viewed_post.title }} </a> </h6>
                     <div class="d-flex mt-3">
                         <!-- Avatar -->
                         <div class="avatar avatar-xxs me-2">
@@ -276,8 +315,8 @@
                         </div>
                         <!-- Avatar name -->
                         <div>
-                        <h6 class="mb-0 lh-1"> <a href="#!"> {{ most_viewed_post.author.name }} </a> </h6>
-                        <span class="ms-auto small"> 156.9K views</span>
+                        <h6 class="mb-0 lh-1"> <a href="{% url 'dashboard:post_in_dashboard' most_viewed_post.author.username %}"> {{ most_viewed_post.author.name }} </a> </h6>
+                        <span class="ms-auto small"> {{ most_viewed_post.total_number_of_view }} views</span>
                         </div>
                     </div>
                     </div>
