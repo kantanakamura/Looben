@@ -33,12 +33,28 @@ class BlogListView(View):
         number_of_blog_post = Blog.objects.filter(author=user).all().count()
         newest_blog_posts = Blog.objects.order_by('-created_at')[:6]
         most_viewed_posts = Blog.objects.order_by('-total_number_of_view')[:6]
+        if 'search' in self.request.GET:
+            keyword_query = request.GET.get('search')
+            blogs = list(Blog.objects.all())
+            searched_blogs = []
+            for blog in blogs:
+                if keyword_query in blog.content:
+                    searched_blogs.append(blog)
+            number_of_searched_blogs = len(searched_blogs)
+            user_searched_something = True
+        else:
+            searched_blogs = []
+            number_of_searched_blogs = 0
+            user_searched_something = False
         return render(request, 'blog/blog_list.html', {
             'number_of_following_user': number_of_following_user,
             'number_of_followed_user': number_of_followed_user,
             'number_of_blog_post': number_of_blog_post,
             'newest_blog_posts': newest_blog_posts,
             'most_viewed_posts': most_viewed_posts,
+            'number_of_searched_blogs': number_of_searched_blogs,
+            'user_searched_something': user_searched_something,
+            'searched_blogs': searched_blogs,
             })
         
         
