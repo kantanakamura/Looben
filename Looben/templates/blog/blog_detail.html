@@ -2,6 +2,11 @@
 {% load static %}
 {% load markdown_extras %}
 
+{% block head_content %}
+<link href="{% static 'mdeditor/css/editormd.min.css' %}" rel="stylesheet">
+<link href="{% static 'mdeditor/css/editormd.preview.css' %}" rel="stylesheet">
+{% endblock %}
+
 
 {% block header %}
 {% include 'header.html' %}
@@ -288,7 +293,15 @@
         </div> <!-- Row END -->
     </div>
     <!-- Container END --> 
-    
+    <script src="{% static 'mdeditor/js/jquery.min.js' %}"></script>
+    <script src="{% static 'mdeditor/js/editormd.min.js' %}"></script>
+    <script src="{% static 'mdeditor/js/lib/marked.min.js' %}"></script>
+    <script src="{% static 'mdeditor/js/lib/prettify.min.js' %}"></script>
+    <script src="{% static 'mdeditor/js/lib/raphael.min.js' %}"></script>
+    <script src="{% static 'mdeditor/js/lib/underscore.min.js' %}"></script>
+    <script src="{% static 'mdeditor/js/lib/sequence-diagram.min.js' %}"></script>
+    <script src="{% static 'mdeditor/js/lib/flowchart.min.js' %}"></script>
+    <script src="{% static 'mdeditor/js/lib/jquery.flowchart.min.js' %}"></script>
     <script type="text/javascript">
         /* ポストに対するイイね */
         document.getElementById('ajax-like-for-post').addEventListener('click', e => {
@@ -324,6 +337,20 @@
             });
         });
 
+    </script>
+    <script>
+        $(function () {
+            editormd.markdownToHTML("content", {
+                emoji           : true,
+                taskList        : true,
+                tex             : true, 
+                flowChart       : true,
+                sequenceDiagram : true,
+            });
+            $(".reference-link").each(function (i,obj) {
+                console.log(obj)
+            })
+        })
     </script>
 
 </main>
