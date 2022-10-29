@@ -194,3 +194,9 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+MDEDITOR_CONFIGS = {
+    'default': {
+        'language': 'en',
+    }
+}
