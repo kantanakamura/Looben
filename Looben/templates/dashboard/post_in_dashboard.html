@@ -12,376 +12,182 @@
 {% block content %}
 <!-- **************** MAIN CONTENT START **************** -->
 <main>
-    <!-- Container START -->
-    <div class="container">
-      <div class="row g-4">
-  
-        <!-- Main content START -->
-        <div class="col-lg-8 vstack gap-4">
-            <!-- My profile START -->
-            <div class="card">
-              <!-- Cover image -->
-              <div class="h-200px rounded-top" style="background-color:{{ object.individual_theme_color }}; background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
-              <!-- Card body START -->
-              <div class="card-body py-0">
-                <div class="d-sm-flex align-items-start text-center text-sm-start">
-                  <div>
-                    <!-- Avatar -->
-                    <div class="avatar avatar-xxl mt-n5 mb-3">
-                      <img class="avatar-img rounded-circle border border-white border-3" src="{{ object.picture.url }}" alt="プロフィール写真">
-                    </div>
-                  </div>
-                  <div class="ms-sm-4 mt-sm-3">
-                    <!-- Info -->
-                    <h1 class="mb-0 h5">{{ object.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h1>
-                    <p>@{{ object.username }}</p>
-                    <p>
-                      <ul class="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">
-                        {% if number_of_followed_user == 0 %}
-                        <li class="list-inline-item">フォロワー<strong>0</strong>人</li>
-                        {% else %}
-                        <li class="list-inline-item">フォロワー<strong>{{ number_of_followed_user }}</strong>人</li>
-                        {% endif %}
-                        {% if number_of_following_user == 0 %}
-                        <li class="list-inline-item">フォロー中<strong>0</strong>人</li>
-                        {% else %}
-                        <li class="list-inline-item">フォロー中<strong>{{ number_of_following_user }}</strong>人</li>
-                        {% endif %}
-                      </ul>
-                    </p>
-                  </div>
-                  <!-- Button -->
-                  <div class="d-flex mt-3 justify-content-center ms-sm-auto">
-                    {% if user.id == object.id %}
-                    <!-- 自分のダッシュボードの時、編集ボタンを表示-->
-                    <ul class="nav nav-pills nav-stack small fw-normal" style="margin-right: 4px;">
-                    <li class="nav-item dropdown">
-                      <a class="nav-link bg-light py-1 px-2 mb-0" href="#" id="feedActionShare" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-share-fill"></i>
-                      </a>
-                      <!-- Dropdown menu -->
-                      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="feedActionShare">
-                        <li class="dropdown-item">SNSでシェアして友達を増やそう</li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item btn btn-block btn-social btn-twitter mt-1" href="https://twitter.com/share?url={{ request.scheme }}://{{ request.get_host }}{{ request.path }}" target="_blank" rel="nofollow">
-                          <i class="bi bi-twitter" style="color:#36B5F7;"></i> Twitter
-                        </a></li>
-
-                        <li><a class="dropdown-item btn btn-block btn-social btn-twitter mt-1" href="https://www.facebook.com/share.php?u={{ request.scheme }}://{{ request.get_host }}{{ request.path }}&t={{ object.title }}" target="_blank" rel="nofollow">
-                            <i class="bi bi-facebook" style="color:#368AF7;"></i> Facebook
-                        </a></li>
-
-                        <li><a class="dropdown-item btn btn-block btn-social btn-twitter mt-1" href="https://www.instagram.com/share?url={{ request.scheme }}://{{ request.get_host }}{{ request.path }}" target="_blank" rel="nofollow">
-                            <i class="bi bi-instagram" style="color:#EE4CAC;"></i> Instagram
-                        </a></li>
-                        
-                        <li><a class="dropdown-item btn btn-block btn-social btn-twitter mt-1" href="https://line.me/R/msg/text/?{{ request.scheme }}://{{ request.get_host }}{{ request.path }}" target="_blank" rel="nofollow">
-                            <i class="bi bi-line" style="color:#1DAF58;"></i> Line
-                        </a></li>
-                      </ul>
-                    </li>
-                    </ul>
-                    <a href="{% url 'accounts:account_setting' object.username  %}"><button class="btn btn-danger-soft me-2" type="button"> <i class="bi bi-pencil-fill pe-1"></i> 編集 </button></a>
-                    {% elif object in user.connection.all %}
-                    <!-- すでに友達になっているユーザーのダッシュボードのとき、友達解除ボタンを表示 -->
-                    <a href=""><button class="btn btn-primary-soft me-2" type="button"> <i class="bi bi-chat-dots-fill pe-1"></i> メッセージ </button></a>
-                    <a href="{% url 'accounts:disconnect' object.username  %}"><button class="btn btn-info-soft me-2" type="button"> <i class="bi bi-person-heart pe-1"></i> フォロー中 </button></a>
-                    {% else %}
-                    <!-- まだ、友達でないユーザーのダッシュボードのとき、友達登録ボタンを表示 -->
-                    <a href="{% url 'accounts:connect' object.username  %}"><button class="btn btn-info-soft me-2" type="button"> <i class="bi bi-person-heart pe-1"></i> フォローする </button></a>
-                    {% endif %}
-                  </div>
-                </div>
-                <!-- Description -->
+  <!-- Container START -->
+  <div class="container">
+    <div class="row g-4">
+      <!-- Main content START -->
+      <div class="col-lg-8 vstack gap-4">
+          <!-- My profile START -->
+          <div class="card">
+            <!-- Cover image -->
+            <div class="h-200px rounded-top" style="background-color:{{ object.individual_theme_color }}; background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+            <!-- Card body START -->
+            <div class="card-body py-0">
+              <div class="d-sm-flex align-items-start text-center text-sm-start">
                 <div>
-                    <p>{{ object.description }}</p>
+                  <!-- Avatar -->
+                  <div class="avatar avatar-xxl mt-n5 mb-3">
+                    <img class="avatar-img rounded-circle border border-white border-3" src="{{ object.picture.url }}" alt="プロフィール写真">
+                  </div>
                 </div>
-                <!-- List profile -->
-                <ul class="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">
-                  <li class="list-inline-item"><i class="bi bi-person me-1"></i> {{ object.state }}</li>
-                  {% if object.state == '現役台湾留学生' or object.state == '台湾留学卒業生' %}
-                    <li class="list-inline-item"><i class="bi bi-geo-alt me-1"></i> {{ object.school }}</li>
-                    <li class="list-inline-item"><i class="bi bi-pen me-1"></i> {{ object.major }}</li>
+                <div class="ms-sm-4 mt-sm-3">
+                  <!-- Info -->
+                  <h1 class="mb-0 h5">{{ object.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h1>
+                  <p>@{{ object.username }}</p>
+                  <p>
+                    <ul class="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">
+                      {% if number_of_followed_user == 0 %}
+                      <li class="list-inline-item">フォロワー<strong>0</strong>人</li>
+                      {% else %}
+                      <li class="list-inline-item">フォロワー<strong>{{ number_of_followed_user }}</strong>人</li>
+                      {% endif %}
+                      {% if number_of_following_user == 0 %}
+                      <li class="list-inline-item">フォロー中<strong>0</strong>人</li>
+                      {% else %}
+                      <li class="list-inline-item">フォロー中<strong>{{ number_of_following_user }}</strong>人</li>
+                      {% endif %}
+                    </ul>
+                  </p>
+                </div>
+                <!-- Button -->
+                <div class="d-flex mt-3 justify-content-center ms-sm-auto">
+                  {% if user.id == object.id %}
+                  <!-- 自分のダッシュボードの時、編集ボタンを表示-->
+                  <a href="{% url 'accounts:account_setting' object.username  %}"><button class="btn btn-danger-soft me-2" type="button"> <i class="bi bi-pencil-fill pe-1"></i> 編集 </button></a>
+                  {% elif object in user.connection.all %}
+                  <!-- すでに友達になっているユーザーのダッシュボードのとき、友達解除ボタンを表示 -->
+                  <a href=""><button class="btn btn-primary-soft me-2" type="button"> <i class="bi bi-chat-dots-fill pe-1"></i> メッセージ </button></a>
+                  <a href="{% url 'accounts:disconnect' object.username  %}"><button class="btn btn-info-soft me-2" type="button"> <i class="bi bi-person-heart pe-1"></i> フォロー中 </button></a>
                   {% else %}
+                  <!-- まだ、友達でないユーザーのダッシュボードのとき、友達登録ボタンを表示 -->
+                  <a href="{% url 'accounts:connect' object.username  %}"><button class="btn btn-info-soft me-2" type="button"> <i class="bi bi-person-heart pe-1"></i> フォローする </button></a>
                   {% endif %}
+                </div>
+              </div>
+              <!-- Description -->
+              <div>
+                  <p>{{ object.description }}</p>
+              </div>
+              <!-- List profile -->
+              <ul class="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">
+                <li class="list-inline-item"><i class="bi bi-person me-1"></i> {{ object.state }}</li>
+                {% if object.state == '現役台湾留学生' or object.state == '台湾留学卒業生' %}
+                  <li class="list-inline-item"><i class="bi bi-geo-alt me-1"></i> {{ object.school }}</li>
+                  <li class="list-inline-item"><i class="bi bi-pen me-1"></i> {{ object.major }}</li>
+                {% else %}
+                {% endif %}
+              </ul>
+            </div>
+            <!-- Card body END -->
+
+            <div class="card-footer mt-3 pt-2 pb-0">
+              <!-- Nav profile pages -->
+              <ul class="nav nav-bottom-line align-items-center justify-content-center justify-content-md-start mb-0 border-0">
+                <li class="nav-item"> <a class="nav-link active" href="{% url 'dashboard:post_in_dashboard' object.username %}"> ブログ記事 </a> </li>
+                <!-- ユーザーの所属が現役台湾留学生or台湾留学卒業生なら、大学の口コミタブを表示 -->
+                {% if object.state == '現役台湾留学生' or object.state == '台湾留学卒業生' %}
+                <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:review_in_dashboard' object.username %}"> 口コミ </a> </li>
+                {% endif %}
+                <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:following_in_dashboard' object.username %}"> フォロー中 <span class="badge bg-success bg-opacity-10 text-success small"> {{ number_of_following_user }}</span> </a> </li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:followed_in_dashboard' object.username %}"> フォロワー <span class="badge bg-success bg-opacity-10 text-success small"> {{ number_of_followed_user }}</span> </a> </li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:question_in_dashboard' object.username %}"> 質問 </a> </li>
+              </ul>
+            </div>
+          </div>
+          <!-- My profile END -->
+
+          <!-- Events START -->
+          <div class="card">
+            <!-- Card header START -->
+            <div class="card-header d-sm-flex align-items-center justify-content-between border-0 pb-0">
+              <h5>@{{ object.username }}が作成したブログ記事一覧</h5>
+              <!-- Button modal -->
+              {% if object == user %}
+              <a class="btn btn-primary-soft btn-sm" href="{% url 'blogs:create_blog' %}"> <i class="fa-solid fa-plus pe-1"></i> ブログ記事作成</a>
+              {% endif %}
+            </div>
+            <!-- Card header END -->
+            <!-- Card body START -->
+            <div class="card-body">
+              <!-- Upcoming event START -->
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>ブログ記事一覧:</strong> ブログ記事一覧はこちらから
+                <a href="{% url 'blogs:blog_list' %}" class="btn btn-xs btn-success ms-md-4">一覧を見る</a>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+              <!-- Upcoming event END -->
+              <!-- Events list START -->
+              {% for blog_post in blog_posts %}
+              <!-- Blog item START -->
+              <div class="card bg-transparent border-0">
+                  <div class="row g-3">
+                  <div class="col-4">
+                      <!-- Blog image -->
+                      <a href="{% url 'blogs:blog_detail' blog_post.id %}"><img class="rounded" src="{{ blog_post.top_image.url }}" alt="looben_blog"></a>
+                  </div>
+                  <div class="col-8">
+                      <!-- Blog caption -->
+                      <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">Lifestyle</a>
+                      <h5><a href="{% url 'blogs:blog_detail' blog_post.id %}" class="btn-link stretched-link text-reset fw-bold">{{ blog_post.title }}</a></h5>
+                      <div class="d-none d-sm-inline-block">
+                      <p class="mb-2">Speedily say has suitable disposal add boy. On forth doubt miles of child. Exercise joy man children rejoiced.</p>
+                      <!-- BLog date -->
+                      <a class="small text-secondary"> <i class="bi bi-calendar-date pe-1"></i> {{ blog_post.created_at }}</a>
+                      </div>
+                  </div>
+                  </div>
+              </div>
+              <!-- Blog item END -->
+              <hr class="my-4">
+              {% empty %}
+              <p>ブログ記事はまだありません。</p>
+              {% endfor %}
+            </div>
+            <!-- Card body END -->
+          </div>
+          <!-- Events START -->
+      </div>
+      <!-- Main content END -->
+
+      <!-- Right sidebar START -->
+      <div class="col-lg-4">
+
+        <div class="row g-4">
+
+          <!-- Card START -->
+          <div class="col-md-6 col-lg-12">
+            <div class="card">
+              <div class="card-header border-0 pb-0">
+                <h5 class="card-title">各種SNS</h5>
+                <!-- Button modal -->
+              </div>
+              <!-- Card body START -->
+              <div class="card-body position-relative pt-0">
+                <p></p>
+                <!-- Date time -->
+                <ul class="list-unstyled mt-3 mb-0">
+                  <li class="mb-2"><i class="bi bi-calendar3 me-1"></i> Joined: {{ object.joined_at }}</li>
+                  <li class="mb-2"> <i class="bi bi-calendar-date fa-fw pe-1"></i> Born: {{ object.birthday }} </li>
+                  <li class="mb-2"> <i class="bi bi-instagram fa-fw pe-1"></i> Instagram: <a href="https://www.instagram.com/{{ object.instagram_account_name }}/"><strong> @{{ object.instagram_account_name}} </strong></a> </li>
+                  <li class="mb-2"> <i class="bi bi-twitter fa-fw pe-1"></i> Twitter: <a href="https://twitter.com/{{ object.twitter_account_name }}"><strong> @{{ object.twitter_account_name }} </strong> </li>
                 </ul>
               </div>
               <!-- Card body END -->
-
-              <div class="card-footer mt-3 pt-2 pb-0">
-                <!-- Nav profile pages -->
-                <ul class="nav nav-bottom-line align-items-center justify-content-center justify-content-md-start mb-0 border-0">
-                  <li class="nav-item"> <a class="nav-link active" href="{% url 'dashboard:post_in_dashboard' object.username %}"> 投稿 </a> </li>
-                  <li class="nav-item"> <a class="nav-link" href="{% url 'blogs:create_blog' %}"> ブログ </a> </li>
-                  <!-- ユーザーの所属が現役台湾留学生or台湾留学卒業生なら、大学の口コミタブを表示 -->
-                  {% if object.state == '現役台湾留学生' or object.state == '台湾留学卒業生' %}
-                  <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:review_in_dashboard' object.username %}"> 口コミ </a> </li>
-                  {% endif %}
-                  <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:following_in_dashboard' object.username %}"> フォロー中 <span class="badge bg-success bg-opacity-10 text-success small"> {{ number_of_following_user }}</span> </a> </li>
-                  <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:followed_in_dashboard' object.username %}"> フォロワー <span class="badge bg-success bg-opacity-10 text-success small"> {{ number_of_followed_user }}</span> </a> </li>
-                  <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:question_in_dashboard' object.username %}"> 質問 </a> </li>
-                </ul>
-              </div>
             </div>
-            <!-- My profile END -->
-  
-            <!-- もし、自分のダッシュボードなら投稿画面を表示-->
-            {% if object == user %}
-            <!-- Share feed START -->
-            <div class="card card-body">
-              <div class="d-flex mb-3">
-                <!-- Avatar -->
-                <div class="avatar avatar-xs me-2">
-                  <a href="#"> <img class="avatar-img rounded-circle" src="{{ object.picture.url }}" alt="{{ object.username }}"> </a>
-                </div>
-                <!-- Post input -->
-                <form class="w-100">
-                <input class="form-control pe-4 border-0" placeholder="Share your thoughts..." data-bs-toggle="modal" data-bs-target="#modalCreateFeed">
-                </form>
-                <p></p>
-              </div>
-              <!-- Share feed toolbar START -->
-              <ul class="nav nav-pills nav-stack small fw-normal">
-                <li class="nav-item">
-                  <a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionPhoto"> <i class="bi bi-image-fill text-success pe-2"></i>Photo</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionVideo"> <i class="bi bi-camera-reels-fill text-info pe-2"></i>Video</a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link bg-light py-1 px-2 mb-0" data-bs-toggle="modal" data-bs-target="#modalCreateEvents"> <i class="bi bi-calendar2-event-fill text-danger pe-2"></i>Event </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link bg-light py-1 px-2 mb-0" href="#!" data-bs-toggle="modal" data-bs-target="#modalCreateFeed"> <i class="bi bi-emoji-smile-fill text-warning pe-2"></i>Feeling /Activity</a>
-                </li>
-                <li class="nav-item dropdown ms-sm-auto">
-                  <a class="nav-link bg-light py-1 px-2 mb-0" href="#" id="feedActionShare" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-three-dots"></i>
-                  </a>
-                  <!-- Dropdown menu -->
-                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="feedActionShare">
-                    <li><a class="dropdown-item" href="#"> <i class="bi bi-envelope fa-fw pe-2"></i>Create a poll</a></li>
-                    <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark-check fa-fw pe-2"></i>Ask a question </a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Help</a></li>
-                  </ul>
-                </li>
-              </ul>
-              <!-- Share feed toolbar END -->
-            </div>
-            <!-- Share feed END -->
-            {% endif %}
+          </div>
+          <!-- Card END -->
 
-
-            {% for post in object.post_set.all %}
-            <!-- Card feed item START -->
+          <!-- Card START -->
+          <div class="col-md-6 col-lg-12">
             <div class="card">
               <!-- Card header START -->
-              <div class="card-header border-0 pb-0">
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="d-flex align-items-center">
-                    <!-- Avatar -->
-                    <div class="avatar me-2">
-                      <a href="#!"> <img class="avatar-img rounded-circle" src="{{ object.picture.url }}" alt="{{ object.username }}"> </a>
-                    </div>
-                    <!-- Info -->
-                    <div>
-                      <div class="nav nav-divider">
-                        <h6 class="nav-item card-title mb-0"> <a href="#!"> {{ object.name }} </a></h6>
-                        <span class="nav-item small"> {{ post.created_at }}</span>
-                      </div>
-                      <p class="mb-0 small">{{ object.school }} / {{ object.major }}</p>
-                    </div>
-                  </div>
-                  <!-- Card feed action dropdown START -->
-                  <div class="dropdown">
-                    <a href="#" class="text-secondary btn btn-secondary-soft-hover py-1 px-2" id="cardFeedAction1" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="bi bi-three-dots"></i>
-                    </a>
-                    <!-- Card feed action dropdown menu -->
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction1">
-                      <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark fa-fw pe-2"></i>Save post</a></li>
-                      <li><a class="dropdown-item" href="#"> <i class="bi bi-person-x fa-fw pe-2"></i>Unfollow lori ferguson </a></li>
-                      <li><a class="dropdown-item" href="#"> <i class="bi bi-x-circle fa-fw pe-2"></i>Hide post</a></li>
-                      <li><a class="dropdown-item" href="#"> <i class="bi bi-slash-circle fa-fw pe-2"></i>Block</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#"> <i class="bi bi-flag fa-fw pe-2"></i>Report post</a></li>
-                    </ul>
-                  </div>
-                  <!-- Card feed action dropdown END -->
-                </div>
+              <div class="card-header d-flex justify-content-between border-0">
+                <h5 class="card-title">バイト・仕事経験</h5>
+                <a class="btn btn-primary-soft btn-sm" href="#!"> <i class="fa-solid fa-plus"></i> </a>
               </div>
               <!-- Card header END -->
               <!-- Card body START -->
-              <div class="card-body">
-                <p>{{ post.content }}</p>
-                <!-- Card img -->
-                <img class="card-img" src="" alt="Post" style="height:400px;">
-                <!-- Feed react START -->
-                <ul class="nav nav-stack py-3 small">
-                  <li class="nav-item">
-                    <a class="nav-link active" href="#!"> <i class="bi bi-hand-thumbs-up-fill pe-1"></i>Liked (56)</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#!"> <i class="bi bi-chat-fill pe-1"></i>Comments (12)</a>
-                  </li>
-                  <!-- Card share action START -->
-                  <li class="nav-item dropdown ms-sm-auto">
-                    <a class="nav-link mb-0" href="#" id="cardShareAction8" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="bi bi-reply-fill flip-horizontal ps-1"></i>Share (3)
-                    </a>
-                    <!-- Card share action dropdown menu -->
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardShareAction8">
-                      <li><a class="dropdown-item" href="#"> <i class="bi bi-envelope fa-fw pe-2"></i>Send via Direct Message</a></li>
-                      <li><a class="dropdown-item" href="#"> <i class="bi bi-bookmark-check fa-fw pe-2"></i>Bookmark </a></li>
-                      <li><a class="dropdown-item" href="#"> <i class="bi bi-link fa-fw pe-2"></i>Copy link to post</a></li>
-                      <li><a class="dropdown-item" href="#"> <i class="bi bi-share fa-fw pe-2"></i>Share post via …</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#"> <i class="bi bi-pencil-square fa-fw pe-2"></i>Share to News Feed</a></li>
-                    </ul>
-                  </li>
-                  <!-- Card share action END -->
-                </ul>
-                <!-- Feed react END -->
-  
-                <!-- Add comment -->
-                <div class="d-flex mb-3">
-                  <!-- Avatar -->
-                  <div class="avatar avatar-xs me-2">
-                    <a href="#!"> <img class="avatar-img rounded-circle" src="{{ user.picture.url }}" alt="{{ user.username }}"> </a>
-                  </div>
-                  <!-- Comment box  -->
-                  <form class="position-relative w-100">
-                    <textarea class="form-control pe-4 bg-light" rows="1" placeholder="コメントする..."></textarea>
-                  </form>
-                </div>
-                <!-- Comment wrap START -->
-                <ul class="comment-wrap list-unstyled">
-                  <!-- Comment item START -->
-                  <li class="comment-item">
-                    <div class="d-flex position-relative">
-                      <!-- Avatar -->
-                      <div class="avatar avatar-xs">
-                        <a href="#!"><img class="avatar-img rounded-circle" src="{% static 'images/avatar/IMG_4023.jpg' %}" alt=""></a>
-                      </div>
-                      <div class="ms-2">
-                        <!-- Comment by -->
-                        <div class="bg-light rounded-start-top-0 p-3 rounded">
-                          <div class="d-flex justify-content-between">
-                            <h6 class="mb-1"> <a href="#!"> 高橋 優輝 </a></h6>
-                            <small class="ms-2">5時間前</small>
-                          </div>
-                          <p class="small mb-0">イベント楽しかったです。お疲れ様でした！</p>
-                        </div>
-                        <!-- Comment react -->
-                        <ul class="nav nav-divider py-2 small">
-                          <li class="nav-item">
-                            <a class="nav-link" href="#!"> Like (3)</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href="#!"> Reply</a>
-                          </li>
-                          <li class="nav-item">
-                            <a class="nav-link" href="#!"> View 5 replies</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <!-- Comment item nested START -->
-                    <ul class="comment-item-nested list-unstyled">
-                      <!-- Comment item START -->
-                      <li class="comment-item">
-                        <div class="d-flex">
-                          <!-- Avatar -->
-                          <div class="avatar avatar-xs">
-                            <a href="#!"><img class="avatar-img rounded-circle" src="{% static 'images/avatar/IMG_4024.jpg' %}" alt=""></a>
-                          </div>
-                          <!-- Comment by -->
-                          <div class="ms-2">
-                            <div class="bg-light p-3 rounded">
-                              <div class="d-flex justify-content-between">
-                                <h6 class="mb-1"> <a href="#!"> 水上 海斗 </a> </h6>
-                                <small class="ms-2">5時間前</small>
-                              </div>
-                              <p class="small mb-0">いろんな人と繋がりが作れて、参加してよかったと感じてます。また、イベントを開くときも一緒にいきたいですね。</p>
-                            </div>
-                            <!-- Comment react -->
-                            <ul class="nav nav-divider py-2 small">
-                              <li class="nav-item">
-                                <a class="nav-link" href="#!"> Like (5)</a>
-                              </li>
-                              <li class="nav-item">
-                                <a class="nav-link" href="#!"> Reply</a>
-                              </li>
-                            </ul>
-                          </div>
-                        </div>
-                      </li>
-                      <!-- Comment item END -->
-                    </ul>
-                    <!-- Comment item nested END -->
-                  </li>
-                  <!-- Comment item END -->
-                </ul>
-                <!-- Comment wrap END -->
-              </div>
-              <!-- Card body END -->
-              <!-- Card footer START -->
-              <div class="card-footer border-0 pt-0">
-                <!-- Load more comments -->
-                <a href="#!" role="button" class="btn btn-link btn-link-loader btn-sm text-secondary d-flex align-items-center" data-bs-toggle="button" aria-pressed="true">
-                  <div class="spinner-dots me-2">
-                    <span class="spinner-dot"></span>
-                    <span class="spinner-dot"></span>
-                    <span class="spinner-dot"></span>
-                  </div>
-                  Load more comments 
-                </a>
-              </div>
-              <!-- Card footer END -->
-            </div>
-            <!-- Card feed item END -->
-            {% endfor %}
-        </div>
-        <!-- Main content END -->
-  
-        <!-- Right sidebar START -->
-        <div class="col-lg-4">
-          <div class="row g-4">
-            <!-- Card START -->
-            <div class="col-md-6 col-lg-12">
-              <div class="card">
-                <div class="card-header border-0 pb-0">
-                  <h5 class="card-title">各種SNS</h5>
-                  <!-- Button modal -->
-                </div>
-                <!-- Card body START -->
-                <div class="card-body position-relative pt-0">
-                  <p></p>
-                  <!-- Date time -->
-                  <ul class="list-unstyled mt-3 mb-0">
-                    <li class="mb-2"><i class="bi bi-calendar3 me-1"></i> Joined: {{ object.joined_at }}</li>
-                    <li class="mb-2"> <i class="bi bi-calendar-date fa-fw pe-1"></i> Born: {{ object.birthday }} </li>
-                    <li class="mb-2"> <i class="bi bi-instagram fa-fw pe-1"></i> Instagram: <a href="https://www.instagram.com/{{ object.instagram_account_name }}/"><strong> @{{ object.instagram_account_name}} </strong></a> </li>
-                    <li class="mb-2"> <i class="bi bi-twitter fa-fw pe-1"></i> Twitter: <a href="https://twitter.com/{{ object.twitter_account_name }}"><strong> @{{ object.twitter_account_name }} </strong> </li>
-                  </ul>
-                </div>
-                <!-- Card body END -->
-              </div>
-            </div>
-            <!-- Card END -->
-  
-            <!-- Card START -->
-            <div class="col-md-6 col-lg-12">
-              <div class="card">
-                <!-- Card header START -->
-                <div class="card-header d-flex justify-content-between border-0">
-                  <h5 class="card-title">バイト・仕事経験</h5>
-                  <a class="btn btn-primary-soft btn-sm" href="#!"> <i class="fa-solid fa-plus"></i> </a>
-                </div>
-                <!-- Card header END -->
-                <!-- Card body START -->
-                <div class="card-body position-relative pt-0">
+              <div class="card-body position-relative pt-0">
                   <!-- Experience item START -->
                   <div class="d-flex">
                     <!-- Avatar -->
@@ -395,7 +201,7 @@
                     </div>
                   </div>
                   <!-- Experience item END -->
-  
+
                   <!-- Experience item START -->
                   <div class="d-flex">
                     <!-- Avatar -->
@@ -409,7 +215,7 @@
                     </div>
                   </div>
                   <!-- Experience item END -->
-  
+
                   <!-- Experience item START -->
                   <div class="d-flex">
                     <!-- Avatar -->
@@ -423,13 +229,13 @@
                     </div>
                   </div>
                   <!-- Experience item END -->
-  
-                </div>
-                <!-- Card body END -->
               </div>
+              <!-- Card body END -->
             </div>
-            <!-- Card END -->
-  
+          </div>
+          <!-- Card END -->
+
+
             <!-- Card START -->
             <div class="col-md-6 col-lg-12">
               <div class="card">
@@ -465,13 +271,13 @@
                         <div class="card-footer p-2 border-0">
                           {% if saved_user in user.saved_users.all %}
                           <!-- もし、表示されているフレンドがすでにログインユーザーの友達だったら、友達解除ボタンを設置-->
-                          <a href="{% url 'dashboard:post_in_dashboard' saved_user.username %}"><button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="詳細をみる"> <i class="bi bi-incognito"></i> </button></a>
+                          <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="詳細をみる"> <i class="bi bi-incognito"></i> </button>
                           <a href="{% url 'accounts:unsave_user' saved_user.username %}"><button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="保存解除"> <i class="bi bi-person-x"></i> </button></a>
                           {% elif saved_user == user %}
                           <!-- もし、表示されているフレンドが自分自身だったら、ボタンを何も設置しない -->
                           {% else %}
                           <!-- もし、表示されているフレンドがまだ、ログインユーザーの友達じゃなかったら、友達ボタンを設置-->
-                          <a href="{% url 'dashboard:post_in_dashboard' saved_user.username %}"><button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="詳細をみる"> <i class="bi bi-incognito"></i> </button></a>
+                          <button class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="詳細をみる"> <i class="bi bi-incognito"></i> </button>
                           <a href="{% url 'accounts:save_user' saved_user.username %}"><button class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="保存する"> <i class="bi bi-person-plus"></i> </button></a>
                           {% endif %}
                         </div>
@@ -485,68 +291,14 @@
               </div>
             </div>
             <!-- Card END -->
-          </div>
-  
         </div>
-        <!-- Right sidebar END -->
-  
-      </div> <!-- Row END -->
-    </div>
-    <!-- Container END -->
+
+      </div>
+      <!-- Right sidebar END -->
+
+    </div> <!-- Row END -->
+  </div>
+  <!-- Container END -->
 </main>
 <!-- **************** MAIN CONTENT END **************** -->
-
-
-<!-- Modal create Feed START -->
-<form method="post" class="w-100">
-<div class="modal fade" id="modalCreateFeed" tabindex="-1" aria-labelledby="modalLabelCreateFeed" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-      <!-- Modal feed header START -->
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalLabelCreateFeed">投稿作成</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <!-- Modal feed header END -->
-
-      <!-- Modal feed body START -->
-      <div class="modal-body">
-        <!-- Add Feed -->
-        <div class="d-flex mb-3">
-          <!-- Avatar -->
-          <div class="avatar avatar-xs me-2">
-            <img class="avatar-img rounded-circle" src="{{ object.picture.url }}" alt="{{ object.username }}">
-          </div>
-          <!-- Feed box  -->
-          {{ form.non_field_errors }}
-          {% csrf_token %}
-          {{ form.content }}
-          {{form.content.errors }}
-        </div>
-        <!-- Feed rect START -->
-        <div class="hstack gap-2">
-          <a class="icon-md bg-success bg-opacity-10 text-success rounded-circle" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Photo"> <i class="bi bi-image-fill"></i> </a>
-          <a class="icon-md bg-info bg-opacity-10 text-info rounded-circle" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Video"> <i class="bi bi-camera-reels-fill"></i> </a>
-          <a class="icon-md bg-danger bg-opacity-10 text-danger rounded-circle" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Events"> <i class="bi bi-calendar2-event-fill"></i> </a>
-          <a class="icon-md bg-warning bg-opacity-10 text-warning rounded-circle" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Feeling/Activity"> <i class="bi bi-emoji-smile-fill"></i> </a>
-          <a class="icon-md bg-light text-secondary rounded-circle" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Check in"> <i class="bi bi-geo-alt-fill"></i> </a>
-          <a class="icon-md bg-primary bg-opacity-10 text-primary rounded-circle" href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Tag people on top"> <i class="bi bi-tag-fill"></i> </a>
-        </div>
-        <!-- Feed rect END -->
-      </div>
-      <!-- Modal feed body END -->
-      
-      <!-- Modal feed footer -->
-      <div class="modal-footer row justify-content-right">
-        <div class="col-lg-8 text-sm-end">
-          <button class="btn btn-success-soft" type="submit">公開</button>
-        </div>
-      </div>
-      <!-- Modal feed footer -->
-
-    </div>
-  </div>
-</div>
-</form>
-<!-- Modal create feed END -->
 {% endblock %}
