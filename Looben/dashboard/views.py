@@ -6,10 +6,8 @@ from django.views.generic.list import ListView
 from django.urls import reverse
 
 from accounts.models import Users
+from blogs.models import Blog
 from reviews.models import ReviewOfUniversity
-
-from .forms import PostForm
-from .models import Post
 
 
 class PostInDashboardView(DetailView):
@@ -24,20 +22,8 @@ class PostInDashboardView(DetailView):
         context['number_of_following_user'] = user.connection.all().count()
         context['number_of_followed_user'] = user.connected_users.all().count()
         context['saved_user_sidebar_list'] = user.saved_users.all()[:4]
-        context['form'] = PostForm()
+        context['blog_posts'] = Blog.objects.filter(author=user).all()
         return context
-    
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = PostForm(request.POST or None)
-        if form.is_valid():
-            form.instance.user = request.user
-            form.save()
-            return redirect('dashboard:post_in_dashboard', username=request.user.username)
-        else:
-            context = self.get_context_data()
-            context['form'] = form  # form.is_validしたフォームを渡さないと、フォームのエラーを表示できない
-            return render(request, 'dashboard/post_in_dashboard.html', context)    
     
     
 class ReviewInDashboardView(DetailView):

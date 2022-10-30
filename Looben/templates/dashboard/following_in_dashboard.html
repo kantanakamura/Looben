@@ -82,15 +82,14 @@
               <div class="card-footer mt-3 pt-2 pb-0">
                 <!-- Nav profile pages -->
                 <ul class="nav nav-bottom-line align-items-center justify-content-center justify-content-md-start mb-0 border-0">
-                  <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:post_in_dashboard' object.username %}"> 投稿 </a> </li>
-                  <li class="nav-item"> <a class="nav-link" href="{% url 'blogs:create_blog' %}"> ブログ </a> </li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:post_in_dashboard' object.username %}"> ブログ記事 </a> </li>
                   <!-- ユーザーの所属が現役台湾留学生or台湾留学卒業生なら、大学の口コミタブを表示 -->
                   {% if object.state == '現役台湾留学生' or object.state == '台湾留学卒業生' %}
                   <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:review_in_dashboard' object.username %}"> 口コミ </a> </li>
                   {% endif %}
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:question_in_dashboard' object.username %}"> 質問 </a> </li>
                   <li class="nav-item"> <a class="nav-link active" href="{% url 'dashboard:following_in_dashboard' object.username %}"> フォロー中 <span class="badge bg-success bg-opacity-10 text-success small"> {{ number_of_following_user }}</span> </a> </li>
                   <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:followed_in_dashboard' object.username %}"> フォロワー <span class="badge bg-success bg-opacity-10 text-success small"> {{ number_of_followed_user }}</span> </a> </li>
-                  <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:question_in_dashboard' object.username %}"> 質問 </a> </li>
                 </ul>
               </div>
             </div>
