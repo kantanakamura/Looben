@@ -64,13 +64,13 @@
                     </li>                    
                     {% endif %}
                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard:question_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bulb-curvy-outline-filled.svg' %}" alt="question"><span>質問 </span></a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'dashboard:following_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-outline-filled.svg' %}" alt="following"><span>フォロー中 </span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'dashboard:followed_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-girl-outline-filled.svg' %}" alt="followd"><span>フォロワー </span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'dashboard:question_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bulb-curvy-outline-filled.svg' %}" alt="question"><span>質問 </span></a>
                     </li>
                 </ul>
                 <!-- Side Nav END -->
