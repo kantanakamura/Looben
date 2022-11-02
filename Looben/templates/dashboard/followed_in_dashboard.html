@@ -52,7 +52,36 @@
                   <!-- Button -->
                   <div class="d-flex mt-3 justify-content-center ms-sm-auto">
                     {% if user.id == object.id %}
-                    <!-- 自分のダッシュボードの時、編集ボタンを表示-->
+                    <div class="dropdown ms-3" style="margin-right:4px;">
+                      <a href="#" class="btn btn-sm btn-secondary-soft" id="eventActionShare" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="bi bi-share-fill"></i>
+                      </a>
+                      <!-- Dropdown menu -->
+                      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="eventActionShare">
+                        <li style="text-align:center;">SNSでアカウントをシェア</li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                          <a class="dropdown-item" href="https://twitter.com/share?url={{ request.scheme }}://{{ request.get_host }}{{ request.path }}" target="_blank" rel="nofollow">
+                            <i class="bi bi-twitter" style="color:#36B5F7;"></i> Twitter
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="https://www.facebook.com/share.php?u={{ request.scheme }}://{{ request.get_host }}{{ request.path }}&t={{ object.username }}" target="_blank" rel="nofollow">
+                            <i class="bi bi-facebook" style="color:#368AF7;"></i> Facebook
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="https://www.instagram.com/share?url={{ request.scheme }}://{{ request.get_host }}{{ request.path }}" target="_blank" rel="nofollow">
+                              <i class="bi bi-instagram" style="color:#EE4CAC;"></i> Instagram
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="https://line.me/R/msg/text/?{{ request.scheme }}://{{ request.get_host }}{{ request.path }}" target="_blank" rel="nofollow">
+                              <i class="bi bi-line" style="color:#1DAF58;"></i> Line
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
                     <a href="{% url 'accounts:account_setting' object.username  %}"><button class="btn btn-danger-soft me-2" type="button"> <i class="bi bi-pencil-fill pe-1"></i> 編集 </button></a>
                     {% elif object in user.connection.all %}
                     <!-- すでに友達になっているユーザーのダッシュボードのとき、友達解除ボタンを表示 -->
