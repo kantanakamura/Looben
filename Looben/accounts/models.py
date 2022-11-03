@@ -79,7 +79,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
 class Schools(models.Model):
     name = models.CharField(max_length=150)
     major = models.ManyToManyField('Majors')
-    national = models.BooleanField(default=False)
+    is_national = models.BooleanField(default=False)
     place = models.CharField(max_length=150, null=True)
     picture = models.FileField(blank=True, upload_to='university/')
     address = models.CharField(max_length=150, null=True)

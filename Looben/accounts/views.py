@@ -243,8 +243,8 @@ class UserRankingView(LoginRequiredMixin, ListView):
 class ResearchUniversity(View):
     def get(self, request, *args, **kwargs):
         high_rated_universities = Schools.objects.order_by('star_rating').reverse()[:12]
-        national_universities = Schools.objects.filter(national=True).all()
-        non_national_universities = Schools.objects.filter(national=False).all()
+        national_universities = Schools.objects.filter(is_national=True).all()
+        non_national_universities = Schools.objects.filter(is_national=False).all()
         north_universities = Schools.objects.filter(place='北部').all()
         middle_universities = Schools.objects.filter(place='中部').all()
         east_universities = Schools.objects.filter(place='東部').all()
