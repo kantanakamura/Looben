@@ -83,7 +83,7 @@ class Schools(models.Model):
     place = models.CharField(max_length=150, null=True)
     picture = models.FileField(blank=True, upload_to='university/')
     address = models.CharField(max_length=150, null=True)
-    homepage = models.CharField(max_length=150, null=True)
+    homepage_url = models.CharField(max_length=150, null=True)
     average_academic_fee = models.CharField(max_length=50, null=True)
     average_domitary_fee = models.CharField(max_length=50, null=True)
     number_of_students = models.IntegerField(null=True)
