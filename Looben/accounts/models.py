@@ -49,7 +49,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
     twitter_account_name = models.CharField(max_length=150, blank=True)
     description = models.TextField(max_length=150, blank=True)
     saved_users = models.ManyToManyField('self', symmetrical=False, blank=True)
-    saved_university = models.ManyToManyField('Schools', symmetrical=False, blank=True, related_name='saved_university_users')
+    # saved_university = models.ManyToManyField('Schools', symmetrical=False, blank=True, related_name='saved_university_users')
     state = models.CharField(max_length=50, default='その他')
     joined_at = models.DateField(default=timezone.now)
     contributed_points = models.IntegerField(default=0)
@@ -113,4 +113,8 @@ class Majors(models.Model):
     def __str__(self):
         return self.name
     
-    
+
+class SaveForUniversity(models.Model):    
+    target_university = models.ForeignKey(Schools, on_delete=models.CASCADE)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(default=timezone.now)
