@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView, View
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404 
@@ -24,7 +25,7 @@ def create_blog(request):
     )
     
     
-class BlogListView(View):
+class BlogListView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         user = request.user

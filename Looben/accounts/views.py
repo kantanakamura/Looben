@@ -276,7 +276,7 @@ class ResearchUniversity(View):
             })
     
     
-class UniversityDetailView(DetailView):
+class UniversityDetailView(LoginRequiredMixin, DetailView):
     model = Schools
     template_name = 'accounts/university_detail.html'
     

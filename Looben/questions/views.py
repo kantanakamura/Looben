@@ -27,7 +27,7 @@ from .models import AnswerForQuestion, CommentToBestAnswer, Questions
 from accounts.models import Users, Schools
 
 
-class QuestionView(View):
+class QuestionView(LoginRequiredMixin, View):
     
     def get(self, request, *args, **kwargs):
         question_seeking_answers = Questions.objects.filter(is_solved=False).all()[:4]  
@@ -78,7 +78,7 @@ def ask_question(request):
     )
     
     
-class QuestionDetailView(LoginRequiredMixin, DetailView):
+class QuestionDetailView(DetailView):
     template_name = 'question/question_detail.html'
     model = Questions
     
