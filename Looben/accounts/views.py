@@ -21,7 +21,7 @@ from django.db.models import Q, Prefetch
 
 
 from .forms import RegistForm, UserLoginForm, AccountSettingForm, PasswordChangeForm
-from .models import Schools, Users
+from .models import Schools, Users, LikeForUniversity
 from reviews.models import ReviewOfUniversity
 from questions.models import AnswerForQuestion ,Questions
 
@@ -249,6 +249,7 @@ class ResearchUniversity(View):
         middle_universities = Schools.objects.filter(place='中部').all()
         east_universities = Schools.objects.filter(place='東部').all()
         south_universities = Schools.objects.filter(place='南部').all()
+        liked_universities = LikeForUniversity.objects.filter(user=self.request.user).all()
         if 'search' in self.request.GET:
             query = request.GET.get("search")
             universities = list(Schools.objects.all())
@@ -273,6 +274,7 @@ class ResearchUniversity(View):
             'south_universities': south_universities,
             'number_of_searched_universities': number_of_searched_universities,
             'user_searched_anything': user_searched_anything,
+            'liked_universities': liked_universities,
             })
     
     

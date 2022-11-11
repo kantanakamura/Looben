@@ -51,7 +51,7 @@
             <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-5"> 中部 </a> </li>
             <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-6"> 東部 </a> </li>
             <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-7"> 南部 </a> </li>
-            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-8"> 保存した大学 </a> </li>
+            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-8"> いいねした大学 </a> </li>
           </ul>
           <!-- Tab nav line START -->
         </div>
@@ -152,11 +152,12 @@
                       </li>
                       <!-- 保存　button START -->
                       <li class="nav-item ms-sm-auto">
-                        {% if high_rated_university in user.saved_university.all %}
-                        <a href="{% url 'accounts:unsave_university' high_rated_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
-                        {% else %}
-                        <a href="{% url 'accounts:save_university' high_rated_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
-                        {% endif %}
+                        <div class="ms-md-auto d-flex">
+                          <span style="color:gray;" id="like-for-post-count"> {{ high_rated_university.likeforuniversity_set.all.count }}</span>
+                          <button type="button" id="ajax-like-for-post" style="border:none;background:none">
+                              <i class="bi bi-heart" id="like-for-post-icon" style="color:#F73641"></i>
+                          </button>
+                        </div>
                       </li>
                       <!-- 保存　button END -->
                     </ul>
@@ -204,15 +205,17 @@
                     <a class="text-body" href="{% url 'accounts:university_detail' pk=national_university.id %}">{{ national_university.description }}</a>
                     <!-- Feed react START -->
                     <ul class="nav nav-stack flex-wrap small mt-3">
+                      <li class="nav-item">
+                        <a href="{% url 'accounts:university_detail' national_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"> 詳細をみる</button></a>
+                      </li>
                       <!-- 保存　button START -->
                       <li class="nav-item ms-sm-auto">
-                        <!-- もし、ログインユーザーがこの大学を保存していたら、保存解除ボタンを設置 -->
-                        {% if national_university in user.saved_university.all %}
-                        <a href="{% url 'accounts:unsave_university' national_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
-                        {% else %}
-                        <!-- もし、ログインユーザーがこの大学を保存していなかったら、保存ボタンを設置 -->
-                        <a href="{% url 'accounts:save_university' national_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
-                        {% endif %}
+                        <div class="ms-md-auto d-flex">
+                          <span style="color:gray;" id="like-for-post-count"> {{ national_university.likeforuniversity_set.all.count }}</span>
+                          <button type="button" id="ajax-like-for-post" style="border:none;background:none">
+                              <i class="bi bi-heart" id="like-for-post-icon" style="color:#F73641"></i>
+                          </button>
+                        </div>
                       </li>
                       <!-- 保存　button END -->
                     </ul>
@@ -259,15 +262,17 @@
                       <a class="text-body" href="{% url 'accounts:university_detail' pk=non_national_university.id %}">{{ non_national_university.description }}</a>
                       <!-- Feed react START -->
                       <ul class="nav nav-stack flex-wrap small mt-3">
+                        <li class="nav-item">
+                          <a href="{% url 'accounts:university_detail' non_national_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"> 詳細をみる</button></a>
+                        </li>
                         <!-- 保存　button START -->
                         <li class="nav-item ms-sm-auto">
-                          <!-- もし、ログインユーザーがこの大学を保存していたら、保存解除ボタンを設置 -->
-                          {% if non_national_university in user.saved_university.all %}
-                          <a href="{% url 'accounts:unsave_university' non_national_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
-                          {% else %}
-                          <!-- もし、ログインユーザーがこの大学を保存していなかったら、保存ボタンを設置 -->
-                          <a href="{% url 'accounts:save_university' non_national_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
-                          {% endif %}
+                          <div class="ms-md-auto d-flex">
+                            <span style="color:gray;" id="like-for-post-count"> {{ non_national_university.likeforuniversity_set.all.count }}</span>
+                            <button type="button" id="ajax-like-for-post" style="border:none;background:none">
+                                <i class="bi bi-heart" id="like-for-post-icon" style="color:#F73641"></i>
+                            </button>
+                          </div>
                         </li>
                         <!-- 保存　button END -->
                       </ul>
@@ -314,15 +319,17 @@
                       <a class="text-body" href="{% url 'accounts:university_detail' pk=north_university.id %}">{{ north_university.description }}</a>
                       <!-- Feed react START -->
                       <ul class="nav nav-stack flex-wrap small mt-3">
+                        <li class="nav-item">
+                          <a href="{% url 'accounts:university_detail' north_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"> 詳細をみる</button></a>
+                        </li>
                         <!-- 保存　button START -->
                         <li class="nav-item ms-sm-auto">
-                          <!-- もし、ログインユーザーがこの大学を保存していたら、保存解除ボタンを設置 -->
-                          {% if north_university in user.saved_university.all %}
-                          <a href="{% url 'accounts:unsave_university' north_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
-                          {% else %}
-                          <!-- もし、ログインユーザーがこの大学を保存していなかったら、保存ボタンを設置 -->
-                          <a href="{% url 'accounts:save_university' north_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
-                          {% endif %}
+                          <div class="ms-md-auto d-flex">
+                            <span style="color:gray;" id="like-for-post-count"> {{ north_university.likeforuniversity_set.all.count }}</span>
+                            <button type="button" id="ajax-like-for-post" style="border:none;background:none">
+                                <i class="bi bi-heart" id="like-for-post-icon" style="color:#F73641"></i>
+                            </button>
+                          </div>
                         </li>
                         <!-- 保存　button END -->
                       </ul>
@@ -368,15 +375,17 @@
                       <a class="text-body" href="{% url 'accounts:university_detail' pk=middle_university.id %}">{{ middle_university.description }}</a>
                       <!-- Feed react START -->
                       <ul class="nav nav-stack flex-wrap small mt-3">
+                        <li class="nav-item">
+                          <a href="{% url 'accounts:university_detail' middle_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"> 詳細をみる</button></a>
+                        </li>
                         <!-- 保存　button START -->
                         <li class="nav-item ms-sm-auto">
-                          <!-- もし、ログインユーザーがこの大学を保存していたら、保存解除ボタンを設置 -->
-                          {% if middle_university in user.saved_university.all %}
-                          <a href="{% url 'accounts:unsave_university' middle_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
-                          {% else %}
-                          <!-- もし、ログインユーザーがこの大学を保存していなかったら、保存ボタンを設置 -->
-                          <a href="{% url 'accounts:save_university' middle_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
-                          {% endif %}
+                          <div class="ms-md-auto d-flex">
+                            <span style="color:gray;" id="like-for-post-count"> {{ middle_university.likeforuniversity_set.all.count }}</span>
+                            <button type="button" id="ajax-like-for-post" style="border:none;background:none">
+                                <i class="bi bi-heart" id="like-for-post-icon" style="color:#F73641"></i>
+                            </button>
+                          </div>
                         </li>
                         <!-- 保存　button END -->
                       </ul>
@@ -422,15 +431,17 @@
                       <a class="text-body" href="{% url 'accounts:university_detail' pk=east_university.id %}">{{ east_university.description }}</a>
                       <!-- Feed react START -->
                       <ul class="nav nav-stack flex-wrap small mt-3">
+                        <li class="nav-item">
+                          <a href="{% url 'accounts:university_detail' east_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"> 詳細をみる</button></a>
+                        </li>
                         <!-- 保存　button START -->
                         <li class="nav-item ms-sm-auto">
-                          <!-- もし、ログインユーザーがこの大学を保存していたら、保存解除ボタンを設置 -->
-                          {% if east_university in user.saved_university.all %}
-                          <a href="{% url 'accounts:unsave_university' east_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
-                          {% else %}
-                          <!-- もし、ログインユーザーがこの大学を保存していなかったら、保存ボタンを設置 -->
-                          <a href="{% url 'accounts:save_university' east_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
-                          {% endif %}
+                          <div class="ms-md-auto d-flex">
+                            <span style="color:gray;" id="like-for-post-count"> {{ east_university.likeforuniversity_set.all.count }}</span>
+                            <button type="button" id="ajax-like-for-post" style="border:none;background:none">
+                                <i class="bi bi-heart" id="like-for-post-icon" style="color:#F73641"></i>
+                            </button>
+                          </div>
                         </li>
                         <!-- 保存　button END -->
                       </ul>
@@ -476,15 +487,17 @@
                       <a class="text-body" href="{% url 'accounts:university_detail' pk=south_university.id %}">{{ south_university.description }}</a>
                       <!-- Feed react START -->
                       <ul class="nav nav-stack flex-wrap small mt-3">
+                        <li class="nav-item">
+                          <a href="{% url 'accounts:university_detail' south_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"> 詳細をみる</button></a>
+                        </li>
                         <!-- 保存　button START -->
                         <li class="nav-item ms-sm-auto">
-                          <!-- もし、ログインユーザーがこの大学を保存していたら、保存解除ボタンを設置 -->
-                          {% if south_university in user.saved_university.all %}
-                          <a href="{% url 'accounts:unsave_university' south_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
-                          {% else %}
-                          <!-- もし、ログインユーザーがこの大学を保存していなかったら、保存ボタンを設置 -->
-                          <a href="{% url 'accounts:save_university' south_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
-                          {% endif %}
+                          <div class="ms-md-auto d-flex">
+                            <span style="color:gray;" id="like-for-post-count"> {{ south_university.likeforuniversity_set.all.count }}</span>
+                            <button type="button" id="ajax-like-for-post" style="border:none;background:none">
+                                <i class="bi bi-heart" id="like-for-post-icon" style="color:#F73641"></i>
+                            </button>
+                          </div>
                         </li>
                         <!-- 保存　button END -->
                       </ul>
@@ -500,41 +513,48 @@
         </div>
         <!-- 南部 tab END -->
 
-        <!-- 保存済み大学 tab START -->
+        <!-- いいねした大学 tab START -->
         <div class="tab-pane fade text-center" id="tab-8">
           <div class="row g-4">
-            <!-- もし、保存済み大学がある場合-->
-            {% for saved_university in user.saved_university.all %}
+            {% for liked_university in liked_universities %}
             <!-- Main content START -->
             <div class="col-sm-6 col-lg-4">
               <!-- Card feed item START -->
               <div class="card h-100">
-                <img class="card-img-top" src="{{ saved_university.picture.url }}" alt="{{ saved_university.name }}" style="height:210px;">
+                <img class="card-img-top" src="{{ liked_university.target_university.picture.url }}" alt="{{ liked_university.target_university.name }}" style="height:210px;">
                 <!-- Card header END -->
                 <!-- Card body START -->
                 <div class="card-body">
                   <!-- Info -->
-                  <p class="text-body"><strong>{{ saved_university.name }}</strong> {% if saved_university.national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                  <p class="text-body"><strong>{{ liked_university.target_university.name }}</strong> {% if liked_university.target_university.national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
                   <div>
                     {% with range=''|center:5 %}
                     {% for _ in range %}
-                      {% if forloop.counter <= saved_university.star_rating %}
+                      {% if forloop.counter <= liked_university.target_university.star_rating %}
                       <i class="fas fa-star" style="color:#F7E36C;"></i>
                       {% else %}
                       <i class="fas fa-star" style="color:#D8DDEA;"></i>
                       {% endif %}
                     {% endfor %}
-                    <span style="color:#FF1474;"><strong>{{ saved_university.star_rating }}.0</strong></span>
+                    <span style="color:#FF1474;"><strong>{{ liked_university.target_university.star_rating }}.0</strong></span>
                     {% endwith %}
                   </div>
-                  <a class="text-body" href="{% url 'accounts:university_detail' saved_university.id %}">{{ saved_university.description }}</a>
+                  <a class="text-body" href="{% url 'accounts:university_detail' saved_university.id %}">{{ liked_university.target_university.description }}</a>
                   <!-- Feed react START -->
                   <ul class="nav nav-stack flex-wrap small mt-3">
-                    <!-- 保存　button START -->
-                    <li class="nav-item ms-sm-auto">
-                        <a href="{% url 'accounts:unsave_university' saved_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
+                    <li class="nav-item">
+                      <a href="{% url 'accounts:university_detail' liked_university.target_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"> 詳細をみる</button></a>
                     </li>
-                    <!-- 保存　button END -->
+                    <!-- いいね数 START -->
+                    <li class="nav-item ms-sm-auto">
+                      <div class="ms-md-auto d-flex">
+                        <span style="color:gray;" id="like-for-post-count"> {{ liked_university.target_university.likeforuniversity_set.all.count }}</span>
+                        <button type="button" id="ajax-like-for-post" style="border:none;background:none">
+                            <i class="bi bi-heart" id="like-for-post-icon" style="color:#F73641"></i>
+                        </button>
+                      </div>
+                    </li>
+                    <!-- いいね数 END -->
                   </ul>
                   <!-- Feed react END -->
                 </div>
@@ -544,16 +564,15 @@
             </div>
             <!-- Main content END -->
             {% empty %}
-            <!-- もし、保存済み大学がない場合-->
+            <!-- もし、いいねした大学がない場合-->
             <div class="my-sm-5 py-sm-5">
               <i class="display-1 text-primary text-opacity-25 bi bi-card-text"> </i>
-              <h4 class="mt-2 mb-3 text-body">あなたが保存した大学はありません</h4>
-              <a href="#tab-1"><button class="btn btn-primary-soft btn-sm"> おすすめを見る </button></a>
+              <h4 class="mt-2 mb-3 text-body">あなたがいいねした大学はありません</h4>
             </div>
             {% endfor %}
           </div>
         </div>
-        <!-- 保存済み大学 tab END --> 
+        <!-- いいねした大学 tab END --> 
       </div>
     </div>
   </div>

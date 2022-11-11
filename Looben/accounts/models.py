@@ -114,7 +114,7 @@ class Majors(models.Model):
         return self.name
     
 
-class SaveForUniversity(models.Model):    
+class LikeForUniversity(models.Model):    
     target_university = models.ForeignKey(Schools, on_delete=models.CASCADE)
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(default=timezone.now)
