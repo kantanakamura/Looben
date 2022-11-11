@@ -92,15 +92,14 @@
                       <li class="nav-item">
                         <a href="{% url 'accounts:university_detail' searched_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"> 詳細をみる</button></a>
                       </li>
-                      <!-- 保存　button START -->
                       <li class="nav-item ms-sm-auto">
-                        {% if searched_university in user.saved_university.all %}
-                        <a href="{% url 'accounts:unsave_university' searched_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存解除</button></a>
-                        {% else %}
-                        <a href="{% url 'accounts:save_university' searched_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"><i class="bi bi-bookmark-check"></i> 保存</button></a>
-                        {% endif %}
+                        <div class="ms-md-auto d-flex">
+                          <span style="color:gray;"> {{ searched_university.likeforuniversity_set.all.count }}</span>
+                          <button type="button" style="border:none;background:none">
+                              <i class="bi bi-heart" style="color:#F73641"></i>
+                          </button>
+                        </div>
                       </li>
-                      <!-- 保存　button END -->
                     </ul>
                     <!-- Feed react END -->
                   </div>
@@ -153,9 +152,9 @@
                       <!-- 保存　button START -->
                       <li class="nav-item ms-sm-auto">
                         <div class="ms-md-auto d-flex">
-                          <span style="color:gray;" id="like-for-post-count"> {{ high_rated_university.likeforuniversity_set.all.count }}</span>
-                          <button type="button" id="ajax-like-for-post" style="border:none;background:none">
-                              <i class="bi bi-heart" id="like-for-post-icon" style="color:#F73641"></i>
+                          <span style="color:gray;"> {{ high_rated_university.likeforuniversity_set.all.count }}</span>
+                          <button type="button" style="border:none;background:none">
+                              <i class="bi bi-heart" style="color:#F73641"></i>
                           </button>
                         </div>
                       </li>
@@ -211,9 +210,9 @@
                       <!-- 保存　button START -->
                       <li class="nav-item ms-sm-auto">
                         <div class="ms-md-auto d-flex">
-                          <span style="color:gray;" id="like-for-post-count"> {{ national_university.likeforuniversity_set.all.count }}</span>
-                          <button type="button" id="ajax-like-for-post" style="border:none;background:none">
-                              <i class="bi bi-heart" id="like-for-post-icon" style="color:#F73641"></i>
+                          <span style="color:gray;"> {{ national_university.likeforuniversity_set.all.count }}</span>
+                          <button type="button" style="border:none;background:none">
+                              <i class="bi bi-heart" style="color:#F73641"></i>
                           </button>
                         </div>
                       </li>
@@ -268,9 +267,9 @@
                         <!-- 保存　button START -->
                         <li class="nav-item ms-sm-auto">
                           <div class="ms-md-auto d-flex">
-                            <span style="color:gray;" id="like-for-post-count"> {{ non_national_university.likeforuniversity_set.all.count }}</span>
-                            <button type="button" id="ajax-like-for-post" style="border:none;background:none">
-                                <i class="bi bi-heart" id="like-for-post-icon" style="color:#F73641"></i>
+                            <span style="color:gray;"> {{ non_national_university.likeforuniversity_set.all.count }}</span>
+                            <button type="button" style="border:none;background:none">
+                                <i class="bi bi-heart" style="color:#F73641"></i>
                             </button>
                           </div>
                         </li>
@@ -325,9 +324,9 @@
                         <!-- 保存　button START -->
                         <li class="nav-item ms-sm-auto">
                           <div class="ms-md-auto d-flex">
-                            <span style="color:gray;" id="like-for-post-count"> {{ north_university.likeforuniversity_set.all.count }}</span>
-                            <button type="button" id="ajax-like-for-post" style="border:none;background:none">
-                                <i class="bi bi-heart" id="like-for-post-icon" style="color:#F73641"></i>
+                            <span style="color:gray;"> {{ north_university.likeforuniversity_set.all.count }}</span>
+                            <button type="button" style="border:none;background:none">
+                                <i class="bi bi-heart" style="color:#F73641"></i>
                             </button>
                           </div>
                         </li>
@@ -381,9 +380,9 @@
                         <!-- 保存　button START -->
                         <li class="nav-item ms-sm-auto">
                           <div class="ms-md-auto d-flex">
-                            <span style="color:gray;" id="like-for-post-count"> {{ middle_university.likeforuniversity_set.all.count }}</span>
-                            <button type="button" id="ajax-like-for-post" style="border:none;background:none">
-                                <i class="bi bi-heart" id="like-for-post-icon" style="color:#F73641"></i>
+                            <span style="color:gray;"> {{ middle_university.likeforuniversity_set.all.count }}</span>
+                            <button type="button" style="border:none;background:none">
+                                <i class="bi bi-heart" style="color:#F73641"></i>
                             </button>
                           </div>
                         </li>
@@ -437,9 +436,9 @@
                         <!-- 保存　button START -->
                         <li class="nav-item ms-sm-auto">
                           <div class="ms-md-auto d-flex">
-                            <span style="color:gray;" id="like-for-post-count"> {{ east_university.likeforuniversity_set.all.count }}</span>
-                            <button type="button" id="ajax-like-for-post" style="border:none;background:none">
-                                <i class="bi bi-heart" id="like-for-post-icon" style="color:#F73641"></i>
+                            <span style="color:gray;"> {{ east_university.likeforuniversity_set.all.count }}</span>
+                            <button type="button" style="border:none;background:none">
+                                <i class="bi bi-heart" style="color:#F73641"></i>
                             </button>
                           </div>
                         </li>
@@ -493,9 +492,9 @@
                         <!-- 保存　button START -->
                         <li class="nav-item ms-sm-auto">
                           <div class="ms-md-auto d-flex">
-                            <span style="color:gray;" id="like-for-post-count"> {{ south_university.likeforuniversity_set.all.count }}</span>
-                            <button type="button" id="ajax-like-for-post" style="border:none;background:none">
-                                <i class="bi bi-heart" id="like-for-post-icon" style="color:#F73641"></i>
+                            <span style="color:gray;"> {{ south_university.likeforuniversity_set.all.count }}</span>
+                            <button type="button" style="border:none;background:none">
+                                <i class="bi bi-heart" style="color:#F73641"></i>
                             </button>
                           </div>
                         </li>
@@ -548,9 +547,9 @@
                     <!-- いいね数 START -->
                     <li class="nav-item ms-sm-auto">
                       <div class="ms-md-auto d-flex">
-                        <span style="color:gray;" id="like-for-post-count"> {{ liked_university.target_university.likeforuniversity_set.all.count }}</span>
-                        <button type="button" id="ajax-like-for-post" style="border:none;background:none">
-                            <i class="bi bi-heart" id="like-for-post-icon" style="color:#F73641"></i>
+                        <span style="color:gray;"> {{ liked_university.target_university.likeforuniversity_set.all.count }}</span>
+                        <button type="button" style="border:none;background:none">
+                            <i class="bi bi-heart" style="color:#F73641"></i>
                         </button>
                       </div>
                     </li>

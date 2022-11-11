@@ -291,6 +291,10 @@ class UniversityDetailView(LoginRequiredMixin, DetailView):
             Prefetch('answerforquestion_set', queryset=AnswerForQuestion.objects.filter(is_best_answer=True))
         )[:4]
         context['registed_students_number'] = Users.objects.filter(school=school).count()
+        if self.object.likeforuniversity_set.filter(user=self.request.user).exists():
+            context['is_user_liked_for_university'] = True
+        else:
+            context['is_user_liked_for_university'] = False
         school.number_of_viewer += 1
         school.save()
         return context
