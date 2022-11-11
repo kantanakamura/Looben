@@ -538,7 +538,7 @@
                     <span style="color:#FF1474;"><strong>{{ liked_university.target_university.star_rating }}.0</strong></span>
                     {% endwith %}
                   </div>
-                  <a class="text-body" href="{% url 'accounts:university_detail' saved_university.id %}">{{ liked_university.target_university.description }}</a>
+                  <a class="text-body" href="{% url 'accounts:university_detail' liked_university.target_university.id %}">{{ liked_university.target_university.description }}</a>
                   <!-- Feed react START -->
                   <ul class="nav nav-stack flex-wrap small mt-3">
                     <li class="nav-item">

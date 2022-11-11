@@ -43,16 +43,16 @@
                 </li>
                 {% if is_user_liked_for_university %}
                 <li class="nav-item">
-                  <span class="nav-link text-white"> {{ object.likeforuniversity_set.all.count }}</span>
-                  <button type="button" style="border:none;background:none">
-                      <i class="bi bi-heart-fill" style="color:#F73641"></i>
+                  <span class="nav-link text-white" id="number_of_likes_for_university"> {{ number_of_likes_for_university }}</span>
+                  <button type="button" id="ajax-like-for-university" style="border:none;background:none">
+                      <i class="bi bi-heart-fill" style="color:#F73641" id="like-for-university-icon"></i>
                   </button>
                 </li>
                 {% else %}
                 <li class="nav-item">
-                  <span class="nav-link text-white"> {{ object.likeforuniversity_set.all.count }}</span>
-                  <button type="button" style="border:none;background:none">
-                      <i class="bi bi-heart" style="color:#F73641"></i>
+                  <span class="nav-link text-white" id="number_of_likes_for_university"> {{ number_of_likes_for_university }}</span>
+                  <button type="button" id="ajax-like-for-university" style="border:none;background:none">
+                      <i class="bi bi-heart" style="color:#F73641" id="like-for-university-icon"></i>
                   </button>
                 </li>
                 {% endif %}
@@ -373,6 +373,42 @@
       </div>
     </section>
     <!-- Top Destinations END -->
+    
+
+    <script type="text/javascript">
+      /* 大学に対するイイね */
+      document.getElementById('ajax-like-for-university').addEventListener('click', e => {
+        e.preventDefault();
+        const url = '{% url "accounts:like_for_university" %}';
+        fetch(url, {
+          method: 'POST',
+          body: `university_pk={{object.pk}}`,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+            'X-CSRFToken': '{{ csrf_token }}',
+          },
+        }).then(response => {
+          return response.json();
+        }).then(response => {
+          // イイね数を書き換える
+          const counter = document.getElementById('number_of_likes_for_university')
+          counter.textContent = response.number_of_likes_for_university
+          const icon = document.getElementById('like-for-university-icon')
+          // 作成した場合はハートを塗る
+          if (response.method == 'create') {
+            icon.classList.remove('bi-heart')
+            icon.classList.add('bi-heart-fill')
+            icon.id = 'like-for-university-icon'
+          } else {
+            icon.classList.remove('bi-heart-fill')
+            icon.classList.add('bi-heart')
+            icon.id = 'like-for-university-icon'
+          }
+        }).catch(error => {
+          console.log(error);
+        });
+      });
+    </script>
   
 </main>
 <!-- **************** MAIN CONTENT END **************** -->

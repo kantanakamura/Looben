@@ -17,8 +17,8 @@ urlpatterns = [
     path('<slug:username>/disconnect', views.disconnect_view, name='disconnect'),
     path('<slug:username>/save', views.save_users_view, name='save_user'),
     path('<slug:username>/unsave', views.unsave_users_view, name='unsave_user'),
-    path('save_university/<int:school_id>', views.save_university_view, name='save_university'),
-    path('unsave_university/<int:school_id>', views.unsave_university_view, name='unsave_university'),
+    path('like_for_university/', views.like_for_university_view, name='like_for_university'),
+    path('unlike_for_university/', views.unlike_for_university_view, name='unlike_for_university'),
     path('university_detail/<int:pk>', views.UniversityDetailView.as_view(), name='university_detail'),
     path('students_by_university/<int:pk>', views.StudentsByUniversityView.as_view(), name='students_by_university'),
 ]

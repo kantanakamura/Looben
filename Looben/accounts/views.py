@@ -19,6 +19,9 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login
 from django.db.models import Q, Prefetch
 
+from django.http import JsonResponse  # 追加
+from django.shortcuts import get_object_or_404  # 追加
+
 
 from .forms import RegistForm, UserLoginForm, AccountSettingForm, PasswordChangeForm
 from .models import Schools, Users, LikeForUniversity
@@ -185,54 +188,23 @@ def unsave_users_view(request, *args, **kwargs):
 
 
 @login_required
-def save_university_view(request, *args, **kwargs):
-    try:
-        #request.user.username = ログインユーザーのユーザー名を渡す。
-        saver = Users.objects.get(username=request.user.username)
-        #kwargs['username'] = 保存対象のユーザー名を渡す。
-        saved_university = Schools.objects.get(id=kwargs['school_id'])
-        #例外処理：もし保存対象が存在しない場合、警告文を表示させる。
-    except Users.DoesNotExist:
-        messages.warning(request, '{}は存在しません'.format(kwargs['school_id']))
-        return HttpResponseRedirect(reverse_lazy('accounts:reseach_university'))
-    #保存対象をまだ保存していなければ、DBに保存しようとしてる人(自分)×保存対象(相手)という組み合わせで登録する。
-    #alreadyにはTrueが入る
-    already_saved = saver.saved_university.filter(name=saved_university.name)
+def like_for_university_view(request):
+    university_pk = request.POST.get('university_pk')
+    context = {
+        'user': f'{request.user.username}',
+    }
+    university = get_object_or_404(Schools, pk=university_pk)
+    like = LikeForUniversity.objects.filter(target_university=university, user=request.user)
 
-    #もしalready_savedがFalseの場合、保存完了のメッセージを表示させる。
-    if not already_saved:
-        saver.saved_university.add(saved_university)
-        messages.success(request, '{}を保存しました'.format(saved_university.name))
-        #既に保存相手を保存していた場合、already_savedにはFalseが入る。
+    if like.exists():
+        like.delete()
+        context['method'] = 'delete'
     else:
-        #保存済みのメッセージを表示させる。
-        messages.warning(request, 'あなたはすでに{}を保存しています'.format(saved_university.name))
-    return HttpResponseRedirect(reverse_lazy('accounts:research_university'))
+        like.create(target_university=university, user=request.user)
+        context['method'] = 'create'
+    context['number_of_likes_for_university'] = university.likeforuniversity_set.count()
+    return JsonResponse(context)
 
-
-@login_required
-def unsave_university_view(request, *args, **kwargs):
-    try:
-        saver = Users.objects.get(username=request.user.username)
-        saved_university = Schools.objects.get(id=kwargs['school_id'])
-        #保存しようとしている人(自分)×保存される人(相手)という組み合わせを削除する。
-        saver.saved_university.remove(saved_university)
-        messages.success(request, 'あなたは{}の保存を解除しました'.format(saved_university.name))
-    except Users.DoesNotExist:
-        messages.warning(request, '{}は存在しません'.format(saved_university.name))
-        return HttpResponseRedirect(reverse_lazy('accounts:research_university'))
-    except Users.DoesNotExist:
-        messages.warning(request, 'あなたは{}を保存しませんでした'.format(saved_university.name))
-    return HttpResponseRedirect(reverse_lazy('accounts:research_university'))
-
-
-def page_not_found(request, exception):
-    return render(request, 'accounts/404.html', status=404)
-
-
-def server_error(request):
-    return render(request, 'accounts/500.html', status=500)
-    
     
 class UserRankingView(LoginRequiredMixin, ListView):
     model = Users
@@ -291,6 +263,7 @@ class UniversityDetailView(LoginRequiredMixin, DetailView):
             Prefetch('answerforquestion_set', queryset=AnswerForQuestion.objects.filter(is_best_answer=True))
         )[:4]
         context['registed_students_number'] = Users.objects.filter(school=school).count()
+        context['number_of_likes_for_university'] = self.object.likeforuniversity_set.count()
         if self.object.likeforuniversity_set.filter(user=self.request.user).exists():
             context['is_user_liked_for_university'] = True
         else:
@@ -322,3 +295,10 @@ class StudentsByUniversityView(LoginRequiredMixin, ListView):
 class ComingSoonView(TemplateView):
     template_name = 'comingsoon.html'
     
+
+def page_not_found(request, exception):
+    return render(request, 'accounts/404.html', status=404)
+
+
+def server_error(request):
+    return render(request, 'accounts/500.html', status=500)
