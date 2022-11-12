@@ -19,9 +19,12 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate, login
 from django.db.models import Q, Prefetch
 
+from django.http import JsonResponse  # 追加
+from django.shortcuts import get_object_or_404  # 追加
+
 
 from .forms import RegistForm, UserLoginForm, AccountSettingForm, PasswordChangeForm
-from .models import Schools, Users
+from .models import Schools, Users, LikeForUniversity, FollowForUser
 from reviews.models import ReviewOfUniversity
 from questions.models import AnswerForQuestion ,Questions
 
@@ -77,162 +80,44 @@ def password_change(request):
 
 
 @login_required
-def connect_view(request, *args, **kwargs):
-    try:
-        #request.user.username = ログインユーザーのユーザー名を渡す。
-        follower = Users.objects.get(username=request.user.username)
-        #kwargs['username'] = フォロー対象のユーザー名を渡す。
-        following = Users.objects.get(username=kwargs['username'])
-        #例外処理：もしフォロー対象が存在しない場合、警告文を表示させる。
-    except Users.DoesNotExist:
-        messages.warning(request, '{}は存在しません'.format(kwargs['username']))
-        return HttpResponseRedirect(reverse_lazy('dashboard:post_in_dashboard', kwargs={'username': following.username}))
-    #フォローしようとしている対象が自分の場合、警告文を表示させる。
-    if follower == following:
-        messages.warning(request, '自分自身はフォローできません')
-        return HttpResponseRedirect(reverse_lazy('dashboard:post_in_dashboard', kwargs={'username': following.username}))
-    else:
-        #フォロー対象をまだフォローしていなければ、DBにフォロワー(自分)×フォロー(相手)という組み合わせで登録する。
-        #alreadyにはTrueが入る
-        already_connected = follower.connection.filter(id=following.id)
+def follow_for_user_view(request):
+    followed_user_pk = request.POST.get('followed_user_pk')
+    context = {
+        'user': f'{request.user.username}',
+    }
+    followed_user = get_object_or_404(Users, pk=followed_user_pk)
+    follow = FollowForUser.objects.filter(followed_user=followed_user, user=request.user)
 
-    #もしcreatedがTrueの場合、フォロー完了のメッセージを表示させる。
-    if not already_connected:
-        follower.connection.add(following)
-        messages.success(request, '{}をフォローしました'.format(following.username))
-        #既にフォロー相手をフォローしていた場合、already_connectedにはFalseが入る。
+    if follow.exists():
+        follow.delete()
+        context['method'] = 'delete'
+        context['following_message_for_javascript'] = 'フォロー'
     else:
-        #フォロー済みのメッセージを表示させる。
-        messages.warning(request, 'あなたはすでに{}をフォローしています'.format(following.username))
-    return HttpResponseRedirect(reverse_lazy('dashboard:post_in_dashboard', kwargs={'username': following.username}))
+        follow.create(followed_user=followed_user, user=request.user)
+        context['method'] = 'create'
+        context['following_message_for_javascript'] = 'フォロー中'
+    context['number_of_followed_user'] = FollowForUser.objects.filter(followed_user=followed_user).count()
+    return JsonResponse(context)
 
 
 @login_required
-def disconnect_view(request, *args, **kwargs):
-    try:
-        #request.user.username = ログインユーザーのユーザー名を渡す。
-        follower = Users.objects.get(username=request.user.username)
-        #kwargs['username'] = フォロー対象のユーザー名を渡す。
-        following = Users.objects.get(username=kwargs['username'])
-        #例外処理：もしフォロー対象が存在しない場合、警告文を表示させる。
-    except Users.DoesNotExist:
-        messages.warning(request, '{}は存在しません'.format(kwargs['username']))
-        return HttpResponseRedirect(reverse_lazy('dashboard:post_in_dashboard', kwargs={'username': following.username}))
-        
-    #フォロー対象をすでにフォローしていれば、DBにフォロワー(自分)×フォロー(相手)という組み合わを削除する。
-    #alreadyにはTrueが入る
-    already_connected = follower.connection.filter(id=following.id)
-    #もしcreatedがTrueの場合、フォロー解除完了のメッセージを表示させる。
-    if already_connected:
-        follower.connection.remove(following)
-        messages.success(request, '{}のフォロー解除をしました'.format(following.username))
-        #まだフォロー相手をフォローしていなかった場合、already_connectedにはFalseが入る。
+def like_for_university_view(request):
+    university_pk = request.POST.get('university_pk')
+    context = {
+        'user': f'{request.user.username}',
+    }
+    university = get_object_or_404(Schools, pk=university_pk)
+    like = LikeForUniversity.objects.filter(target_university=university, user=request.user)
+
+    if like.exists():
+        like.delete()
+        context['method'] = 'delete'
     else:
-        #未フォローのメッセージを表示させる。
-        messages.warning(request, 'あなたはまだ{}をフォローしていません'.format(following.username))
-    return HttpResponseRedirect(reverse_lazy('dashboard:post_in_dashboard', kwargs={'username': following.username}))
+        like.create(target_university=university, user=request.user)
+        context['method'] = 'create'
+    context['number_of_likes_for_university'] = university.likeforuniversity_set.count()
+    return JsonResponse(context)
 
-
-@login_required
-def save_users_view(request, *args, **kwargs):
-    try:
-        #request.user.username = ログインユーザーのユーザー名を渡す。
-        saver = Users.objects.get(username=request.user.username)
-        #kwargs['username'] = 保存対象のユーザー名を渡す。
-        saved_user = Users.objects.get(username=kwargs['username'])
-        #例外処理：もし保存対象が存在しない場合、警告文を表示させる。
-    except Users.DoesNotExist:
-        messages.warning(request, '{}は存在しません'.format(kwargs['username']))
-        return HttpResponseRedirect(reverse_lazy('accounts:user_ranking'))
-    #保存しようとしている対象が自分の場合、警告文を表示させる。
-    if saver == saved_user:
-        messages.warning(request, '自分自身は保存できません')
-        return HttpResponseRedirect(reverse_lazy('accounts:user_ranking'))
-    else:
-        #保存対象をまだ保存していなければ、DBに保存しようとしてる人(自分)×保存対象(相手)という組み合わせで登録する。
-        #alreadyにはTrueが入る
-        already_saved = saver.saved_users.filter(username=saved_user.username)
-
-    #もしalready_savedがFalseの場合、保存完了のメッセージを表示させる。
-    if not already_saved:
-        saver.saved_users.add(saved_user)
-        messages.success(request, '{}を保存しました'.format(saved_user.username))
-        #既に保存相手を保存していた場合、already_savedにはFalseが入る。
-    else:
-        #保存済みのメッセージを表示させる。
-        messages.warning(request, 'あなたはすでに{}を保存しています'.format(saved_user.username))
-    return HttpResponseRedirect(reverse_lazy('accounts:user_ranking'))
-
-
-@login_required
-def unsave_users_view(request, *args, **kwargs):
-    try:
-        saver = Users.objects.get(username=request.user.username)
-        saved_user = Users.objects.get(username=kwargs['username'])
-        if saver == saved_user:
-            messages.warning(request, '自分自身の保存を解除できません')
-        else:
-            #保存しようとしている人(自分)×保存される人(相手)という組み合わせを削除する。
-            saver.saved_users.remove(saved_user)
-            messages.success(request, 'あなたは{}の保存を解除しました'.format(saved_user.username))
-    except Users.DoesNotExist:
-        messages.warning(request, '{}は存在しません'.format(kwargs['username']))
-        return HttpResponseRedirect(reverse_lazy('accounts:user_ranking'))
-    except Users.DoesNotExist:
-        messages.warning(request, 'あなたは{}を保存しませんでした'.format(saved_user.username))
-
-    return HttpResponseRedirect(reverse_lazy('accounts:user_ranking'))
-
-
-@login_required
-def save_university_view(request, *args, **kwargs):
-    try:
-        #request.user.username = ログインユーザーのユーザー名を渡す。
-        saver = Users.objects.get(username=request.user.username)
-        #kwargs['username'] = 保存対象のユーザー名を渡す。
-        saved_university = Schools.objects.get(id=kwargs['school_id'])
-        #例外処理：もし保存対象が存在しない場合、警告文を表示させる。
-    except Users.DoesNotExist:
-        messages.warning(request, '{}は存在しません'.format(kwargs['school_id']))
-        return HttpResponseRedirect(reverse_lazy('accounts:reseach_university'))
-    #保存対象をまだ保存していなければ、DBに保存しようとしてる人(自分)×保存対象(相手)という組み合わせで登録する。
-    #alreadyにはTrueが入る
-    already_saved = saver.saved_university.filter(name=saved_university.name)
-
-    #もしalready_savedがFalseの場合、保存完了のメッセージを表示させる。
-    if not already_saved:
-        saver.saved_university.add(saved_university)
-        messages.success(request, '{}を保存しました'.format(saved_university.name))
-        #既に保存相手を保存していた場合、already_savedにはFalseが入る。
-    else:
-        #保存済みのメッセージを表示させる。
-        messages.warning(request, 'あなたはすでに{}を保存しています'.format(saved_university.name))
-    return HttpResponseRedirect(reverse_lazy('accounts:research_university'))
-
-
-@login_required
-def unsave_university_view(request, *args, **kwargs):
-    try:
-        saver = Users.objects.get(username=request.user.username)
-        saved_university = Schools.objects.get(id=kwargs['school_id'])
-        #保存しようとしている人(自分)×保存される人(相手)という組み合わせを削除する。
-        saver.saved_university.remove(saved_university)
-        messages.success(request, 'あなたは{}の保存を解除しました'.format(saved_university.name))
-    except Users.DoesNotExist:
-        messages.warning(request, '{}は存在しません'.format(saved_university.name))
-        return HttpResponseRedirect(reverse_lazy('accounts:research_university'))
-    except Users.DoesNotExist:
-        messages.warning(request, 'あなたは{}を保存しませんでした'.format(saved_university.name))
-    return HttpResponseRedirect(reverse_lazy('accounts:research_university'))
-
-
-def page_not_found(request, exception):
-    return render(request, 'accounts/404.html', status=404)
-
-
-def server_error(request):
-    return render(request, 'accounts/500.html', status=500)
-    
     
 class UserRankingView(LoginRequiredMixin, ListView):
     model = Users
@@ -243,12 +128,13 @@ class UserRankingView(LoginRequiredMixin, ListView):
 class ResearchUniversity(View):
     def get(self, request, *args, **kwargs):
         high_rated_universities = Schools.objects.order_by('star_rating').reverse()[:12]
-        national_universities = Schools.objects.filter(national=True).all()
-        non_national_universities = Schools.objects.filter(national=False).all()
+        national_universities = Schools.objects.filter(is_national=True).all()
+        non_national_universities = Schools.objects.filter(is_national=False).all()
         north_universities = Schools.objects.filter(place='北部').all()
         middle_universities = Schools.objects.filter(place='中部').all()
         east_universities = Schools.objects.filter(place='東部').all()
         south_universities = Schools.objects.filter(place='南部').all()
+        liked_universities = LikeForUniversity.objects.filter(user=self.request.user).all()
         if 'search' in self.request.GET:
             query = request.GET.get("search")
             universities = list(Schools.objects.all())
@@ -273,10 +159,11 @@ class ResearchUniversity(View):
             'south_universities': south_universities,
             'number_of_searched_universities': number_of_searched_universities,
             'user_searched_anything': user_searched_anything,
+            'liked_universities': liked_universities,
             })
     
     
-class UniversityDetailView(DetailView):
+class UniversityDetailView(LoginRequiredMixin, DetailView):
     model = Schools
     template_name = 'accounts/university_detail.html'
     
@@ -289,6 +176,11 @@ class UniversityDetailView(DetailView):
             Prefetch('answerforquestion_set', queryset=AnswerForQuestion.objects.filter(is_best_answer=True))
         )[:4]
         context['registed_students_number'] = Users.objects.filter(school=school).count()
+        context['number_of_likes_for_university'] = self.object.likeforuniversity_set.count()
+        if self.object.likeforuniversity_set.filter(user=self.request.user).exists():
+            context['is_user_liked_for_university'] = True
+        else:
+            context['is_user_liked_for_university'] = False
         school.number_of_viewer += 1
         school.save()
         return context
@@ -316,3 +208,10 @@ class StudentsByUniversityView(LoginRequiredMixin, ListView):
 class ComingSoonView(TemplateView):
     template_name = 'comingsoon.html'
     
+
+def page_not_found(request, exception):
+    return render(request, 'accounts/404.html', status=404)
+
+
+def server_error(request):
+    return render(request, 'accounts/500.html', status=500)

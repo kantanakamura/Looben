@@ -56,24 +56,21 @@
                 <!-- Side Nav START -->
                 <ul class="nav nav-link-secondary flex-column fw-bold gap-2">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'dashboard:post_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/earth-outline-filled.svg' %}" alt="post"><span>投稿 </span></a>
+                        <a class="nav-link" href="{% url 'dashboard:post_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/certificate-outline-filled.svg' %}" alt="blog"><span>ブログ記事 </span></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'blogs:create_blog' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/certificate-outline-filled.svg' %}" alt="blog"><span>ブログ </span></a>
-                    </li>
-                    {% if object.state == '現役台湾留学生' or object.state == '台湾留学卒業生' %}
+                    {% if user.state == '現役台湾留学生' or user.state == '台湾留学卒業生' %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'dashboard:review_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/clipboard-list-outline-filled.svg' %}" alt="review"><span>口コミ </span></a>
                     </li>                    
                     {% endif %}
                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard:question_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bulb-curvy-outline-filled.svg' %}" alt="question"><span>質問 </span></a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'dashboard:following_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-outline-filled.svg' %}" alt="following"><span>フォロー中 </span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'dashboard:followed_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-girl-outline-filled.svg' %}" alt="followd"><span>フォロワー </span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'dashboard:question_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bulb-curvy-outline-filled.svg' %}" alt="question"><span>質問 </span></a>
                     </li>
                 </ul>
                 <!-- Side Nav END -->

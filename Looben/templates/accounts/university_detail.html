@@ -41,6 +41,21 @@
                 <li class="nav-item">
                   <a class="nav-link text-white" href="#faq"> FAQ </a>
                 </li>
+                {% if is_user_liked_for_university %}
+                <li class="nav-item">
+                  <span class="nav-link text-white" id="number_of_likes_for_university"> {{ number_of_likes_for_university }}</span>
+                  <button type="button" id="ajax-like-for-university" style="border:none;background:none">
+                      <i class="bi bi-heart-fill" style="color:#F73641" id="like-for-university-icon"></i>
+                  </button>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                  <span class="nav-link text-white" id="number_of_likes_for_university"> {{ number_of_likes_for_university }}</span>
+                  <button type="button" id="ajax-like-for-university" style="border:none;background:none">
+                      <i class="bi bi-heart" style="color:#F73641" id="like-for-university-icon"></i>
+                  </button>
+                </li>
+                {% endif %}
               </ul>
             </div>
           </div>
@@ -55,7 +70,7 @@
         <div class="row g-4">
           <div class="col-lg-4">
             <div class="card card-body">
-              <a class="btn btn-primary w-100" href="{{ object.homepage }}"> ホームページを見る </a>
+              <a class="btn btn-primary w-100" href="{{ object.homepage_url }}"> ホームページを見る </a>
               <div class="mt-4">
                 <ul class="list-unstyled mb-4">
                   <li class="d-flex justify-content-between mb-3"> <strong class="w-150px">総合評価:</strong> <span class="text-end">
@@ -358,6 +373,42 @@
       </div>
     </section>
     <!-- Top Destinations END -->
+    
+
+    <script type="text/javascript">
+      /* 大学に対するイイね */
+      document.getElementById('ajax-like-for-university').addEventListener('click', e => {
+        e.preventDefault();
+        const url = '{% url "accounts:like_for_university" %}';
+        fetch(url, {
+          method: 'POST',
+          body: `university_pk={{object.pk}}`,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+            'X-CSRFToken': '{{ csrf_token }}',
+          },
+        }).then(response => {
+          return response.json();
+        }).then(response => {
+          // イイね数を書き換える
+          const counter = document.getElementById('number_of_likes_for_university')
+          counter.textContent = response.number_of_likes_for_university
+          const icon = document.getElementById('like-for-university-icon')
+          // 作成した場合はハートを塗る
+          if (response.method == 'create') {
+            icon.classList.remove('bi-heart')
+            icon.classList.add('bi-heart-fill')
+            icon.id = 'like-for-university-icon'
+          } else {
+            icon.classList.remove('bi-heart-fill')
+            icon.classList.add('bi-heart')
+            icon.id = 'like-for-university-icon'
+          }
+        }).catch(error => {
+          console.log(error);
+        });
+      });
+    </script>
   
 </main>
 <!-- **************** MAIN CONTENT END **************** -->

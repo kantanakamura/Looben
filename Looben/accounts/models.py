@@ -37,7 +37,7 @@ class UserManager(BaseUserManager):
     
 class Users(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=150, unique=True)
-    connection = models.ManyToManyField('self', symmetrical=False, blank=True, related_name='connected_users')
+    # connection = models.ManyToManyField('self', symmetrical=False, blank=True, related_name='connected_users')
     email = models.EmailField(max_length=255, unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -48,8 +48,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
     instagram_account_name = models.CharField(max_length=150, blank=True)
     twitter_account_name = models.CharField(max_length=150, blank=True)
     description = models.TextField(max_length=150, blank=True)
-    saved_users = models.ManyToManyField('self', symmetrical=False, blank=True)
-    saved_university = models.ManyToManyField('Schools', symmetrical=False, blank=True, related_name='saved_university_users')
+    # saved_university = models.ManyToManyField('Schools', symmetrical=False, blank=True, related_name='saved_university_users')
     state = models.CharField(max_length=50, default='その他')
     joined_at = models.DateField(default=timezone.now)
     contributed_points = models.IntegerField(default=0)
@@ -79,11 +78,11 @@ class Users(AbstractBaseUser, PermissionsMixin):
 class Schools(models.Model):
     name = models.CharField(max_length=150)
     major = models.ManyToManyField('Majors')
-    national = models.BooleanField(default=False)
+    is_national = models.BooleanField(default=False)
     place = models.CharField(max_length=150, null=True)
     picture = models.FileField(blank=True, upload_to='university/')
     address = models.CharField(max_length=150, null=True)
-    homepage = models.CharField(max_length=150, null=True)
+    homepage_url = models.CharField(max_length=150, null=True)
     average_academic_fee = models.CharField(max_length=50, null=True)
     average_domitary_fee = models.CharField(max_length=50, null=True)
     number_of_students = models.IntegerField(null=True)
@@ -113,4 +112,21 @@ class Majors(models.Model):
     def __str__(self):
         return self.name
     
+
+class LikeForUniversity(models.Model):    
+    target_university = models.ForeignKey(Schools, on_delete=models.CASCADE)
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(default=timezone.now)
     
+    class Meta:
+        verbose_name = '大学いいね'
+        
+        
+class FollowForUser(models.Model):
+    user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='following_users')
+    followed_user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='followed_users')
+    timestamp = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        verbose_name = 'フォロー'
+        

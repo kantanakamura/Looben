@@ -27,7 +27,7 @@ from .models import AnswerForQuestion, CommentToBestAnswer, Questions
 from accounts.models import Users, Schools
 
 
-class QuestionView(View):
+class QuestionView(LoginRequiredMixin, View):
     
     def get(self, request, *args, **kwargs):
         question_seeking_answers = Questions.objects.filter(is_solved=False).all()[:4]  
@@ -36,7 +36,7 @@ class QuestionView(View):
         )[:4]
         reliable_answerers = Users.objects.order_by('-contributed_points').all()[:3] 
         if 'search' in self.request.GET:
-            keyword_query = request.GET.get("search")
+            keyword_query = request.GET.get('search')
             questions = list(Questions.objects.all())
             searched_questions = []
             for question in questions:
@@ -48,7 +48,7 @@ class QuestionView(View):
             searched_questions = []
             number_of_searched_questions = 0
             user_searched_anything = False
-        return render(request, "question/question.html", {
+        return render(request, 'question/question.html', {
             'question_seeking_answers': question_seeking_answers,
             'solved_questions': solved_questions,
             'reliable_answerers': reliable_answerers,
@@ -78,7 +78,7 @@ def ask_question(request):
     )
     
     
-class QuestionDetailView(LoginRequiredMixin, DetailView):
+class QuestionDetailView(DetailView):
     template_name = 'question/question_detail.html'
     model = Questions
     
