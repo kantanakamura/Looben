@@ -5,7 +5,7 @@ from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic.list import ListView
 from django.urls import reverse
 
-from accounts.models import Users
+from accounts.models import Users, FollowForUser
 from blogs.models import Blog
 from reviews.models import ReviewOfUniversity
 
@@ -19,10 +19,14 @@ class PostInDashboardView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.object
-        context['number_of_following_user'] = user.connection.all().count()
-        context['number_of_followed_user'] = user.connected_users.all().count()
-        context['saved_user_sidebar_list'] = user.saved_users.all()[:4]
+        context['number_of_following_user'] = FollowForUser.objects.filter(user=user).count()
+        context['number_of_followed_user'] = FollowForUser.objects.filter(followed_user=user).count()
         context['blog_posts'] = Blog.objects.filter(author=user).all()
+        context['is_user_following'] = FollowForUser.objects.filter(user=self.request.user, followed_user=user).exists()
+        if context['is_user_following']:
+            context['following_message_for_javascript'] = 'フォロー中'
+        else:
+            context['following_message_for_javascript'] = 'フォロー'
         return context
     
     
@@ -35,10 +39,14 @@ class ReviewInDashboardView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.object
-        context['number_of_following_user'] = user.connection.all().count()
-        context['number_of_followed_user'] = user.connected_users.all().count()
-        context['saved_user_sidebar_list'] = user.saved_users.all()[:4]
+        context['number_of_following_user'] = FollowForUser.objects.filter(user=user).count()
+        context['number_of_followed_user'] = FollowForUser.objects.filter(followed_user=user).count()
         context['reviews'] = ReviewOfUniversity.objects.filter(user=user).all()
+        context['is_user_following'] = FollowForUser.objects.filter(user=self.request.user, followed_user=user).exists()
+        if context['is_user_following']:
+            context['following_message_for_javascript'] = 'フォロー中'
+        else:
+            context['following_message_for_javascript'] = 'フォロー'
         return context
     
 
@@ -51,9 +59,13 @@ class FollowingInDashboardView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.object
-        context['number_of_following_user'] = user.connection.all().count()
-        context['number_of_followed_user'] = user.connected_users.all().count()
-        context['saved_user_sidebar_list'] = user.saved_users.all()[:4]
+        context['number_of_following_user'] = FollowForUser.objects.filter(user=user).count()
+        context['number_of_followed_user'] = FollowForUser.objects.filter(followed_user=user).count()
+        context['is_user_following'] = FollowForUser.objects.filter(user=self.request.user, followed_user=user).exists()
+        if context['is_user_following']:
+            context['following_message_for_javascript'] = 'フォロー中'
+        else:
+            context['following_message_for_javascript'] = 'フォロー'
         return context
     
     
@@ -66,9 +78,13 @@ class FollowedInDashboardView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.object
-        context['number_of_following_user'] = user.connection.all().count()
-        context['number_of_followed_user'] = user.connected_users.all().count()
-        context['saved_user_sidebar_list'] = user.saved_users.all()[:4]
+        context['number_of_following_user'] = FollowForUser.objects.filter(user=user).count()
+        context['number_of_followed_user'] = FollowForUser.objects.filter(followed_user=user).count()
+        context['is_user_following'] = FollowForUser.objects.filter(user=self.request.user, followed_user=user).exists()
+        if context['is_user_following']:
+            context['following_message_for_javascript'] = 'フォロー中'
+        else:
+            context['following_message_for_javascript'] = 'フォロー'
         return context
 
     
@@ -81,8 +97,12 @@ class QuestionInDashboardView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.object
-        context['number_of_following_user'] = user.connection.all().count()
-        context['number_of_followed_user'] = user.connected_users.all().count()
-        context['saved_user_sidebar_list'] = user.saved_users.all()[:4]
+        context['number_of_following_user'] = FollowForUser.objects.filter(user=user).count()
+        context['number_of_followed_user'] = FollowForUser.objects.filter(followed_user=user).count()
         context['asked_questions'] = user.questions_set.filter(is_anonymous=False).all()
+        context['is_user_following'] = FollowForUser.objects.filter(user=self.request.user, followed_user=user).exists()
+        if context['is_user_following']:
+            context['following_message_for_javascript'] = 'フォロー中'
+        else:
+            context['following_message_for_javascript'] = 'フォロー'
         return context

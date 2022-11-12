@@ -36,16 +36,8 @@
                   <p>@{{ object.username }}</p>
                   <p>
                     <ul class="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">
-                      {% if number_of_followed_user == 0 %}
-                      <li class="list-inline-item">フォロワー<strong>0</strong>人</li>
-                      {% else %}
-                      <li class="list-inline-item">フォロワー<strong>{{ number_of_followed_user }}</strong>人</li>
-                      {% endif %}
-                      {% if number_of_following_user == 0 %}
-                      <li class="list-inline-item">フォロー中<strong>0</strong>人</li>
-                      {% else %}
+                      <li class="list-inline-item">フォロワー<strong id="number-of-followed-user">{{ number_of_followed_user }}</strong>人</li>
                       <li class="list-inline-item">フォロー中<strong>{{ number_of_following_user }}</strong>人</li>
-                      {% endif %}
                     </ul>
                   </p>
                 </div>
@@ -83,13 +75,11 @@
                     </ul>
                   </div>
                   <a href="{% url 'accounts:account_setting' object.username  %}"><button class="btn btn-danger-soft me-2" type="button"> <i class="bi bi-pencil-fill pe-1"></i> 編集 </button></a>
-                  {% elif object in user.connection.all %}
-                  <!-- すでに友達になっているユーザーのダッシュボードのとき、友達解除ボタンを表示 -->
+                  {% elif is_user_following %}
                   <a href=""><button class="btn btn-primary-soft me-2" type="button"> <i class="bi bi-chat-dots-fill pe-1"></i> メッセージ </button></a>
-                  <a href="{% url 'accounts:disconnect' object.username  %}"><button class="btn btn-info-soft me-2" type="button"> <i class="bi bi-person-heart pe-1"></i> フォロー中 </button></a>
+                  <button class="btn btn-danger-soft me-2" type="button" id="ajax-follow-for-user"> <i class="bi bi-person-heart pe-1"></i> <span id="following-message-for-javascript">{{ following_message_for_javascript }}<span> </button>
                   {% else %}
-                  <!-- まだ、友達でないユーザーのダッシュボードのとき、友達登録ボタンを表示 -->
-                  <a href="{% url 'accounts:connect' object.username  %}"><button class="btn btn-info-soft me-2" type="button"> <i class="bi bi-person-heart pe-1"></i> フォローする </button></a>
+                  <button class="btn btn-info-soft me-2" type="button" id="ajax-follow-for-user"> <i class="bi bi-person-heart pe-1"></i> <span id="following-message-for-javascript">{{ following_message_for_javascript }}<span> </button>
                   {% endif %}
                 </div>
               </div>
@@ -101,8 +91,7 @@
               <ul class="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">
                 <li class="list-inline-item"><i class="bi bi-person me-1"></i> {{ object.state }}</li>
                 {% if object.state == '現役台湾留学生' or object.state == '台湾留学卒業生' %}
-                  <li class="list-inline-item"><i class="bi bi-geo-alt me-1"></i> {{ object.school }}</li>
-                  <li class="list-inline-item"><i class="bi bi-pen me-1"></i> {{ object.major }}</li>
+                <li class="list-inline-item"><i class="bi bi-pen me-1"></i>  {{ object.school }} / {{ object.major }}</li>
                 {% else %}
                 {% endif %}
               </ul>
@@ -119,7 +108,7 @@
                 {% endif %}
                 <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:question_in_dashboard' object.username %}"> 質問 </a> </li>
                 <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:following_in_dashboard' object.username %}"> フォロー中 <span class="badge bg-success bg-opacity-10 text-success small"> {{ number_of_following_user }}</span> </a> </li>
-                <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:followed_in_dashboard' object.username %}"> フォロワー <span class="badge bg-success bg-opacity-10 text-success small"> {{ number_of_followed_user }}</span> </a> </li>
+                <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:followed_in_dashboard' object.username %}"> フォロワー <span class="badge bg-success bg-opacity-10 text-success small" id="number-of-followed-user"> {{ number_of_followed_user }}</span> </a> </li>
             </div>
           </div>
           <!-- My profile END -->
@@ -199,6 +188,43 @@
     </div> <!-- Row END -->
   </div>
   <!-- Container END -->
+  
+  <script type="text/javascript">
+    /* ユーザーフォローの非同期通信 */
+    document.getElementById('ajax-follow-for-user').addEventListener('click', e => {
+      e.preventDefault();
+      const url = '{% url "accounts:follow_for_user" %}';
+      fetch(url, {
+        method: 'POST',
+        body: `followed_user_pk={{object.pk}}`,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+          'X-CSRFToken': '{{ csrf_token }}',
+        },
+      }).then(response => {
+        return response.json();
+      }).then(response => {
+        // フォロー数を書き換える
+        const counter = document.getElementById('number-of-followed-user')
+        counter.textContent = response.number_of_followed_user
+        const following_message = document.getElementById('following-message-for-javascript')
+        following_message.textContent = response.following_message_for_javascript
+        const icon = document.getElementById('ajax-follow-for-user')
+        // 作成した場合はハートを塗る
+        if (response.method == 'create') {
+          icon.classList.remove('btn-info-soft')
+          icon.classList.add('btn-danger-soft')
+          icon.id = 'ajax-follow-for-user'
+        } else {
+          icon.classList.remove('btn-danger-soft')
+          icon.classList.add('btn-info-soft')
+          icon.id = 'ajax-follow-for-user'
+        }
+      }).catch(error => {
+        console.log(error);
+      });
+    });
+  </script>
 </main>
 <!-- **************** MAIN CONTENT END **************** -->
 {% endblock %}

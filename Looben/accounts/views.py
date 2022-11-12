@@ -24,7 +24,7 @@ from django.shortcuts import get_object_or_404  # 追加
 
 
 from .forms import RegistForm, UserLoginForm, AccountSettingForm, PasswordChangeForm
-from .models import Schools, Users, LikeForUniversity
+from .models import Schools, Users, LikeForUniversity, FollowForUser
 from reviews.models import ReviewOfUniversity
 from questions.models import AnswerForQuestion ,Questions
 
@@ -80,111 +80,24 @@ def password_change(request):
 
 
 @login_required
-def connect_view(request, *args, **kwargs):
-    try:
-        #request.user.username = ログインユーザーのユーザー名を渡す。
-        follower = Users.objects.get(username=request.user.username)
-        #kwargs['username'] = フォロー対象のユーザー名を渡す。
-        following = Users.objects.get(username=kwargs['username'])
-        #例外処理：もしフォロー対象が存在しない場合、警告文を表示させる。
-    except Users.DoesNotExist:
-        messages.warning(request, '{}は存在しません'.format(kwargs['username']))
-        return HttpResponseRedirect(reverse_lazy('dashboard:post_in_dashboard', kwargs={'username': following.username}))
-    #フォローしようとしている対象が自分の場合、警告文を表示させる。
-    if follower == following:
-        messages.warning(request, '自分自身はフォローできません')
-        return HttpResponseRedirect(reverse_lazy('dashboard:post_in_dashboard', kwargs={'username': following.username}))
+def follow_for_user_view(request):
+    followed_user_pk = request.POST.get('followed_user_pk')
+    context = {
+        'user': f'{request.user.username}',
+    }
+    followed_user = get_object_or_404(Users, pk=followed_user_pk)
+    follow = FollowForUser.objects.filter(followed_user=followed_user, user=request.user)
+
+    if follow.exists():
+        follow.delete()
+        context['method'] = 'delete'
+        context['following_message_for_javascript'] = 'フォロー'
     else:
-        #フォロー対象をまだフォローしていなければ、DBにフォロワー(自分)×フォロー(相手)という組み合わせで登録する。
-        #alreadyにはTrueが入る
-        already_connected = follower.connection.filter(id=following.id)
-
-    #もしcreatedがTrueの場合、フォロー完了のメッセージを表示させる。
-    if not already_connected:
-        follower.connection.add(following)
-        messages.success(request, '{}をフォローしました'.format(following.username))
-        #既にフォロー相手をフォローしていた場合、already_connectedにはFalseが入る。
-    else:
-        #フォロー済みのメッセージを表示させる。
-        messages.warning(request, 'あなたはすでに{}をフォローしています'.format(following.username))
-    return HttpResponseRedirect(reverse_lazy('dashboard:post_in_dashboard', kwargs={'username': following.username}))
-
-
-@login_required
-def disconnect_view(request, *args, **kwargs):
-    try:
-        #request.user.username = ログインユーザーのユーザー名を渡す。
-        follower = Users.objects.get(username=request.user.username)
-        #kwargs['username'] = フォロー対象のユーザー名を渡す。
-        following = Users.objects.get(username=kwargs['username'])
-        #例外処理：もしフォロー対象が存在しない場合、警告文を表示させる。
-    except Users.DoesNotExist:
-        messages.warning(request, '{}は存在しません'.format(kwargs['username']))
-        return HttpResponseRedirect(reverse_lazy('dashboard:post_in_dashboard', kwargs={'username': following.username}))
-        
-    #フォロー対象をすでにフォローしていれば、DBにフォロワー(自分)×フォロー(相手)という組み合わを削除する。
-    #alreadyにはTrueが入る
-    already_connected = follower.connection.filter(id=following.id)
-    #もしcreatedがTrueの場合、フォロー解除完了のメッセージを表示させる。
-    if already_connected:
-        follower.connection.remove(following)
-        messages.success(request, '{}のフォロー解除をしました'.format(following.username))
-        #まだフォロー相手をフォローしていなかった場合、already_connectedにはFalseが入る。
-    else:
-        #未フォローのメッセージを表示させる。
-        messages.warning(request, 'あなたはまだ{}をフォローしていません'.format(following.username))
-    return HttpResponseRedirect(reverse_lazy('dashboard:post_in_dashboard', kwargs={'username': following.username}))
-
-
-@login_required
-def save_users_view(request, *args, **kwargs):
-    try:
-        #request.user.username = ログインユーザーのユーザー名を渡す。
-        saver = Users.objects.get(username=request.user.username)
-        #kwargs['username'] = 保存対象のユーザー名を渡す。
-        saved_user = Users.objects.get(username=kwargs['username'])
-        #例外処理：もし保存対象が存在しない場合、警告文を表示させる。
-    except Users.DoesNotExist:
-        messages.warning(request, '{}は存在しません'.format(kwargs['username']))
-        return HttpResponseRedirect(reverse_lazy('accounts:user_ranking'))
-    #保存しようとしている対象が自分の場合、警告文を表示させる。
-    if saver == saved_user:
-        messages.warning(request, '自分自身は保存できません')
-        return HttpResponseRedirect(reverse_lazy('accounts:user_ranking'))
-    else:
-        #保存対象をまだ保存していなければ、DBに保存しようとしてる人(自分)×保存対象(相手)という組み合わせで登録する。
-        #alreadyにはTrueが入る
-        already_saved = saver.saved_users.filter(username=saved_user.username)
-
-    #もしalready_savedがFalseの場合、保存完了のメッセージを表示させる。
-    if not already_saved:
-        saver.saved_users.add(saved_user)
-        messages.success(request, '{}を保存しました'.format(saved_user.username))
-        #既に保存相手を保存していた場合、already_savedにはFalseが入る。
-    else:
-        #保存済みのメッセージを表示させる。
-        messages.warning(request, 'あなたはすでに{}を保存しています'.format(saved_user.username))
-    return HttpResponseRedirect(reverse_lazy('accounts:user_ranking'))
-
-
-@login_required
-def unsave_users_view(request, *args, **kwargs):
-    try:
-        saver = Users.objects.get(username=request.user.username)
-        saved_user = Users.objects.get(username=kwargs['username'])
-        if saver == saved_user:
-            messages.warning(request, '自分自身の保存を解除できません')
-        else:
-            #保存しようとしている人(自分)×保存される人(相手)という組み合わせを削除する。
-            saver.saved_users.remove(saved_user)
-            messages.success(request, 'あなたは{}の保存を解除しました'.format(saved_user.username))
-    except Users.DoesNotExist:
-        messages.warning(request, '{}は存在しません'.format(kwargs['username']))
-        return HttpResponseRedirect(reverse_lazy('accounts:user_ranking'))
-    except Users.DoesNotExist:
-        messages.warning(request, 'あなたは{}を保存しませんでした'.format(saved_user.username))
-
-    return HttpResponseRedirect(reverse_lazy('accounts:user_ranking'))
+        follow.create(followed_user=followed_user, user=request.user)
+        context['method'] = 'create'
+        context['following_message_for_javascript'] = 'フォロー中'
+    context['number_of_followed_user'] = FollowForUser.objects.filter(followed_user=followed_user).count()
+    return JsonResponse(context)
 
 
 @login_required
