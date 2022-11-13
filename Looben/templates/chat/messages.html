@@ -32,7 +32,7 @@
 
           <div class="card card-body border-end-0 border-bottom-0 rounded-bottom-0">
             <div class=" d-flex justify-content-between align-items-center">
-              <h1 class="h5 mb-0">チャットルーム<span class="badge bg-success bg-opacity-10 text-success">{{ amount_of_friends }}</span></h1>
+              <h1 class="h5 mb-0">チャットルーム<span class="badge bg-success bg-opacity-10 text-success">{{ amount_of_following_users }}</span></h1>
             </div>
           </div>
   
@@ -64,7 +64,7 @@
                           <!-- Chat user tab item -->
                           <a href="{% url 'chat:get_message' conversation_partner.username %}" class="nav-link active text-start">
                             <div class="d-flex">
-                              <div class="flex-shrink-0 avatar me-2 status-online">
+                              <div class="flex-shrink-0 avatar me-2">
                                 <img class="avatar-img rounded-circle" src="{{ conversation_partner.picture.url }}" alt="{{ conversation_partner.username }}">
                               </div>
                               <div class="flex-grow-1 d-block">
@@ -75,17 +75,17 @@
                           </a>
                         </li>
 
-                        {% for friend in friends_list %}
-                        {% if not friend == conversation_partner %}
+                        {% for following_user in following_user_list %}
+                        {% if not following_user.followed_user == conversation_partner %}
                         <li data-bs-dismiss="offcanvas">
                           <!-- Chat user tab item -->
-                          <a href="{% url 'chat:get_message' friend.username %}" class="nav-link text-start">
+                          <a href="{% url 'chat:get_message' following_user.followed_user.username %}" class="nav-link text-start">
                             <div class="d-flex">
-                              <div class="flex-shrink-0 avatar me-2 status-online">
-                                <img class="avatar-img rounded-circle" src="{{ friend.picture.url }}" alt="{{ friend.username }}">
+                              <div class="flex-shrink-0 avatar me-2">
+                                <img class="avatar-img rounded-circle" src="{{ following_user.followed_user.picture.url }}" alt="{{ following_user.followed_user.username }}">
                               </div>
                               <div class="flex-grow-1 d-block">
-                                <h6 class="mb-0 mt-1">{{ friend.name }} </h6>
+                                <h6 class="mb-0 mt-1">{{ following_user.followed_user.name }} </h6>
                                 <div class="small text-secondary"></div>
                               </div>
                             </div>
@@ -121,7 +121,9 @@
                       </div>
                       <div class="d-block flex-grow-1">
                         <a href="{% url 'dashboard:post_in_dashboard' conversation_partner.username %}"><h6 class="mb-0 mt-1">{{ conversation_partner.name }}</h6></a>
-                        <div class="small text-secondary"><i class="fa-solid fa-circle text-success me-1"></i>Online</div>
+                        {% if conversation_partner.state == '現役台湾留学生' or object.state == '台湾留学卒業生'%}
+                        <div class="small text-secondary">{{ conversation_partner.school }} / {{ conversation_partner.major }}</div>
+                        {% endif %}
                       </div>
                     </div>
                   </div>
@@ -154,9 +156,9 @@
                           <div class="d-flex flex-column align-items-end">
                             <div class="bg-primary text-white p-2 px-3 rounded-2">{{ message.description }}</div>
                             <div class="d-flex my-2">
-                              <div class="small text-secondary time_date">{{ message.time }}</div>
+                              <div class="small time_date">{{ message.time }}</div>
                               {% if message.seen %}
-                              <div class="small ms-2"><i class="fa-solid fa-check-double text-info"></i></div>
+                              <div class="small ms-2">既読</div>
                               {% endif %}
                             </div>
                           </div>

@@ -24,7 +24,7 @@
                 <!-- Title START -->
                 <div class="card-header border-0 pb-0">
                     <div class="d-flex mb-2 mb-sm-0">
-                        <h1 class="h5 mb-0">チャットルーム<span class="badge bg-success bg-opacity-10 text-success">{{ amount_of_friends }}</span></h1>
+                        <h1 class="h5 mb-0">チャットルーム<span class="badge bg-success bg-opacity-10 text-success">{{ amount_of_following_users }}</span></h1>
                     </div>
                     <hr>
                 </div>
@@ -44,16 +44,16 @@
                     <div class="chat-tab-list custom-scrollbar">
                     <ul class="nav flex-column nav-pills nav-pills-soft">
 
-                        {% for friend in friends_list %}
+                        {% for folloing_user in following_user_list %}
                         <li data-bs-dismiss="offcanvas">
                         <!-- Chat user tab item -->
-                        <a href="{% url 'chat:get_message' friend.username %}" class="nav-link text-start">
+                        <a href="{% url 'chat:get_message' folloing_user.followed_user.username %}" class="nav-link text-start">
                             <div class="d-flex">
                             <div class="flex-shrink-0 avatar me-2">
-                                <img class="avatar-img rounded-circle" src="{{ friend.picture.url }}" alt="{{ friend.username }}">
+                                <img class="avatar-img rounded-circle" src="{{ folloing_user.followed_user.picture.url }}" alt="{{ folloing_user.followed_user.username }}">
                             </div>
                             <div class="flex-grow-1 d-block">
-                                <h6 class="mb-0 mt-1">{{ friend.name }} </h6>
+                                <h6 class="mb-0 mt-1">{{ folloing_user.followed_user.name }} </h6>
                                 <div class="small text-secondary"></div>
                             </div>
                             </div>
