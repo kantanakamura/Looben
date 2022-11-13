@@ -3,6 +3,7 @@ from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404 
@@ -11,7 +12,7 @@ from django.shortcuts import get_object_or_404
 from .forms import CreateBlogForm
 from .models import Blog, LikeForBlog
     
-    
+@login_required
 def create_blog(request):
     create_blog_form = CreateBlogForm(request.POST or None, files=request.FILES)
     if create_blog_form.is_valid():
@@ -78,7 +79,7 @@ class BlogDetailView(DetailView):
             context['is_user_liked_for_post'] = False
         return context
     
-
+@login_required
 def like_for_post(request):
     post_pk = request.POST.get('post_pk')
     context = {

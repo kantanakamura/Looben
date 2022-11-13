@@ -37,7 +37,6 @@ class UserManager(BaseUserManager):
     
 class Users(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=150, unique=True)
-    # connection = models.ManyToManyField('self', symmetrical=False, blank=True, related_name='connected_users')
     email = models.EmailField(max_length=255, unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -48,7 +47,6 @@ class Users(AbstractBaseUser, PermissionsMixin):
     instagram_account_name = models.CharField(max_length=150, blank=True)
     twitter_account_name = models.CharField(max_length=150, blank=True)
     description = models.TextField(max_length=150, blank=True)
-    # saved_university = models.ManyToManyField('Schools', symmetrical=False, blank=True, related_name='saved_university_users')
     state = models.CharField(max_length=50, default='その他')
     joined_at = models.DateField(default=timezone.now)
     contributed_points = models.IntegerField(default=0)
