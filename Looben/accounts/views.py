@@ -185,23 +185,16 @@ class UniversityDetailView(LoginRequiredMixin, DetailView):
         return context
 
     
-class StudentsByUniversityView(LoginRequiredMixin, ListView):
-    model = Users
+class StudentsByUniversityView(LoginRequiredMixin, DetailView):
+    model = Schools
     template_name = 'accounts/students_by_university.html'
-    
-    def get_queryset(self, **kwargs):
-        queryset = super().get_queryset(**kwargs) 
-        id = self.request.GET.get('id')
-        if id is not None:
-            queryset = queryset.filter(school__id=id)
-        return queryset
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        id = self.request.GET.get('id')
-        if id is not None:
-            context['school'] = Schools.objects.filter(id=id)
+        school = self.object
+        context['users_affiliated_with_university'] = Users.objects.filter(school=school).all()
         return context
+    
         
     
 class ComingSoonView(TemplateView):
