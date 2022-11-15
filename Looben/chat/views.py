@@ -6,6 +6,7 @@ from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from chat.serializers import MessageSerializer
 from django.views.generic.base import View
+from django.shortcuts import get_object_or_404 
 
 from accounts.models import Users, FollowForUser
 from chat.models import Messages
@@ -32,6 +33,26 @@ def get_message(request, username):
         'conversation_partner': conversation_partner,
         'amount_of_following_users': amount_of_following_users,
         })
+    
+    
+def follow_and_create_chatroom(request, username):
+    followed_user = get_object_or_404(Users, username=username)
+    follow = FollowForUser.objects.filter(followed_user=followed_user, user=request.user)
+
+    if not follow.exists():
+        follow.create(followed_user=followed_user, user=request.user)
+    messages = Messages.objects.filter(sender_name=followed_user.id, receiver_name=request.user.id) | \
+        Messages.objects.filter(sender_name=request.user.id, receiver_name=followed_user.id)
+    amount_of_following_users = FollowForUser.objects.filter(user=request.user).count()
+    following_user_list =  FollowForUser.objects.filter(user=request.user)
+    return render(request, "chat/messages.html", {
+        'username': username,
+        'messages': messages,
+        'following_user_list': following_user_list,
+        'current_user': request.user, 
+        'conversation_partner': followed_user,
+        'amount_of_following_users': amount_of_following_users,
+    })
     
     
 class ChatRoomView(DetailView):

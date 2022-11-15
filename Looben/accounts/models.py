@@ -117,7 +117,11 @@ class LikeForUniversity(models.Model):
     timestamp = models.DateTimeField(default=timezone.now)
     
     class Meta:
+        db_table = 'like_for_university'
         verbose_name = '大学いいね'
+        
+    def __str__(self):
+        return str(self.user) + ' ' + str(self.target_university)
         
         
 class FollowForUser(models.Model):
@@ -126,5 +130,8 @@ class FollowForUser(models.Model):
     timestamp = models.DateTimeField(default=timezone.now)
 
     class Meta:
+        db_table = 'follow_for_user'
         verbose_name = 'フォロー'
-        
+
+    def __str__(self):
+        return str(self.user) + ' ' + str(self.followed_user)
