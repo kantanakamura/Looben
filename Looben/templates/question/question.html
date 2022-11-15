@@ -58,9 +58,9 @@
                     <h6>勉強</h6>
                 </a>
                 <!-- Category item -->
-                <a href="{% url 'questions:categorized_questions' category='love' %}" class="card card-body mb-3 mb-lg-0 p-3 text-center">
-                    <img class="h-40px mb-3" src="{% static 'images/icon/heart-outline-filled.svg' %}" alt="恋愛">
-                    <h6>恋愛</h6>
+                <a href="{% url 'questions:categorized_questions' category='job' %}" class="card card-body mb-3 mb-lg-0 p-3 text-center">
+                    <img class="h-40px mb-3" src="{% static 'images/icon/laptop-outline-filled.svg' %}" alt="job">
+                    <h6>就活</h6>
                 </a>
                 <!-- Category item -->
                 <a href="{% url 'questions:categorized_questions' category='life' %}" class="card card-body mb-3 mb-lg-0 p-3 text-center">
@@ -108,8 +108,8 @@
                         <span><a href="{% url 'questions:categorized_questions' category='foods' %}" class="btn btn-xs btn-primary mt-n3">食事</a></span>
                         {% elif searched_question.category == 'study' %}
                         <span><a href="{% url 'questions:categorized_questions' category='study' %}" class="btn btn-xs btn-primary mt-n3">勉強</a></span>
-                        {% elif searched_question.category == 'love' %}
-                        <span><a href="{% url 'questions:categorized_questions' category='love' %}" class="btn btn-xs btn-primary mt-n3">恋愛</a></span>
+                        {% elif searched_question.category == 'job' %}
+                        <span><a href="{% url 'questions:categorized_questions' category='job' %}" class="btn btn-xs btn-primary mt-n3">就活</a></span>
                         {% else %}
                         <span><a href="{% url 'questions:categorized_questions' category='life' %}" class="btn btn-xs btn-primary mt-n3">人生</a></span>
                         {% endif %}
@@ -257,8 +257,8 @@
                         <span><a href="{% url 'questions:categorized_questions' category='foods' %}" class="btn btn-xs btn-primary mt-n3">食事</a></span>
                         {% elif question.category == 'study' %}
                         <span><a href="{% url 'questions:categorized_questions' category='study' %}" class="btn btn-xs btn-primary mt-n3">勉強</a></span>
-                        {% elif question.category == 'love' %}
-                        <span><a href="{% url 'questions:categorized_questions' category='love' %}" class="btn btn-xs btn-primary mt-n3">恋愛</a></span>
+                        {% elif question.category == 'job' %}
+                        <span><a href="{% url 'questions:categorized_questions' category='job' %}" class="btn btn-xs btn-primary mt-n3">就活</a></span>
                         {% else %}
                         <span><a href="{% url 'questions:categorized_questions' category='life' %}" class="btn btn-xs btn-primary mt-n3">人生</a></span>
                         {% endif %}
@@ -365,8 +365,8 @@
                         <span><a href="{% url 'questions:categorized_questions' category='foods' %}" class="btn btn-xs btn-primary mt-n3">食事</a></span>
                         {% elif question.category == 'study' %}
                         <span><a href="{% url 'questions:categorized_questions' category='study' %}" class="btn btn-xs btn-primary mt-n3">勉強</a></span>
-                        {% elif question.category == 'love' %}
-                        <span><a href="{% url 'questions:categorized_questions' category='love' %}" class="btn btn-xs btn-primary mt-n3">恋愛</a></span>
+                        {% elif question.category == 'job' %}
+                        <span><a href="{% url 'questions:categorized_questions' category='job' %}" class="btn btn-xs btn-primary mt-n3">就活</a></span>
                         {% else %}
                         <span><a href="{% url 'questions:categorized_questions' category='life' %}" class="btn btn-xs btn-primary mt-n3">人生</a></span>
                         {% endif %}
@@ -470,6 +470,8 @@
                 </div>
                 <!-- Card END -->
             </div>
+        {% empty %}
+        <p>信頼できる回答者はまだいません。</p>
         {% endfor %}
         </div>
     </div>

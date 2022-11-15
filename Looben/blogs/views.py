@@ -3,6 +3,7 @@ from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404 
@@ -10,8 +11,9 @@ from django.shortcuts import get_object_or_404
 
 from .forms import CreateBlogForm
 from .models import Blog, LikeForBlog
+from accounts.models import FollowForUser
     
-    
+@login_required
 def create_blog(request):
     create_blog_form = CreateBlogForm(request.POST or None, files=request.FILES)
     if create_blog_form.is_valid():
@@ -29,9 +31,9 @@ class BlogListView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         user = request.user
-        number_of_following_user = user.connection.all().count()
-        number_of_followed_user = user.connected_users.all().count()
-        number_of_blog_post = Blog.objects.filter(author=user).all().count()
+        number_of_following_user = FollowForUser.objects.filter(user=user).count()
+        number_of_followed_user = FollowForUser.objects.filter(followed_user=user).count()
+        number_of_blog_post = Blog.objects.filter(author=user).count()
         newest_blog_posts = Blog.objects.order_by('-created_at')[:6]
         most_viewed_posts = Blog.objects.order_by('-total_number_of_view')[:6]
         if 'search' in self.request.GET:
@@ -68,9 +70,9 @@ class BlogDetailView(DetailView):
         user = self.object.author
         self.object.total_number_of_view += 1
         self.object.save()
-        context['number_of_following_user'] = user.connection.all().count()
-        context['number_of_followed_user'] = user.connected_users.all().count()
-        context['number_of_blog_post'] = Blog.objects.filter(author=user).all().count()
+        context['number_of_following_user'] = FollowForUser.objects.filter(user=user).count()
+        context['number_of_followed_user'] = FollowForUser.objects.filter(followed_user=user).count()
+        context['number_of_blog_post'] = Blog.objects.filter(author=user).count()
         context['number_of_like_for_blog_post'] = self.object.likeforblog_set.count()
         if self.object.likeforblog_set.filter(user=self.request.user).exists():
                 context['is_user_liked_for_post'] = True
@@ -78,7 +80,7 @@ class BlogDetailView(DetailView):
             context['is_user_liked_for_post'] = False
         return context
     
-
+@login_required
 def like_for_post(request):
     post_pk = request.POST.get('post_pk')
     context = {

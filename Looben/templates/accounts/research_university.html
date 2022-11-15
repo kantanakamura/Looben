@@ -73,7 +73,7 @@
                   <!-- Card body START -->
                   <div class="card-body">
                     <!-- Info -->
-                    <p class="text-body"><strong>{{ searched_university.name }}</strong> <i class="bi bi-patch-check-fill text-success small"></i></p>
+                    <p class="text-body"><strong>{{ searched_university.name }}</strong> {% if searched_university.is_national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
                     <div>
                     {% with range=''|center:5 %}
                     {% for _ in range %}
@@ -130,7 +130,7 @@
                   <!-- Card body START -->
                   <div class="card-body">
                     <!-- Info -->
-                    <p class="text-body"><strong>{{ high_rated_university.name }}</strong> <i class="bi bi-patch-check-fill text-success small"></i></p>
+                    <p class="text-body"><strong>{{ high_rated_university.name }}</strong> {% if high_rated_university.is_national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
                     <div>
                     {% with range=''|center:5 %}
                     {% for _ in range %}
@@ -302,7 +302,7 @@
                     <!-- Card body START -->
                     <div class="card-body">
                       <!-- Info -->
-                      <p class="text-body"><strong>{{ north_university.name }}</strong> {% if north_university.national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                      <p class="text-body"><strong>{{ north_university.name }}</strong> {% if north_university.is_national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
                       <div>
                         {% with range=''|center:5 %}
                         {% for _ in range %}
@@ -358,7 +358,7 @@
                     <!-- Card body START -->
                     <div class="card-body">
                       <!-- Info -->
-                      <p class="text-body"><strong>{{ middle_university.name }}</strong> {% if middle_university.national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                      <p class="text-body"><strong>{{ middle_university.name }}</strong> {% if middle_university.is_national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
                       <div>
                         {% with range=''|center:5 %}
                         {% for _ in range %}
@@ -414,7 +414,7 @@
                     <!-- Card body START -->
                     <div class="card-body">
                       <!-- Info -->
-                      <p class="text-body"><strong>{{ east_university.name }}</strong> {% if east_university.national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                      <p class="text-body"><strong>{{ east_university.name }}</strong> {% if east_university.is_national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
                       <div>
                         {% with range=''|center:5 %}
                         {% for _ in range %}
@@ -470,7 +470,7 @@
                     <!-- Card body START -->
                     <div class="card-body">
                       <!-- Info -->
-                      <p class="text-body"><strong>{{ south_university.name }}</strong> {% if south_university.national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                      <p class="text-body"><strong>{{ south_university.name }}</strong> {% if south_university.is_national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
                       <div>
                         {% with range=''|center:5 %}
                         {% for _ in range %}
@@ -525,7 +525,7 @@
                 <!-- Card body START -->
                 <div class="card-body">
                   <!-- Info -->
-                  <p class="text-body"><strong>{{ liked_university.target_university.name }}</strong> {% if liked_university.target_university.national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                  <p class="text-body"><strong>{{ liked_university.target_university.name }}</strong> {% if liked_university.target_university.is_national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
                   <div>
                     {% with range=''|center:5 %}
                     {% for _ in range %}

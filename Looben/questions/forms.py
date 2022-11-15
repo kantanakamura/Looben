@@ -17,7 +17,7 @@ class QuestionForm(forms.ModelForm):
         'placeholder': '質問する対象の大学',
         'type': 'select',
     }))
-    category = forms.ChoiceField(label='カテゴリー', choices=(('university', '大学'), ('foods', '食事'), ('study', '勉強'), ('love', '恋愛'), ('life', '人生')), widget=forms.Select(attrs={
+    category = forms.ChoiceField(label='カテゴリー', choices=(('university', '大学'), ('foods', '食事'), ('study', '勉強'), ('job', '就活'), ('life', '人生')), widget=forms.Select(attrs={
         'class': 'form-control', 
         'placeholder': 'カテゴリー',
         'type': 'select',
