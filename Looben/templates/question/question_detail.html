@@ -76,8 +76,8 @@
                     <span><a href="{% url 'questions:categorized_questions' category='foods' %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">食事</a></span>
                     {% elif object.category == 'study' %}
                     <span><a href="{% url 'questions:categorized_questions' category='study' %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">勉強</a></span>
-                    {% elif object.category == 'love' %}
-                    <span><a href="{% url 'questions:categorized_questions' category='love' %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">恋愛</a></span>
+                    {% elif object.category == 'job' %}
+                    <span><a href="{% url 'questions:categorized_questions' category='job' %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">就活</a></span>
                     {% else %}
                     <span><a href="{% url 'questions:categorized_questions' category='life' %}" class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">人生</a></span>
                     {% endif %}
