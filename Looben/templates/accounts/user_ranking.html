@@ -21,104 +21,39 @@
             <p>Loobenに登録している台湾留学生が、どのくらいLoobenで活動し、貢献しているかでポイントづけされています。</p>
             
             <div class="row g-4">
-                <div class="col-12">
-                <!-- Tab nav line START -->
-                <ul class="nav nav-tabs nav-tabs-white justify-content-center border-0">
-                    <li class="nav-item"> <a class="nav-link active" data-bs-toggle="tab" href="#tab-1"> 学生一覧 </a> </li>
-                    <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-2"> 保存した学生 </a> </li>
-                </ul>
-                <!-- Tab nav line START -->
-                </div>
-            </div>
-            
-            <!-- Tab start -->
-            <div class="tab-content mb-0 pb-0">
-                <!-- 学生一覧 tab START -->
-                <div class="tab-pane fade show active" id="tab-1">
-                    <div class="row g-4">
-                        <table class="table" style="background-color:white;">
-                            <thead class="table-dark" style="height:50px;">
-                                <tr>
-                                    <th scope="col">順位</th>
-                                    <th scope="col">ユーザー</th>
-                                    <th scope="col">大学 / 学部</th>
-                                    <th scope="col">ポイント</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            {% for student in object_list %}
-                                <tr style="height:60px;">
-                                    <td>{{ forloop.counter }}</td>
-                                    <td>
-                                        <div class="avatar avatar-xl">
-                                            <a href="{% url 'dashboard:post_in_dashboard' student.username %}"><img class="avatar-img rounded-circle" src="{{ student.picture.url }}" alt="{{ student.name }}"></a>
-                                        </div>
-                                        <a href="{% url 'dashboard:post_in_dashboard' student.username %}"><h5>{{ student.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h5></a>
-                                    </td>
-                                    <td><i class="bi bi-geo-alt me-1"></i> {{ student.school }}<br><i class="bi bi-pen me-1"></i> {{ student.major }}</td>
-                                    <td>
-                                        <h5>{{ student.contributed_points }}pt</h5>
-                                        <div style="text-align:right;">   
-                                        <button class="btn btn-sm btn-primary-soft " data-bs-toggle="tooltip" data-bs-placement="top" title="メッセージを送る"> <i class="bi bi-chat-dots"></i> </button>
-                                        <a href="{% url 'dashboard:post_in_dashboard' student.username %}"><button class="btn btn-sm btn-info-soft " data-bs-toggle="tooltip" data-bs-placement="top" title="詳細を見る"> <i class="bi bi-incognito"></i> </button></a>
-                                        <!-- もし、保存した学生だったら、保存解除ボタンを設置 -->
-                                        {% if student in user.saved_users.all %}
-                                        <a href="{% url 'accounts:unsave_user' student.username %}"><button class="btn btn-sm btn-danger-soft " data-bs-toggle="tooltip" data-bs-placement="top" title="保存解除"> <i class="bi bi-bookmark-heart"></i> </button></a>
-                                        <!-- 保存してない学生だったら、保存ボタンを設置-->
-                                        {% else %}
-                                        <a href="{% url 'accounts:save_user' student.username %}"><button class="btn btn-sm btn-success-soft " data-bs-toggle="tooltip" data-bs-placement="top" title="保存する"> <i class="bi bi-bookmark-heart"></i> </button></a>
-                                        {% endif %}
-                                        </div>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <!-- 学生一覧tab END -->
-
-            
-                <!-- 保存済み学生 tab START -->
-                <div class="tab-pane fade text-center" id="tab-2">
-                    <div class="row g-4">
-                        <!-- 保存したユーザーがいる場合に表示する画面 -->
-                        {% for saved_student in user.saved_users.all %}
-                        <!-- Main content START -->
-                        <div class="col-sm-6 col-lg-3">
-                            <!-- Friends item START -->
-                            <div class="card shadow-none text-center h-100">
-                            <!-- Card body -->
-                            <div class="card-body p-2 pb-0">
+                <table class="table" style="background-color:white;">
+                    <thead class="table-dark" style="height:50px;">
+                        <tr>
+                            <th scope="col">順位</th>
+                            <th scope="col">ユーザー</th>
+                            <th scope="col">大学 / 学部</th>
+                            <th scope="col">ポイント</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for student in object_list %}
+                        <tr style="height:60px;">
+                            <td>{{ forloop.counter }}</td>
+                            <td>
                                 <div class="avatar avatar-xl">
-                                    <a href="{% url 'dashboard:post_in_dashboard' saved_student.username %}"><img class="avatar-img rounded-circle" src="{{ saved_student.picture.url }}" alt="{{ saved_student.name }}"></a>
+                                    <a href="{% url 'dashboard:post_in_dashboard' student.username %}"><img class="avatar-img rounded-circle" src="{{ student.picture.url }}" alt="{{ student.name }}"></a>
                                 </div>
-                                <h6 class="card-title mb-1 mt-3"><a href="{% url 'dashboard:post_in_dashboard' saved_student.username %}"> {{ saved_student.name }} <i class="bi bi-patch-check-fill text-primary small"></i></a></h6>
-                                <p class="mb-0 small lh-sm">{{ saved_student.major }}</p>
-                            </div>
-                            <!-- Card footer -->
-                            <div class="card-footer p-2 border-0">
+                                <a href="{% url 'dashboard:post_in_dashboard' student.username %}"><h5>{{ student.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h5></a>
+                            </td>
+                            <td><i class="bi bi-geo-alt me-1"></i> {{ student.school }}<br><i class="bi bi-pen me-1"></i> {{ student.major }}</td>
+                            <td>
+                                <h5>{{ student.contributed_points }}pt</h5>
+                                <div style="text-align:right;">   
                                 <button class="btn btn-sm btn-primary-soft " data-bs-toggle="tooltip" data-bs-placement="top" title="メッセージを送る"> <i class="bi bi-chat-dots"></i> </button>
-                                <a href="{% url 'dashboard:post_in_dashboard' saved_student.username %}"><button class="btn btn-sm btn-info-soft " data-bs-toggle="tooltip" data-bs-placement="top" title="詳細を見る"> <i class="bi bi-incognito"></i> </button></a>
-                                <a href="{% url 'accounts:unsave_user' saved_student.username %}"><button class="btn btn-sm btn-danger-soft " data-bs-toggle="tooltip" data-bs-placement="top" title="保存解除"> <i class="bi bi-bookmark-heart"></i> </button></a>
-                            </div>
-                            </div>
-                            <!-- Friends item END -->
-                        </div>
-                        <!-- Main content END -->
-                        {% empty %}
-                        <!-- 保存したユーザーがいない場合に表示する画面 -->
-                        <div class="my-sm-5 py-sm-5">
-                        <i class="display-1 text-primary text-opacity-25 bi bi-card-text"> </i>
-                        <h4 class="mt-2 mb-3 text-body">あなたが保存した学生はいません</h4>
-                        <a href="#tab-1"><button class="btn btn-primary-soft btn-sm"> 学生一覧を見る </button></a>
-                        </div>
-                        {% endfor %}             
-                    </div>
-                </div>
-                <!-- 保存済み学生　tab END -->
+                                <a href="{% url 'dashboard:post_in_dashboard' student.username %}"><button class="btn btn-sm btn-info-soft " data-bs-toggle="tooltip" data-bs-placement="top" title="詳細を見る"> <i class="bi bi-incognito"></i> </button></a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
-            <!-- Tab END -->
+
         </div>
     </div>
 </main> 
