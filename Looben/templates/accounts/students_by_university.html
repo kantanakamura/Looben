@@ -34,7 +34,7 @@
             </div>
             <!-- Card footer -->
             <div class="card-footer p-2 border-0">
-                <button class="btn btn-sm btn-primary-soft " data-bs-toggle="tooltip" data-bs-placement="top" title="メッセージを送る"> <i class="bi bi-chat-dots"></i> </button>
+                <a href="{% url 'chat:follow_and_crete_chatroom' user_affiliated_with_university.username %}"><button class="btn btn-sm btn-primary-soft " data-bs-toggle="tooltip" data-bs-placement="top" title="メッセージを送る"> <i class="bi bi-chat-dots"></i> </button></a>
                 <a href="{% url 'dashboard:post_in_dashboard' user_affiliated_with_university.username %}"><button class="btn btn-sm btn-info-soft " data-bs-toggle="tooltip" data-bs-placement="top" title="詳細を見る"> <i class="bi bi-incognito"></i> </button></a>
               </div>
             </div>
