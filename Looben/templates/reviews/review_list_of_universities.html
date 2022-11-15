@@ -73,10 +73,13 @@
                     <!-- Side Nav START -->
                     <ul class="nav nav-link-secondary flex-column fw-bold gap-2 text-center">
                       <li class="nav-item">
-                        <a class="nav-link" href="{% url 'accounts:account_setting' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/settings-outline-filled.svg'%}" alt=""><span>設定 </span></a>
+                        <a class="nav-link" href="{% url 'accounts:students_by_university' object.id %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-outline-filled.svg'%}" alt="student"><span>在校生 </span></a>
                       </li>
                       <li class="nav-item">
-                        <a class="nav-link" href="{% url 'accounts:students_by_university' object.id %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-outline-filled.svg'%}" alt=""><span>在校生 </span></a>
+                        <a class="nav-link" href="{% url 'questions:list_of_questions_for_each_university' object.id %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/search-outline-filled.svg'%}" alt="question"><span>質問 </span></a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="{% url 'reviews:review_list_of_universities' object.id %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/clipboard-outline-filled.svg'%}" alt="review"><span>口コミ </span></a>
                       </li>
                     </ul>
                     <!-- Side Nav END -->
@@ -211,6 +214,7 @@
                         </div>
                         {% endif %}
                       {% empty %}
+                      <p>レビューはまだありません。</p>
                       {% endfor %}
                     </div>
                 </div>
