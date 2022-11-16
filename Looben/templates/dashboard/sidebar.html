@@ -19,7 +19,7 @@
                 <li class="mb-2"><i class="bi bi-calendar3 me-1"></i> Joined: {{ object.joined_at }}</li>
                 <li class="mb-2"> <i class="bi bi-calendar-date fa-fw pe-1"></i> Born: {{ object.birthday }} </li>
                 <li class="mb-2"> <i class="bi bi-instagram fa-fw pe-1"></i> Instagram: <a href="https://www.instagram.com/{{ object.instagram_account_name }}/"><strong> @{{ object.instagram_account_name}} </strong></a> </li>
-                <li class="mb-2"> <i class="bi bi-twitter fa-fw pe-1"></i> Twitter: <a href="https://twitter.com/{{ object.twitter_account_name }}"><strong> @{{ object.twitter_account_name }} </strong> </li>
+                <li class="mb-2"> <i class="bi bi-twitter fa-fw pe-1"></i> Twitter: <a href="https://twitter.com/{{ object.twitter_account_name }}"><strong> @{{ object.twitter_account_name }} </strong></a> </li>
                 </ul>
             </div>
             <!-- Card body END -->
@@ -33,7 +33,9 @@
             <!-- Card header START -->
             <div class="card-header d-flex justify-content-between border-0">
                 <h5 class="card-title">就活経験</h5>
+                {% if object == user %}
                 <a class="btn btn-primary-soft btn-sm" href="{% url 'job:create_job_experience' %}"> <i class="fa-solid fa-plus"></i> </a>
+                {% endif %}
             </div>
             <!-- Card header END -->
             <!-- Card body START -->
@@ -49,7 +51,11 @@
                 <!-- Info -->
                 <div>
                     <h6 class="card-title mb-0">{{ job_experience.company_name }} </h6>
-                    <p class="small">{{ job_experience.job_date }} - {{ job_experience.job_content }} <a class="btn btn-primary-soft btn-xs ms-2" href="#!">Edit </a></p>
+                    <p class="small">{{ job_experience.job_date }} - {{ job_experience.job_content }} 
+                        {% if object == user %}
+                        <a class="btn btn-primary-soft btn-xs ms-2" href="{% url 'job:update_job_experience' job_experience.id %}">編集</a>
+                        {% endif %}
+                    </p>
                 </div>
                 </div>
                 <!-- Experience item END -->
