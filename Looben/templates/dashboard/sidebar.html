@@ -32,53 +32,30 @@
             <div class="card">
             <!-- Card header START -->
             <div class="card-header d-flex justify-content-between border-0">
-                <h5 class="card-title">バイト・仕事経験</h5>
-                <a class="btn btn-primary-soft btn-sm" href="#!"> <i class="fa-solid fa-plus"></i> </a>
+                <h5 class="card-title">就活経験</h5>
+                <a class="btn btn-primary-soft btn-sm" href="{% url 'job:create_job_experience' %}"> <i class="fa-solid fa-plus"></i> </a>
             </div>
             <!-- Card header END -->
             <!-- Card body START -->
             <div class="card-body position-relative pt-0">
-                <!-- Experience item START -->
-                <div class="d-flex">
-                <!-- Avatar -->
-                <div class="avatar me-3">
-                    <a href="#!"> <img class="avatar-img rounded-circle" src="{% static 'images/logo/coconala.webp' %}" alt=""> </a>
-                </div>
-                <!-- Info -->
-                <div>
-                    <h6 class="card-title mb-0"><a href="#!"> 株式会社ココナラ - coconala Inc. </a></h6>
-                    <p class="small">Aug 2022 - 3daysインターンシップ <a class="btn btn-primary-soft btn-xs ms-2" href="#!">Edit </a></p>
-                </div>
-                </div>
-                <!-- Experience item END -->
 
+                {% for job_experience in job_experiences %}
                 <!-- Experience item START -->
                 <div class="d-flex">
                 <!-- Avatar -->
                 <div class="avatar me-3">
-                    <a href="#!"> <img class="avatar-img rounded-circle" src="{% static 'images/logo/09.svg' %}" alt=""> </a>
+                    <img class="avatar-img rounded-circle" src="{{ job_experience.job_picture.url }}" alt="job_piture">
                 </div>
                 <!-- Info -->
                 <div>
-                    <h6 class="card-title mb-0"><a href="#!"> Microsoft Corporation </a></h6>
-                    <p class="small">May 2017 – Present Employment Duration 1 yrs 5 mos <a class="btn btn-primary-soft btn-xs ms-2" href="#!">Edit </a></p>
+                    <h6 class="card-title mb-0">{{ job_experience.company_name }} </h6>
+                    <p class="small">{{ job_experience.job_date }} - {{ job_experience.job_content }} <a class="btn btn-primary-soft btn-xs ms-2" href="#!">Edit </a></p>
                 </div>
                 </div>
                 <!-- Experience item END -->
-
-                <!-- Experience item START -->
-                <div class="d-flex">
-                <!-- Avatar -->
-                <div class="avatar me-3">
-                    <a href="#!"> <img class="avatar-img rounded-circle" src="{% static 'images/logo/10.svg' %}" alt=""> </a>
-                </div>
-                <!-- Info -->
-                <div>
-                    <h6 class="card-title mb-0"><a href="#!"> Tata Consultancy Services. </a></h6>
-                    <p class="small mb-0">May 2022 – Present Employment Duration 6 yrs 10 mos <a class="btn btn-primary-soft btn-xs ms-2" href="#!">Edit </a></p>
-                </div>
-                </div>
-                <!-- Experience item END -->
+                {% empty %}
+                <p>まだ記入されていません。</p>
+                {% endfor %}
 
             </div>
             <!-- Card body END -->
