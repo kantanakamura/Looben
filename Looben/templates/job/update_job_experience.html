@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+
+{% block content %}
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+    <!-- Container START -->
+    <div class="container">
+        <div class="row">
+            <!-- Main content START -->
+            <div class="col-md-11 mx-auto">
+            <!-- Create a page START -->
+            <div class="card">
+                <!-- Title START -->
+                <div class="card-header border-0 pb-0">
+                <h1 class="h4 card-title mb-0">就活経験編集ページ</h1>
+                </div>
+                <!-- Title END -->
+
+                <!-- Create a page form START -->
+                <div class="card-body">
+                <form class="row g-3 mt-4" method="post" enctype="multipart/form-data">
+                    {{ form.non_field_errors }}
+                    {% csrf_token %}
+
+
+                    <div class="col-6">
+                        <label class="form-label">アイコン画像</label>
+                        {{ form.job_picture }}
+                    </div>
+                    {{ form.job_picture.errors }}
+
+                    <div class="col-12">
+                        <label class="form-label">タイトル</label>
+                        {{ form.company_name }}
+                    </div>
+                    {{ form.company_name.errors }}
+
+
+                    <div class="col-12">
+                        <label class="form-label">活動内容</label>
+                        {{ form.job_content }}
+                    </div>
+                    {{ form.job_content.errors }}
+
+
+                    <div class="col-3">
+                        <label class="form-label">活動期間</label>
+                        {{ form.job_date }}
+                    </div>
+                    {{ form.job_content.errors }}
+
+                    <!-- Button  -->
+                    <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-primary mb-0">保存</button>
+                    </div>
+                </form>
+                </div>
+                <!-- Create a page form END -->
+            </div>
+            <!-- Create a page END -->
+            </div>
+    
+        </div> <!-- Row END -->
+    </div>
+    <!-- Container END --> 
+</main>
+<!-- **************** MAIN CONTENT END **************** -->
+{% endblock %}

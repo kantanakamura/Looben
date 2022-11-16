@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -45,14 +45,7 @@ def follow_and_create_chatroom(request, username):
         Messages.objects.filter(sender_name=request.user.id, receiver_name=followed_user.id)
     amount_of_following_users = FollowForUser.objects.filter(user=request.user).count()
     following_user_list =  FollowForUser.objects.filter(user=request.user)
-    return render(request, "chat/messages.html", {
-        'username': username,
-        'messages': messages,
-        'following_user_list': following_user_list,
-        'current_user': request.user, 
-        'conversation_partner': followed_user,
-        'amount_of_following_users': amount_of_following_users,
-    })
+    return redirect("chat:get_message", username=username)
     
     
 class ChatRoomView(DetailView):

@@ -129,6 +129,8 @@
                       </div>
                     </div>
                   </div>
+                  {% empty %}
+                  <p>登録している学生はまだいません。</p>
                   {% endfor %}
                 </div>
               </div>
@@ -239,6 +241,7 @@
                     </div>
                     {% endif %}
                   {% empty %}
+                  <p>レビューはまだありません。</p>
                   {% endfor %}
                 </div>
               </div>
@@ -361,6 +364,7 @@
                     </div>
                     {% endif %}
                   {% empty %}
+                  <p>質問はまだありません。</p>
                   {% endfor %}
                 </div>
               </div>
