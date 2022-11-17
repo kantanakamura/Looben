@@ -33,7 +33,7 @@ class UpdateJobExperienceForm(forms.ModelForm):
         'class': 'form-control', 
         'placeholder': '活動タイトル記入欄', 
         }))
-    job_date = forms.DateField(label='期間', widget=forms.SelectDateWidget(years=[x for x in range(2000, 2023)], attrs={
+    job_date = forms.DateField(label='期間', widget=forms.SelectDateWidget(years=[x for x in range(2010, 2024)], attrs={
         'class': 'form-control', 
         'type': 'select',
         }))
