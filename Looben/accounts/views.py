@@ -117,7 +117,7 @@ class UserRankingView(LoginRequiredMixin, ListView):
     model = Users
     template_name = 'accounts/user_ranking.html'
     ordering = ['-contributed_points']
-    
+
     
 class ResearchUniversity(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
