@@ -119,7 +119,7 @@ class UserRankingView(LoginRequiredMixin, ListView):
     ordering = ['-contributed_points']
     
     
-class ResearchUniversity(View):
+class ResearchUniversity(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         high_rated_universities = Schools.objects.order_by('star_rating').reverse()[:12]
         national_universities = Schools.objects.filter(is_national=True).all()

@@ -27,7 +27,7 @@
           <a href="{% url 'dashboard:post_in_dashboard' user.username %}"><button type="button" class="btn btn-primary btn-lg px-4 gap-3">ダッシュボードに戻る</button></a>
           {% else %}
           <!--  もし、ユーザーがログインしていなかったら、大学検索ページに戻る -->
-          <a href="{% url 'accounts:research_university' %}"><button type="button" class="btn btn-outline-secondary btn-lg px-4">大学検索ページに戻る</button></a>
+          <a href="{% url 'accounts:research_university' %}"><button type="button" class="btn btn-outline-info btn-lg px-4">大学検索ページに戻る</button></a>
           {% endif %}
         </div>
         </div>
