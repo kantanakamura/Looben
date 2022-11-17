@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'job',
     'blogs',
     'chat',
+    'contact_form',
     'questions',
     'rest_framework',
 ]
