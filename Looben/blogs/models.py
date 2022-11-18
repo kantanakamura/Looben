@@ -7,6 +7,7 @@ from accounts.models import Users
 
 class Blog(models.Model):
     title = models.CharField('タイトル', max_length=50)
+    meta_description = models.TextField('メタデスクリプション', blank=True, max_length=150)
     content = MDTextField('テキスト', help_text='Markdown形式で書いてください。')
     top_image = models.FileField('サムネイル画像', upload_to='blog/top_image/', default='blog/top_image/top_image.png')
     created_at = models.DateField('作成日', auto_now_add=True)

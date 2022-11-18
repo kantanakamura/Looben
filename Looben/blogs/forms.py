@@ -14,6 +14,11 @@ class CreateBlogForm(forms.ModelForm):
         'placeholder': 'タイトル記入欄', 
         'id': '',
         }))
+    meta_description = forms.CharField(label='メタデスクリプション', widget=forms.TextInput(attrs={
+        'class': 'form-control', 
+        'placeholder': '',
+        'type': 'text',
+        }))
     content = MDTextFormField(label='記事内容', widget=forms.Textarea(attrs={
         'class': 'form-control', 
         'placeholder': '記事記入欄',
@@ -26,7 +31,8 @@ class CreateBlogForm(forms.ModelForm):
         'id': 'formFile',
         }))
     
+    
     class Meta:
         model = Blog
-        fields = ['title', 'content', 'top_image']
+        fields = ['title', 'meta_description', 'content', 'top_image']
         
