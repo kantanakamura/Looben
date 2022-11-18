@@ -56,6 +56,9 @@
                 <!-- Side Nav START -->
                 <ul class="nav nav-link-secondary flex-column fw-bold gap-2">
                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'blogs:liked_blog_list' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/heart-outline-filled.svg' %}" alt="blog"><span>いいねした記事 </span></a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'dashboard:post_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/certificate-outline-filled.svg' %}" alt="blog"><span>ブログ記事 </span></a>
                     </li>
                     {% if user.state == '現役台湾留学生' or user.state == '台湾留学卒業生' %}
