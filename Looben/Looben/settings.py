@@ -201,3 +201,5 @@ MDEDITOR_CONFIGS = {
         'language': 'en',
     }
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

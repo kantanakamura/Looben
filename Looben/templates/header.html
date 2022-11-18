@@ -174,12 +174,12 @@
                 </li>
                 <li> 
                     <a class="dropdown-item" href="{% url 'contact_form:privacy_and_safety' %}">
-                    <i class="fa-fw bi bi-life-preserver me-2"></i>プライバシー
+                    <i class="fa-fw bi bi-life-preserver me-2"></i>プライバシーポリシー
                     </a> 
                 </li>
                 <li> 
-                    <a class="dropdown-item" href="docs/index.html" target="_blank">
-                    <i class="fa-fw bi bi-card-text me-2"></i>Documentation
+                    <a class="dropdown-item" href="{% url 'contact_form:contact_form' %}" target="_blank">
+                    <i class="fa-fw bi bi-envelope me-2"></i>問い合わせ
                     </a> 
                 </li>
                 <!-- superuserなら管理画面へのリンクを載せる -->
