@@ -1,7 +1,7 @@
-from email.policy import default
-from tkinter import CASCADE
 from django.db import models
 from mdeditor.fields import MDTextField
+from django.utils import timezone
+
 from accounts.models import Users
 
 
@@ -32,6 +32,7 @@ class LikeForBlog(models.Model):
     user = models.ForeignKey(
         Users, on_delete=models.Model
     )
+    timestamp = models.DateTimeField(default=timezone.now)
     
     class Meta:
         verbose_name = 'ブログいいね'

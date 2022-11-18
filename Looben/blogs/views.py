@@ -1,18 +1,17 @@
 from django.shortcuts import render, redirect
-from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
-from django.views.generic.base import TemplateView, View
+from django.views.generic.base import View
+from django.views.generic.list import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404 
 
-
 from .forms import CreateBlogForm
 from .models import Blog, LikeForBlog
-from accounts.models import FollowForUser
-    
+from accounts.models import FollowForUser, Users
+
+
 @login_required
 def create_blog(request):
     create_blog_form = CreateBlogForm(request.POST or None, files=request.FILES)
@@ -97,3 +96,15 @@ def like_for_post(request):
         context['method'] = 'create'
     context['like_for_post_count'] = post.likeforblog_set.count()
     return JsonResponse(context)
+
+
+class LikedBlogList(LoginRequiredMixin, ListView):
+    template_name = 'blog/liked_blog_list.html'
+    model = LikeForBlog
+    ordering = ['-timestamp']
+    
+    def get_queryset(self, **kwargs):
+        query = super().get_queryset(**kwargs)
+        request_user = get_object_or_404(Users, id=self.request.user.id)
+        query = query.filter(user=request_user)
+        return query
