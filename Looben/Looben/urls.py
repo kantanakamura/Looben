@@ -17,6 +17,7 @@ urlpatterns = [
     path('', include('blogs.urls')),
     path('', include('questions.urls')),
     path('', include('chat.urls')),
+    path('', include('contact_form.urls')),
     path(r'mdeditor/', include('mdeditor.urls')),
 ]
 

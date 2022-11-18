@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'job',
     'blogs',
     'chat',
+    'contact_form',
     'questions',
     'rest_framework',
 ]
@@ -200,3 +201,10 @@ MDEDITOR_CONFIGS = {
         'language': 'en',
     }
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'looben2022@gmail.com'
+EMAIL_HOST_PASSWORD = '****************'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
