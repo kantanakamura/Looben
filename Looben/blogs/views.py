@@ -40,7 +40,7 @@ class BlogListView(LoginRequiredMixin, View):
             blogs = list(Blog.objects.all())
             searched_blogs = []
             for blog in blogs:
-                if keyword_query in blog.content:
+                if keyword_query in blog.meta_description:
                     searched_blogs.append(blog)
             number_of_searched_blogs = len(searched_blogs)
             user_searched_something = True

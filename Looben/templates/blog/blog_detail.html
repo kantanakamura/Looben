@@ -54,8 +54,7 @@
                         </div>
                         <!-- Info -->
                         <h5 class="mb-0"> <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}">{{ object.author.name }} </a> </h5>
-                        <p>{{ object.author.university }}</p>
-                        <p>{{ object.author.major }}</p>
+                        <p>{{ object.author.school }} / {{ object.author.major }}</p>
                         <p>{{ object.author.description }}</p>
                         <div class="hstack gap-2 gap-xl-3 mt-3">
                             <!-- User stat item -->
