@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from chat.serializers import MessageSerializer

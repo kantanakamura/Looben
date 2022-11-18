@@ -1,28 +1,17 @@
-from multiprocessing import connection
-from tkinter.messagebox import QUESTION
-from unicodedata import category
 from django.shortcuts import render, redirect
-from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic.detail import DetailView
-from django.views.generic.base import TemplateView, View
+from django.views.generic.base import View
 from django.views.generic.list import ListView
 from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, LogoutView
-from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
-from django.core.exceptions import ValidationError
 from django.urls import reverse_lazy
-from django.dispatch import receiver
 from django.http import HttpResponseRedirect
-from django.contrib.auth import authenticate, login
-from django.db.models import Q, Prefetch
+from django.db.models import Prefetch
 
 from .forms import AnswerForQuestionForm, CommentToAnswerForm, QuestionForm
-from .models import AnswerForQuestion, CommentToBestAnswer, Questions
+from .models import AnswerForQuestion, Questions
 
 from accounts.models import Users, Schools
 
@@ -104,7 +93,7 @@ class QuestionDetailView(DetailView):
             return redirect('questions:question_detail', pk=self.object.id)
         else:
             context = self.get_context_data()
-            context['answer_form'] = answer_form  # form.is_validしたフォームを渡さないと、フォームのエラーを表示できない
+            context['answer_form'] = answer_form 
             return render(request, 'questions:question_detail', context)
         
     
@@ -167,6 +156,6 @@ class DecideAndCommentToBestAnswer(DetailView):
             return redirect('questions:question_detail', pk=best_answer.question.id)
         else:
             context = self.get_context_data()
-            context['comment_to_answer_form'] = comment_to_answer_form  # form.is_validしたフォームを渡さないと、フォームのエラーを表示できない
+            context['comment_to_answer_form'] = comment_to_answer_form  
             return render(request, 'questions:question_detail', context)
     
