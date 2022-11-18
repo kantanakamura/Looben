@@ -141,8 +141,13 @@
                         <!-- Avatar name -->
                         <div>
                         <h6 class="mb-0 lh-1"> <a href="{% url 'dashboard:post_in_dashboard' searched_blog.author.username %}"> {{ searched_blog.author.name }} </a> </h6>
-                        <span class="ms-auto small"> {{ searched_blog.total_number_of_view }} views</span>
                         </div>
+                    </div>
+                    <div class="ms-md-auto d-flex">
+                        <span class="ms-auto small"> {{ searched_blog.likeforblog_set.all.count }}</span>
+                        <button type="button" style="border:none;background:none">
+                            <i class="bi bi-heart" style="color:#F73641"></i>
+                        </button>
                     </div>
                     </div>
                 </div>
@@ -178,8 +183,13 @@
                         <!-- Avatar name -->
                         <div>
                         <h6 class="mb-0 lh-1"> <a href="{% url 'dashboard:post_in_dashboard' newest_blog_post.author.username %}"> {{ newest_blog_post.author.name }} </a> </h6>
-                        <span class="ms-auto small"> {{ newest_blog_post.total_number_of_view }} views</span>
                         </div>
+                    </div>
+                    <div class="ms-md-auto d-flex">
+                        <span class="ms-auto small"> {{ newest_blog_post.likeforblog_set.all.count }}</span>
+                        <button type="button" style="border:none;background:none">
+                            <i class="bi bi-heart" style="color:#F73641"></i>
+                        </button>
                     </div>
                     </div>
                 </div>
@@ -310,8 +320,13 @@
                         <!-- Avatar name -->
                         <div>
                         <h6 class="mb-0 lh-1"> <a href="{% url 'dashboard:post_in_dashboard' most_viewed_post.author.username %}"> {{ most_viewed_post.author.name }} </a> </h6>
-                        <span class="ms-auto small"> {{ most_viewed_post.total_number_of_view }} views</span>
                         </div>
+                    </div>
+                    <div class="ms-md-auto d-flex">
+                        <span class="ms-auto small"> {{ most_viewed_post.likeforblog_set.all.count }}</span>
+                        <button type="button" style="border:none;background:none">
+                            <i class="bi bi-heart" style="color:#F73641"></i>
+                        </button>
                     </div>
                     </div>
                 </div>

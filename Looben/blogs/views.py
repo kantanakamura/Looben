@@ -34,6 +34,7 @@ class BlogListView(LoginRequiredMixin, View):
         number_of_followed_user = FollowForUser.objects.filter(followed_user=user).count()
         number_of_blog_post = Blog.objects.filter(author=user).count()
         newest_blog_posts = Blog.objects.order_by('-created_at')[:6]
+        most_viewed_posts = Blog.objects.order_by('-total_number_of_view')[:6]
         if 'search' in self.request.GET:
             keyword_query = request.GET.get('search')
             blogs = list(Blog.objects.all())
@@ -52,6 +53,7 @@ class BlogListView(LoginRequiredMixin, View):
             'number_of_followed_user': number_of_followed_user,
             'number_of_blog_post': number_of_blog_post,
             'newest_blog_posts': newest_blog_posts,
+            'most_viewed_posts': most_viewed_posts,
             'number_of_searched_blogs': number_of_searched_blogs,
             'user_searched_something': user_searched_something,
             'searched_blogs': searched_blogs,
@@ -65,6 +67,7 @@ class BlogDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.object.author
+        self.object.total_number_of_view += 1
         self.object.save()
         context['number_of_following_user'] = FollowForUser.objects.filter(user=user).count()
         context['number_of_followed_user'] = FollowForUser.objects.filter(followed_user=user).count()
