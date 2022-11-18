@@ -51,6 +51,17 @@
                 </div>
                 {{ create_blog_form.meta_description.errors }}
 
+                <div class="col-8">
+                  <label class="form-label">タグ</label>
+                  <div class="input-group">
+                    <div class="input-group-text">#</div>
+                    {{ create_blog_form.tag }} 
+                  </div>
+                  <small>タグを1つだけ作成できます</small>
+                </div>
+                {{ create_blog_form.tag.errors }}
+                
+
                 <!-- サムネイル -->
                 <div class="col-8">
                     <label class="form-label">サムネイル画像</label>

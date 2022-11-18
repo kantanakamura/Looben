@@ -30,9 +30,14 @@ class CreateBlogForm(forms.ModelForm):
         'type': 'file',
         'id': 'formFile',
         }))
+    tag = forms.CharField(label='タグ', widget=forms.TextInput(attrs={
+        'class': 'form-control', 
+        'placeholder': '', 
+        'id': '',
+        }))
     
     
     class Meta:
         model = Blog
-        fields = ['title', 'meta_description', 'content', 'top_image']
+        fields = ['title', 'meta_description', 'content', 'top_image', 'tag']
         
