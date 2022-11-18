@@ -13,7 +13,7 @@ class Blog(models.Model):
     created_at = models.DateField('作成日', auto_now_add=True)
     updated_at = models.DateField('更新日', auto_now=True)
     is_official = models.BooleanField(default=False)
-    total_number_of_view = models.IntegerField(default=0)
+    tag = models.CharField('タグ', max_length=25, null=True)
     author = models.ForeignKey(
         Users, on_delete=models.CASCADE
     )
