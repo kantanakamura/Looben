@@ -146,7 +146,7 @@
                   </div>
                   <div class="col-8">
                       <!-- Blog caption -->
-                      <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">Lifestyle</a>
+                      <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">#{{ blog_post.tag }}</a>
                       <h5><a href="{% url 'blogs:blog_detail' blog_post.id %}" class="btn-link stretched-link text-reset fw-bold">{{ blog_post.title }}</a></h5>
                       <div class="d-none d-sm-inline-block">
                       <p class="mb-2">{{ blog_post.meta_description }}</p>

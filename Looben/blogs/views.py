@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404 
+from django.db.models import Q
 
 from .forms import CreateBlogForm
 from .models import Blog, LikeForBlog
@@ -73,6 +74,8 @@ class BlogDetailView(DetailView):
         context['number_of_followed_user'] = FollowForUser.objects.filter(followed_user=user).count()
         context['number_of_blog_post'] = Blog.objects.filter(author=user).count()
         context['number_of_like_for_blog_post'] = self.object.likeforblog_set.count()
+        context['related_blog_posts'] = Blog.objects.filter(~Q(id=self.object.id), tag=self.object.tag).order_by('-total_number_of_view')[:4]
+        context['newest_blog_posts'] = Blog.objects.filter(~Q(id=self.object.id)).order_by('-created_at')[:4]
         if self.object.likeforblog_set.filter(user=self.request.user).exists():
                 context['is_user_liked_for_post'] = True
         else:
