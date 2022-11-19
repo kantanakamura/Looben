@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block head_content%}
+{% endblock %}
+
+
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+
+{% block content %}
+<!-- **************** MAIN CONTENT START **************** -->
+<main class="pt-5">
+
+    
+    <!-- Container START -->
+    <div class="py-5">
+        <div class="container">
+    
+        <div class="row g-4">
+            <div class="col-12">
+                <!-- Tab nav line START -->
+                <ul class="nav nav-tabs nav-tabs-white justify-content-center border-0">
+                <li class="nav-item"> <a class="nav-link active" data-bs-toggle="tab" href="#tab-1"> 最新記事 </a> </li>
+                <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-2"> 人気記事 </a> </li>
+                <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-3"> Looben公式記事 </a> </li>
+            </ul>
+            <!-- Tab nav line START -->
+            </div>
+        </div>
+        
+        <div class="tab-content mb-0 pb-0">
+            <div class="tab-pane fade show active" id="tab-1">
+            <div class="row g-4">
+                <div class="card">
+                    <div class="card-body">
+                        {% for blog_post_order_by_date in blog_posts_order_by_date %}
+                        <!-- Blog item START -->
+                        <div class="card bg-transparent border-0">
+                            <div class="row g-3">
+                            <div class="col-4">
+                                <!-- Blog image -->
+                                <img class="rounded" src="{{ blog_post_order_by_date.top_image.url }}" alt="looben_blog_top_image">
+                            </div>
+                            <div class="col-8">
+                                <!-- Blog caption -->
+                                <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">{{ blog_post_order_by_date.tag }}</a>
+                                <h5><a href="{% url 'blogs:blog_detail' blog_post_order_by_date.id %}" class="btn-link stretched-link text-reset fw-bold">{{ blog_post_order_by_date.title }}</a></h5>
+                                <div class="d-none d-sm-inline-block">
+                                <p class="mb-2">{{ blog_post_order_by_date.meta_description }}</p>
+                                <!-- BLog date -->
+                                <a class="small text-secondary" href="{% url 'blogs:blog_detail' blog_post_order_by_date.id %}"> <i class="bi bi-calendar-date pe-1"></i> {{ blog_post_order_by_date.created_at }}</a>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- Blog item END -->
+                        <hr class="my-4">
+                        {% empty %}
+                        <p>記事はまだありません。</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div> 
+            <!-- Row END -->
+            </div>
+    
+
+            <div class="tab-pane fade show active" id="tab-2">   
+            <div class="row g-4">
+                <div class="card">
+                    <div class="card-body">
+                        {% for blog_post_order_by_number_of_view in blog_posts_order_by_number_of_view %}
+                        <!-- Blog item START -->
+                        <div class="card bg-transparent border-0">
+                            <div class="row g-3">
+                            <div class="col-4">
+                                <!-- Blog image -->
+                                <img class="rounded" src="{{ blog_post_order_by_number_of_view.top_image.url }}" alt="looben_blog_top_image">
+                            </div>
+                            <div class="col-8">
+                                <!-- Blog caption -->
+                                <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">{{ blog_post_order_by_number_of_view.tag }}</a>
+                                <h5><a href="{% url 'blogs:blog_detail' blog_post_order_by_number_of_view.id %}" class="btn-link stretched-link text-reset fw-bold">{{ blog_post_order_by_number_of_view.title }}</a></h5>
+                                <div class="d-none d-sm-inline-block">
+                                <p class="mb-2">{{ blog_post_order_by_number_of_view.meta_description }}</p>
+                                <!-- BLog date -->
+                                <a class="small text-secondary" href="{% url 'blogs:blog_detail' blog_post_order_by_number_of_view.id %}"> <i class="bi bi-calendar-date pe-1"></i> {{ blog_post_order_by_number_of_view.created_at }}</a>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- Blog item END -->
+                        <hr class="my-4">
+                        {% empty %}
+                        <p>記事はまだありません。</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div> <!-- Row END -->
+            </div>
+
+
+            <div class="tab-pane fade show active" id="tab-3">   
+                <div class="row g-4">
+                    <div class="card">
+                        <div class="card-body">
+                            {% for official_blog_post in official_blog_post_lists %}
+                            <!-- Blog item START -->
+                            <div class="card bg-transparent border-0">
+                                <div class="row g-3">
+                                <div class="col-4">
+                                    <!-- Blog image -->
+                                    <img class="rounded" src="{{ official_blog_post.top_image.url }}" alt="looben_blog_top_image">
+                                </div>
+                                <div class="col-8">
+                                    <!-- Blog caption -->
+                                    <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">{{ official_blog_post.tag }}</a>
+                                    <h5><a href="{% url 'blogs:blog_detail' official_blog_post.id %}" class="btn-link stretched-link text-reset fw-bold">{{ official_blog_post.title }}</a></h5>
+                                    <div class="d-none d-sm-inline-block">
+                                    <p class="mb-2">{{ official_blog_post.meta_description }}</p>
+                                    <!-- BLog date -->
+                                    <a class="small text-secondary" href="{% url 'blogs:blog_detail' official_blog_post.id %}"> <i class="bi bi-calendar-date pe-1"></i> {{ official_blog_post.created_at }}</a>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            <!-- Blog item END -->
+                            <hr class="my-4">
+                            {% empty %}
+                            <p>Looben公式記事はまだありません。</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div> <!-- Row END -->
+            </div>
+    
+
+            
+        </div>
+        </div>
+    </div>
+    <!-- Container END -->
+
+</main>
+<!-- **************** MAIN CONTENT END **************** -->
+{% endblock %}

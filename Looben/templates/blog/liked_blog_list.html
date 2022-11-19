@@ -33,7 +33,7 @@
                         </div>
                         <div class="col-8">
                             <!-- Blog caption -->
-                            <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">Lifestyle</a>
+                            <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">{{ liked_post.target.top_image.url }}</a>
                             <h5><a href="{% url 'blogs:blog_detail' liked_post.target.id %}" class="btn-link stretched-link text-reset fw-bold">{{ liked_post.target.title }}</a></h5>
                             <div class="d-none d-sm-inline-block">
                             <p class="mb-2">{{ liked_post.target.meta_description }}</p>

@@ -111,3 +111,16 @@ class LikedBlogList(LoginRequiredMixin, ListView):
         request_user = get_object_or_404(Users, id=self.request.user.id)
         query = query.filter(user=request_user)
         return query
+    
+    
+class InOrderBlogList(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        blog_posts_order_by_date = Blog.objects.order_by('-created_at')[:20]
+        blog_posts_order_by_number_of_view = Blog.objects.order_by('-total_number_of_view')[:20]
+        official_blog_post_lists = Blog.objects.filter(is_official=True)[:20]
+        return render(request, 'blog/in_order_blog_post.html', {
+            'blog_posts_order_by_date': blog_posts_order_by_date,
+            'blog_posts_order_by_number_of_view': blog_posts_order_by_number_of_view,
+            'official_blog_post_lists': official_blog_post_lists
+            })
+    

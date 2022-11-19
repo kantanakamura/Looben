@@ -203,7 +203,7 @@
                 <div class="col-12 mt-4">
                 <div class="d-sm-flex justify-content-between align-items-center">
                     <h5 class="mb-md-0">オフィシャル記事 </h5>
-                    <a class="btn btn-sm btn-primary" href="#!">もっとみる</a>
+                    <a class="btn btn-sm btn-primary" href="{% url 'blogs:in_order_blog_list' %}">もっとみる</a>
                 </div>
                 </div>
                 <div class="col-sm-6 col-lg-4">
@@ -297,7 +297,7 @@
                 <div class="col-12 mt-4">
                 <div class="d-sm-flex justify-content-between align-items-center">
                     <h5 class="mb-md-0">人気記事 </h5>
-                    <a class="btn btn-sm btn-primary" href="#!">もっとみる</a>
+                    <a class="btn btn-sm btn-primary" href="{% url 'blogs:in_order_blog_list' %}">もっとみる</a>
                 </div>
                 </div>
                 {% for most_viewed_post in most_viewed_posts %}
