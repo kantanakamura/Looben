@@ -132,7 +132,12 @@
                         <!-- Tag -->
                         <a href="" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold" >#{{ object.tag }}</a>
                         <!-- Title info -->
-                        <h1 class="mb-2 h2">{{ object.title }}</h1>
+                        <h1 class="mb-2 h2">
+                            {{ object.title }}
+                            {% if user == object.author %}
+                            <a href="{% url 'blogs:edit_blog_post' object.id %}" class="nav-link"><button class="btn btn-info-soft me-2" type="button">編集</button></a>
+                            {% endif %}
+                        </h1>
                         
                         <div class="d-flex align-items-center justify-content-between" style="margin-bottom:5px;">
                             <div class="d-flex align-items-center">

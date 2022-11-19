@@ -2,13 +2,15 @@ from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
 from django.views.generic.base import View
 from django.views.generic.list import ListView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.edit import UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404 
 from django.db.models import Q
 
-from .forms import CreateBlogForm
+from .forms import CreateBlogForm, EditBlogPostForm
 from .models import Blog, LikeForBlog
 from accounts.models import FollowForUser, Users
 
@@ -25,6 +27,26 @@ def create_blog(request):
             'create_blog_form': create_blog_form
         }
     )
+    
+class CheckForUserMatchMixin(LoginRequiredMixin, UserPassesTestMixin):
+    
+    def test_func(self):
+        target_blog_post = get_object_or_404(Blog, pk=self.kwargs['pk'])
+        return self.request.user == target_blog_post.author
+        
+    def handle_no_permission(self):
+        return JsonResponse(
+            {'message': 'Only user who made this author have access to this view'}
+        )
+    
+
+class EditBlogPostView(CheckForUserMatchMixin, UpdateView):
+    template_name = 'blog/edit_blog_post.html'
+    form_class = EditBlogPostForm
+    model = Blog
+    
+    def get_success_url(self):
+        return reverse_lazy('blog:blog_detail', kwargs={'pk': self.object.id}) 
     
     
 class BlogListView(LoginRequiredMixin, View):
@@ -101,7 +123,7 @@ def like_for_post(request):
     return JsonResponse(context)
 
 
-class LikedBlogList(LoginRequiredMixin, ListView):
+class LikedBlogListView(LoginRequiredMixin, ListView):
     template_name = 'blog/liked_blog_list.html'
     model = LikeForBlog
     ordering = ['-timestamp']
@@ -113,7 +135,7 @@ class LikedBlogList(LoginRequiredMixin, ListView):
         return query
     
     
-class InOrderBlogList(LoginRequiredMixin, View):
+class InOrderBlogListView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         blog_posts_order_by_date = Blog.objects.order_by('-created_at')[:20]
         blog_posts_order_by_number_of_view = Blog.objects.order_by('-total_number_of_view')[:20]
