@@ -9,6 +9,7 @@ from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404 
 from django.db.models import Q
+from django.core.cache import cache
 
 from .forms import CreateBlogForm, EditBlogPostForm
 from .models import Blog, LikeForBlog
@@ -17,10 +18,20 @@ from accounts.models import FollowForUser, Users
 
 @login_required
 def create_blog(request):
-    create_blog_form = CreateBlogForm(request.POST or None, files=request.FILES)
+    saved_title = cache.get(f'saved_title-user_id={request.user.id}', '')
+    saved_meta_description = cache.get(f'saved_meta_description-user_id={request.user.id}', '')
+    saved_tag = cache.get(f'saved_tag-user_id={request.user.id}', '')
+    saved_content = cache.get(f'saved_content-user_id={request.user.id}', '')
+    saved_top_image = cache.get(f'saved_top_image-user_id={request.user.id}', '')
+    create_blog_form = CreateBlogForm(request.POST or None, files=request.FILES, initial={'title': saved_title, 'meta_description': saved_meta_description, 'tag': saved_tag, 'content': saved_content, 'top_image': saved_top_image})
     if create_blog_form.is_valid():
         create_blog_form.instance.author = request.user
         create_blog_form.save()
+        cache.delete(f'saved_title-user_id={request.user.id}')
+        cache.delete(f'saved_meta_description-user_id={request.user.id}')
+        cache.delete(f'saved_tag-user_id={request.user.id}')
+        cache.delete(f'saved_content-user_id={request.user.id}')
+        cache.delete(f'saved_top_image-user_id={request.user.id}')
         return redirect('blogs:blog_list')
     return render(
         request, 'blog/create_blog.html', context={
@@ -46,7 +57,7 @@ class EditBlogPostView(CheckForUserMatchMixin, UpdateView):
     model = Blog
     
     def get_success_url(self):
-        return reverse_lazy('blog:blog_detail', kwargs={'pk': self.object.id}) 
+        return reverse_lazy('blogs:blog_detail', kwargs={'pk': self.object.id}) 
     
     
 class BlogListView(LoginRequiredMixin, View):
@@ -146,3 +157,18 @@ class InOrderBlogListView(LoginRequiredMixin, View):
             'official_blog_post_lists': official_blog_post_lists
             })
     
+    
+def save_post(request):
+    if request.is_ajax:
+        title = request.GET.get('title')
+        meta_description = request.GET.get('meta_description')
+        tag = request.GET.get('tag')
+        content = request.GET.get('content')
+        top_image = request.GET.get('top_image')
+        if title or meta_description or tag or content or top_image:
+            cache.set(f'saved_title-user_id={request.user.id}', title)
+            cache.set(f'saved_meta_description-user_id={request.user.id}', meta_description)
+            cache.set(f'saved_tag-user_id={request.user.id}', tag)
+            cache.set(f'saved_content-user_id={request.user.id}', content)
+            cache.set(f'saved_top_image-user_id={request.user.id}', top_image)
+            return JsonResponse({'message': '一時保存しました。'})

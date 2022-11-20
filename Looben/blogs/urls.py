@@ -11,4 +11,5 @@ urlpatterns = [
     path('liked_blog_list/', views.LikedBlogListView.as_view(), name='liked_blog_list'), 
     path('in_order_blog_list/', views.InOrderBlogListView.as_view(), name='in_order_blog_list'), 
     path('edit_blog_post/<int:pk>', views.EditBlogPostView.as_view(), name='edit_blog_post'), 
+    path('save_post/', views.save_post, name='save_post'), 
 ]
