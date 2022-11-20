@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block head_content%}
+{% endblock %}
+
+
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+
+{% block content %}
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+    <!-- Container START -->
+    <div class="container">
+        <div class="row">
+            <!-- Comments START -->
+            <div class="card">
+                <div class="card-header pb-0 border-0">
+                    <h4>いいねした記事</h4>
+                </div>
+                <div class="card-body">
+                    {% for liked_post in object_list %}
+                    <!-- Blog item START -->
+                    <div class="card bg-transparent border-0">
+                        <div class="row g-3">
+                        <div class="col-4">
+                            <!-- Blog image -->
+                            <img class="rounded" src="{{ liked_post.target.top_image.url }}" alt="looben_blog_top_image">
+                        </div>
+                        <div class="col-8">
+                            <!-- Blog caption -->
+                            <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">{{ liked_post.target.tag }}</a>
+                            <h5><a href="{% url 'blogs:blog_detail' liked_post.target.id %}" class="btn-link stretched-link text-reset fw-bold">{{ liked_post.target.title }}</a></h5>
+                            <div class="d-none d-sm-inline-block">
+                            <p class="mb-2">{{ liked_post.target.meta_description }}</p>
+                            <!-- BLog date -->
+                            <a class="small text-secondary" href="{% url 'blogs:blog_detail' liked_post.target.id %}"> <i class="bi bi-calendar-date pe-1"></i> {{ liked_post.target.created_at }}</a>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <!-- Blog item END -->
+                    <hr class="my-4">
+                    {% empty %}
+                    <p>いいねした記事がまだありません。</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- Blog single END --> 
+    
+        </div> <!-- Row END -->
+    </div>
+    <!-- Container END --> 
+</main>
+<!-- **************** MAIN CONTENT END **************** -->
+{% endblock %}

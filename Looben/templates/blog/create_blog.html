@@ -4,6 +4,7 @@
 
 {% block head_content%}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
 {% endblock %}
 
 
@@ -43,6 +44,25 @@
                 </div>
                 {{ create_blog_form.title.errors }}
 
+                
+                <div class="col-8">
+                  <label class="form-label">メタデスクリプション</label>
+                  {{ create_blog_form.meta_description }}
+                  <small>ブログ記事の概要を150字以内で説明しよう</small>
+                </div>
+                {{ create_blog_form.meta_description.errors }}
+
+                <div class="col-8">
+                  <label class="form-label">タグ</label>
+                  <div class="input-group">
+                    <div class="input-group-text">#</div>
+                    {{ create_blog_form.tag }} 
+                  </div>
+                  <small>タグを1つだけ作成できます</small>
+                </div>
+                {{ create_blog_form.tag.errors }}
+                
+
                 <!-- サムネイル -->
                 <div class="col-8">
                     <label class="form-label">サムネイル画像</label>
@@ -62,6 +82,9 @@
 
                 <!-- Button  -->
                 <div class="col-12 text-end">
+                  <button type="button" class="btn btn-info mb-0" id="save_post">一時保存</button>
+                </div>
+                <div class="col-12 text-end">
                   <button type="submit" class="btn btn-primary mb-0">ブログ記事を公開</button>
                 </div>
               </form>
@@ -80,8 +103,31 @@
 
 {% block javascript %}
 <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+
 <script>
     var simplemde = new SimpleMDE();
     document.getElementById('id_content').removeAttribute('required');
 </script>
+
+<script>
+  $.("#save_post").click(function(){
+    var title = $("#title").val();
+    var meta_description = $("#meta_description").val();
+    var tag = $("#tag").val();
+    var content = $("#content").val();
+    var top_image = $("#formFile").val();
+    $.ajax({
+      url: "{% url 'blogs:save_post' %}",
+      type: "GET",
+      data: {title: title, meta_description: meta_description, tag: tag, content: content, top_image: top_image},
+      dataType: "json",
+      success: function(json){
+        if(json.message){
+          alert(json.message);
+        }
+      }
+    });
+  });
+</script>
+
 {% endblock %}

@@ -58,7 +58,7 @@
       </div>
 
       {% if user_searched_anything %}
-      <div class="tab-content mb-0 pb-0">
+      <div class="tab-content mb-0 pb-0 text-center">
         <!-- 検索された大学 START -->
         <div class="tab-pane fade show active">
           <div class="row g-4">
@@ -118,7 +118,7 @@
       
       <div class="tab-content mb-0 pb-0">
         <!-- 評価の高い大学 tab START -->
-        <div class="tab-pane fade show active" id="tab-1">
+        <div class="tab-pane fade show active text-center" id="tab-1">
           <div class="row g-4">
             {% for high_rated_university in high_rated_universities %}
             <!-- Main content START -->
@@ -175,7 +175,7 @@
   
 
         <!-- 国立 tab START -->
-        <div class="tab-pane fade" id="tab-2">
+        <div class="tab-pane fade text-center" id="tab-2">
             
           <div class="row g-4">
             {% for national_university in national_universities %}
@@ -232,7 +232,7 @@
   
 
         <!-- 私立 tab START -->
-        <div class="tab-pane fade" id="tab-3">
+        <div class="tab-pane fade text-center" id="tab-3">
             
             <div class="row g-4">
               {% for non_national_university in non_national_universities %}
@@ -289,7 +289,7 @@
   
 
         <!-- 北部 tab START -->
-        <div class="tab-pane fade" id="tab-4">
+        <div class="tab-pane fade text-center" id="tab-4">
             
             <div class="row g-4">
               {% for north_university in north_universities %}
@@ -345,7 +345,7 @@
         <!-- 北部 tab END -->
   
         <!-- 中部 tab START -->
-        <div class="tab-pane fade" id="tab-5">
+        <div class="tab-pane fade text-center" id="tab-5">
             
             <div class="row g-4">
               {% for middle_university in middle_universities %}
@@ -401,7 +401,7 @@
         <!-- 中部 tab END -->
   
         <!-- 東部 tab START -->
-        <div class="tab-pane fade" id="tab-6">
+        <div class="tab-pane fade text-center" id="tab-6">
             
             <div class="row g-4">
               {% for east_university in east_universities %}
@@ -457,7 +457,7 @@
         <!-- 東部 tab END -->
 
         <!-- 南部 tab START -->
-        <div class="tab-pane fade" id="tab-7">
+        <div class="tab-pane fade text-center" id="tab-7">
             
             <div class="row g-4">
               {% for south_university in south_universities %}

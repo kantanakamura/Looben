@@ -20,104 +20,103 @@
     <div class="container">
         <div class="row g-4">
 
-        <!-- Sidenav START -->
-        <div class="col-lg-3">
-            <!-- Advanced filter responsive toggler START -->
-            <div class="d-flex align-items-center d-lg-none">
-                <button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
-                <i class="btn btn-primary fw-bold fa-solid fa-sliders-h"></i>
-                <span class="h6 mb-0 fw-bold d-lg-none ms-2">著者プロフィール</span>
-                </button>
-            </div>
-            <!-- Advanced filter responsive toggler END -->
-            
-            <!-- Navbar START-->
-            <nav class="navbar navbar-expand-lg mx-0"> 
-                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSideNavbar">
-                <!-- Offcanvas header -->
-                <div class="offcanvas-header">
-                    <button type="button" class="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <!-- Sidenav START -->
+            <div class="col-lg-3">
+                <!-- Advanced filter responsive toggler START -->
+                <div class="d-flex align-items-center d-lg-none">
+                    <button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
+                    <i class="btn btn-primary fw-bold fa-solid fa-sliders-h"></i>
+                    <span class="h6 mb-0 fw-bold d-lg-none ms-2">著者プロフィール</span>
+                    </button>
                 </div>
-    
-                <!-- Offcanvas body -->
-                <div class="offcanvas-body d-block px-2 px-lg-0">
-                    <!-- Card START -->
-                    <div class="card overflow-hidden">
-                    <!-- Cover image -->
-                    <div class="h-50px" style="background-image:url({% static 'images/bg/create_review.jpg' %}); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
-                        <!-- Card body START -->
-                        <div class="card-body pt-0">
-                        <div class="text-center">
-                        <!-- Avatar -->
-                        <div class="avatar avatar-lg mt-n5 mb-3">
-                            <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}"><img class="avatar-img rounded border border-white border-3" src="{{ object.author.picture.url }}" alt="{{ object.author.username }}"></a>
-                        </div>
-                        <!-- Info -->
-                        <h5 class="mb-0"> <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}">{{ object.author.name }} </a> </h5>
-                        <p>{{ object.author.university }}</p>
-                        <p>{{ object.author.major }}</p>
-                        <p>{{ object.author.description }}</p>
-                        <div class="hstack gap-2 gap-xl-3 mt-3">
-                            <!-- User stat item -->
-                            <div>
-                            <h6 class="mb-0">{{ number_of_blog_post }}</h6>
-                            <small>Post</small>
+                <!-- Advanced filter responsive toggler END -->
+                
+                <!-- Navbar START-->
+                <nav class="navbar navbar-expand-lg mx-0"> 
+                    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSideNavbar">
+                    <!-- Offcanvas header -->
+                    <div class="offcanvas-header">
+                        <button type="button" class="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+        
+                    <!-- Offcanvas body -->
+                    <div class="offcanvas-body d-block px-2 px-lg-0">
+                        <!-- Card START -->
+                        <div class="card overflow-hidden">
+                        <!-- Cover image -->
+                        <div class="h-50px" style="background-image:url({% static 'images/bg/create_review.jpg' %}); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+                            <!-- Card body START -->
+                            <div class="card-body pt-0">
+                            <div class="text-center">
+                            <!-- Avatar -->
+                            <div class="avatar avatar-lg mt-n5 mb-3">
+                                <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}"><img class="avatar-img rounded border border-white border-3" src="{{ object.author.picture.url }}" alt="{{ object.author.username }}"></a>
+                            </div>
+                            <!-- Info -->
+                            <h5 class="mb-0"> <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}">{{ object.author.name }} </a> </h5>
+                            <p>{{ object.author.school }} / {{ object.author.major }}</p>
+                            <p>{{ object.author.description }}</p>
+                            <div class="hstack gap-2 gap-xl-3 mt-3">
+                                <!-- User stat item -->
+                                <div>
+                                <h6 class="mb-0">{{ number_of_blog_post }}</h6>
+                                <small>Post</small>
+                                </div>
+                                <!-- Divider -->
+                                <div class="vr"></div>
+                                <!-- User stat item -->
+                                <div>
+                                <h6 class="mb-0">{{ number_of_followed_user }}</h6>
+                                <small>Followers</small>
+                                </div>
+                                <!-- Divider -->
+                                <div class="vr"></div>
+                                <!-- User stat item -->
+                                <div>
+                                <h6 class="mb-0">{{ number_of_following_user }}</h6>
+                                <small>Following</small>
+                                </div>
+                            </div>
                             </div>
                             <!-- Divider -->
-                            <div class="vr"></div>
-                            <!-- User stat item -->
-                            <div>
-                            <h6 class="mb-0">{{ number_of_followed_user }}</h6>
-                            <small>Followers</small>
-                            </div>
-                            <!-- Divider -->
-                            <div class="vr"></div>
-                            <!-- User stat item -->
-                            <div>
-                            <h6 class="mb-0">{{ number_of_following_user }}</h6>
-                            <small>Following</small>
-                            </div>
+                            <hr>
+        
+                            <!-- Side Nav START -->
+                            <ul class="nav nav-link-secondary flex-column fw-bold gap-2 text-center">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'dashboard:post_in_dashboard' object.author.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/certificate-outline-filled.svg' %}" alt="blog"><span>ブログ記事 </span></a>
+                                </li>
+                                {% if object.author.state == '現役台湾留学生' or object.author.state == '台湾留学卒業生' %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'dashboard:review_in_dashboard' object.author.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/clipboard-list-outline-filled.svg' %}" alt="review"><span>口コミ </span></a>
+                                </li>                    
+                                {% endif %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'dashboard:question_in_dashboard' object.author.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bulb-curvy-outline-filled.svg' %}" alt="question"><span>質問 </span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'dashboard:following_in_dashboard' object.author.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-outline-filled.svg' %}" alt="following"><span>フォロー中 </span></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{% url 'dashboard:followed_in_dashboard' object.author.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-girl-outline-filled.svg' %}" alt="followd"><span>フォロワー </span></a>
+                                </li>
+                            </ul>
+                            <!-- Side Nav END -->
+                        </div>
+                        <!-- Card body END -->
+                        <!-- Card footer -->
+                        <div class="card-footer text-center py-2">
+                            <a class="btn btn-link btn-sm" href="{% url 'dashboard:post_in_dashboard' object.author.username %}">プロフィールを見る </a>
                         </div>
                         </div>
-                        <!-- Divider -->
-                        <hr>
-    
-                        <!-- Side Nav START -->
-                        <ul class="nav nav-link-secondary flex-column fw-bold gap-2 text-center">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'dashboard:post_in_dashboard' object.author.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/certificate-outline-filled.svg' %}" alt="blog"><span>ブログ記事 </span></a>
-                            </li>
-                            {% if object.author.state == '現役台湾留学生' or object.author.state == '台湾留学卒業生' %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'dashboard:review_in_dashboard' object.author.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/clipboard-list-outline-filled.svg' %}" alt="review"><span>口コミ </span></a>
-                            </li>                    
-                            {% endif %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'dashboard:question_in_dashboard' object.author.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bulb-curvy-outline-filled.svg' %}" alt="question"><span>質問 </span></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'dashboard:following_in_dashboard' object.author.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-outline-filled.svg' %}" alt="following"><span>フォロー中 </span></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'dashboard:followed_in_dashboard' object.author.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-girl-outline-filled.svg' %}" alt="followd"><span>フォロワー </span></a>
-                            </li>
-                        </ul>
-                        <!-- Side Nav END -->
-                    </div>
-                    <!-- Card body END -->
-                    <!-- Card footer -->
-                    <div class="card-footer text-center py-2">
-                        <a class="btn btn-link btn-sm" href="{% url 'dashboard:post_in_dashboard' object.author.username %}">プロフィールを見る </a>
-                    </div>
-                    </div>
-                    <!-- Card END -->
+                        <!-- Card END -->
 
-                    <!-- Copyright -->
-                    <p class="small text-center mt-1">©2022 <a class="text-body" target="_blank" href=""> Looben </a></p>
-                </div>
-                </div>
-            </nav>
-            <!-- Navbar END-->
+                        <!-- Copyright -->
+                        <p class="small text-center mt-1">©2022 <a class="text-body" target="_blank" href=""> Looben </a></p>
+                    </div>
+                    </div>
+                </nav>
+                <!-- Navbar END-->
             </div>
             <!-- Sidenav END -->
     
@@ -131,9 +130,14 @@
                     <img class="rounded" src="{{ object.top_image.url }}" alt="looben">
                     <div class="mt-4">
                         <!-- Tag -->
-                        <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">Lifestyle</a>
+                        <a href="" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold" >#{{ object.tag }}</a>
                         <!-- Title info -->
-                        <h1 class="mb-2 h2">{{ object.title }}</h1>
+                        <h1 class="mb-2 h2">
+                            {{ object.title }}
+                            {% if user == object.author %}
+                            <a href="{% url 'blogs:edit_blog_post' object.id %}" class="nav-link"><button class="btn btn-info-soft me-2" type="button">編集</button></a>
+                            {% endif %}
+                        </h1>
                         
                         <div class="d-flex align-items-center justify-content-between" style="margin-bottom:5px;">
                             <div class="d-flex align-items-center">
@@ -199,89 +203,53 @@
                     <h4>関連記事</h4>
                 </div>
                 <div class="card-body">
+                    {% for related_blog_post in related_blog_posts %}
                     <!-- Blog item START -->
                     <div class="card bg-transparent border-0">
                         <div class="row g-3">
                         <div class="col-4">
                             <!-- Blog image -->
-                            <img class="rounded" src="assets/images/post/4by3/03.jpg" alt="">
+                            <img class="rounded" src="{{ related_blog_post.top_image.url }}" alt="blog_top_image">
                         </div>
                         <div class="col-8">
                             <!-- Blog caption -->
-                            <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">Lifestyle</a>
-                            <h5><a href="blog-details.html" class="btn-link stretched-link text-reset fw-bold">Social guides the way in 2022 app performance report</a></h5>
+                            <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">{{ related_blog_post.tag }}</a>
+                            <h5><a href="{% url 'blogs:blog_detail' related_blog_post.id %}" class="btn-link stretched-link text-reset fw-bold">{{ related_blog_post.title }}</a></h5>
                             <div class="d-none d-sm-inline-block">
-                            <p class="mb-2">Speedily say has suitable disposal add boy. On forth doubt miles of child. Exercise joy man children rejoiced.</p>
+                            <p class="mb-2">{{ related_blog_post.meta_description }}</p>
                             <!-- BLog date -->
-                            <a class="small text-secondary" href="#!"> <i class="bi bi-calendar-date pe-1"></i> Jan 22, 2022</a>
+                            <a class="small text-secondary" href="{% url 'blogs:blog_detail' related_blog_post.id %}"> <i class="bi bi-calendar-date pe-1"></i>{{ related_blog_post.created_at }}</a>
                             </div>
                         </div>
                         </div>
                     </div>
                     <!-- Blog item END -->
                     <hr class="my-4">
+                    {% empty %}
+                    {% for newest_blog_post in newest_blog_posts %}
                     <!-- Blog item START -->
                     <div class="card bg-transparent border-0">
                         <div class="row g-3">
                         <div class="col-4">
                             <!-- Blog image -->
-                            <img class="rounded" src="assets/images/post/4by3/03.jpg" alt="">
+                            <img class="rounded" src="{{ newest_blog_post.top_image.url }}" alt="blog_top_image">
                         </div>
                         <div class="col-8">
                             <!-- Blog caption -->
-                            <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">Lifestyle</a>
-                            <h5><a href="blog-details.html" class="btn-link stretched-link text-reset fw-bold">Social guides the way in 2022 app performance report</a></h5>
+                            <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">{{ newest_blog_post.tag }}</a>
+                            <h5><a href="{% url 'blogs:blog_detail' newest_blog_post.id %}" class="btn-link stretched-link text-reset fw-bold">{{ newest_blog_post.title }}</a></h5>
                             <div class="d-none d-sm-inline-block">
-                            <p class="mb-2">Speedily say has suitable disposal add boy. On forth doubt miles of child. Exercise joy man children rejoiced.</p>
+                            <p class="mb-2">{{ newest_blog_post.meta_description }}</p>
                             <!-- BLog date -->
-                            <a class="small text-secondary" href="#!"> <i class="bi bi-calendar-date pe-1"></i> Jan 22, 2022</a>
+                            <a class="small text-secondary" href="{% url 'blogs:blog_detail' newest_blog_post.id %}"> <i class="bi bi-calendar-date pe-1"></i>{{ newest_blog_post.created_at }}</a>
                             </div>
                         </div>
                         </div>
                     </div>
                     <!-- Blog item END -->
                     <hr class="my-4">
-                    <!-- Blog item START -->
-                    <div class="card bg-transparent border-0">
-                        <div class="row g-3">
-                        <div class="col-4">
-                            <!-- Blog image -->
-                            <img class="rounded" src="assets/images/post/4by3/03.jpg" alt="">
-                        </div>
-                        <div class="col-8">
-                            <!-- Blog caption -->
-                            <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">Lifestyle</a>
-                            <h5><a href="blog-details.html" class="btn-link stretched-link text-reset fw-bold">Social guides the way in 2022 app performance report</a></h5>
-                            <div class="d-none d-sm-inline-block">
-                            <p class="mb-2">Speedily say has suitable disposal add boy. On forth doubt miles of child. Exercise joy man children rejoiced.</p>
-                            <!-- BLog date -->
-                            <a class="small text-secondary" href="#!"> <i class="bi bi-calendar-date pe-1"></i> Jan 22, 2022</a>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                    <!-- Blog item END -->
-                    <hr class="my-4">
-                    <!-- Blog item START -->
-                    <div class="card bg-transparent border-0">
-                        <div class="row g-3">
-                        <div class="col-4">
-                            <!-- Blog image -->
-                            <img class="rounded" src="assets/images/post/4by3/03.jpg" alt="">
-                        </div>
-                        <div class="col-8">
-                            <!-- Blog caption -->
-                            <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">Lifestyle</a>
-                            <h5><a href="blog-details.html" class="btn-link stretched-link text-reset fw-bold">Social guides the way in 2022 app performance report</a></h5>
-                            <div class="d-none d-sm-inline-block">
-                            <p class="mb-2">Speedily say has suitable disposal add boy. On forth doubt miles of child. Exercise joy man children rejoiced.</p>
-                            <!-- BLog date -->
-                            <a class="small text-secondary" href="#!"> <i class="bi bi-calendar-date pe-1"></i> Jan 22, 2022</a>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                    <!-- Blog item END -->
+                    {% endfor %}
+                    {% endfor %}
                 </div>
             </div>
             <!-- Blog single END -->

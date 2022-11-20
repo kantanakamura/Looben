@@ -18,83 +18,83 @@
     <div class="container">
         <div class="row g-4">
 
-        <!-- Sidenav START -->
-        <div class="col-lg-3">
-            <!-- Advanced filter responsive toggler START -->
-            <div class="d-flex align-items-center d-lg-none">
-                <button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
-                <i class="btn btn-primary fw-bold fa-solid fa-sliders-h"></i>
-                <span class="h6 mb-0 fw-bold d-lg-none ms-2">{{ object.name }}</span>
-                </button>
-            </div>
-            <!-- Advanced filter responsive toggler END -->
-            
-            <!-- Navbar START-->
-            <nav class="navbar navbar-expand-lg mx-0"> 
-                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSideNavbar">
-                <!-- Offcanvas header -->
-                <div class="offcanvas-header">
-                    <button type="button" class="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <!-- Sidenav START -->
+            <div class="col-lg-3">
+                <!-- Advanced filter responsive toggler START -->
+                <div class="d-flex align-items-center d-lg-none">
+                    <button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
+                    <i class="btn btn-primary fw-bold fa-solid fa-sliders-h"></i>
+                    <span class="h6 mb-0 fw-bold d-lg-none ms-2">{{ object.name }}</span>
+                    </button>
                 </div>
-    
-                <!-- Offcanvas body -->
-                <div class="offcanvas-body d-block px-2 px-lg-0">
-                    <!-- Card START -->
-                    <div class="card overflow-hidden">
-                    <!-- Cover image -->
-                    <div class="h-50px" style="background-image:url({% static 'images/bg/create_review.jpg' %}); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
-                        <!-- Card body START -->
-                        <div class="card-body pt-0">
-                        <div class="text-center">
-                        <!-- Avatar -->
-                        <div class="avatar avatar-lg mt-n5 mb-3">
-                            <a href="#!"><img class="avatar-img rounded border border-white border-3" src="{% static 'images/Yuan_Ze_University_Logo.png' %}" alt="{{ object.name }}"></a>
+                <!-- Advanced filter responsive toggler END -->
+                
+                <!-- Navbar START-->
+                <nav class="navbar navbar-expand-lg mx-0"> 
+                    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSideNavbar">
+                    <!-- Offcanvas header -->
+                    <div class="offcanvas-header">
+                        <button type="button" class="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+        
+                    <!-- Offcanvas body -->
+                    <div class="offcanvas-body d-block px-2 px-lg-0">
+                        <!-- Card START -->
+                        <div class="card overflow-hidden">
+                        <!-- Cover image -->
+                        <div class="h-50px" style="background-image:url({% static 'images/bg/create_review.jpg' %}); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+                            <!-- Card body START -->
+                            <div class="card-body pt-0">
+                            <div class="text-center">
+                            <!-- Avatar -->
+                            <div class="avatar avatar-lg mt-n5 mb-3">
+                                <a href="#!"><img class="avatar-img rounded border border-white border-3" src="{% static 'images/Yuan_Ze_University_Logo.png' %}" alt="{{ object.name }}"></a>
+                            </div>
+                            <!-- Info -->
+                            <h5 class="mb-0"> <a href="{% url 'accounts:university_detail' object.id %}">{{ object.name }} </a> </h5>
+                            <p>{{ object.sub_title }}</p>
+                            {% with range=''|center:5 %}
+                            {% for _ in range %}
+                                {% if forloop.counter <= object.star_rating %}
+                                <i class="fas fa-star" style="color:#F7E36C;"></i>
+                                {% else %}
+                                <i class="fas fa-star" style="color:#D8DDEA;"></i>
+                                {% endif %}
+                            {% endfor %}
+                            <span style="color:#FF1474;"><strong>{{ object.star_rating }}.0</strong></span>
+                            {% endwith %}
+                            </div>
+                            <!-- Divider -->
+                            <hr>
+        
+                            <!-- Side Nav START -->
+                            <ul class="nav nav-link-secondary flex-column fw-bold gap-2 text-center">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'accounts:students_by_university' object.id %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-outline-filled.svg'%}" alt="student"><span>在校生 </span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'questions:list_of_questions_for_each_university' object.id %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/search-outline-filled.svg'%}" alt="question"><span>質問 </span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'reviews:review_list_of_universities' object.id %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/clipboard-outline-filled.svg'%}" alt="review"><span>口コミ </span></a>
+                            </li>
+                            </ul>
+                            <!-- Side Nav END -->
                         </div>
-                        <!-- Info -->
-                        <h5 class="mb-0"> <a href="{% url 'accounts:university_detail' object.id %}">{{ object.name }} </a> </h5>
-                        <p>{{ object.sub_title }}</p>
-                        {% with range=''|center:5 %}
-                        {% for _ in range %}
-                            {% if forloop.counter <= object.star_rating %}
-                            <i class="fas fa-star" style="color:#F7E36C;"></i>
-                            {% else %}
-                            <i class="fas fa-star" style="color:#D8DDEA;"></i>
-                            {% endif %}
-                        {% endfor %}
-                        <span style="color:#FF1474;"><strong>{{ object.star_rating }}.0</strong></span>
-                        {% endwith %}
+                        <!-- Card body END -->
+                        <!-- Card footer -->
+                        <div class="card-footer text-center py-2">
+                            <a class="btn btn-link btn-sm" href="{% url 'accounts:university_detail' object.id %}">大学詳細ページに戻る </a>
                         </div>
-                        <!-- Divider -->
-                        <hr>
-    
-                        <!-- Side Nav START -->
-                        <ul class="nav nav-link-secondary flex-column fw-bold gap-2 text-center">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'accounts:students_by_university' object.id %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-outline-filled.svg'%}" alt="student"><span>在校生 </span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'questions:list_of_questions_for_each_university' object.id %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/search-outline-filled.svg'%}" alt="question"><span>質問 </span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'reviews:review_list_of_universities' object.id %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/clipboard-outline-filled.svg'%}" alt="review"><span>口コミ </span></a>
-                        </li>
-                        </ul>
-                        <!-- Side Nav END -->
-                    </div>
-                    <!-- Card body END -->
-                    <!-- Card footer -->
-                    <div class="card-footer text-center py-2">
-                        <a class="btn btn-link btn-sm" href="{% url 'accounts:university_detail' object.id %}">大学詳細ページに戻る </a>
-                    </div>
-                    </div>
-                    <!-- Card END -->
+                        </div>
+                        <!-- Card END -->
 
-                    <!-- Copyright -->
-                    <p class="small text-center mt-1">©2022 <a class="text-body" target="_blank" href=""> Looben </a></p>
-                </div>
-                </div>
-            </nav>
-            <!-- Navbar END-->
+                        <!-- Copyright -->
+                        <p class="small text-center mt-1">©2022 <a class="text-body" target="_blank" href=""> Looben </a></p>
+                    </div>
+                    </div>
+                </nav>
+                <!-- Navbar END-->
             </div>
             <!-- Sidenav END -->
     

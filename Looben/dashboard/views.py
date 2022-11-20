@@ -1,9 +1,4 @@
-from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
-from django.views.generic.base import TemplateView, View
-from django.views.generic.edit import CreateView, FormView, UpdateView
-from django.views.generic.list import ListView
-from django.urls import reverse
 
 from accounts.models import Users, FollowForUser
 from blogs.models import Blog

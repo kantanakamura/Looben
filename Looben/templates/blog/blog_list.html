@@ -56,6 +56,9 @@
                 <!-- Side Nav START -->
                 <ul class="nav nav-link-secondary flex-column fw-bold gap-2">
                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'blogs:liked_blog_list' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/heart-outline-filled.svg' %}" alt="blog"><span>いいねした記事 </span></a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'dashboard:post_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/certificate-outline-filled.svg' %}" alt="blog"><span>ブログ記事 </span></a>
                     </li>
                     {% if user.state == '現役台湾留学生' or user.state == '台湾留学卒業生' %}
@@ -138,8 +141,13 @@
                         <!-- Avatar name -->
                         <div>
                         <h6 class="mb-0 lh-1"> <a href="{% url 'dashboard:post_in_dashboard' searched_blog.author.username %}"> {{ searched_blog.author.name }} </a> </h6>
-                        <span class="ms-auto small"> {{ searched_blog.total_number_of_view }} views</span>
                         </div>
+                    </div>
+                    <div class="ms-md-auto d-flex">
+                        <span class="ms-auto small"> {{ searched_blog.likeforblog_set.all.count }}</span>
+                        <button type="button" style="border:none;background:none">
+                            <i class="bi bi-heart" style="color:#F73641"></i>
+                        </button>
                     </div>
                     </div>
                 </div>
@@ -175,8 +183,13 @@
                         <!-- Avatar name -->
                         <div>
                         <h6 class="mb-0 lh-1"> <a href="{% url 'dashboard:post_in_dashboard' newest_blog_post.author.username %}"> {{ newest_blog_post.author.name }} </a> </h6>
-                        <span class="ms-auto small"> {{ newest_blog_post.total_number_of_view }} views</span>
                         </div>
+                    </div>
+                    <div class="ms-md-auto d-flex">
+                        <span class="ms-auto small"> {{ newest_blog_post.likeforblog_set.all.count }}</span>
+                        <button type="button" style="border:none;background:none">
+                            <i class="bi bi-heart" style="color:#F73641"></i>
+                        </button>
                     </div>
                     </div>
                 </div>
@@ -190,37 +203,31 @@
                 <div class="col-12 mt-4">
                 <div class="d-sm-flex justify-content-between align-items-center">
                     <h5 class="mb-md-0">オフィシャル記事 </h5>
-                    <a class="btn btn-sm btn-primary" href="#!">もっとみる</a>
+                    <a class="btn btn-sm btn-primary" href="{% url 'blogs:in_order_blog_list' %}">もっとみる</a>
                 </div>
                 </div>
                 <div class="col-sm-6 col-lg-4">
                 <!-- Video START -->
-                <div class="card position-relative h-100">
+                <div class="card h-100">
                     <!-- Video image -->
                     <div class="card-image">
-                    <div class="overflow-hidden fullscreen-video w-100">
-                        <!-- HTML video START -->
-                        <div class="player-wrapper card-img-top overflow-hidden">
-                        <video class="player-html" controls crossorigin="anonymous" poster="assets/images/videos/poster.jpg">
-                            <source src="assets/images/videos/video-feed.mp4" type="video/mp4">
-                        </video>
-                        </div>
-                        <!-- HTML video END -->
+                    <div class="ratio ratio-16x9 card-img-top overflow-hidden">
+                        <iframe src="https://www.youtube.com/embed/8Sl_Igf3lnw" title="YouTube video" allowfullscreen></iframe>
                     </div>
                     </div>
                     <!-- Video info -->
                     <div class="card-body position-relative">
                     <!-- Video title  -->
-                    <h6> <a class="stretched-link" href="video-details.html"> New movie trailers (2021 - 2022) September </a> </h6>
-                    <div class="d-flex mt-3">
+                    <h6> <a class="stretched-link" href="video-details.html"> 15 useful apps for android smartphones users </a> </h6>
+                    <div class="d-flex mt-2">
                         <!-- Avatar -->
                         <div class="avatar avatar-xxs me-2">
-                        <img class="avatar-img rounded-circle" src="assets/images/avatar/01.jpg" alt="">
+                        <img class="avatar-img rounded-circle" src="assets/images/avatar/02.jpg" alt="">
                         </div>
                         <!-- Avatar name -->
                         <div>
-                        <h6 class="mb-0 lh-1"> <a href="#!"> Frances Guerrero </a> </h6>
-                        <span class="ms-auto small"> 145.2K views</span>
+                        <h6 class="mb-0 lh-1"> <a href="#!"> Lori Ferguson <i class="bi bi-patch-check-fill text-success small"></i> </a> </h6>
+                        <span class="ms-auto small"> 235.8K views</span>
                         </div>
                     </div>
                     </div>
@@ -233,7 +240,7 @@
                     <!-- Video image -->
                     <div class="card-image">
                     <div class="ratio ratio-16x9 card-img-top overflow-hidden">
-                        <iframe src="https://www.youtube.com/embed/7E45f46yDFI" title="YouTube video" allowfullscreen></iframe>
+                        <iframe src="https://www.youtube.com/embed/8Sl_Igf3lnw" title="YouTube video" allowfullscreen></iframe>
                     </div>
                     </div>
                     <!-- Video info -->
@@ -290,7 +297,7 @@
                 <div class="col-12 mt-4">
                 <div class="d-sm-flex justify-content-between align-items-center">
                     <h5 class="mb-md-0">人気記事 </h5>
-                    <a class="btn btn-sm btn-primary" href="#!">もっとみる</a>
+                    <a class="btn btn-sm btn-primary" href="{% url 'blogs:in_order_blog_list' %}">もっとみる</a>
                 </div>
                 </div>
                 {% for most_viewed_post in most_viewed_posts %}
@@ -313,8 +320,13 @@
                         <!-- Avatar name -->
                         <div>
                         <h6 class="mb-0 lh-1"> <a href="{% url 'dashboard:post_in_dashboard' most_viewed_post.author.username %}"> {{ most_viewed_post.author.name }} </a> </h6>
-                        <span class="ms-auto small"> {{ most_viewed_post.total_number_of_view }} views</span>
                         </div>
+                    </div>
+                    <div class="ms-md-auto d-flex">
+                        <span class="ms-auto small"> {{ most_viewed_post.likeforblog_set.all.count }}</span>
+                        <button type="button" style="border:none;background:none">
+                            <i class="bi bi-heart" style="color:#F73641"></i>
+                        </button>
                     </div>
                     </div>
                 </div>
