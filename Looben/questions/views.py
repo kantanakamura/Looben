@@ -58,7 +58,6 @@ def ask_question(request):
         if ask_question_form['is_anonymous'] == 'on':
             ask_question_form.instance.is_anonymous = True
         ask_question_form.save()
-        ask_question_form.instance.save()
         return redirect('questions:question')
     return render(
         request, 'question/ask_question.html', context={
