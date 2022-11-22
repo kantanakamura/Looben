@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.db.models import Prefetch
+from django.db.models import Q
 
 from .forms import AnswerForQuestionForm, CommentToAnswerForm, QuestionForm
 from .models import AnswerForQuestion, Questions
@@ -77,6 +78,7 @@ class QuestionDetailView(DetailView):
             best_answer = self.object.answerforquestion_set.filter(is_best_answer=True).first()
             context['best_answer'] = best_answer
             context['comment_to_best_answer'] = best_answer.commenttobestanswer_set.first()
+        context['newest_solved_questions'] = Questions.objects.filter(~Q(id=self.object.id), category=self.object.category, is_solved=True).order_by('created_at')[:5]
         context['answer_form'] = AnswerForQuestionForm()
         return context
     

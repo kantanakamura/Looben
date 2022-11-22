@@ -185,6 +185,50 @@
                 </div>
                 </div>
                 <!-- Blog single END -->
+
+
+                <!-- Comments START -->
+                <div class="card">
+                    <div class="card-header pb-0 border-0">
+                        <h4>関連質問</h4>
+                    </div>
+                    <div class="card-body">
+                        {% for newest_solved_question in newest_solved_questions %}
+                        <div class="row">
+                            <div class="d-sm-flex align-items-center">
+                                <div class="ms-sm-4 mt-2 mt-sm-0">
+                                    {% if newest_solved_question.category == 'university' %}
+                                    <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">大学</a>
+                                    {% elif newest_solved_question.category == 'foods' %}
+                                    <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">食事</a>
+                                    {% elif newest_solved_question.category == 'study' %}
+                                    <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">勉強</a>
+                                    {% elif newest_solved_question.category == 'job' %}
+                                    <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">就活</a>
+                                    {% else %}
+                                    <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">人生</a>
+                                    {% endif %}
+                                    <br>
+                                    <!-- Info -->
+                                    <strong><a href="{% url 'questions:question_detail' newest_solved_question.id %}"> {{ newest_solved_question.content }} </a></strong>
+                                    <ul class="nav nav-stack" style="margin-top:3px;">
+                                        <li class="nav-item">
+                                            <span style="color:#FF1474;">{{ newest_solved_question.answerforquestion_set.all.count }}</span>回答 
+                                        </li>
+                                        <li class="nav-item">
+                                            {{ newest_solved_question.created_at }} 
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        {% empty %}
+                        <p>解決済みの関連質問はまだありません。</p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- Blog single END -->
             </div>
             </div>
             <!-- Main content END -->

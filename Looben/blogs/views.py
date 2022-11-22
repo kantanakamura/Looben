@@ -117,6 +117,7 @@ class BlogDetailView(DetailView):
             context['is_user_liked_for_post'] = False
         return context
     
+    
 @login_required
 def like_for_post(request):
     post_pk = request.POST.get('post_pk')
