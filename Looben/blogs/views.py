@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
 from django.views.generic.base import View
 from django.views.generic.list import ListView
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -16,6 +16,18 @@ from .models import Blog, LikeForBlog
 from accounts.models import FollowForUser, Users
 from accounts import contribution_calculation
 
+
+class CheckForUserMatchMixin(LoginRequiredMixin, UserPassesTestMixin):
+    
+    def test_func(self):
+        target_blog_post = get_object_or_404(Blog, pk=self.kwargs['pk'])
+        return self.request.user == target_blog_post.author
+        
+    def handle_no_permission(self):
+        return JsonResponse(
+            {'message': 'Only user who made this author have access to this view'}
+        )
+        
 
 @login_required
 def create_blog(request):
@@ -41,16 +53,13 @@ def create_blog(request):
         }
     )
     
-class CheckForUserMatchMixin(LoginRequiredMixin, UserPassesTestMixin):
     
-    def test_func(self):
-        target_blog_post = get_object_or_404(Blog, pk=self.kwargs['pk'])
-        return self.request.user == target_blog_post.author
-        
-    def handle_no_permission(self):
-        return JsonResponse(
-            {'message': 'Only user who made this author have access to this view'}
-        )
+class DeletePostView(CheckForUserMatchMixin, DeleteView):
+    template_name = 'blog/delete_post.html'
+    model = Blog
+    
+    def get_success_url(self):
+        return reverse_lazy('dashboard:post_in_dashboard', kwargs={'username': self.object.author.username}) 
     
 
 class EditBlogPostView(CheckForUserMatchMixin, UpdateView):
