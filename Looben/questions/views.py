@@ -14,6 +14,7 @@ from .forms import AnswerForQuestionForm, CommentToAnswerForm, QuestionForm
 from .models import AnswerForQuestion, Questions
 
 from accounts.models import Users, Schools
+from accounts import contribution_calculation
 
 
 class QuestionView(LoginRequiredMixin, View):
@@ -53,11 +54,10 @@ def ask_question(request):
     ask_question_form = QuestionForm(request.POST or None)
     if ask_question_form.is_valid():
         ask_question_form.instance.user = request.user
-        ask_question_form.instance.user.contributed_points += 1
-        ask_question_form.instance.user.save()
         if ask_question_form['is_anonymous'] == 'on':
             ask_question_form.instance.is_anonymous = True
         ask_question_form.save()
+        contribution_calculation.for_creating_question(user=request.user)
         return redirect('questions:question')
     return render(
         request, 'question/ask_question.html', context={
@@ -86,9 +86,7 @@ class QuestionDetailView(DetailView):
         if answer_form.is_valid():
             answer_form.instance.question = self.object
             answer_form.instance.user = request.user
-            answer_form.instance.user.contributed_points += 0.1
             answer_form.save()
-            answer_form.instance.user.save()
             return redirect('questions:question_detail', pk=self.object.id)
         else:
             context = self.get_context_data()
@@ -147,8 +145,7 @@ class DecideAndCommentToBestAnswer(DetailView):
                 best_answer.save()
                 best_answer.question.is_solved = True
                 best_answer.question.save()
-                best_answer.user.contributed_points += 3
-                best_answer.user.save()
+                contribution_calculation.for_getting_best_answer(user=request.user)
                 comment_to_answer_form.instance.answer = best_answer
                 comment_to_answer_form.instance.commenter = request.user
                 comment_to_answer_form.save()
