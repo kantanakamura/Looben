@@ -8,6 +8,7 @@ from .models import ReviewOfUniversity
 from .forms import ReviewForm
 
 from accounts.models import Users, Schools
+from accounts import contribution_calculation
 
 
 @login_required
@@ -15,11 +16,9 @@ def create_review_of_university(request):
     create_review_form = ReviewForm(request.POST or None)
     if create_review_form.is_valid():
         create_review_form.instance.user = request.user
-        create_review_form.instance.user.contributed_points += 1
         create_review_form.save()
-        create_review_form.instance.user.save()
         messages.success(request, 'レビューを作成しました')
-        # Schoolsの星評価にこのレビューの評価を反映させる
+        # Start -Schoolsの星評価にこのレビューの評価を反映させる-
         target_university = Schools.objects.get(id=create_review_form.cleaned_data.get('university').id)
         review_list_for_target_university = ReviewOfUniversity.objects.filter(university=target_university).all()
         # get the value of total added rating
@@ -29,6 +28,8 @@ def create_review_of_university(request):
             total_added_rating_value += int(review.star)
         target_university.star_rating = total_added_rating_value / number_of_review
         target_university.save()
+        # End
+        contribution_calculation.for_creating_review(user=request.user)
         return redirect('accounts:research_university')
     return render(
         request, 'reviews/create_review_of_university.html', context={
