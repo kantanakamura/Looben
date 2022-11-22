@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404  
 from django.http import JsonResponse
@@ -42,3 +42,11 @@ class UpdateJobExperienceView(CheckForUserMatchMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy('dashboard:post_in_dashboard', kwargs={'username': self.object.user.username})
         
+
+class DeleteJobExperienceView(CheckForUserMatchMixin, DeleteView):
+    template_name = 'job/delete_job_experience.html'
+    model = JobExperience
+    
+    def get_success_url(self):
+        return reverse_lazy('dashboard:post_in_dashboard', kwargs={'username': self.object.user.username})
+    
