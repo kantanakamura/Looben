@@ -143,7 +143,12 @@
                 <div class="d-sm-flex align-items-center">
                   <div class="ms-sm-4 mt-2 mt-sm-0">
                     <!-- Info -->
-                    <h4 class="mb-1"><a href="{% url 'reviews:review_list_of_universities' student_review.university.id %}"> {{ student_review.title }} </a></h4>
+                    <h4 class="mb-1">
+                      <a href="{% url 'reviews:review_list_of_universities' student_review.university.id %}"> {{ student_review.title }} </a>
+                      {% if user == object %}
+                      <a class="btn btn-danger-soft btn-xs ms-2" href="{% url 'reviews:delete_review' student_review.id %}">削除</a>
+                      {% endif %}
+                    </h4>
                     <div>
                       <div>
                       {% with range=''|center:5 %}

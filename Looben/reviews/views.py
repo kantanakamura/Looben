@@ -1,8 +1,13 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.detail import DetailView
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.urls import reverse_lazy
+from django.views.generic.edit import DeleteView
+from django.shortcuts import get_object_or_404  
+from django.http import JsonResponse
 
 from .models import ReviewOfUniversity
 from .forms import ReviewForm
@@ -47,5 +52,24 @@ class ReviewListOfUniversities(DetailView):
         school = self.object
         context['reviews'] = ReviewOfUniversity.objects.filter(university=school)
         return context
+
+
+class CheckForUserMatchMixin(LoginRequiredMixin, UserPassesTestMixin):
     
+    def test_func(self):
+        target_review = get_object_or_404(ReviewOfUniversity, pk=self.kwargs['pk'])
+        return self.request.user == target_review.user
+        
+    def handle_no_permission(self):
+        return JsonResponse(
+            {'message': 'Only user who made this author have access to this view'}
+        )
+    
+    
+class DeleteReviewView(CheckForUserMatchMixin, DeleteView):
+    template_name = 'reviews/delete_review.html'
+    model = ReviewOfUniversity
+    
+    def get_success_url(self):
+        return reverse_lazy('dashboard:review_in_dashboard', kwargs={'username': self.object.user.username})
 
