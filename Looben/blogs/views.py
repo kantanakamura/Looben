@@ -14,6 +14,7 @@ from django.core.cache import cache
 from .forms import CreateBlogForm, EditBlogPostForm
 from .models import Blog, LikeForBlog
 from accounts.models import FollowForUser, Users
+from accounts import contribution_calculation
 
 
 @login_required
@@ -27,6 +28,7 @@ def create_blog(request):
     if create_blog_form.is_valid():
         create_blog_form.instance.author = request.user
         create_blog_form.save()
+        contribution_calculation.for_creating_post(author=request.user)
         cache.delete(f'saved_title-user_id={request.user.id}')
         cache.delete(f'saved_meta_description-user_id={request.user.id}')
         cache.delete(f'saved_tag-user_id={request.user.id}')
@@ -127,9 +129,11 @@ def like_for_post(request):
     if like.exists():
         like.delete()
         context['method'] = 'delete'
+        contribution_calculation.for_losing_post_likes(author=request.user)
     else:
         like.create(target=post, user=request.user)
         context['method'] = 'create'
+        contribution_calculation.for_earning_post_likes(author=request.user)
     context['like_for_post_count'] = post.likeforblog_set.count()
     return JsonResponse(context)
 
