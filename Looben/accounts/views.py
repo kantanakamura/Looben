@@ -19,6 +19,7 @@ from django.shortcuts import get_object_or_404
 
 from .forms import RegistForm, UserLoginForm, AccountSettingForm, PasswordChangeForm
 from .models import Schools, Users, LikeForUniversity, FollowForUser
+import contribution_calculation
 from reviews.models import ReviewOfUniversity
 from questions.models import AnswerForQuestion ,Questions
 
@@ -86,10 +87,12 @@ def follow_for_user_view(request):
         follow.delete()
         context['method'] = 'delete'
         context['following_message_for_javascript'] = 'フォロー'
+        contribution_calculation.for_losing_follower(user=followed_user)
     else:
         follow.create(followed_user=followed_user, user=request.user)
         context['method'] = 'create'
         context['following_message_for_javascript'] = 'フォロー中'
+        contribution_calculation.for_getting_follower(user=followed_user)
     context['number_of_followed_user'] = FollowForUser.objects.filter(followed_user=followed_user).count()
     return JsonResponse(context)
 
