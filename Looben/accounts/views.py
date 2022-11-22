@@ -19,7 +19,7 @@ from django.shortcuts import get_object_or_404
 
 from .forms import RegistForm, UserLoginForm, AccountSettingForm, PasswordChangeForm
 from .models import Schools, Users, LikeForUniversity, FollowForUser
-import contribution_calculation
+from . import contribution_calculation
 from reviews.models import ReviewOfUniversity
 from questions.models import AnswerForQuestion ,Questions
 
