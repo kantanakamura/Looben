@@ -54,6 +54,7 @@
                     <p class="small">{{ job_experience.job_date }} - {{ job_experience.job_content }} 
                         {% if object == user %}
                         <a class="btn btn-primary-soft btn-xs ms-2" href="{% url 'job:update_job_experience' job_experience.id %}">編集</a>
+                        <a class="btn btn-danger-soft btn-xs ms-2" href="{% url 'job:delete_job_experience' job_experience.id %}">削除</a>
                         {% endif %}
                     </p>
                 </div>
