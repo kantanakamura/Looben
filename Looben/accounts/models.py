@@ -40,6 +40,7 @@ class Users(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False)
     individual_theme_color = models.CharField(max_length=10, default='#D5E9FF')
     picture = models.FileField(blank=True, upload_to='pfp/', default='pfp/unknown_user.png')
     name = models.CharField(max_length=130, blank=True)
