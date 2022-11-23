@@ -68,7 +68,12 @@
                                 <img class="avatar-img rounded-circle" src="{{ conversation_partner.picture.url }}" alt="{{ conversation_partner.username }}">
                               </div>
                               <div class="flex-grow-1 d-block">
-                                <h6 class="mb-0 mt-1">{{ conversation_partner.name }} </h6>
+                                <h6 class="mb-0 mt-1">
+                                  {{ conversation_partner.name }} 
+                                  {% if conversation_partner.is_verified %}
+                                  <i class="bi bi-patch-check-fill text-primary small"></i>
+                                  {% endif %}
+                                </h6>
                                 <div class="small text-secondary"></div>
                               </div>
                             </div>
@@ -85,7 +90,12 @@
                                 <img class="avatar-img rounded-circle" src="{{ following_user.followed_user.picture.url }}" alt="{{ following_user.followed_user.username }}">
                               </div>
                               <div class="flex-grow-1 d-block">
-                                <h6 class="mb-0 mt-1">{{ following_user.followed_user.name }} </h6>
+                                <h6 class="mb-0 mt-1">
+                                  {{ following_user.followed_user.name }} 
+                                  {% if following_user.followed_user.is_verified %}
+                                  <i class="bi bi-patch-check-fill text-primary small"></i>
+                                  {% endif %}
+                                </h6>
                                 <div class="small text-secondary"></div>
                               </div>
                             </div>
@@ -120,7 +130,14 @@
                         <a href="{% url 'dashboard:post_in_dashboard' conversation_partner.username %}"><img class="avatar-img rounded-circle" src="{{ conversation_partner.picture.url }}" alt="{{ conversation_partner.username }}"></a>
                       </div>
                       <div class="d-block flex-grow-1">
-                        <a href="{% url 'dashboard:post_in_dashboard' conversation_partner.username %}"><h6 class="mb-0 mt-1">{{ conversation_partner.name }}</h6></a>
+                        <a href="{% url 'dashboard:post_in_dashboard' conversation_partner.username %}">
+                          <h6 class="mb-0 mt-1">
+                            {{ conversation_partner.name }}
+                            {% if conversation_partner.is_verified %}
+                            <i class="bi bi-patch-check-fill text-primary small"></i>
+                            {% endif %}
+                          </h6>
+                        </a>
                         {% if conversation_partner.state == '現役台湾留学生' or object.state == '台湾留学卒業生'%}
                         <div class="small text-secondary">{{ conversation_partner.school }} / {{ conversation_partner.major }}</div>
                         {% endif %}

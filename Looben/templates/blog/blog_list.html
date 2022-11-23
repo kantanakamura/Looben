@@ -24,7 +24,14 @@
                     <a href="{% url 'dashboard:post_in_dashboard' user.username %}"><img class="avatar-img rounded-circle border border-white border-3" src="{{ user.picture.url }}" alt="{{ user.username }}"></a>
                 </div>
                 <!-- Info -->
-                <h5 class="mb-0"> <a href="{% url 'dashboard:post_in_dashboard' user.username %}">{{ user.name }} </a> </h5>
+                <h5 class="mb-0"> 
+                    <a href="{% url 'dashboard:post_in_dashboard' user.username %}">
+                        {{ user.name }} 
+                        {% if user.is_verified %}
+                        <i class="bi bi-patch-check-fill text-primary small"></i>
+                        {% endif %}
+                    </a> 
+                </h5>
                 <small>{{ user.school }}</small>
                 <!-- User stat START -->
                 <div class="hstack gap-2 gap-xl-3 mt-3">
@@ -140,7 +147,14 @@
                         </div>
                         <!-- Avatar name -->
                         <div>
-                        <h6 class="mb-0 lh-1"> <a href="{% url 'dashboard:post_in_dashboard' searched_blog.author.username %}"> {{ searched_blog.author.name }} </a> </h6>
+                        <h6 class="mb-0 lh-1"> 
+                            <a href="{% url 'dashboard:post_in_dashboard' searched_blog.author.username %}"> 
+                                {{ searched_blog.author.name }} 
+                                {% if searched_blog.author.is_verified %}
+                                <i class="bi bi-patch-check-fill text-primary small"></i>
+                                {% endif %}
+                            </a> 
+                        </h6>
                         </div>
                     </div>
                     <div class="ms-md-auto d-flex">
@@ -182,7 +196,14 @@
                         </div>
                         <!-- Avatar name -->
                         <div>
-                        <h6 class="mb-0 lh-1"> <a href="{% url 'dashboard:post_in_dashboard' newest_blog_post.author.username %}"> {{ newest_blog_post.author.name }} </a> </h6>
+                        <h6 class="mb-0 lh-1"> 
+                            <a href="{% url 'dashboard:post_in_dashboard' newest_blog_post.author.username %}"> 
+                                {{ newest_blog_post.author.name }} 
+                                {% if newest_blog_post.author.is_verified %}
+                                <i class="bi bi-patch-check-fill text-primary small"></i>
+                                {% endif %}
+                            </a> 
+                        </h6>
                         </div>
                     </div>
                     <div class="ms-md-auto d-flex">
@@ -319,7 +340,14 @@
                         </div>
                         <!-- Avatar name -->
                         <div>
-                        <h6 class="mb-0 lh-1"> <a href="{% url 'dashboard:post_in_dashboard' most_viewed_post.author.username %}"> {{ most_viewed_post.author.name }} </a> </h6>
+                        <h6 class="mb-0 lh-1"> 
+                            <a href="{% url 'dashboard:post_in_dashboard' most_viewed_post.author.username %}"> 
+                                {{ most_viewed_post.author.name }} 
+                                {% if most_viewed_post.author.is_verified %}
+                                <i class="bi bi-patch-check-fill text-primary small"></i>
+                                {% endif %}
+                            </a> 
+                        </h6>
                         </div>
                     </div>
                     <div class="ms-md-auto d-flex">

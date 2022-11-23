@@ -90,7 +90,14 @@
                         <div class="avatar avatar-xl">
                         <a href="{% url 'dashboard:post_in_dashboard' newest_user.username %}"><img class="avatar-img rounded-circle" src="{{ newest_user.picture.url }}" alt="{{ newest_user.name }}"></a>
                         </div>
-                        <h6 class="card-title mb-1 mt-3"> <a href="{% url 'dashboard:post_in_dashboard' newest_user.username %}"> {{ newest_user.name }} </a></h6>
+                        <h6 class="card-title mb-1 mt-3"> 
+                            <a href="{% url 'dashboard:post_in_dashboard' newest_user.username %}"> 
+                                {{ newest_user.name }} 
+                                {% if newest_user.is_verified %}
+                                <i class="bi bi-patch-check-fill text-primary small"></i>
+                                {% endif %}
+                            </a>
+                        </h6>
                         <p class="mb-0 small lh-sm"> {{ newest_user.school }}</p>
                     </div>
                     <!-- Card footer -->
