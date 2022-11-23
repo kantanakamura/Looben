@@ -29,7 +29,14 @@
                 <div class="avatar avatar-xl">
                 <a href="{% url 'dashboard:post_in_dashboard' user_affiliated_with_university.username %}"><img class="avatar-img rounded-circle" src="{{ user_affiliated_with_university.picture.url }}" alt="{{ user_affiliated_with_university.name }}"></a>
                 </div>
-                <h6 class="card-title mb-1 mt-3"> <a href="{% url 'dashboard:post_in_dashboard' user_affiliated_with_university.username %}"> {{ user_affiliated_with_university.name }} <i class="bi bi-patch-check-fill text-primary small"></i></a></h6>
+                <h6 class="card-title mb-1 mt-3"> 
+                  <a href="{% url 'dashboard:post_in_dashboard' user_affiliated_with_university.username %}"> 
+                    {{ user_affiliated_with_university.name }} 
+                    {% if user_affiliated_with_university.is_verified %}
+                    <i class="bi bi-patch-check-fill text-primary small"></i>
+                    {% endif %}
+                  </a>
+                </h6>
                 <p class="mb-0 small lh-sm">{{ user_affiliated_with_university.major }}</p>
             </div>
             <!-- Card footer -->

@@ -124,7 +124,12 @@
                         <a href="{% url 'dashboard:post_in_dashboard' student.username %}"><img class="avatar-img rounded-circle" src="{{ student.picture.url }}" alt="{{ student.name }}"></a>
                       </div>
                       <div>
-                        <h6 class="mb-0">{{ student.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6>
+                        <h6 class="mb-0">
+                          {{ student.name }}
+                          {% if user.is_verified %}
+                          <i class="bi bi-patch-check-fill text-primary small"></i>
+                          {% endif %}
+                        </h6>
                         <span style="color: inherit;">{{ student.major }}</span>
                       </div>
                     </div>
@@ -181,7 +186,14 @@
                                 </div>
                                 <!-- Host name -->
                                 <div>
-                                  <a href="{% url 'dashboard:post_in_dashboard' review.user.username %}"><h6 class="mb-0">{{ review.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6></a>
+                                  <a href="{% url 'dashboard:post_in_dashboard' review.user.username %}">
+                                    <h6 class="mb-0">
+                                      {{ review.user.name }} 
+                                      {% if review.user.is_verified %}
+                                      <i class="bi bi-patch-check-fill text-primary small"></i>
+                                      {% endif %}
+                                    </h6>
+                                  </a>
                                   <span>{{ review.user.school }}</span>
                                 </div>
                               </div>
@@ -230,7 +242,14 @@
                                 </div>
                                 <!-- Host name -->
                                 <div>
-                                  <a href="{% url 'dashboard:post_in_dashboard' review.user.username %}"><h6 class="mb-0">{{ review.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6></a>
+                                  <a href="{% url 'dashboard:post_in_dashboard' review.user.username %}">
+                                    <h6 class="mb-0">
+                                      {{ review.user.name }} 
+                                      {% if review.user.is_verified %}
+                                      <i class="bi bi-patch-check-fill text-primary small"></i>
+                                      {% endif %}
+                                    </h6>
+                                  </a>
                                   <span>{{ review.user.school }}</span>
                                 </div>
                               </div>
@@ -316,7 +335,14 @@
                                 </div>
                                 <!-- Host name -->
                                 <div>
-                                  <a href="{% url 'dashboard:post_in_dashboard' answer.user.username %}"><h6 class="mb-0">{{ answer.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6></a>
+                                  <a href="{% url 'dashboard:post_in_dashboard' answer.user.username %}">
+                                    <h6 class="mb-0">
+                                      {{ answer.user.name }} 
+                                      {% if answer.user.is_verified %}
+                                      <i class="bi bi-patch-check-fill text-primary small"></i>
+                                      {% endif %}
+                                    </h6>
+                                  </a>
                                   <span>{{ answer.user.school }}</span>
                                 </div>
                               </div>
@@ -352,7 +378,14 @@
                                 </div>
                                 <!-- Host name -->
                                 <div>
-                                  <a href="{% url 'dashboard:post_in_dashboard' answer.user.username %}"><h6 class="mb-0">{{ answer.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6></a>
+                                  <a href="{% url 'dashboard:post_in_dashboard' answer.user.username %}">
+                                    <h6 class="mb-0">
+                                      {{ answer.user.name }} 
+                                      {% if answer.user.is_verified %}
+                                      <i class="bi bi-patch-check-fill text-primary small"></i>
+                                      {% endif %}
+                                    </h6>
+                                  </a>
                                   <span>{{ answer.user.school }}</span>
                                 </div>
                               </div>

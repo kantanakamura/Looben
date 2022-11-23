@@ -53,7 +53,14 @@
                                 <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}"><img class="avatar-img rounded border border-white border-3" src="{{ object.author.picture.url }}" alt="{{ object.author.username }}"></a>
                             </div>
                             <!-- Info -->
-                            <h5 class="mb-0"> <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}">{{ object.author.name }} </a> </h5>
+                            <h5 class="mb-0"> 
+                                <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}">
+                                    {{ object.author.name }} 
+                                    {% if object.author.is_verified %}
+                                    <i class="bi bi-patch-check-fill text-primary small"></i>
+                                    {% endif %}
+                                </a> 
+                            </h5>
                             <p>{{ object.author.school }} / {{ object.author.major }}</p>
                             <p>{{ object.author.description }}</p>
                             <div class="hstack gap-2 gap-xl-3 mt-3">
@@ -151,7 +158,14 @@
                                 <!-- Info -->
                                 <div>
                                     <div class="nav nav-divider">
-                                    <h6 class="nav-item card-title mb-0"> <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}"> {{ object.author.name }} </a></h6>
+                                    <h6 class="nav-item card-title mb-0"> 
+                                        <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}"> 
+                                            {{ object.author.name }} 
+                                            {% if object.author.is_verified %}
+                                            <i class="bi bi-patch-check-fill text-primary small"></i>
+                                            {% endif %}
+                                        </a>
+                                    </h6>
                                     </div>
                                     <p class="mb-0 small">{{ object.created_at }}</p>
                                 </div>

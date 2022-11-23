@@ -32,7 +32,12 @@
                 </div>
                 <div class="ms-sm-4 mt-sm-3">
                   <!-- Info -->
-                  <h1 class="mb-0 h5">{{ object.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h1>
+                  <h1 class="mb-0 h5">
+                    {{ object.name }} 
+                    {% if object.is_verified %}
+                    <i class="bi bi-patch-check-fill text-primary small"></i>
+                    {% endif %}
+                  </h1>
                   <p>@{{ object.username }}</p>
                   <p>
                     <ul class="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">

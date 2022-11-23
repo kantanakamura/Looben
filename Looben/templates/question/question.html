@@ -454,7 +454,14 @@
                         <a href="{% url 'dashboard:post_in_dashboard' reliable_answerer.username %}"><img class="avatar-img rounded-circle border border-white border-3 bg-mode" src="{{ reliable_answerer.picture.url }}" alt="{{ reliable_answerer.username }}"></a>
                     </div>
                     <!-- Info -->
-                    <h5 class="mb-0"> <a href="{% url 'dashboard:post_in_dashboard' reliable_answerer.username %}">{{ reliable_answerer.name }}</a> </h5>
+                    <h5 class="mb-0"> 
+                        <a href="{% url 'dashboard:post_in_dashboard' reliable_answerer.username %}">
+                            {{ reliable_answerer.name }}
+                            {% if reliable_answerer.is_verified %}
+                            <i class="bi bi-patch-check-fill text-primary small"></i>
+                            {% endif %}
+                        </a> 
+                    </h5>
                     <small> {{ reliable_answerer.state }}</small>
                     <!-- Group stat START -->
                     <div class="hstack gap-2 gap-xl-3 mt-3 justify-content-center">

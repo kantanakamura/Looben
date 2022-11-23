@@ -53,7 +53,12 @@
                                 <img class="avatar-img rounded-circle" src="{{ following_user.followed_user.picture.url }}" alt="{{ following_user.followed_user.username }}">
                             </div>
                             <div class="flex-grow-1 d-block">
-                                <h6 class="mb-0 mt-1">{{ following_user.followed_user.name }} </h6>
+                                <h6 class="mb-0 mt-1">
+                                    {{ following_user.followed_user.name }} 
+                                    {% if following_user.followed_user.is_verified %}
+                                    <i class="bi bi-patch-check-fill text-primary small"></i>
+                                    {% endif %}
+                                </h6>
                                 {% if following_user.followed_user.state == '現役台湾留学生' or following_user.followed_user.state == '台湾留学卒業生' %}
                                 <div class="small text-secondary">{{ following_user.followed_user.school }}</div>
                                 {% endif %}

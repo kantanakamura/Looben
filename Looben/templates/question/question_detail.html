@@ -53,7 +53,14 @@
                             </div>
                             {% else %}
                             <div class="d-sm-flex align-items-start">
-                                <h6 class="mb-0"><a href="{% url 'dashboard:post_in_dashboard' object.user.username %}">{{ object.user.name }}</a></h6>
+                                <h6 class="mb-0">
+                                    <a href="{% url 'dashboard:post_in_dashboard' object.user.username %}">
+                                        {{ object.user.name }}
+                                        {% if object.user.is_verified %}
+                                        <i class="bi bi-patch-check-fill text-primary small"></i>
+                                        {% endif %}
+                                    </a>
+                                </h6>
                             </div>
                             <!-- university and major START -->
                             <ul class="avatar-group mt-1 list-unstyled align-items-sm-center">
@@ -116,7 +123,14 @@
                         <!-- Info -->
                         <div class="w-100">
                             <div class="d-sm-flex align-items-start">
-                            <h6 class="mb-0"><a href="{% url 'dashboard:post_in_dashboard' best_answer.user.username %}">{{ best_answer.user.name }}</a></h6>
+                            <h6 class="mb-0">
+                                <a href="{% url 'dashboard:post_in_dashboard' best_answer.user.username %}">
+                                    {{ best_answer.user.name }}
+                                    {% if best_answer.user.is_verified %}
+                                    <i class="bi bi-patch-check-fill text-primary small"></i>
+                                    {% endif %}
+                                </a>
+                            </h6>
                             </div>
                             <!-- university and major START -->
                             <ul class="avatar-group mt-1 list-unstyled align-items-sm-center">
@@ -159,7 +173,14 @@
                         <!-- Info -->
                         <div class="w-100">
                             <div class="d-sm-flex align-items-start">
-                            <h6 class="mb-0"><a href="{% url 'dashboard:post_in_dashboard' answer.user.username %}">{{ answer.user.name }}</a></h6>
+                            <h6 class="mb-0">
+                                <a href="{% url 'dashboard:post_in_dashboard' answer.user.username %}">
+                                    {{ answer.user.name }}
+                                    {% if answer.user.is_verified %}
+                                    <i class="bi bi-patch-check-fill text-primary small"></i>
+                                    {% endif %}
+                                </a>
+                            </h6>
                             </div>
                             <!-- Connections START -->
                             <ul class="avatar-group mt-1 list-unstyled align-items-sm-center">

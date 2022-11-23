@@ -53,7 +53,14 @@
                         <a href="#!"><img class="avatar-img rounded border border-white border-3" src="{{ user.picture.url }}" alt="{{ user.username }}"></a>
                       </div>
                       <!-- Info -->
-                      <h5 class="mb-0"> <a href="#!">{{ user.name }} </a> </h5>
+                      <h5 class="mb-0"> 
+                        <a href="{% url 'dashboard:post_in_dashboard' user.username %}">
+                          {{ user.name }} 
+                          {% if user.is_verified %}
+                          <i class="bi bi-patch-check-fill text-primary small"></i>
+                          {% endif %}
+                        </a> 
+                      </h5>
                       <p>{{ user.school }}</p>
 
                     </div>

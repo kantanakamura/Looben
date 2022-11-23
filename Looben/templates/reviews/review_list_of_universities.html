@@ -155,7 +155,14 @@
                                     </div>
                                     <!-- Host name -->
                                     <div>
-                                      <a href="{% url 'dashboard:post_in_dashboard' review.user.username %}"><h6 class="mb-0">{{ review.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6></a>
+                                      <a href="{% url 'dashboard:post_in_dashboard' review.user.username %}">
+                                        <h6 class="mb-0">
+                                          {{ review.user.name }} 
+                                          {% if review.user.is_verified %}
+                                          <i class="bi bi-patch-check-fill text-primary small"></i>
+                                          {% endif %}
+                                        </h6>
+                                      </a>
                                       <span>{{ review.user.school }}</span>
                                     </div>
                                   </div>
@@ -203,7 +210,14 @@
                                     </div>
                                     <!-- Host name -->
                                     <div>
-                                      <a href="{% url 'dashboard:post_in_dashboard' review.user.username %}"><h6 class="mb-0">{{ review.user.name }} <i class="bi bi-patch-check-fill text-primary small"></i></h6></a>
+                                      <a href="{% url 'dashboard:post_in_dashboard' review.user.username %}">
+                                        <h6 class="mb-0">
+                                          {{ review.user.name }} 
+                                          {% if review.user.is_verified %}
+                                          <i class="bi bi-patch-check-fill text-primary small"></i>
+                                          {% endif %}
+                                        </h6>
+                                      </a>
                                       <span>{{ review.user.school }}</span>
                                     </div>
                                   </div>
