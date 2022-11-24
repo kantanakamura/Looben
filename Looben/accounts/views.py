@@ -12,7 +12,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.core.exceptions import ValidationError
 from django.urls import reverse_lazy
 from django.db.models import Prefetch
-
+from django.http import Http404
 from django.http import JsonResponse  
 from django.shortcuts import get_object_or_404  
 
@@ -82,8 +82,10 @@ def follow_for_user_view(request):
     }
     followed_user = get_object_or_404(Users, pk=followed_user_pk)
     follow = FollowForUser.objects.filter(followed_user=followed_user, user=request.user)
-
-    if follow.exists():
+    
+    if followed_user == request.user:
+        Http404('自分自身はフォローできません')
+    elif follow.exists():
         follow.delete()
         context['method'] = 'delete'
         context['following_message_for_javascript'] = 'フォロー'
