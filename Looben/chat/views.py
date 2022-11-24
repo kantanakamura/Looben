@@ -5,6 +5,7 @@ from rest_framework.parsers import JSONParser
 from chat.serializers import MessageSerializer
 from django.views.generic.base import View
 from django.shortcuts import get_object_or_404 
+from django.http import Http404
 
 from accounts.models import Users, FollowForUser
 from chat.models import Messages
@@ -14,8 +15,10 @@ def get_message(request, username):
     """
     特定ユーザ間のチャット情報を取得する
     """
-    conversation_partner = Users.objects.get(username=username)
-    current_user = Users.objects.get(username=request.user.username)
+    conversation_partner = get_object_or_404(Users, username=username)
+    current_user = get_object_or_404(Users, username=request.user.username)
+    if conversation_partner == current_user:
+        Http404("自分自身とはチャットできません")
     messages = Messages.objects.filter(sender_name=current_user.id, receiver_name=conversation_partner.id) | \
                Messages.objects.filter(sender_name=conversation_partner.id, receiver_name=current_user.id)
     amount_of_following_users = FollowForUser.objects.filter(user=request.user).count()
@@ -37,12 +40,10 @@ def follow_and_create_chatroom(request, username):
     followed_user = get_object_or_404(Users, username=username)
     follow = FollowForUser.objects.filter(followed_user=followed_user, user=request.user)
 
-    if not follow.exists():
+    if followed_user == request.user:
+        Http404("自分自身とチャットはできません")
+    elif not follow.exists():
         follow.create(followed_user=followed_user, user=request.user)
-    messages = Messages.objects.filter(sender_name=followed_user.id, receiver_name=request.user.id) | \
-        Messages.objects.filter(sender_name=request.user.id, receiver_name=followed_user.id)
-    amount_of_following_users = FollowForUser.objects.filter(user=request.user).count()
-    following_user_list =  FollowForUser.objects.filter(user=request.user)
     return redirect("chat:get_message", username=username)
     
     

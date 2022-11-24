@@ -84,7 +84,7 @@ def follow_for_user_view(request):
     follow = FollowForUser.objects.filter(followed_user=followed_user, user=request.user)
     
     if followed_user == request.user:
-        Http404('自分自身はフォローできません')
+        Http404("自分自身はフォローできません")
     elif follow.exists():
         follow.delete()
         context['method'] = 'delete'
