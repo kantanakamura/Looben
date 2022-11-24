@@ -5,6 +5,7 @@
 {% block head_content %}
 <link href="{% static 'mdeditor/css/editormd.min.css' %}" rel="stylesheet">
 <link href="{% static 'mdeditor/css/editormd.preview.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/blog/blog_detail.css' %}">
 {% endblock %}
 
 
@@ -187,8 +188,10 @@
                             {% endif %}
                             <!-- Card feed action dropdown END -->
                         </div>
-
+                        
+                        <div id="main_content">
                         {{ object.content|markdown|safe }}
+                        </div>
 
                         <div class="text-center">
                             <a class="btn btn-block btn-social mt-1" href="https://twitter.com/share?url={{ request.scheme }}://{{ request.get_host }}{{ request.path }}" target="_blank" rel="nofollow">
