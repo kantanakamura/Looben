@@ -82,13 +82,18 @@ class BlogListView(LoginRequiredMixin, View):
         most_viewed_posts = Blog.objects.order_by('-total_number_of_view')[:6]
         if 'search' in self.request.GET:
             keyword_query = request.GET.get('search')
-            blogs = list(Blog.objects.all())
-            searched_blogs = []
-            for blog in blogs:
-                if keyword_query in blog.meta_description:
-                    searched_blogs.append(blog)
-            number_of_searched_blogs = len(searched_blogs)
-            user_searched_something = True
+            if keyword_query == '':
+                searched_blogs = []
+                number_of_searched_blogs = 0
+                user_searched_something = False
+            else:
+                blogs = list(Blog.objects.all())
+                searched_blogs = []
+                for blog in blogs:
+                    if keyword_query in blog.meta_description:
+                        searched_blogs.append(blog)
+                number_of_searched_blogs = len(searched_blogs)
+                user_searched_something = True
         else:
             searched_blogs = []
             number_of_searched_blogs = 0
