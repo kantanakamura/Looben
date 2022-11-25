@@ -47,14 +47,6 @@
               <div class="offcanvas-body p-0">
                 <div class="card card-chat-list rounded-end-lg-0 card-body border-end-lg-0 rounded-top-0">
                   
-                  <!-- Search chat START -->
-                  <form class="position-relative" mothod="get">
-                    <input class="form-control py-2" type="search" placeholder="検索" aria-label="search">
-                    <button class="btn bg-transparent text-secondary px-2 py-0 position-absolute top-50 end-0 translate-middle-y" type="submit">
-                      <i class="bi bi-search fs-5"></i>
-                    </button>
-                  </form>
-                  <!-- Search chat END -->
                   <!-- Chat list tab START -->
                   <div class="mt-4 h-100">
                     <div class="chat-tab-list custom-scrollbar" style="overflow-y: auto;">
@@ -197,8 +189,8 @@
                 {% csrf_token %}
                 <div class="d-sm-flex align-items-end">
                   <input class="form-control mb-sm-0 mb-3" data-autoresize placeholder="メッセージを入力してください" rows="1" type="text" name="message" id="msg_field">
-                  <button class="btn btn-sm btn-danger-soft ms-sm-2"><i class="fa-solid fa-face-smile fs-6"></i></button>
-                  <button class="btn btn-sm btn-primary ms-2" type="submit" name="send"><i class="fa-solid fa-paper-plane fs-6"></i></button>
+                  <!--<button class="btn btn-sm btn-danger-soft ms-sm-2"><i class="fa-solid fa-face-smile fs-6"></i></button>-->
+                  <button class="btn btn-sm btn-info ms-2" type="submit" name="send"><i class="fa-solid fa-paper-plane fs-6"></i></button>
                 </div>
               </form>
             </div>

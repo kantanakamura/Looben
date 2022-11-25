@@ -136,13 +136,18 @@ class ResearchUniversity(LoginRequiredMixin, View):
         liked_universities = LikeForUniversity.objects.filter(user=self.request.user).all()
         if 'search' in self.request.GET:
             query = request.GET.get("search")
-            universities = list(Schools.objects.all())
-            searched_universities = []
-            for university in universities:
-                if query.capitalize() in university.name:
-                    searched_universities.append(university)
-            number_of_searched_universities = len(searched_universities)
-            user_searched_anything = True
+            if query == '':
+                searched_universities = []
+                number_of_searched_universities = 0
+                user_searched_anything = False
+            else:
+                universities = list(Schools.objects.all())
+                searched_universities = []
+                for university in universities:
+                    if query.capitalize() in university.name:
+                        searched_universities.append(university)
+                number_of_searched_universities = len(searched_universities)
+                user_searched_anything = True
         else:
             searched_universities = []
             number_of_searched_universities = 0

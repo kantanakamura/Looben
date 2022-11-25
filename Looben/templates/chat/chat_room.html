@@ -44,29 +44,55 @@
                     <div class="chat-tab-list custom-scrollbar">
                     <ul class="nav flex-column nav-pills nav-pills-soft">
 
-                        {% for following_user in following_user_list %}
-                        <li data-bs-dismiss="offcanvas">
-                        <!-- Chat user tab item -->
-                        <a href="{% url 'chat:get_message' following_user.followed_user.username %}" class="nav-link text-start">
-                            <div class="d-flex">
-                            <div class="flex-shrink-0 avatar me-2">
-                                <img class="avatar-img rounded-circle" src="{{ following_user.followed_user.picture.url }}" alt="{{ following_user.followed_user.username }}">
-                            </div>
-                            <div class="flex-grow-1 d-block">
-                                <h6 class="mb-0 mt-1">
-                                    {{ following_user.followed_user.name }} 
-                                    {% if following_user.followed_user.is_verified %}
-                                    <i class="bi bi-patch-check-fill text-primary small"></i>
+                        {% if user_searched_anything %}
+                            {% for searched_user in searched_users %}
+                            <li data-bs-dismiss="offcanvas">
+                            <!-- Chat user tab item -->
+                            <a href="{% url 'chat:get_message' searched_user.username %}" class="nav-link text-start">
+                                <div class="d-flex">
+                                <div class="flex-shrink-0 avatar me-2">
+                                    <img class="avatar-img rounded-circle" src="{{ searched_user.picture.url }}" alt="{{ searched_user.username }}">
+                                </div>
+                                <div class="flex-grow-1 d-block">
+                                    <h6 class="mb-0 mt-1">
+                                        {{ searched_user.name }} 
+                                        {% if searched_user.is_verified %}
+                                        <i class="bi bi-patch-check-fill text-primary small"></i>
+                                        {% endif %}
+                                    </h6>
+                                    {% if searched_user.state == '現役台湾留学生' or searched_user.state == '台湾留学卒業生' %}
+                                    <div class="small text-secondary">{{ searched_user.school }}</div>
                                     {% endif %}
-                                </h6>
-                                {% if following_user.followed_user.state == '現役台湾留学生' or following_user.followed_user.state == '台湾留学卒業生' %}
-                                <div class="small text-secondary">{{ following_user.followed_user.school }}</div>
-                                {% endif %}
-                            </div>
-                            </div>
-                        </a>
-                        </li>
-                        {% endfor %}
+                                </div>
+                                </div>
+                            </a>
+                            </li>
+                            {% endfor %}
+                        {% else %}
+                            {% for following_user in following_user_list %}
+                            <li data-bs-dismiss="offcanvas">
+                            <!-- Chat user tab item -->
+                            <a href="{% url 'chat:get_message' following_user.followed_user.username %}" class="nav-link text-start">
+                                <div class="d-flex">
+                                <div class="flex-shrink-0 avatar me-2">
+                                    <img class="avatar-img rounded-circle" src="{{ following_user.followed_user.picture.url }}" alt="{{ following_user.followed_user.username }}">
+                                </div>
+                                <div class="flex-grow-1 d-block">
+                                    <h6 class="mb-0 mt-1">
+                                        {{ following_user.followed_user.name }} 
+                                        {% if following_user.followed_user.is_verified %}
+                                        <i class="bi bi-patch-check-fill text-primary small"></i>
+                                        {% endif %}
+                                    </h6>
+                                    {% if following_user.followed_user.state == '現役台湾留学生' or following_user.followed_user.state == '台湾留学卒業生' %}
+                                    <div class="small text-secondary">{{ following_user.followed_user.school }}</div>
+                                    {% endif %}
+                                </div>
+                                </div>
+                            </a>
+                            </li>
+                            {% endfor %}
+                        {% endif %}
                         
                     </ul>
                     </div>

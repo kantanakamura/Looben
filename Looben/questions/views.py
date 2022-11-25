@@ -28,13 +28,18 @@ class QuestionView(LoginRequiredMixin, View):
         reliable_answerers = Users.objects.order_by('-contributed_points').all()[:3] 
         if 'search' in self.request.GET:
             keyword_query = request.GET.get('search')
-            questions = list(Questions.objects.all())
-            searched_questions = []
-            for question in questions:
-                if keyword_query in question.content:
-                    searched_questions.append(question)
-            number_of_searched_questions = len(searched_questions)
-            user_searched_anything = True
+            if keyword_query == '':
+                searched_questions = []
+                number_of_searched_questions = 0
+                user_searched_anything = False
+            else:
+                questions = list(Questions.objects.all())
+                searched_questions = []
+                for question in questions:
+                    if keyword_query in question.content:
+                        searched_questions.append(question)
+                number_of_searched_questions = len(searched_questions)
+                user_searched_anything = True
         else:
             searched_questions = []
             number_of_searched_questions = 0
@@ -46,7 +51,6 @@ class QuestionView(LoginRequiredMixin, View):
             'searched_questions': searched_questions,
             'user_searched_anything': user_searched_anything,
             'number_of_searched_questions': number_of_searched_questions,
-            'searched_questions': searched_questions,
             })
     
     
