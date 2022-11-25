@@ -97,7 +97,7 @@
                     <p style="text-align:right;">{{ object.created_at }}</p>
                     <hr>
                     
-                    {% if not object.is_solved and user is not object.user %}
+                    {% if not object.is_solved and user != object.user %}
                     <h5>質問回答</h5>
                     <form method="post" class="row g-3 mt-2">
                         {{ answer_form.non_field_errors }}
