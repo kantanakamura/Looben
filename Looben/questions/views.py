@@ -51,7 +51,6 @@ class QuestionView(LoginRequiredMixin, View):
             'searched_questions': searched_questions,
             'user_searched_anything': user_searched_anything,
             'number_of_searched_questions': number_of_searched_questions,
-            'searched_questions': searched_questions,
             })
     
     

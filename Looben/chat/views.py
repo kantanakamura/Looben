@@ -3,6 +3,7 @@ from django.views.generic.detail import DetailView
 from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from chat.serializers import MessageSerializer
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import View
 from django.shortcuts import get_object_or_404 
 from django.http import Http404
@@ -47,18 +48,39 @@ def follow_and_create_chatroom(request, username):
     return redirect("chat:get_message", username=username)
     
     
-class ChatRoomView(DetailView):
+class ChatRoomView(LoginRequiredMixin, View):
     template_name = 'chat/chat_room.html' 
     model = Users
-    slug_field = 'username'
-    slug_url_kwarg = 'username'
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        user = self.object
-        context['following_user_list'] = FollowForUser.objects.filter(user=user)
-        context['amount_of_following_users'] = FollowForUser.objects.filter(user=user).count()
-        return context
+    def get(self, request,  *args, **kwargs):
+        user = request.user
+        following_user_list = FollowForUser.objects.filter(user=user)
+        amount_of_following_users = FollowForUser.objects.filter(user=user).count()
+        if 'search' in self.request.GET:
+            keyword_query = request.GET.get('search')
+            if keyword_query == '':
+                searched_users = []
+                number_of_searched_users = 0
+                user_searched_anything = False
+            else:
+                users = following_user_list
+                searched_users = []
+                for user in users:
+                    if keyword_query in user.followed_user.name:
+                        searched_users.append(user.followed_user)
+                number_of_searched_users = len(searched_users)
+                user_searched_anything = True
+        else:
+            searched_users = []
+            number_of_searched_users = 0
+            user_searched_anything = False
+        return render(request, 'chat/chat_room.html', {
+            'following_user_list': following_user_list,
+            'amount_of_following_users': amount_of_following_users,
+            'searched_users': searched_users,
+            'user_searched_anything': user_searched_anything,
+            'number_of_searched_users': number_of_searched_users,
+            })
         
         
 class UpdateMessage(View):
