@@ -5,6 +5,7 @@
 {% block head_content %}
 <link href="{% static 'mdeditor/css/editormd.min.css' %}" rel="stylesheet">
 <link href="{% static 'mdeditor/css/editormd.preview.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/blog/blog_detail.css' %}">
 {% endblock %}
 
 
@@ -68,7 +69,9 @@
                             </div>
                         </div>
 
+                        <div id="main_content">
                         {{ object.content|markdown|safe }}
+                        </div>
                     </div>
                 </div>
                 <!-- Create a page form END -->
