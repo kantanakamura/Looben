@@ -3,6 +3,7 @@
 
 
 {% block head_content%}
+<link rel="stylesheet" href="{% static 'css/chat/messages.css' %}">
 {% endblock %}
 
 
@@ -139,9 +140,9 @@
                   <!-- Top avatar and status END -->
                   <hr>
                   <!-- Chat conversation START -->
-                  <div class="chat-conversation-content custom-scrollbar msg_history" style="overflow-y: auto;">
+                  <div class="chat-conversation-content">
     
-                    <div id="board">
+                    <div class="msg_history" id="board">
                       {% for message in messages %}
                       {% if conversation_partner == message.sender_name %}
                       <!-- Chat message left -->
@@ -226,7 +227,7 @@
           '<div class="d-flex my-2">' +
           '<div class="small text-secondary time_date">{time}</div>' +
           '{% if message.seen %}' +
-          '<div class="small ms-2"><i class="fa-solid fa-check-double text-info"></i></div>' +
+          '<div class="small ms-2">既読</div>' +
           '{% endif %}' +
           '</div>' +
           '</div>' +
