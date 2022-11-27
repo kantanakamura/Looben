@@ -13,310 +13,228 @@
 
 
 {% block content %}
+<!-- **************** MAIN CONTENT START **************** -->
 <main>
-    <div class="py-5">
-        <div class="container">
-
-            {% if category == 'university' %}
-            <h3 style="text-align:center;"><a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">大学</a> 質問一覧</h3>
-            {% elif category == 'foods' %}
-            <h3 style="text-align:center;"><a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">食事</a> 質問一覧</h3>
-            {% elif category == 'study' %}
-            <h3 style="text-align:center;"><a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">勉強</a> 質問一覧</h3>
-            {% elif category == 'job' %}
-            <h3 style="text-align:center;"><a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">就活</a> 質問一覧</h3>
-            {% else %}
-            <h3 style="text-align:center;"><a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">人生</a> 質問一覧</h3>
-            {% endif %}
-            
-            <div class="row g-4">
-                <div class="col-12">
-                <!-- Tab nav line START -->
-                <ul class="nav nav-tabs nav-tabs-white justify-content-center border-0">
-                    <li class="nav-item"> <a class="nav-link active" data-bs-toggle="tab" href="#tab-1"> 回答募集中 </a> </li>
-                    <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-2"> 解決済み </a> </li>
-                </ul>
-                <!-- Tab nav line START -->
-                </div>
+    <!-- Container START -->
+    <div class="container">
+        <div class="row g-4">
+    
+            <!-- Sidenav START -->
+            <div class="col-lg-3">
+    
+            <!-- Advanced filter responsive toggler START -->
+            <div class="d-flex align-items-center d-lg-none">
+                <button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
+                <i class="btn btn-primary fw-bold fa-solid fa-sliders-h"></i>
+                <span class="h6 mb-0 fw-bold d-lg-none ms-2">カテゴリー</span>
+                </button>
             </div>
+            <!-- Advanced filter responsive toggler END -->
             
-            <!-- Tab start -->
-            <div class="tab-content mb-0 pb-0">
-                <!-- 回答募集中 tab START -->
-                <div class="tab-pane fade show active" id="tab-1">
-                    <div class="row g-4">
-                        <!-- Sidenav START -->
-                        <div class="col-lg-3">
-                
-                        <!-- Advanced filter responsive toggler START -->
-                        <div class="d-flex align-items-center d-lg-none">
-                            <button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
-                            <i class="btn btn-primary fw-bold fa-solid fa-sliders-h"></i>
-                            <span class="h6 mb-0 fw-bold d-lg-none ms-2">カテゴリー</span>
-                            </button>
-                        </div>
-                        <!-- Advanced filter responsive toggler END -->
-                        
-                        <!-- Navbar START-->
-                        <nav class="navbar navbar-expand-lg mx-0"> 
-                            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSideNavbar">
-                            <!-- Offcanvas header -->
-                            <div class="offcanvas-header">
-                                <button type="button" class="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                            </div>
-                
-                            <!-- Offcanvas body -->
-                            <div class="offcanvas-body d-block px-2 px-lg-0">
-                                <!-- Card START -->
-                                <div class="card overflow-hidden">
-                                <!-- Cover image -->
-                                <div class="h-50px" style="background-image:url({% static 'images/bg/create_review.jpg' %}); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
-                                    <!-- Card body START -->
-                                    <div class="card-body pt-0">
-                                    <div class="text-center">
-                                    <!-- Avatar -->
-                                    <div class="avatar avatar-lg mt-n5 mb-3">
-                                        <a href="{% url 'dashboard:post_in_dashboard' user.username %}"><img class="avatar-img rounded border border-white border-3" src="{{ user.picture.url }}" alt="{{ user.username }}"></a>
-                                    </div>
-                                    <!-- Info -->
-                                    <h5 class="mb-0">
-                                        <a href="{% url 'dashboard:post_in_dashboard' user.username %}">
-                                            {{ user.name }} 
-                                            {% if user.is_verified %}
-                                            <i class="bi bi-patch-check-fill text-primary small"></i>
-                                            {% endif %}
-                                        </a> 
-                                    </h5>
-                                    <p>{{ user.school }}</p>
-                                    </div>
-                                    <!-- Divider -->
-                                    <hr>
-                
-                                    <!-- Side Nav START -->
-                                    <ul class="nav nav-link-secondary flex-column fw-bold gap-2 text-center">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'questions:categorized_questions' category='university' %}"><img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bank-outline-filled.svg' %}" alt="人生"><span>大学 </span></a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'questions:categorized_questions' category='foods' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/burger-outline-filled.svg' %}" alt="食事"><span>食事 </span></a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'questions:categorized_questions' category='study' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bookmark-open-outline-filled.svg' %}" alt="勉強"><span>勉強 </span></a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'questions:categorized_questions' category='job' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/laptop-outline-filled.svg' %}" alt="就活"><span>就活 </span></a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'questions:categorized_questions' category='life' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/globe-outline-filled.svg' %}" alt="人生"><span>人生 </span></a>
-                                        </li>
-                                    </ul>
-                                    <!-- Side Nav END -->
-                                </div>
-                                <!-- Card body END -->
-                                <!-- Card footer -->
-                                <div class="card-footer text-center py-2">
-                                    <a class="btn btn-link btn-sm" href="{% url 'questions:question' %}">質問ホームに戻る </a>
-                                </div>
-                                </div>
-                                <!-- Card END -->
-            
-                                <!-- Copyright -->
-                                <p class="small text-center mt-1">©2022 <a class="text-body" target="_blank" href=""> Looben </a></p>
-                            </div>
-                            </div>
-                        </nav>
-                        <!-- Navbar END-->
-                        </div>
-                        <!-- Sidenav END -->
-                
-                        <!-- Main content START -->
-                        <div class="col-md-8 col-lg-6 vstack gap-4">
-                        <!-- Create a page START -->
-                        <div class="card">
-                            <!-- Create a page form START -->
-                            <div class="card-body">
-                                {% for unsolved_question in unsolved_questions %}
-                                <div class="row">
-                                    <div class="d-sm-flex align-items-center">
-                                        <div class="ms-sm-4 mt-2 mt-sm-0">
-                                            {% if unsolved_question.category == 'university' %}
-                                            <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">大学</a>
-                                            {% elif unsolved_question.category == 'foods' %}
-                                            <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">食事</a>
-                                            {% elif unsolved_question.category == 'study' %}
-                                            <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">勉強</a>
-                                            {% elif unsolved_question.category == 'job' %}
-                                            <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">就活</a>
-                                            {% else %}
-                                            <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">人生</a>
-                                            {% endif %}
-                                            <span><a class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">回答募集中</a></span>
-                                            <br>
-                                            <!-- Info -->
-                                            <strong><a href="{% url 'questions:question_detail' unsolved_question.id %}"> {{ unsolved_question.content }} </a></strong>
-                                            <ul class="nav nav-stack" style="margin-top:3px;">
-                                                <li class="nav-item">
-                                                    <span style="color:#FF1474;">{{ unsolved_question.answerforquestion_set.all.count }}</span>回答 
-                                                </li>
-                                                <li class="nav-item">
-                                                    {{ unsolved_question.created_at }} 
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr>
-                                {% empty %}
-                                <p>回答募集中の質問はまだありません。</p>
-                                {% endfor %}
-                            </div>
-                            <!-- Create a page form END -->
-                        </div>
-                        <!-- Create a page END -->
-                        </div>
-                    </div> <!-- Row END -->
+            <!-- Navbar START-->
+            <nav class="navbar navbar-expand-lg mx-0"> 
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSideNavbar">
+                <!-- Offcanvas header -->
+                <div class="offcanvas-header">
+                    <button type="button" class="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-                <!-- 回答募集中tab END -->
+    
+                <!-- Offcanvas body -->
+                <div class="offcanvas-body d-block px-2 px-lg-0">
+                    <!-- Card START -->
+                    <div class="card overflow-hidden">
+                    <!-- Cover image -->
+                    <div class="h-50px" style="background-image:url({% static 'images/bg/create_review.jpg' %}); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+                        <!-- Card body START -->
+                        <div class="card-body pt-0">
+                        <div class="text-center">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-lg mt-n5 mb-3">
+                            <a href="{% url 'dashboard:post_in_dashboard' user.username %}"><img class="avatar-img rounded border border-white border-3" src="{{ user.picture.url }}" alt="{{ user.username }}"></a>
+                        </div>
+                        <!-- Info -->
+                        <h5 class="mb-0">
+                            <a href="{% url 'dashboard:post_in_dashboard' user.username %}">
+                                {{ user.name }} 
+                                {% if user.is_verified %}
+                                <i class="bi bi-patch-check-fill text-primary small"></i>
+                                {% endif %}
+                            </a> 
+                        </h5>
+                        <p>{{ user.school }}</p>
+                        </div>
+                        <!-- Divider -->
+                        <hr>
+    
+                        <!-- Side Nav START -->
+                        <ul class="nav nav-link-secondary flex-column fw-bold gap-2 text-center">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'questions:categorized_questions' category='university' %}"><img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bank-outline-filled.svg' %}" alt="人生"><span>大学 </span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'questions:categorized_questions' category='foods' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/burger-outline-filled.svg' %}" alt="食事"><span>食事 </span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'questions:categorized_questions' category='study' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bookmark-open-outline-filled.svg' %}" alt="勉強"><span>勉強 </span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'questions:categorized_questions' category='job' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/laptop-outline-filled.svg' %}" alt="就活"><span>就活 </span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'questions:categorized_questions' category='life' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/globe-outline-filled.svg' %}" alt="人生"><span>人生 </span></a>
+                            </li>
+                        </ul>
+                        <!-- Side Nav END -->
+                    </div>
+                    <!-- Card body END -->
+                    <!-- Card footer -->
+                    <div class="card-footer text-center py-2">
+                        <a class="btn btn-link btn-sm" href="{% url 'questions:question' %}">質問ホームに戻る </a>
+                    </div>
+                    </div>
+                    <!-- Card END -->
 
-            
-                <!-- 解決済み tab START -->
-                <div class="tab-pane fade" id="tab-2">
-                    <div class="row g-4">
-                        <!-- Sidenav START -->
-                        <div class="col-lg-3">
-                
-                        <!-- Advanced filter responsive toggler START -->
-                        <div class="d-flex align-items-center d-lg-none">
-                            <button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
-                            <i class="btn btn-primary fw-bold fa-solid fa-sliders-h"></i>
-                            <span class="h6 mb-0 fw-bold d-lg-none ms-2">カテゴリー</span>
-                            </button>
-                        </div>
-                        <!-- Advanced filter responsive toggler END -->
-                        
-                        <!-- Navbar START-->
-                        <nav class="navbar navbar-expand-lg mx-0"> 
-                            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSideNavbar">
-                            <!-- Offcanvas header -->
-                            <div class="offcanvas-header">
-                                <button type="button" class="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                            </div>
-                
-                            <!-- Offcanvas body -->
-                            <div class="offcanvas-body d-block px-2 px-lg-0">
-                                <!-- Card START -->
-                                <div class="card overflow-hidden">
-                                <!-- Cover image -->
-                                <div class="h-50px" style="background-image:url({% static 'images/bg/create_review.jpg' %}); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
-                                    <!-- Card body START -->
-                                    <div class="card-body pt-0">
-                                    <div class="text-center">
-                                    <!-- Avatar -->
-                                    <div class="avatar avatar-lg mt-n5 mb-3">
-                                        <a href="{% url 'dashboard:post_in_dashboard' user.username %}"><img class="avatar-img rounded border border-white border-3" src="{{ user.picture.url }}" alt="{{ user.username }}"></a>
-                                    </div>
-                                    <!-- Info -->
-                                    <h5 class="mb-0"> 
-                                        <a href="{% url 'dashboard:post_in_dashboard' user.username %}">
-                                            {{ user.name }} 
-                                            {% if user.is_verified %}
-                                            <i class="bi bi-patch-check-fill text-primary small"></i>
-                                            {% endif %}
-                                        </a> 
-                                    </h5>
-                                    <p>{{ user.school }}</p>
-                                    </div>
-                                    <!-- Divider -->
-                                    <hr>
-                
-                                    <!-- Side Nav START -->
-                                    <ul class="nav nav-link-secondary flex-column fw-bold gap-2 text-center">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'questions:categorized_questions' category='university' %}"><img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bank-outline-filled.svg' %}" alt="人生"><span>大学 </span></a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'questions:categorized_questions' category='foods' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/burger-outline-filled.svg' %}" alt="食事"><span>食事 </span></a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'questions:categorized_questions' category='study' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bookmark-open-outline-filled.svg' %}" alt="勉強"><span>勉強 </span></a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'questions:categorized_questions' category='job' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/laptop-outline-filled.svg' %}" alt="就活"><span>就活 </span></a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'questions:categorized_questions' category='life' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/globe-outline-filled.svg' %}" alt="人生"><span>人生 </span></a>
-                                        </li>
-                                    </ul>
-                                    <!-- Side Nav END -->
-                                </div>
-                                <!-- Card body END -->
-                                <!-- Card footer -->
-                                <div class="card-footer text-center py-2">
-                                    <a class="btn btn-link btn-sm" href="{% url 'questions:question' %}">質問ホームに戻る </a>
-                                </div>
-                                </div>
-                                <!-- Card END -->
-            
-                                <!-- Copyright -->
-                                <p class="small text-center mt-1">©2022 <a class="text-body" target="_blank" href=""> Looben </a></p>
-                            </div>
-                            </div>
-                        </nav>
-                        <!-- Navbar END-->
-                        </div>
-                        <!-- Sidenav END -->
-                
-                        <!-- Main content START -->
-                        <div class="col-md-8 col-lg-6 vstack gap-4">
-                        <!-- Create a page START -->
-                        <div class="card">
-                            <!-- Create a page form START -->
-                            <div class="card-body">
-                                {% for solved_question in solved_questions %}
-                                <div class="row">
-                                    <div class="d-sm-flex align-items-center">
-                                        <div class="ms-sm-4 mt-2 mt-sm-0">
-                                            {% if solved_question.category == 'university' %}
-                                            <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">大学</a>
-                                            {% elif solved_question.category == 'foods' %}
-                                            <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">食事</a>
-                                            {% elif solved_question.category == 'study' %}
-                                            <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">勉強</a>
-                                            {% elif solved_question.category == 'job' %}
-                                            <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">就活</a>
-                                            {% else %}
-                                            <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">人生</a>
-                                            {% endif %}
-                                            <br>
-                                            <!-- Info -->
-                                            <strong><a href="{% url 'questions:question_detail' solved_question.id %}"> {{ solved_question.content }} </a></strong>
-                                            {% for answer in solved_question.answerforquestion_set.all %}
-                                                <p style="font-size:13px;"><i class="bi bi-award-fill" style="color:#F3F23F;"></i>ベストアンサー: {{ answer.answer }}</p>
-                                            {% endfor %}
-                                            
-                                            <ul class="nav nav-stack" style="margin-top:3px;">
-                                                <li class="nav-item">
-                                                    {{ solved_question.created_at }} 
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr>
-                                {% empty %}
-                                <p>解決済みの質問はまだありません。</p>
-                                {% endfor %}
-                            </div>
-                            <!-- Create a page form END -->
-                        </div>
-                        <!-- Create a page END -->
-                        </div>
-                    </div> <!-- Row END -->
+                    <!-- Copyright -->
+                    <p class="small text-center mt-1">©2022 <a class="text-body" target="_blank" href=""> Looben </a></p>
                 </div>
-                <!-- 解決済み　tab END -->
+                </div>
+            </nav>
+            <!-- Navbar END-->
             </div>
-            <!-- Tab END -->
-        </div>
+            <!-- Sidenav END -->
+
+    
+            <!-- Main content START -->
+            <div class="col-md-8 col-lg-6 vstack gap-4">
+
+    
+                <!-- Card START -->
+                <div class="card h-100">
+                <!-- Card header START -->
+                <div class="card-header d-sm-flex align-items-center text-center justify-content-sm-between border-0 pb-0">
+                    {% if category == 'university' %}
+                    <h3 style="text-align:center;"><a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">大学</a> 質問一覧</h3>
+                    {% elif category == 'foods' %}
+                    <h3 style="text-align:center;"><a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">食事</a> 質問一覧</h3>
+                    {% elif category == 'study' %}
+                    <h3 style="text-align:center;"><a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">勉強</a> 質問一覧</h3>
+                    {% elif category == 'job' %}
+                    <h3 style="text-align:center;"><a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">就活</a> 質問一覧</h3>
+                    {% else %}
+                    <h3 style="text-align:center;"><a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">人生</a> 質問一覧</h3>
+                    {% endif %}
+                    <a class="btn btn-primary-soft" href="{% url 'questions:ask_question' %}"> <i class="fa-solid fa-plus pe-1"></i> 質問する</a>
+                </div>
+                <!-- Card header START -->
+                <!-- Card body START -->
+                <div class="card-body">
+    
+                    <!-- Tab nav line -->
+                    <ul class="nav nav-tabs nav-bottom-line justify-content-center justify-content-md-start">
+                    <li class="nav-item"> <a class="nav-link active" data-bs-toggle="tab" href="#tab-1">回答募集中 </a> </li>
+                    <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-2">解決済み </a> </li>
+                    </ul>
+                    <!-- Tab content START -->
+                    <div class="tab-content mb-0 pb-0">
+                    
+                    <!-- Event top tab START -->
+                    <div class="tab-pane fade show active" id="tab-1">
+                        <div class="row g-4">
+                        <div class="col-sm-12 col-xl-12">
+                            {% for unsolved_question in unsolved_questions %}
+                            <div class="row">
+                                <div class="d-sm-flex align-items-center">
+                                    <div class="ms-sm-4 mt-2 mt-sm-0">
+                                        {% if unsolved_question.category == 'university' %}
+                                        <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">大学</a>
+                                        {% elif unsolved_question.category == 'foods' %}
+                                        <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">食事</a>
+                                        {% elif unsolved_question.category == 'study' %}
+                                        <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">勉強</a>
+                                        {% elif unsolved_question.category == 'job' %}
+                                        <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">就活</a>
+                                        {% else %}
+                                        <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">人生</a>
+                                        {% endif %}
+                                        <span><a class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">回答募集中</a></span>
+                                        <br>
+                                        <!-- Info -->
+                                        <strong><a href="{% url 'questions:question_detail' unsolved_question.id %}"> {{ unsolved_question.content }} </a></strong>
+                                        <ul class="nav nav-stack" style="margin-top:3px;">
+                                            <li class="nav-item">
+                                                <span style="color:#FF1474;">{{ unsolved_question.answerforquestion_set.all.count }}</span>回答 
+                                            </li>
+                                            <li class="nav-item">
+                                                {{ unsolved_question.created_at }} 
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            {% empty %}
+                            <p>回答募集中の質問はまだありません。</p>
+                            {% endfor %}
+                        </div>
+                        </div>
+                    </div>
+                    <!-- Event top tab END -->
+    
+                    <!-- Event local tab START -->
+                    <div class="tab-pane fade" id="tab-2">
+                        <div class="row g-4">
+                        <div class="col-sm-12 col-xl-12">
+                            {% for solved_question in solved_questions %}
+                            <div class="row">
+                                <div class="d-sm-flex align-items-center">
+                                    <div class="ms-sm-4 mt-2 mt-sm-0">
+                                        {% if solved_question.category == 'university' %}
+                                        <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">大学</a>
+                                        {% elif solved_question.category == 'foods' %}
+                                        <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">食事</a>
+                                        {% elif solved_question.category == 'study' %}
+                                        <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">勉強</a>
+                                        {% elif solved_question.category == 'job' %}
+                                        <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">就活</a>
+                                        {% else %}
+                                        <a class="badge bg-primary bg-opacity-10 text-primary mb-2 fw-bold">人生</a>
+                                        {% endif %}
+                                        <br>
+                                        <!-- Info -->
+                                        <strong><a href="{% url 'questions:question_detail' solved_question.id %}"> {{ solved_question.content }} </a></strong>
+                                        {% for answer in solved_question.answerforquestion_set.all %}
+                                            <p style="font-size:13px;"><i class="bi bi-award-fill" style="color:#F3F23F;"></i>ベストアンサー: {{ answer.answer }}</p>
+                                        {% endfor %}
+                                        
+                                        <ul class="nav nav-stack" style="margin-top:3px;">
+                                            <li class="nav-item">
+                                                {{ solved_question.created_at }} 
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            {% empty %}
+                            <p>解決済みの質問はまだありません。</p>
+                            {% endfor %}
+                        </div>
+                        <!-- Event item END -->
+                        </div>
+                    </div>
+                    <!-- Event local tab END -->
+    
+                </div>
+                <!-- Tab content END -->
+                </div>
+                <!-- Card body END -->
+            </div>
+            <!-- Card END -->
+            </div>
+    
+        </div> <!-- Row END -->
     </div>
-</main> 
+    <!-- Container END -->
+</main>
+<!-- **************** MAIN CONTENT END **************** -->
 {% endblock %}
