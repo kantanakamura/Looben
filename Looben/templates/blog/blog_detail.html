@@ -23,14 +23,6 @@
 
             <!-- Sidenav START -->
             <div class="col-lg-3">
-                <!-- Advanced filter responsive toggler START -->
-                <div class="d-flex align-items-center d-lg-none">
-                    <button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
-                    <i class="btn btn-primary fw-bold fa-solid fa-sliders-h"></i>
-                    <span class="h6 mb-0 fw-bold d-lg-none ms-2">著者プロフィール</span>
-                    </button>
-                </div>
-                <!-- Advanced filter responsive toggler END -->
                 
                 <!-- Navbar START-->
                 <nav class="navbar navbar-expand-lg mx-0"> 
@@ -61,7 +53,11 @@
                                     {% endif %}
                                 </a> 
                             </h5>
+                            {% if object.author.state == '現役台湾留学生' or object.author.state == '台湾留学卒業生' %}
                             <p>{{ object.author.school }} / {{ object.author.major }}</p>
+                            {% else %}
+                            <p>{{ object.author.state }}</p>
+                            {% endif %}
                             <p>{{ object.author.description }}</p>
                             <div class="hstack gap-2 gap-xl-3 mt-3">
                                 <!-- User stat item -->
@@ -217,6 +213,42 @@
                         </div>
                         <!-- Create a page END -->
 
+                        <!-- ブログ記事著者のプロフィール -->
+                        <div class="card mb-4">
+                            <div class="card-header pb-0 border-0">
+                                <h5>この記事を書いた人</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-between" style="margin-bottom:5px;">
+                                    <div class="d-flex align-items-center">
+                                        <!-- Avatar -->
+                                        <div class="avatar me-2">
+                                            <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}"> <img class="avatar-img rounded-circle" src="{{ object.author.picture.url }}" alt="{{ object.author.username }}"> </a>
+                                        </div>
+                                        <!-- Info -->
+                                        <div>
+                                            <div class="nav nav-divider">
+                                            <h6 class="nav-item card-title mb-0"> 
+                                                <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}"> 
+                                                    {{ object.author.name }} 
+                                                    {% if object.author.is_verified %}
+                                                    <i class="bi bi-patch-check-fill text-primary small"></i>
+                                                    {% endif %}
+                                                </a>
+                                            </h6>
+                                            </div>
+                                            {% if object.author.state == '現役台湾留学生' or object.author.state == '台湾留学卒業生' %}
+                                            <p class="mb-0 small">{{ object.author.school }} / {{ object.author.major }}</p>
+                                            {% else %}
+                                            <p class="mb-0 small">{{ object.author.state }}</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <p>{{ object.author.description }}</p>
+                            </div>
+                        </div>
+
                         <!-- Comments START -->
                         <div class="card mb-4">
                             <div class="card-header pb-0 border-0">
@@ -272,7 +304,6 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        <!-- Blog single END -->
                     </div>
                     <!-- Account settings END -->
                 </div>

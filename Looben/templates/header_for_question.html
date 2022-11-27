@@ -18,42 +18,36 @@
         </a>
         {% endif %}
         <!-- Logo END -->
-    
 
-        <!-- Responsive navbar toggler -->
-        <button class="navbar-toggler ms-auto icon-md btn btn-light-soft p-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-animation">
-            <span></span>
-            <span></span>
-            <span></span>
-            </span>
+        <button class="navbar-toggler ms-auto icon-md btn btn-light p-0" style="background: transparent;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2" aria-controls="offcanvasNavbar2">
+            <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Main navbar START -->
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-
-
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
-            <!-- Nav item 1 Pages -->
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'accounts:research_university' %}">大学</a>
-            </li>             
-
-            <!-- Nav item 2 Post -->
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'questions:question' %}">質問部屋</a>
-            </li>  
-
-            <!-- Nav item 3 Post -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">留学生とつながる</a>
-                <ul class="dropdown-menu">
-                    <li> <a class="dropdown-item" href="{% url 'blogs:blog_list' %}"><i class="bi  bi-newspaper"></i> ブログ記事一覧</a></li>
-                    <li> <a class="dropdown-item" href="{% url 'accounts:user_ranking' %}"><i class="bi bi-file-earmark-person"></i> 留学生ランキング</a></li>
-                    <li> <a class="dropdown-item" href="{% url 'accounts:comingsoon' %}"><i class="bi bi-briefcase"></i> バイト</a></li>
+        <div class="offcanvas offcanvas-end text-bg-white" tabindex="-1" id="offcanvasNavbar2" aria-labelledby="offcanvasNavbar2Label">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasNavbar2Label">台湾留学情報サイトLooben</h5>
+                <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'accounts:research_university' %}">台湾大学</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'questions:question' %}">質問部屋</a>
+                    </li>  
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'blogs:blog_list' %}">留学ブログ</a>
+                    </li>  
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="homeMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">留学生とつながる</a>
+                        <ul class="dropdown-menu" aria-labelledby="homeMenu">
+                            <li> <a class="dropdown-item" href="{% url 'accounts:user_ranking' %}"><i class="bi bi-file-earmark-person"></i> 留学生ランキング</a></li>
+                            <li> <a class="dropdown-item" href="{% url 'accounts:comingsoon' %}"><i class="bi bi-briefcase"></i> バイト</a></li>
+                        </ul>
+                    </li>
                 </ul>
-            </li>
-            <ul>
+            </div>
         </div>
         <!-- Main navbar END -->
 
