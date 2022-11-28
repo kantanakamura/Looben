@@ -14,8 +14,9 @@ from django.db.models import Q
 from .forms import AnswerForQuestionForm, CommentToAnswerForm, QuestionForm
 from .models import AnswerForQuestion, Questions
 
-from accounts.models import Users, Schools
+from accounts.models import Users, Schools, FollowForUser
 from accounts import contribution_calculation
+from notifications.models import Notification
 
 
 class QuestionView(LoginRequiredMixin, View):
@@ -63,6 +64,17 @@ def ask_question(request):
             ask_question_form.instance.is_anonymous = True
         ask_question_form.save()
         contribution_calculation.for_creating_question(user=request.user)
+        # フォロワーへ質問作成の通知を作成
+        if ask_question_form.cleaned_data['university']:
+            target_university = ask_question_form.cleaned_data['university']
+            for student in Users.objects.filter(school=target_university.id).all():
+                create_question_notification = Notification(sender=request.user, receiver=student, message= str(request.user.username) + 'が新しく' + str(target_university) + 'に関する質問をしました。')
+                create_question_notification.save()
+                
+        else:
+            for follow in FollowForUser.objects.filter(followed_user=request.user).all():
+                create_question_notification = Notification(sender=request.user, receiver=follow.user, message= str(request.user.username) + 'が新しく質問をしました。')
+                create_question_notification.save()
         return redirect('questions:question')
     return render(
         request, 'question/ask_question.html', context={

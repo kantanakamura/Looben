@@ -22,6 +22,7 @@ from .models import Schools, Users, LikeForUniversity, FollowForUser
 from . import contribution_calculation
 from reviews.models import ReviewOfUniversity
 from questions.models import AnswerForQuestion ,Questions
+from notifications.models import Notification
 
 
 class HomeView(TemplateView):
@@ -95,6 +96,8 @@ def follow_for_user_view(request):
         context['method'] = 'create'
         context['following_message_for_javascript'] = 'フォロー中'
         contribution_calculation.for_getting_follower(user=followed_user)
+        create_following_notification = Notification(sender=request.user, receiver=followed_user, message=str(request.user.username) + 'があなたをフォローしました。')
+        create_following_notification.save()
     context['number_of_followed_user'] = FollowForUser.objects.filter(followed_user=followed_user).count()
     return JsonResponse(context)
 

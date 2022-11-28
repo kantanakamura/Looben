@@ -12,8 +12,9 @@ from django.http import JsonResponse
 from .models import ReviewOfUniversity
 from .forms import ReviewForm
 
-from accounts.models import Users, Schools
+from accounts.models import Schools, FollowForUser
 from accounts import contribution_calculation
+from notifications.models import Notification
 
 
 @login_required
@@ -33,8 +34,12 @@ def create_review_of_university(request):
             total_added_rating_value += int(review.star)
         target_university.star_rating = total_added_rating_value / number_of_review
         target_university.save()
-        # End
+        # End -Schoolsの星評価にこのレビューの評価を反映させる-
         contribution_calculation.for_creating_review(user=request.user)
+        # フォロワーへ口コミ作成の通知を作成
+        for follow in FollowForUser.objects.filter(followed_user=request.user).all():
+            create_review_notification = Notification(sender=request.user, receiver=follow.user, message= str(request.user.username) + 'が新しく口コミを投稿しました。')
+            create_review_notification.save()
         return redirect('accounts:research_university')
     return render(
         request, 'reviews/create_review_of_university.html', context={

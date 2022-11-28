@@ -15,6 +15,7 @@ from .forms import CreateBlogForm, EditBlogPostForm
 from .models import Blog, LikeForBlog
 from accounts.models import FollowForUser, Users
 from accounts import contribution_calculation
+from notifications.models import Notification
 
 
 class CheckForUserMatchMixin(LoginRequiredMixin, UserPassesTestMixin):
@@ -41,6 +42,10 @@ def create_blog(request):
         create_blog_form.instance.author = request.user
         create_blog_form.save()
         contribution_calculation.for_creating_post(author=request.user)
+        # フォロワーへのブログ記事作成の通知を作成
+        for follow in FollowForUser.objects.filter(followed_user=request.user).all():
+            create_blog_notification = Notification(sender=request.user, receiver=follow.user, message= str(request.user.username) + 'が新しくブログ記事を投稿しました。')
+            create_blog_notification.save()
         cache.delete(f'saved_title-user_id={request.user.id}')
         cache.delete(f'saved_meta_description-user_id={request.user.id}')
         cache.delete(f'saved_tag-user_id={request.user.id}')
@@ -149,6 +154,9 @@ def like_for_post(request):
         like.create(target=post, user=request.user)
         context['method'] = 'create'
         contribution_calculation.for_earning_post_likes(author=request.user)
+        # ブログ記事の著者へ、記事いいねの通知を作成
+        create_like_for_blog_notification = Notification(sender=request.user, receiver=post.author, message= str(request.user.username) + 'があなたの記事にいいねしました。')
+        create_like_for_blog_notification.save()
     context['like_for_post_count'] = post.likeforblog_set.count()
     return JsonResponse(context)
 
