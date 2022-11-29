@@ -10,6 +10,7 @@ from django.http import Http404
 
 from accounts.models import Users, FollowForUser
 from chat.models import Messages
+from notifications.models import Notification
     
     
 def get_message(request, username):
@@ -24,6 +25,9 @@ def get_message(request, username):
                Messages.objects.filter(sender_name=conversation_partner.id, receiver_name=current_user.id)
     amount_of_following_users = FollowForUser.objects.filter(user=request.user).count()
     following_user_list =  FollowForUser.objects.filter(user=request.user)
+    notification_lists =  Notification.objects.filter(receiver=request.user).order_by('timestamp').reverse()[:3]
+    number_of_notification =  Notification.objects.filter(receiver=request.user).count()
+    has_notifications =  Notification.objects.filter(receiver=request.user).exists()
     for message in messages:
         if message.sender_name == conversation_partner:
             message.seen = True
@@ -34,13 +38,15 @@ def get_message(request, username):
         'current_user': current_user, 
         'conversation_partner': conversation_partner,
         'amount_of_following_users': amount_of_following_users,
+        'notification_lists': notification_lists,
+        'number_of_notification': number_of_notification,
+        'has_notifications': has_notifications
         })
     
     
 def follow_and_create_chatroom(request, username):
     followed_user = get_object_or_404(Users, username=username)
     follow = FollowForUser.objects.filter(followed_user=followed_user, user=request.user)
-
     if followed_user == request.user:
         Http404("自分自身とチャットはできません")
     elif not follow.exists():
@@ -74,12 +80,18 @@ class ChatRoomView(LoginRequiredMixin, View):
             searched_users = []
             number_of_searched_users = 0
             user_searched_anything = False
+        notification_lists =  Notification.objects.filter(receiver=request.user).order_by('timestamp').reverse()[:3]
+        number_of_notification =  Notification.objects.filter(receiver=request.user).count()
+        has_notifications =  Notification.objects.filter(receiver=request.user).exists()
         return render(request, 'chat/chat_room.html', {
             'following_user_list': following_user_list,
             'amount_of_following_users': amount_of_following_users,
             'searched_users': searched_users,
             'user_searched_anything': user_searched_anything,
             'number_of_searched_users': number_of_searched_users,
+            'notification_lists': notification_lists,
+            'number_of_notification': number_of_notification,
+            'has_notifications': has_notifications
             })
         
         
