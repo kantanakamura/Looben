@@ -18,7 +18,7 @@ class PostInDashboardView(DetailView):
         user = self.object
         context['number_of_following_user'] = FollowForUser.objects.filter(user=user).count()
         context['number_of_followed_user'] = FollowForUser.objects.filter(followed_user=user).count()
-        context['blog_posts'] = Blog.objects.filter(author=user).all()
+        context['blog_posts'] = Blog.objects.filter(author=user).order_by('created_at').reverse().all()
         context['job_experiences'] = JobExperience.objects.filter(user=user).all()
         context['newest_users_list'] = Users.objects.filter(state='現役台湾留学生').order_by('joined_at').reverse()[:4]
         if user != self.request.user:

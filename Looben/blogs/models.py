@@ -10,7 +10,7 @@ class Blog(models.Model):
     meta_description = models.TextField('メタデスクリプション', blank=True, max_length=150)
     content = MDTextField('テキスト', help_text='Markdown形式で書いてください。')
     top_image = models.FileField('サムネイル画像', upload_to='blog/top_image/', default='blog/top_image/top_image.png')
-    created_at = models.DateField('作成日', auto_now_add=True)
+    created_at = models.DateField('作成日', default=timezone.now)
     updated_at = models.DateField('更新日', auto_now=True)
     is_official = models.BooleanField(default=False)
     total_number_of_view = models.IntegerField(default=0)
