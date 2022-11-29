@@ -73,7 +73,7 @@ def ask_question(request):
         # フォロワーへ質問作成の通知を作成
         if ask_question_form.cleaned_data['university']:
             target_university = ask_question_form.cleaned_data['university']
-            for student in Users.objects.filter(school=target_university.id).all():
+            for student in Users.objects.filter(~Q(id=request.user.id), school=target_university.id).all():
                 create_question_notification = Notification(sender=request.user, receiver=student, message= str(request.user.username) + 'が新しく' + str(target_university) + 'に関する質問をしました。')
                 create_question_notification.save()
                 
