@@ -12,8 +12,9 @@ from django.http import JsonResponse
 from .models import ReviewOfUniversity
 from .forms import ReviewForm
 
-from accounts.models import Users, Schools
+from accounts.models import Schools, FollowForUser
 from accounts import contribution_calculation
+from notifications.models import Notification
 
 
 @login_required
@@ -33,12 +34,22 @@ def create_review_of_university(request):
             total_added_rating_value += int(review.star)
         target_university.star_rating = total_added_rating_value / number_of_review
         target_university.save()
-        # End
+        # End -Schoolsの星評価にこのレビューの評価を反映させる-
         contribution_calculation.for_creating_review(user=request.user)
+        # フォロワーへ口コミ作成の通知を作成
+        for follow in FollowForUser.objects.filter(followed_user=request.user).all():
+            create_review_notification = Notification(sender=request.user, receiver=follow.user, message= str(request.user.username) + 'が新しく口コミを投稿しました。')
+            create_review_notification.save()
         return redirect('accounts:research_university')
+    notification_lists =  Notification.objects.filter(receiver=request.user).order_by('timestamp').reverse()[:3]
+    number_of_notification =  Notification.objects.filter(receiver=request.user).count()
+    has_notifications =  Notification.objects.filter(receiver=request.user).exists()
     return render(
         request, 'reviews/create_review_of_university.html', context={
-            'create_review_form': create_review_form
+            'create_review_form': create_review_form,
+            'notification_lists': notification_lists,
+            'number_of_notification': number_of_notification,
+            'has_notifications': has_notifications
         }
     )
     
@@ -51,6 +62,9 @@ class ReviewListOfUniversities(DetailView):
         context = super().get_context_data(**kwargs)
         school = self.object
         context['reviews'] = ReviewOfUniversity.objects.filter(university=school)
+        context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
+        context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
+        context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
         return context
 
 
@@ -72,4 +86,10 @@ class DeleteReviewView(CheckForUserMatchMixin, DeleteView):
     
     def get_success_url(self):
         return reverse_lazy('dashboard:review_in_dashboard', kwargs={'username': self.object.user.username})
-
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
+        context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
+        context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        return context

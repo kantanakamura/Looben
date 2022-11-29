@@ -22,6 +22,7 @@ from .models import Schools, Users, LikeForUniversity, FollowForUser
 from . import contribution_calculation
 from reviews.models import ReviewOfUniversity
 from questions.models import AnswerForQuestion ,Questions
+from notifications.models import Notification
 
 
 class HomeView(TemplateView):
@@ -60,6 +61,13 @@ class AccountSettingView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy('accounts:account_setting', kwargs={'username': self.object.username})
     
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
+        context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
+        context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        return context
+    
     
 @login_required
 def password_change(request):
@@ -95,6 +103,8 @@ def follow_for_user_view(request):
         context['method'] = 'create'
         context['following_message_for_javascript'] = 'フォロー中'
         contribution_calculation.for_getting_follower(user=followed_user)
+        create_following_notification = Notification(sender=request.user, receiver=followed_user, message=str(request.user.username) + 'があなたをフォローしました。')
+        create_following_notification.save()
     context['number_of_followed_user'] = FollowForUser.objects.filter(followed_user=followed_user).count()
     return JsonResponse(context)
 
@@ -123,6 +133,12 @@ class UserRankingView(LoginRequiredMixin, ListView):
     template_name = 'accounts/user_ranking.html'
     ordering = ['-contributed_points']
 
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
+        context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
+        context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        return context
     
 class ResearchUniversity(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
@@ -152,6 +168,9 @@ class ResearchUniversity(LoginRequiredMixin, View):
             searched_universities = []
             number_of_searched_universities = 0
             user_searched_anything = False
+        notification_lists =  Notification.objects.filter(receiver=request.user).order_by('timestamp').reverse()[:3]
+        number_of_notification =  Notification.objects.filter(receiver=request.user).count()
+        has_notifications =  Notification.objects.filter(receiver=request.user).exists()
         return render(request, "accounts/research_university.html", {
             'searched_universities': searched_universities, 
             'high_rated_universities': high_rated_universities, 
@@ -164,6 +183,9 @@ class ResearchUniversity(LoginRequiredMixin, View):
             'number_of_searched_universities': number_of_searched_universities,
             'user_searched_anything': user_searched_anything,
             'liked_universities': liked_universities,
+            'notification_lists': notification_lists,
+            'number_of_notification': number_of_notification,
+            'has_notifications': has_notifications
             })
     
     
@@ -187,6 +209,9 @@ class UniversityDetailView(LoginRequiredMixin, DetailView):
             context['is_user_liked_for_university'] = False
         school.number_of_viewer += 1
         school.save()
+        context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
+        context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
+        context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
         return context
 
     
@@ -198,12 +223,22 @@ class StudentsByUniversityView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         school = self.object
         context['users_affiliated_with_university'] = Users.objects.filter(school=school).all()
+        context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
+        context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
+        context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
         return context
     
         
     
 class ComingSoonView(TemplateView):
     template_name = 'comingsoon.html'
+    
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
+        context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
+        context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        return context
     
 
 def page_not_found(request, exception):

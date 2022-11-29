@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block head_content%}
+    <!--<link rel="stylesheet" href="{% static 'css/accounts/message.css' %}">-->
+{% endblock %}
+
+
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+
+{% block content %}
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+    <!-- Container START -->
+    <div class="container">
+        <div class="row">
+            <!-- Main content START -->
+            <div class="col-md-8 mx-auto">
+                <div class="card">
+                <!-- Title START -->
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="m-0">
+                        通知リスト 
+                        {% if number_of_notification %}
+                        <span class="badge bg-danger bg-opacity-10 text-danger ms-2">{{ number_of_notification }} new</span>
+                        {% endif %}
+                    </h4>
+                    <a class="small" href="{% url 'notifications:delete_all_notifications' %}">すべて既読にする</a>
+                </div>
+
+                <!-- Chat list START -->
+                <div class="mt-4 h-100">                   
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush list-unstyled p-2">
+                            {% for notification in all_notification_list %}
+                            <!-- Notif item -->
+                            <li>
+                            <div class="list-group-item list-group-item-action rounded d-flex border-0 mb-1 p-3">
+                                <div class="avatar text-center d-none d-sm-inline-block">
+                                <a href="{% url 'dashboard:post_in_dashboard' notification.sender.username %}"><img class="avatar-img rounded-circle" src="{{ notification.sender.picture.url }}" alt="{{ notification.sender.username }}"></a>
+                                </div>
+                                <div class="ms-sm-3">
+                                <div class=" d-flex">
+                                <p><span style="font-size:16px;">{{ notification.message }}</span><br>{{ notification.timestamp }}</p>
+                                </div>
+                            </div>
+                            </li>
+                            
+                            <!-- Notif item -->
+                            <hr>
+                            {% empty %}
+                            <p>通知はまだありません。</p>
+                            {% endfor %}
+                        </ul>
+                        </div>
+                </div>
+                <!-- Chat list  END -->
+                </div>
+            </div>
+
+        </div> <!-- Row END -->
+    </div>
+    <!-- Container END --> 
+</main>
+<!-- **************** MAIN CONTENT END **************** -->
+{% endblock %}

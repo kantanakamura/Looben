@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'mdeditor', 
+    'notifications',
     'accounts',
     'reviews',
     'dashboard',

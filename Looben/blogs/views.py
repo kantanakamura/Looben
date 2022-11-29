@@ -15,6 +15,7 @@ from .forms import CreateBlogForm, EditBlogPostForm
 from .models import Blog, LikeForBlog
 from accounts.models import FollowForUser, Users
 from accounts import contribution_calculation
+from notifications.models import Notification
 
 
 class CheckForUserMatchMixin(LoginRequiredMixin, UserPassesTestMixin):
@@ -41,15 +42,25 @@ def create_blog(request):
         create_blog_form.instance.author = request.user
         create_blog_form.save()
         contribution_calculation.for_creating_post(author=request.user)
+        # フォロワーへのブログ記事作成の通知を作成
+        for follow in FollowForUser.objects.filter(followed_user=request.user).all():
+            create_blog_notification = Notification(sender=request.user, receiver=follow.user, message= str(request.user.username) + 'が新しくブログ記事を投稿しました。')
+            create_blog_notification.save()
         cache.delete(f'saved_title-user_id={request.user.id}')
         cache.delete(f'saved_meta_description-user_id={request.user.id}')
         cache.delete(f'saved_tag-user_id={request.user.id}')
         cache.delete(f'saved_content-user_id={request.user.id}')
         cache.delete(f'saved_top_image-user_id={request.user.id}')
         return redirect('blogs:blog_list')
+    notification_lists =  Notification.objects.filter(receiver=request.user).order_by('timestamp').reverse()[:3]
+    number_of_notification =  Notification.objects.filter(receiver=request.user).count()
+    has_notifications =  Notification.objects.filter(receiver=request.user).exists()
     return render(
         request, 'blog/create_blog.html', context={
-            'create_blog_form': create_blog_form
+            'create_blog_form': create_blog_form,
+            'notification_lists': notification_lists,
+            'number_of_notification': number_of_notification,
+            'has_notifications': has_notifications
         }
     )
     
@@ -61,6 +72,13 @@ class DeletePostView(CheckForUserMatchMixin, DeleteView):
     def get_success_url(self):
         return reverse_lazy('dashboard:post_in_dashboard', kwargs={'username': self.object.author.username}) 
     
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
+        context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
+        context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        return context
+    
 
 class EditBlogPostView(CheckForUserMatchMixin, UpdateView):
     template_name = 'blog/edit_blog_post.html'
@@ -69,6 +87,13 @@ class EditBlogPostView(CheckForUserMatchMixin, UpdateView):
     
     def get_success_url(self):
         return reverse_lazy('blogs:blog_detail', kwargs={'pk': self.object.id}) 
+    
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
+        context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
+        context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        return context
     
     
 class BlogListView(LoginRequiredMixin, View):
@@ -80,6 +105,9 @@ class BlogListView(LoginRequiredMixin, View):
         number_of_blog_post = Blog.objects.filter(author=user).count()
         newest_blog_posts = Blog.objects.order_by('-created_at')[:6]
         most_viewed_posts = Blog.objects.order_by('-total_number_of_view')[:6]
+        notification_lists =  Notification.objects.filter(receiver=user).order_by('timestamp').reverse()[:3]
+        number_of_notification =  Notification.objects.filter(receiver=user).count()
+        has_notifications =  Notification.objects.filter(receiver=user).exists()
         if 'search' in self.request.GET:
             keyword_query = request.GET.get('search')
             if keyword_query == '':
@@ -107,6 +135,9 @@ class BlogListView(LoginRequiredMixin, View):
             'number_of_searched_blogs': number_of_searched_blogs,
             'user_searched_something': user_searched_something,
             'searched_blogs': searched_blogs,
+            'notification_lists': notification_lists,
+            'number_of_notification': number_of_notification,
+            'has_notifications': has_notifications
             })
         
         
@@ -129,6 +160,9 @@ class BlogDetailView(DetailView):
                 context['is_user_liked_for_post'] = True
         else:
             context['is_user_liked_for_post'] = False
+        context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
+        context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
+        context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
         return context
     
     
@@ -149,6 +183,9 @@ def like_for_post(request):
         like.create(target=post, user=request.user)
         context['method'] = 'create'
         contribution_calculation.for_earning_post_likes(author=request.user)
+        # ブログ記事の著者へ、記事いいねの通知を作成
+        create_like_for_blog_notification = Notification(sender=request.user, receiver=post.author, message= str(request.user.username) + 'があなたの記事にいいねしました。')
+        create_like_for_blog_notification.save()
     context['like_for_post_count'] = post.likeforblog_set.count()
     return JsonResponse(context)
 
@@ -164,16 +201,29 @@ class LikedBlogListView(LoginRequiredMixin, ListView):
         query = query.filter(user=request_user)
         return query
     
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
+        context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
+        context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        return context
+    
     
 class InOrderBlogListView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         blog_posts_order_by_date = Blog.objects.order_by('-created_at')[:20]
         blog_posts_order_by_number_of_view = Blog.objects.order_by('-total_number_of_view')[:20]
         official_blog_post_lists = Blog.objects.filter(is_official=True)[:20]
+        notification_lists =  Notification.objects.filter(receiver=request.user).order_by('timestamp').reverse()[:3]
+        number_of_notification =  Notification.objects.filter(receiver=request.user).count()
+        has_notifications =  Notification.objects.filter(receiver=request.user).exists()
         return render(request, 'blog/in_order_blog_post.html', {
             'blog_posts_order_by_date': blog_posts_order_by_date,
             'blog_posts_order_by_number_of_view': blog_posts_order_by_number_of_view,
-            'official_blog_post_lists': official_blog_post_lists
+            'official_blog_post_lists': official_blog_post_lists,
+            'notification_lists': notification_lists,
+            'number_of_notification': number_of_notification,
+            'has_notifications': has_notifications
             })
     
     
@@ -191,3 +241,4 @@ def save_post(request):
             cache.set(f'saved_content-user_id={request.user.id}', content)
             cache.set(f'saved_top_image-user_id={request.user.id}', top_image)
             return JsonResponse({'message': '一時保存しました。'})
+        

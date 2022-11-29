@@ -14,8 +14,9 @@ from django.db.models import Q
 from .forms import AnswerForQuestionForm, CommentToAnswerForm, QuestionForm
 from .models import AnswerForQuestion, Questions
 
-from accounts.models import Users, Schools
+from accounts.models import Users, Schools, FollowForUser
 from accounts import contribution_calculation
+from notifications.models import Notification
 
 
 class QuestionView(LoginRequiredMixin, View):
@@ -44,6 +45,9 @@ class QuestionView(LoginRequiredMixin, View):
             searched_questions = []
             number_of_searched_questions = 0
             user_searched_anything = False
+        notification_lists =  Notification.objects.filter(receiver=request.user).order_by('timestamp').reverse()[:3]
+        number_of_notification =  Notification.objects.filter(receiver=request.user).count()
+        has_notifications =  Notification.objects.filter(receiver=request.user).exists()
         return render(request, 'question/question.html', {
             'question_seeking_answers': question_seeking_answers,
             'solved_questions': solved_questions,
@@ -51,6 +55,9 @@ class QuestionView(LoginRequiredMixin, View):
             'searched_questions': searched_questions,
             'user_searched_anything': user_searched_anything,
             'number_of_searched_questions': number_of_searched_questions,
+            'notification_lists': notification_lists,
+            'number_of_notification': number_of_notification,
+            'has_notifications': has_notifications
             })
     
     
@@ -63,10 +70,26 @@ def ask_question(request):
             ask_question_form.instance.is_anonymous = True
         ask_question_form.save()
         contribution_calculation.for_creating_question(user=request.user)
+        # フォロワーへ質問作成の通知を作成
+        if ask_question_form.cleaned_data['university']:
+            target_university = ask_question_form.cleaned_data['university']
+            for student in Users.objects.filter(~Q(id=request.user.id), school=target_university.id).all():
+                create_question_notification = Notification(sender=request.user, receiver=student, message= str(request.user.username) + 'が新しく' + str(target_university) + 'に関する質問をしました。')
+                create_question_notification.save()
+        else:
+            for follow in FollowForUser.objects.filter(followed_user=request.user).all():
+                create_question_notification = Notification(sender=request.user, receiver=follow.user, message= str(request.user.username) + 'が新しく質問をしました。')
+                create_question_notification.save()
         return redirect('questions:question')
+    notification_lists =  Notification.objects.filter(receiver=request.user).order_by('timestamp').reverse()[:3]
+    number_of_notification =  Notification.objects.filter(receiver=request.user).count()
+    has_notifications =  Notification.objects.filter(receiver=request.user).exists()
     return render(
         request, 'question/ask_question.html', context={
-            'ask_question_form': ask_question_form
+            'ask_question_form': ask_question_form,
+            'notification_lists': notification_lists,
+            'number_of_notification': number_of_notification,
+            'has_notifications': has_notifications
         }
     )
     
@@ -84,6 +107,9 @@ class QuestionDetailView(DetailView):
             context['comment_to_best_answer'] = best_answer.commenttobestanswer_set.first()
         context['newest_solved_questions'] = Questions.objects.filter(~Q(id=self.object.id), category=self.object.category, is_solved=True).order_by('created_at')[:5]
         context['answer_form'] = AnswerForQuestionForm()
+        context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
+        context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
+        context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
         return context
     
     def post(self, request, *args, **kwargs):
@@ -114,6 +140,9 @@ class CategorizedQuestionsView(ListView):
             Prefetch('answerforquestion_set', queryset=AnswerForQuestion.objects.filter(is_best_answer=True))
         ).all()
         context['category'] = self.kwargs.get('category')
+        context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
+        context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
+        context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
         return context
 
 
@@ -126,6 +155,9 @@ class ListOfQuestionsForEachUniversity(DetailView):
         context['solved_questions'] = Questions.objects.filter(university=self.object, is_solved=True).prefetch_related(
             Prefetch('answerforquestion_set', queryset=AnswerForQuestion.objects.filter(is_best_answer=True))
         )
+        context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
+        context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
+        context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
         return context
         
         
@@ -137,6 +169,9 @@ class DecideAndCommentToBestAnswer(DetailView):
         context = super().get_context_data(**kwargs)
         context['comment_to_answer_form'] = CommentToAnswerForm()
         context['question'] = Questions.objects.get(id=self.object.question.id)
+        context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
+        context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
+        context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
         return context
     
     def post(self, request, *args, **kwargs):
