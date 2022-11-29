@@ -76,7 +76,6 @@ def ask_question(request):
             for student in Users.objects.filter(~Q(id=request.user.id), school=target_university.id).all():
                 create_question_notification = Notification(sender=request.user, receiver=student, message= str(request.user.username) + 'が新しく' + str(target_university) + 'に関する質問をしました。')
                 create_question_notification.save()
-                
         else:
             for follow in FollowForUser.objects.filter(followed_user=request.user).all():
                 create_question_notification = Notification(sender=request.user, receiver=follow.user, message= str(request.user.username) + 'が新しく質問をしました。')
