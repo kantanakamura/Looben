@@ -19,7 +19,7 @@ class PostInDashboardView(DetailView):
         context['number_of_following_user'] = FollowForUser.objects.filter(user=user).count()
         context['number_of_followed_user'] = FollowForUser.objects.filter(followed_user=user).count()
         context['blog_posts'] = Blog.objects.filter(author=user).order_by('created_at').reverse().all()
-        context['job_experiences'] = JobExperience.objects.filter(user=user).all()
+        context['job_experiences'] = JobExperience.objects.filter(user=user).order_by('job_date').reverse().all()
         context['newest_users_list'] = Users.objects.filter(state='現役台湾留学生').order_by('joined_at').reverse()[:4]
         if user != self.request.user:
             context['is_user_following'] = FollowForUser.objects.filter(user=self.request.user, followed_user=user).exists()
@@ -44,8 +44,8 @@ class ReviewInDashboardView(DetailView):
         user = self.object
         context['number_of_following_user'] = FollowForUser.objects.filter(user=user).count()
         context['number_of_followed_user'] = FollowForUser.objects.filter(followed_user=user).count()
-        context['reviews'] = ReviewOfUniversity.objects.filter(user=user).all()
-        context['job_experiences'] = JobExperience.objects.filter(user=user).all()
+        context['reviews'] = ReviewOfUniversity.objects.filter(user=user).order_by('created_at').reverse().all()
+        context['job_experiences'] = JobExperience.objects.filter(user=user).order_by('job_date').reverse().all()
         context['newest_users_list'] = Users.objects.filter(state='現役台湾留学生').order_by('joined_at').reverse()[:4]
         if user != self.request.user:
             context['is_user_following'] = FollowForUser.objects.filter(user=self.request.user, followed_user=user).exists()
@@ -70,7 +70,7 @@ class FollowingInDashboardView(DetailView):
         user = self.object
         context['number_of_following_user'] = FollowForUser.objects.filter(user=user).count()
         context['number_of_followed_user'] = FollowForUser.objects.filter(followed_user=user).count()
-        context['job_experiences'] = JobExperience.objects.filter(user=user).all()
+        context['job_experiences'] = JobExperience.objects.filter(user=user).order_by('job_date').reverse().all()
         context['newest_users_list'] = Users.objects.filter(state='現役台湾留学生').order_by('joined_at').reverse()[:4]
         if user != self.request.user:
             context['is_user_following'] = FollowForUser.objects.filter(user=self.request.user, followed_user=user).exists()
@@ -95,7 +95,7 @@ class FollowedInDashboardView(DetailView):
         user = self.object
         context['number_of_following_user'] = FollowForUser.objects.filter(user=user).count()
         context['number_of_followed_user'] = FollowForUser.objects.filter(followed_user=user).count()
-        context['job_experiences'] = JobExperience.objects.filter(user=user).all()
+        context['job_experiences'] = JobExperience.objects.filter(user=user).order_by('job_date').reverse().all()
         context['newest_users_list'] = Users.objects.filter(state='現役台湾留学生').order_by('joined_at').reverse()[:4]
         if user != self.request.user:
             context['is_user_following'] = FollowForUser.objects.filter(user=self.request.user, followed_user=user).exists()
@@ -120,8 +120,8 @@ class QuestionInDashboardView(DetailView):
         user = self.object
         context['number_of_following_user'] = FollowForUser.objects.filter(user=user).count()
         context['number_of_followed_user'] = FollowForUser.objects.filter(followed_user=user).count()
-        context['asked_questions'] = user.questions_set.filter(is_anonymous=False).all()
-        context['job_experiences'] = JobExperience.objects.filter(user=user).all()
+        context['asked_questions'] = user.questions_set.filter(is_anonymous=False).order_by('created_at').reverse().all()
+        context['job_experiences'] = JobExperience.objects.filter(user=user).order_by('job_date').reverse().all()
         context['newest_users_list'] = Users.objects.filter(state='現役台湾留学生').order_by('joined_at').reverse()[:4]
         if user != self.request.user:
             context['is_user_following'] = FollowForUser.objects.filter(user=self.request.user, followed_user=user).exists()
