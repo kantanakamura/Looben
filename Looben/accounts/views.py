@@ -23,6 +23,7 @@ from . import contribution_calculation
 from reviews.models import ReviewOfUniversity
 from questions.models import AnswerForQuestion ,Questions
 from notifications.models import Notification
+from chat.models import ConversationPartner
 
 
 class HomeView(TemplateView):

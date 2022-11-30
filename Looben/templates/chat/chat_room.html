@@ -24,7 +24,7 @@
                 <!-- Title START -->
                 <div class="card-header border-0 pb-0">
                     <div class="d-flex mb-2 mb-sm-0">
-                        <h1 class="h5 mb-0">チャットルーム<span class="badge bg-success bg-opacity-10 text-success">{{ amount_of_following_users }}</span></h1>
+                        <h1 class="h5 mb-0">チャットルーム<span class="badge bg-success bg-opacity-10 text-success">{{ number_of_conversation_partners }}</span></h1>
                     </div>
                     <hr>
                 </div>
@@ -69,23 +69,23 @@
                             </li>
                             {% endfor %}
                         {% else %}
-                            {% for following_user in following_user_list %}
+                            {% for conversation in conversation_partner_list %}
                             <li data-bs-dismiss="offcanvas">
                             <!-- Chat user tab item -->
-                            <a href="{% url 'chat:get_message' following_user.followed_user.username %}" class="nav-link text-start">
+                            <a href="{% url 'chat:get_message' conversation.conversation_partner.username %}" class="nav-link text-start">
                                 <div class="d-flex">
                                 <div class="flex-shrink-0 avatar me-2">
-                                    <img class="avatar-img rounded-circle" src="{{ following_user.followed_user.picture.url }}" alt="{{ following_user.followed_user.username }}">
+                                    <img class="avatar-img rounded-circle" src="{{ conversation.conversation_partner.picture.url }}" alt="{{ conversation.conversation_partner.username }}">
                                 </div>
                                 <div class="flex-grow-1 d-block">
                                     <h6 class="mb-0 mt-1">
-                                        {{ following_user.followed_user.name }} 
-                                        {% if following_user.followed_user.is_verified %}
+                                        {{ conversation.conversation_partner.name }} 
+                                        {% if conversation.conversation_partner.is_verified %}
                                         <i class="bi bi-patch-check-fill text-primary small"></i>
                                         {% endif %}
                                     </h6>
-                                    {% if following_user.followed_user.state == '現役台湾留学生' or following_user.followed_user.state == '台湾留学卒業生' %}
-                                    <div class="small text-secondary">{{ following_user.followed_user.school }}</div>
+                                    {% if conversation.conversation_partner.state == '現役台湾留学生' or conversation.conversation_partner.state == '台湾留学卒業生' %}
+                                    <div class="small text-secondary">{{ conversation.conversation_partner.school }}</div>
                                     {% endif %}
                                 </div>
                                 </div>

@@ -81,10 +81,10 @@
                     </div>
                     <a href="{% url 'accounts:account_setting' object.username  %}"><button class="btn btn-danger-soft me-2" type="button"> <i class="bi bi-pencil-fill pe-1"></i> 編集 </button></a>
                     {% elif is_user_following %}
-                    <a href="{% url 'chat:follow_and_crete_chatroom' object.username %}"><button class="btn btn-primary-soft me-2" type="button"> <i class="bi bi-chat-dots-fill pe-1"></i> メッセージ </button></a>
+                    <a href="{% url 'chat:create_chatroom' object.username %}"><button class="btn btn-primary-soft me-2" type="button"> <i class="bi bi-chat-dots-fill pe-1"></i> メッセージ </button></a>
                     <button class="btn btn-danger-soft me-2" type="button" id="ajax-follow-for-user"> <i class="bi bi-person-heart pe-1"></i> <span id="following-message-for-javascript">{{ following_message_for_javascript }}<span> </button>
                     {% else %}
-                    <a href="{% url 'chat:follow_and_crete_chatroom' object.username %}"><button class="btn btn-primary-soft me-2" type="button"> <i class="bi bi-chat-dots-fill pe-1"></i> メッセージ </button></a>
+                    <a href="{% url 'chat:create_chatroom' object.username %}"><button class="btn btn-primary-soft me-2" type="button"> <i class="bi bi-chat-dots-fill pe-1"></i> メッセージ </button></a>
                     <button class="btn btn-info-soft me-2" type="button" id="ajax-follow-for-user"> <i class="bi bi-person-heart pe-1"></i> <span id="following-message-for-javascript">{{ following_message_for_javascript }}<span> </button>
                     {% endif %}
                   </div>
