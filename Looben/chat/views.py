@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import View
 from django.shortcuts import get_object_or_404 
 from django.http import Http404
+from django.db.models import Prefetch
 
 from .models import ConversationPartner
 from accounts.models import Users
@@ -46,12 +47,13 @@ def get_message(request, username):
     
 def create_chatroom(request, username):
     conversation_partner = get_object_or_404(Users, username=username)
-    conversation_connectoin = ConversationPartner.objects.filter(conversation_partner=conversation_partner, current_user=request.user)
+    conversation_connection = ConversationPartner.objects.filter(conversation_partner=conversation_partner, current_user=request.user)
+    conversation_connection_for_other = ConversationPartner.objects.filter(conversation_partner=request.user, current_user=conversation_partner)
     if conversation_partner == request.user:
         Http404("自分自身とチャットはできません")
-    elif not conversation_connectoin.exists():
-        conversation_connectoin.create(conversation_partner=conversation_partner, current_user=request.user)
-        ConversationPartner(conversation_partner=request.user, current_user=conversation_partner)
+    elif not conversation_connection.exists():
+        conversation_connection.create(conversation_partner=conversation_partner, current_user=request.user)
+        conversation_connection_for_other.create(conversation_partner=request.user, current_user=conversation_partner)
     return redirect("chat:get_message", username=username)
     
     
@@ -61,8 +63,8 @@ class ChatRoomView(LoginRequiredMixin, View):
     
     def get(self, request,  *args, **kwargs):
         user = request.user
-        number_of_conversation_partners = ConversationPartner.objects.filter(current_user=request.user).count()
-        conversation_partner_list =  ConversationPartner.objects.filter(current_user=request.user).order_by('timestamp').reverse()
+        number_of_conversation_partners = ConversationPartner.objects.filter(current_user=user).count()
+        conversation_partner_list =  ConversationPartner.objects.filter(current_user=user).order_by('timestamp').reverse()
         if 'search' in self.request.GET:
             keyword_query = request.GET.get('search')
             if keyword_query == '':
@@ -92,7 +94,7 @@ class ChatRoomView(LoginRequiredMixin, View):
             'number_of_searched_users': number_of_searched_users,
             'notification_lists': notification_lists,
             'number_of_notification': number_of_notification,
-            'has_notifications': has_notifications
+            'has_notifications': has_notifications,
             })
         
         
@@ -101,9 +103,15 @@ class UpdateMessage(View):
     def post(self, request, *args, **kwargs):
         data = JSONParser().parse(request)
         serializer = MessageSerializer(data=data)
+        sender = self.kwargs.get('sender')
+        receiver =  self.kwargs.get('receiver')
         
         if serializer.is_valid():
             serializer.save()
+            message_notification = ConversationPartner.objects.filter(current_user=sender, conversation_partner=receiver) 
+            for message in message_notification:
+                message.have_new_message = True
+                message_notification.save()
             return JsonResponse(serializer.data, status=201)
         
         return JsonResponse(serializer.errors, status=400)
@@ -112,8 +120,12 @@ class UpdateMessage(View):
         sender = self.kwargs.get('sender')
         receiver =  self.kwargs.get('receiver')
         messages = Messages.objects.filter(sender_name=sender, receiver_name=receiver, is_seen=False)
+        message_notification = ConversationPartner.objects.filter(current_user=sender, conversation_partner=receiver) 
         for message in messages:
             message.is_seen = True
             message.save()
+        for message in message_notification:
+            message.have_new_message = True
+            message_notification.save()
         serializer = MessageSerializer(instance=messages, many=True)
         return JsonResponse(serializer.data, safe=False)

@@ -88,6 +88,9 @@
                                     <div class="small text-secondary">{{ conversation.conversation_partner.school }}</div>
                                     {% endif %}
                                 </div>
+                                {% if is_seen_message %}
+                                <span class="badge bg-success bg-opacity-10 text-success">未読のメッセージがあります</span>
+                                {% endif%}
                                 </div>
                             </a>
                             </li>

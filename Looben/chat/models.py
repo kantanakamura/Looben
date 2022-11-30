@@ -24,7 +24,13 @@ class Messages(models.Model):
 class ConversationPartner(models.Model):
     current_user = models.ForeignKey(Users, verbose_name="送信者", on_delete=models.CASCADE, related_name='current_user')
     conversation_partner = models.ForeignKey(Users, verbose_name="受信者", on_delete=models.CASCADE, related_name='conversation_partner')
+    have_new_message = models.BooleanField(default=False)
     timestamp = models.DateTimeField(default=timezone.now)
     
     class Meta:
         verbose_name_plural = 'チャットユーザーリスト'
+        
+    def __str__(self):
+        return f"To: {self.current_user} From: {self.conversation_partner} {self.have_new_message}"
+        
+    
