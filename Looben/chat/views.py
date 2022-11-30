@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.http import Http404
 
 from .models import ConversationPartner
-from accounts.models import Users, FollowForUser
+from accounts.models import Users
 from chat.models import Messages
 from notifications.models import Notification
     
