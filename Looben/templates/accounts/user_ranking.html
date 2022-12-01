@@ -59,7 +59,7 @@
                                 <h5>{{ student.contributed_points }}pt</h5>
                                 <div style="text-align:right;">   
                                 {% if student != user %}
-                                <a href="{% url 'chat:follow_and_crete_chatroom' student.username %}"><button class="btn btn-sm btn-primary-soft " data-bs-toggle="tooltip" data-bs-placement="top" title="メッセージを送る"> <i class="bi bi-chat-dots"></i> </button></a>
+                                <a href="{% url 'chat:create_chatroom' student.username %}"><button class="btn btn-sm btn-primary-soft " data-bs-toggle="tooltip" data-bs-placement="top" title="メッセージを送る"> <i class="bi bi-chat-dots"></i> </button></a>
                                 <a href="{% url 'dashboard:post_in_dashboard' student.username %}"><button class="btn btn-sm btn-info-soft " data-bs-toggle="tooltip" data-bs-placement="top" title="詳細を見る"> <i class="bi bi-incognito"></i> </button></a>
                                 {% endif %}
                                 </div>

@@ -23,6 +23,7 @@ from . import contribution_calculation
 from reviews.models import ReviewOfUniversity
 from questions.models import AnswerForQuestion ,Questions
 from notifications.models import Notification
+from chat.models import ConversationPartner
 
 
 class HomeView(TemplateView):
@@ -66,6 +67,7 @@ class AccountSettingView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
         context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
         context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        context['has_not_seen_message'] = ConversationPartner.objects.filter(current_user=self.request.user, have_new_message=True).exists()
         return context
     
     
@@ -138,6 +140,7 @@ class UserRankingView(LoginRequiredMixin, ListView):
         context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
         context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
         context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        context['has_not_seen_message'] = ConversationPartner.objects.filter(current_user=self.request.user, have_new_message=True).exists()
         return context
     
 class ResearchUniversity(LoginRequiredMixin, View):
@@ -171,6 +174,7 @@ class ResearchUniversity(LoginRequiredMixin, View):
         notification_lists =  Notification.objects.filter(receiver=request.user).order_by('timestamp').reverse()[:3]
         number_of_notification =  Notification.objects.filter(receiver=request.user).count()
         has_notifications =  Notification.objects.filter(receiver=request.user).exists()
+        has_not_seen_message = ConversationPartner.objects.filter(current_user=request.user, have_new_message=True).exists()
         return render(request, "accounts/research_university.html", {
             'searched_universities': searched_universities, 
             'high_rated_universities': high_rated_universities, 
@@ -185,7 +189,8 @@ class ResearchUniversity(LoginRequiredMixin, View):
             'liked_universities': liked_universities,
             'notification_lists': notification_lists,
             'number_of_notification': number_of_notification,
-            'has_notifications': has_notifications
+            'has_notifications': has_notifications,
+            'has_not_seen_message': has_not_seen_message
             })
     
     
@@ -212,6 +217,7 @@ class UniversityDetailView(LoginRequiredMixin, DetailView):
         context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
         context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
         context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        context['has_not_seen_message'] = ConversationPartner.objects.filter(current_user=self.request.user, have_new_message=True).exists()
         return context
 
     
@@ -226,6 +232,7 @@ class StudentsByUniversityView(LoginRequiredMixin, DetailView):
         context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
         context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
         context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        context['has_not_seen_message'] = ConversationPartner.objects.filter(current_user=self.request.user, have_new_message=True).exists()
         return context
     
         
@@ -238,6 +245,7 @@ class ComingSoonView(TemplateView):
         context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
         context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
         context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        context['has_not_seen_message'] = ConversationPartner.objects.filter(current_user=self.request.user, have_new_message=True).exists()
         return context
     
 

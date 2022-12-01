@@ -14,6 +14,7 @@ from .forms import ReviewForm
 
 from accounts.models import Schools, FollowForUser
 from accounts import contribution_calculation
+from chat.models import ConversationPartner
 from notifications.models import Notification
 
 
@@ -44,12 +45,14 @@ def create_review_of_university(request):
     notification_lists =  Notification.objects.filter(receiver=request.user).order_by('timestamp').reverse()[:3]
     number_of_notification =  Notification.objects.filter(receiver=request.user).count()
     has_notifications =  Notification.objects.filter(receiver=request.user).exists()
+    has_not_seen_message = ConversationPartner.objects.filter(current_user=request.user, have_new_message=True).exists()
     return render(
         request, 'reviews/create_review_of_university.html', context={
             'create_review_form': create_review_form,
             'notification_lists': notification_lists,
             'number_of_notification': number_of_notification,
-            'has_notifications': has_notifications
+            'has_notifications': has_notifications,
+            'has_not_seen_message': has_not_seen_message
         }
     )
     
@@ -65,6 +68,7 @@ class ReviewListOfUniversities(DetailView):
         context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
         context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
         context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        context['has_not_seen_message'] = ConversationPartner.objects.filter(current_user=self.request.user, have_new_message=True).exists()
         return context
 
 
@@ -92,4 +96,5 @@ class DeleteReviewView(CheckForUserMatchMixin, DeleteView):
         context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
         context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
         context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        context['has_not_seen_message'] = ConversationPartner.objects.filter(current_user=self.request.user, have_new_message=True).exists()
         return context

@@ -16,6 +16,7 @@ from .models import Blog, LikeForBlog
 from accounts.models import FollowForUser, Users
 from accounts import contribution_calculation
 from notifications.models import Notification
+from chat.models import ConversationPartner
 
 
 class CheckForUserMatchMixin(LoginRequiredMixin, UserPassesTestMixin):
@@ -55,12 +56,14 @@ def create_blog(request):
     notification_lists =  Notification.objects.filter(receiver=request.user).order_by('timestamp').reverse()[:3]
     number_of_notification =  Notification.objects.filter(receiver=request.user).count()
     has_notifications =  Notification.objects.filter(receiver=request.user).exists()
+    has_not_seen_message = ConversationPartner.objects.filter(current_user=request.user, have_new_message=True).exists()
     return render(
         request, 'blog/create_blog.html', context={
             'create_blog_form': create_blog_form,
             'notification_lists': notification_lists,
             'number_of_notification': number_of_notification,
-            'has_notifications': has_notifications
+            'has_notifications': has_notifications,
+            'has_not_seen_message': has_not_seen_message
         }
     )
     
@@ -77,6 +80,7 @@ class DeletePostView(CheckForUserMatchMixin, DeleteView):
         context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
         context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
         context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        context['has_not_seen_message'] = ConversationPartner.objects.filter(current_user=self.request.user, have_new_message=True).exists()
         return context
     
 
@@ -93,6 +97,7 @@ class EditBlogPostView(CheckForUserMatchMixin, UpdateView):
         context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
         context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
         context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        context['has_not_seen_message'] = ConversationPartner.objects.filter(current_user=self.request.user, have_new_message=True).exists()
         return context
     
     
@@ -108,6 +113,7 @@ class BlogListView(LoginRequiredMixin, View):
         notification_lists =  Notification.objects.filter(receiver=user).order_by('timestamp').reverse()[:3]
         number_of_notification =  Notification.objects.filter(receiver=user).count()
         has_notifications =  Notification.objects.filter(receiver=user).exists()
+        has_not_seen_message = ConversationPartner.objects.filter(current_user=request.user, have_new_message=True).exists()
         if 'search' in self.request.GET:
             keyword_query = request.GET.get('search')
             if keyword_query == '':
@@ -137,7 +143,8 @@ class BlogListView(LoginRequiredMixin, View):
             'searched_blogs': searched_blogs,
             'notification_lists': notification_lists,
             'number_of_notification': number_of_notification,
-            'has_notifications': has_notifications
+            'has_notifications': has_notifications,
+            'has_not_seen_message': has_not_seen_message
             })
         
         
@@ -163,6 +170,7 @@ class BlogDetailView(DetailView):
         context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
         context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
         context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        context['has_not_seen_message'] = ConversationPartner.objects.filter(current_user=self.request.user, have_new_message=True).exists()
         return context
     
     
@@ -206,6 +214,7 @@ class LikedBlogListView(LoginRequiredMixin, ListView):
         context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
         context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
         context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        context['has_not_seen_message'] = ConversationPartner.objects.filter(current_user=self.request.user, have_new_message=True).exists()
         return context
     
     
@@ -217,13 +226,15 @@ class InOrderBlogListView(LoginRequiredMixin, View):
         notification_lists =  Notification.objects.filter(receiver=request.user).order_by('timestamp').reverse()[:3]
         number_of_notification =  Notification.objects.filter(receiver=request.user).count()
         has_notifications =  Notification.objects.filter(receiver=request.user).exists()
+        has_not_seen_message = ConversationPartner.objects.filter(current_user=request.user, have_new_message=True).exists()
         return render(request, 'blog/in_order_blog_post.html', {
             'blog_posts_order_by_date': blog_posts_order_by_date,
             'blog_posts_order_by_number_of_view': blog_posts_order_by_number_of_view,
             'official_blog_post_lists': official_blog_post_lists,
             'notification_lists': notification_lists,
             'number_of_notification': number_of_notification,
-            'has_notifications': has_notifications
+            'has_notifications': has_notifications,
+            'has_not_seen_message': has_not_seen_message
             })
     
     

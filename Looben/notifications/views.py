@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
 
 from .models import Notification
+from chat.models import ConversationPartner
         
         
 class NotificationList(LoginRequiredMixin, TemplateView): 
@@ -14,6 +15,7 @@ class NotificationList(LoginRequiredMixin, TemplateView):
         context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
         context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
         context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        context['has_not_seen_message'] = ConversationPartner.objects.filter(current_user=self.request.user, have_new_message=True).exists()
         return context
 
     

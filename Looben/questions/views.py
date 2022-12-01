@@ -16,6 +16,7 @@ from .models import AnswerForQuestion, Questions
 
 from accounts.models import Users, Schools, FollowForUser
 from accounts import contribution_calculation
+from chat.models import ConversationPartner
 from notifications.models import Notification
 
 
@@ -48,6 +49,7 @@ class QuestionView(LoginRequiredMixin, View):
         notification_lists =  Notification.objects.filter(receiver=request.user).order_by('timestamp').reverse()[:3]
         number_of_notification =  Notification.objects.filter(receiver=request.user).count()
         has_notifications =  Notification.objects.filter(receiver=request.user).exists()
+        has_not_seen_message = ConversationPartner.objects.filter(current_user=request.user, have_new_message=True).exists()
         return render(request, 'question/question.html', {
             'question_seeking_answers': question_seeking_answers,
             'solved_questions': solved_questions,
@@ -57,7 +59,8 @@ class QuestionView(LoginRequiredMixin, View):
             'number_of_searched_questions': number_of_searched_questions,
             'notification_lists': notification_lists,
             'number_of_notification': number_of_notification,
-            'has_notifications': has_notifications
+            'has_notifications': has_notifications,            
+            'has_not_seen_message': has_not_seen_message
             })
     
     
@@ -84,12 +87,14 @@ def ask_question(request):
     notification_lists =  Notification.objects.filter(receiver=request.user).order_by('timestamp').reverse()[:3]
     number_of_notification =  Notification.objects.filter(receiver=request.user).count()
     has_notifications =  Notification.objects.filter(receiver=request.user).exists()
+    has_not_seen_message = ConversationPartner.objects.filter(current_user=request.user, have_new_message=True).exists()
     return render(
         request, 'question/ask_question.html', context={
             'ask_question_form': ask_question_form,
             'notification_lists': notification_lists,
             'number_of_notification': number_of_notification,
-            'has_notifications': has_notifications
+            'has_notifications': has_notifications,
+            'has_not_seen_message': has_not_seen_message
         }
     )
     
@@ -110,6 +115,7 @@ class QuestionDetailView(DetailView):
         context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
         context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
         context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        context['has_not_seen_message'] = ConversationPartner.objects.filter(current_user=self.request.user, have_new_message=True).exists()
         return context
     
     def post(self, request, *args, **kwargs):
@@ -143,6 +149,7 @@ class CategorizedQuestionsView(ListView):
         context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
         context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
         context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        context['has_not_seen_message'] = ConversationPartner.objects.filter(current_user=self.request.user, have_new_message=True).exists()
         return context
 
 
@@ -158,6 +165,7 @@ class ListOfQuestionsForEachUniversity(DetailView):
         context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
         context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
         context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        context['has_not_seen_message'] = ConversationPartner.objects.filter(current_user=self.request.user, have_new_message=True).exists()
         return context
         
         
@@ -172,6 +180,7 @@ class DecideAndCommentToBestAnswer(DetailView):
         context['notification_lists'] =  Notification.objects.filter(receiver=self.request.user).order_by('timestamp').reverse()[:3]
         context['number_of_notification'] =  Notification.objects.filter(receiver=self.request.user).count()
         context['has_notifications'] =  Notification.objects.filter(receiver=self.request.user).exists()
+        context['has_not_seen_message'] = ConversationPartner.objects.filter(current_user=self.request.user, have_new_message=True).exists()
         return context
     
     def post(self, request, *args, **kwargs):
