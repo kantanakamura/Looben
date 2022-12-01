@@ -29,6 +29,7 @@ def get_message(request, username):
     notification_lists =  Notification.objects.filter(receiver=request.user).order_by('timestamp').reverse()[:3]
     number_of_notification =  Notification.objects.filter(receiver=request.user).count()
     has_notifications =  Notification.objects.filter(receiver=request.user).exists()
+    has_not_seen_message = ConversationPartner.objects.filter(current_user=request.user, have_new_message=True).exists()
     for message in messages:
         if message.sender_name == conversation_partner:
             message.is_seen = True
@@ -43,7 +44,8 @@ def get_message(request, username):
         'number_of_conversation_partners': number_of_conversation_partners,
         'notification_lists': notification_lists,
         'number_of_notification': number_of_notification,
-        'has_notifications': has_notifications
+        'has_notifications': has_notifications,
+        'has_not_seen_message': has_not_seen_message
         })
     
     
@@ -68,6 +70,7 @@ class ChatRoomView(LoginRequiredMixin, View):
         number_of_conversation_partners = ConversationPartner.objects.filter(current_user=user).count()
         have_new_message_conversation_partner_list =  ConversationPartner.objects.filter(current_user=user, have_new_message=True).order_by('timestamp').reverse()
         no_new_message_conversation_partner_list =  ConversationPartner.objects.filter(current_user=user, have_new_message=False).order_by('timestamp').reverse()
+        has_not_seen_message = ConversationPartner.objects.filter(current_user=user, have_new_message=True).exists()
         if 'search' in self.request.GET:
             keyword_query = request.GET.get('search')
             if keyword_query == '':
@@ -107,6 +110,7 @@ class ChatRoomView(LoginRequiredMixin, View):
             'notification_lists': notification_lists,
             'number_of_notification': number_of_notification,
             'has_notifications': has_notifications,
+            'has_not_seen_message': has_not_seen_message
             })
         
         
