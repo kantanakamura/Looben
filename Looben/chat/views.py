@@ -76,7 +76,6 @@ class ChatRoomView(LoginRequiredMixin, View):
             if keyword_query == '':
                 searched_have_new_message_users = []
                 searched_no_new_message_users = []
-                number_of_searched_users = 0
                 user_searched_anything = False
             else:
                 have_new_message_users = have_new_message_conversation_partner_list
@@ -89,12 +88,10 @@ class ChatRoomView(LoginRequiredMixin, View):
                 for user in no_new_message_users:
                     if keyword_query in user.conversation_partner.name:
                         searched_no_new_message_users.append(user.conversation_partner)
-                number_of_searched_users = len(searched_have_new_message_users) + len(searched_no_new_message_users)
                 user_searched_anything = True
         else:
             searched_have_new_message_users = []
             searched_no_new_message_users = []
-            number_of_searched_users = 0
             user_searched_anything = False
         notification_lists =  Notification.objects.filter(receiver=request.user).order_by('timestamp').reverse()[:3]
         number_of_notification =  Notification.objects.filter(receiver=request.user).count()
@@ -106,7 +103,6 @@ class ChatRoomView(LoginRequiredMixin, View):
             'searched_have_new_message_users': searched_have_new_message_users,
             'searched_no_new_message_users': searched_no_new_message_users,
             'user_searched_anything': user_searched_anything,
-            'number_of_searched_users': number_of_searched_users,
             'notification_lists': notification_lists,
             'number_of_notification': number_of_notification,
             'has_notifications': has_notifications,
