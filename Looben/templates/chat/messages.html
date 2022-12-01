@@ -246,7 +246,7 @@
       })
       function send(sender, receiver, message){
           // メッセージ送信
-          $.post('/api/messages', '{"sender_name": "' + sender + '", "receiver_name": "' +
+          $.post('/api/messages/' + sender_id + '/' + receiver_id, '{"sender_name": "' + sender + '", "receiver_name": "' +
                   receiver + '","description": "' + message + '" }', function (data) {
               let field = text_box.replace('{description}', message);
               let today = new Date();

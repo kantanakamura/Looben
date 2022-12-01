@@ -6,7 +6,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import View
 from django.shortcuts import get_object_or_404 
 from django.http import Http404
-from django.db.models import Prefetch
 
 from .models import ConversationPartner
 from accounts.models import Users
@@ -33,6 +32,7 @@ def get_message(request, username):
         if message.sender_name == conversation_partner:
             message.is_seen = True
             message.save()
+    ConversationPartner.objects.filter(current_user=current_user, conversation_partner=conversation_partner).update(have_new_message=False)
     return render(request, "chat/messages.html", {
         'messages': messages,
         'conversation_partner_list': conversation_partner_list,
@@ -103,29 +103,22 @@ class UpdateMessage(View):
     def post(self, request, *args, **kwargs):
         data = JSONParser().parse(request)
         serializer = MessageSerializer(data=data)
-        sender = self.kwargs.get('sender')
-        receiver =  self.kwargs.get('receiver')
+        conversation_partner = self.kwargs.get('sender')
+        current_user =  self.kwargs.get('receiver')
         
         if serializer.is_valid():
             serializer.save()
-            message_notification = ConversationPartner.objects.filter(current_user=sender, conversation_partner=receiver) 
-            for message in message_notification:
-                message.have_new_message = True
-                message_notification.save()
+            ConversationPartner.objects.filter(current_user=conversation_partner, conversation_partner=current_user).update(have_new_message=True)
             return JsonResponse(serializer.data, status=201)
-        
         return JsonResponse(serializer.errors, status=400)
     
     def get(self, request, *args, **kwargs):
-        sender = self.kwargs.get('sender')
-        receiver =  self.kwargs.get('receiver')
-        messages = Messages.objects.filter(sender_name=sender, receiver_name=receiver, is_seen=False)
-        message_notification = ConversationPartner.objects.filter(current_user=sender, conversation_partner=receiver) 
+        conversation_partner = self.kwargs.get('sender')
+        current_user =  self.kwargs.get('receiver')
+        messages = Messages.objects.filter(sender_name=conversation_partner, receiver_name=current_user, is_seen=False)
+        ConversationPartner.objects.filter(current_user=current_user, conversation_partner=conversation_partner).update(have_new_message=False)
         for message in messages:
             message.is_seen = True
             message.save()
-        for message in message_notification:
-            message.have_new_message = True
-            message_notification.save()
         serializer = MessageSerializer(instance=messages, many=True)
         return JsonResponse(serializer.data, safe=False)
