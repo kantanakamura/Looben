@@ -45,22 +45,45 @@
                     <ul class="nav flex-column nav-pills nav-pills-soft">
 
                         {% if user_searched_anything %}
-                            {% for searched_user in searched_users %}
+                            {% for searched_have_new_message_user in searched_have_new_message_users %}
                             <li data-bs-dismiss="offcanvas">
                             <!-- Chat user tab item -->
-                            <a href="{% url 'chat:get_message' searched_user.username %}" class="nav-link text-start">
+                            <a href="{% url 'chat:get_message' searched_have_new_message_user.username %}" class="nav-link text-start">
                                 <div class="d-flex">
-                                <div class="flex-shrink-0 avatar me-2">
-                                    <img class="avatar-img rounded-circle" src="{{ searched_user.picture.url }}" alt="{{ searched_user.username }}">
+                                <div class="flex-shrink-0 avatar avatar-story me-2">
+                                    <img class="avatar-img rounded-circle" src="{{ searched_have_new_message_user.picture.url }}" alt="{{ searched_have_new_message_user.username }}">
                                 </div>
                                 <div class="flex-grow-1 d-block">
                                     <h6 class="mb-0 mt-1">
-                                        {{ searched_user.name }} 
-                                        {% if searched_user.is_verified %}
+                                        {{ searched_have_new_message_user.name }} 
+                                        {% if searched_have_new_message_user.is_verified %}
                                         <i class="bi bi-patch-check-fill text-primary small"></i>
                                         {% endif %}
                                     </h6>
-                                    {% if searched_user.state == '現役台湾留学生' or searched_user.state == '台湾留学卒業生' %}
+                                    {% if searched_have_new_message_user.state == '現役台湾留学生' or searched_have_new_message_user.state == '台湾留学卒業生' %}
+                                    <div class="small text-secondary">{{ searched_user.school }}</div>
+                                    {% endif %}
+                                </div>
+                                </div>
+                            </a>
+                            </li>
+                            {% endfor %}
+                            {% for searched_no_new_message_user in searched_no_new_message_users %}
+                            <li data-bs-dismiss="offcanvas">
+                            <!-- Chat user tab item -->
+                            <a href="{% url 'chat:get_message' searched_no_new_message_user.username %}" class="nav-link text-start">
+                                <div class="d-flex">
+                                <div class="flex-shrink-0 avatar avatar-story me-2">
+                                    <img class="avatar-img rounded-circle" src="{{ searched_no_new_message_user.picture.url }}" alt="{{ searched_no_new_message_user.username }}">
+                                </div>
+                                <div class="flex-grow-1 d-block">
+                                    <h6 class="mb-0 mt-1">
+                                        {{ searched_no_new_message_user.name }} 
+                                        {% if searched_no_new_message_user.is_verified %}
+                                        <i class="bi bi-patch-check-fill text-primary small"></i>
+                                        {% endif %}
+                                    </h6>
+                                    {% if searched_no_new_message_user.state == '現役台湾留学生' or searched_no_new_message_user.state == '台湾留学卒業生' %}
                                     <div class="small text-secondary">{{ searched_user.school }}</div>
                                     {% endif %}
                                 </div>
@@ -69,34 +92,56 @@
                             </li>
                             {% endfor %}
                         {% else %}
-                            {% for conversation in conversation_partner_list %}
+                            {% for have_new_message_conversation in have_new_message_conversation_partner_list %}
                             <li data-bs-dismiss="offcanvas">
                             <!-- Chat user tab item -->
-                            <a href="{% url 'chat:get_message' conversation.conversation_partner.username %}" class="nav-link text-start">
+                            <a href="{% url 'chat:get_message' have_new_message_conversation.conversation_partner.username %}" class="nav-link text-start">
                                 <div class="d-flex">
-                                <div class="flex-shrink-0 avatar me-2">
-                                    <img class="avatar-img rounded-circle" src="{{ conversation.conversation_partner.picture.url }}" alt="{{ conversation.conversation_partner.username }}">
+                                <div class="flex-shrink-0 avatar avatar-story me-2">
+                                    <img class="avatar-img rounded-circle" src="{{ have_new_message_conversation.conversation_partner.picture.url }}" alt="{{ have_new_message_conversation.conversation_partner.username }}">
                                 </div>
                                 <div class="flex-grow-1 d-block">
                                     <h6 class="mb-0 mt-1">
-                                        {{ conversation.conversation_partner.name }} 
-                                        {% if conversation.conversation_partner.is_verified %}
+                                        {{ have_new_message_conversation.conversation_partner.name }} 
+                                        {% if have_new_message_conversation.conversation_partner.is_verified %}
                                         <i class="bi bi-patch-check-fill text-primary small"></i>
                                         {% endif %}
                                     </h6>
-                                    {% if conversation.conversation_partner.state == '現役台湾留学生' or conversation.conversation_partner.state == '台湾留学卒業生' %}
-                                    <div class="small text-secondary">{{ conversation.conversation_partner.school }}</div>
+                                    {% if have_new_message_conversation.conversation_partner.state == '現役台湾留学生' or have_new_message_conversation.conversation_partner.state == '台湾留学卒業生' %}
+                                    <div class="small text-secondary">{{ have_new_message_conversation.conversation_partner.school }}</div>
                                     {% endif %}
                                 </div>
-                                {% if is_seen_message %}
-                                <span class="badge bg-success bg-opacity-10 text-success">未読のメッセージがあります</span>
-                                {% endif%}
                                 </div>
                             </a>
                             </li>
                             {% endfor %}
+                            {% for no_new_message_conversation in no_new_message_conversation_partner_list %}
+                            <li data-bs-dismiss="offcanvas">
+                            <!-- Chat user tab item -->
+                            <a href="{% url 'chat:get_message' no_new_message_conversation.conversation_partner.username %}" class="nav-link text-start">
+                                <div class="d-flex">
+                                <div class="flex-shrink-0 avatar me-2">
+                                    <img class="avatar-img rounded-circle" src="{{ no_new_message_conversation.conversation_partner.picture.url }}" alt="{{ no_newm_essage_conversation.conversation_partner.username }}">
+                                </div>
+                                <div class="flex-grow-1 d-block">
+                                    <h6 class="mb-0 mt-1">
+                                        {{ no_new_message_conversation.conversation_partner.name }} 
+                                        {% if no_new_message_conversation.conversation_partner.is_verified %}
+                                        <i class="bi bi-patch-check-fill text-primary small"></i>
+                                        {% endif %}
+                                    </h6>
+                                    {% if no_new_message_conversation.conversation_partner.state == '現役台湾留学生' or no_new_message_conversation.conversation_partner.state == '台湾留学卒業生' %}
+                                    <div class="small text-secondary">{{ no_new_message_conversation.conversation_partner.school }}</div>
+                                    {% endif %}
+                                </div>
+                                </div>
+                            </a>
+                            </li>
+                            {% endfor %}
+                            {% if not have_new_message_conversation_partner_list and not no_new_message_conversation_partner_list %}
+                            <p>チャットルームにはまだ誰もいません。</p>
+                            {% endif %}
                         {% endif %}
-                        
                     </ul>
                     </div>
                 </div>

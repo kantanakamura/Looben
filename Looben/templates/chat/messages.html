@@ -73,19 +73,42 @@
                           </a>
                         </li>
 
-                        {% for conversation in conversation_partner_list %}
-                        {% if not conversation.conversation_partner == conversation_partner %}
+                        {% for have_new_message_conversation_partner in have_new_message_conversation_partner_list %}
+                        {% if not have_new_message_conversation_partner.conversation_partner == conversation_partner %}
                         <li data-bs-dismiss="offcanvas">
                           <!-- Chat user tab item -->
-                          <a href="{% url 'chat:get_message' conversation.conversation_partner.username %}" class="nav-link text-start">
+                          <a href="{% url 'chat:get_message' have_new_message_conversation_partner.conversation_partner.username %}" class="nav-link text-start">
                             <div class="d-flex">
-                              <div class="flex-shrink-0 avatar me-2">
-                                <img class="avatar-img rounded-circle" src="{{ conversation.conversation_partner.picture.url }}" alt="{{ conversation.conversation_partner.username }}">
+                              <div class="flex-shrink-0 avatar avatar-story me-2">
+                                <img class="avatar-img rounded-circle" src="{{ have_new_message_conversation_partner.conversation_partner.picture.url }}" alt="{{ have_new_message_conversation_partner.conversation_partner.username }}">
                               </div>
                               <div class="flex-grow-1 d-block">
                                 <h6 class="mb-0 mt-1">
-                                  {{ conversation.conversation_partner.name }} 
-                                  {% if conversation.conversation_partner.is_verified %}
+                                  {{ have_new_message_conversation_partner.conversation_partner.name }} 
+                                  {% if have_new_message_conversation_partner.conversation_partner.is_verified %}
+                                  <i class="bi bi-patch-check-fill text-primary small"></i>
+                                  {% endif %}
+                                </h6>
+                                <div class="small text-secondary"></div>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+                        {% for no_new_message_conversation_partner in no_new_message_conversation_partner_list %}
+                        {% if not no_new_message_conversation_partner.conversation_partner == conversation_partner %}
+                        <li data-bs-dismiss="offcanvas">
+                          <!-- Chat user tab item -->
+                          <a href="{% url 'chat:get_message' no_new_message_conversation_partner.conversation_partner.username %}" class="nav-link text-start">
+                            <div class="d-flex">
+                              <div class="flex-shrink-0 avatar me-2">
+                                <img class="avatar-img rounded-circle" src="{{ no_new_message_conversation_partner.conversation_partner.picture.url }}" alt="{{ no_new_message_conversation_partner.conversation_partner.username }}">
+                              </div>
+                              <div class="flex-grow-1 d-block">
+                                <h6 class="mb-0 mt-1">
+                                  {{ no_new_message_conversation_partner.conversation_partner.name }} 
+                                  {% if no_new_message_conversation_partner.conversation_partner.is_verified %}
                                   <i class="bi bi-patch-check-fill text-primary small"></i>
                                   {% endif %}
                                 </h6>

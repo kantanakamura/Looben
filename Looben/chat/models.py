@@ -25,7 +25,7 @@ class ConversationPartner(models.Model):
     current_user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='current_user')
     conversation_partner = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='conversation_partner')
     have_new_message = models.BooleanField(default=False)
-    timestamp = models.DateTimeField(default=timezone.now)
+    timestamp = models.DateTimeField(auto_now_add=True)
     
     class Meta:
         verbose_name_plural = 'チャットユーザーリスト'
