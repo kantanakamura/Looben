@@ -245,6 +245,11 @@ def save_post(request):
         tag = request.GET.get('tag')
         content = request.GET.get('content')
         top_image = request.GET.get('top_image')
+        print(title)
+        print(meta_description)
+        print(tag)
+        print(content)
+        print(top_image)
         if title or meta_description or tag or content or top_image:
             cache.set(f'saved_title-user_id={request.user.id}', title)
             cache.set(f'saved_meta_description-user_id={request.user.id}', meta_description)
