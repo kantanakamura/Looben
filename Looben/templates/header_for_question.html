@@ -8,13 +8,11 @@
         <!-- Logo START -->
         {% if user.is_authenticated %}
         <a class="navbar-brand" href="{% url 'dashboard:post_in_dashboard' username=user.username %}">
-            <img class="light-mode-item navbar-brand-item" src="{% static 'images/looben.png' %}" alt="looben">
-            <img class="dark-mode-item navbar-brand-item" src="{% static 'images/looben.png' %}" alt="looben">
+            <img class="light-mode-item navbar-brand-item" style="width:125px" src="{% static 'images/looben.png' %}" alt="looben">
         </a>
         {% else %}
         <a class="navbar-brand" href="{% url 'accounts:home' %}">
             <img class="light-mode-item navbar-brand-item" src="{% static 'images/looben.png' %}" alt="looben">
-            <img class="dark-mode-item navbar-brand-item" src="{% static 'images/looben.png' %}" alt="looben">
         </a>
         {% endif %}
         <!-- Logo END -->
