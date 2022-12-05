@@ -6,7 +6,6 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from email.policy import default
 from tabnanny import verbose
-from tkinter import CASCADE
 
 
 class UserManager(BaseUserManager):
