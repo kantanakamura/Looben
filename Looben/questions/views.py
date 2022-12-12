@@ -125,6 +125,8 @@ class QuestionDetailView(DetailView):
             answer_form.instance.question = self.object
             answer_form.instance.user = request.user
             answer_form.save()
+            answer_question_notification = Notification(sender=request.user, receiver=self.object.user, message= str(request.user.username) + 'が新しくあなたの質問に回答しました。')
+            answer_question_notification.save()
             return redirect('questions:question_detail', pk=self.object.id)
         else:
             context = self.get_context_data()

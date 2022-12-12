@@ -1,5 +1,4 @@
 from django.db import models
-from mdeditor.fields import MDTextField
 from django.utils import timezone
 
 from accounts.models import Users
@@ -8,12 +7,10 @@ from accounts.models import Users
 class Blog(models.Model):
     title = models.CharField('タイトル', max_length=50)
     meta_description = models.TextField('メタデスクリプション', blank=True, max_length=150)
-    content = MDTextField('テキスト', help_text='Markdown形式で書いてください。')
+    url = models.CharField('url', max_length=600, default='#')
     top_image = models.FileField('サムネイル画像', upload_to='blog/top_image/', default='blog/top_image/top_image.png')
     created_at = models.DateField('作成日', default=timezone.now)
-    updated_at = models.DateField('更新日', auto_now=True)
     is_official = models.BooleanField(default=False)
-    total_number_of_view = models.IntegerField(default=0)
     tag = models.CharField('タグ', max_length=25, null=True)
     author = models.ForeignKey(
         Users, on_delete=models.CASCADE
@@ -23,20 +20,8 @@ class Blog(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = 'ブログ'
-        verbose_name_plural = 'ブログ'
-        
-        
-class LikeForBlog(models.Model):
-    target = models.ForeignKey(
-        Blog, on_delete=models.CASCADE
-    )
-    user = models.ForeignKey(
-        Users, on_delete=models.Model
-    )
-    timestamp = models.DateTimeField(default=timezone.now)
-    
-    class Meta:
-        verbose_name = 'ブログいいね'
+        verbose_name = '投稿'
+        verbose_name_plural = '投稿'
+
     
 

@@ -3,7 +3,6 @@
 
 
 {% block head_content%}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
 {% endblock %}
 
 
@@ -24,7 +23,7 @@
             <div class="card">
                 <!-- Title START -->
                 <div class="card-header border-0 pb-0">
-                <h1 class="h4 card-title mb-0">ブログ記事編集ページ</h1>
+                <h1 class="h4 card-title mb-0">就活経験編集ページ</h1>
                 </div>
                 <!-- Title END -->
 
@@ -32,56 +31,51 @@
                 <div class="card-body">
                 <form class="row g-3 mt-4" method="post" enctype="multipart/form-data">
                     {{ form.non_field_errors }}
-                    {{ form.media }}
                     {% csrf_token %}
 
-                    <!-- 口コミ大学 -->
-                    <div class="col-8">
-                    <label class="form-label">タイトル</label>
-                    {{ form.title }}
-                    <small>ブログ記事を簡単に表すようなタイトルを考えてみよう</small>
+                    <div class="col-12">
+                        <label class="form-label">タイトル</label>
+                        {{ form.title }}
+                        <small>ブログ記事を簡単に表すようなタイトルを考えてみよう</small>
                     </div>
                     {{ form.title.errors }}
 
-                    
-                    <div class="col-8">
-                    <label class="form-label">メタデスクリプション</label>
-                    {{ form.meta_description }}
-                    <small>ブログ記事の概要を150字以内で説明しよう</small>
+                    <div class="col-12">
+                        <label class="form-label">共有URL</label>
+                        {{ form.url }}
+                        <small>共有したい、記事やYouTubeのリンクを記入してください
+                        </small>
                     </div>
-                    {{ form.meta_description.errors }}
+                    {{ form.url.errors }}
 
-                    <div class="col-8">
-                    <label class="form-label">タグ</label>
-                    <div class="input-group">
-                        <div class="input-group-text">#</div>
-                        {{ form.tag }} 
-                    </div>
-                    <small>タグを1つだけ作成できます</small>
-                    </div>
-                    {{ form.tag.errors }}
-                    
-
-                    <!-- サムネイル -->
                     <div class="col-8">
                         <label class="form-label">サムネイル画像</label>
                         {{ form.top_image }}
-                        <small>ブログ検索の時に表示されます</small>
+                        <small>投稿検索の時に表示されます</small>
                     </div>
                     {{ form.top_image.errors }}
 
-                    <!-- タイトル -->
                     <div class="col-12">
-                    <label class="form-label">ブログ記事本文</label>
-                    {{ form.content }}
-                    <small>markdown方式を利用しています
-                    </small>
+                        <label class="form-label">メタデスクリプション</label>
+                        {{ form.meta_description }}
+                        <small>この投稿の概要を150字以内で説明してください</small>
                     </div>
-                    {{ form.content.errors }}
+                    {{ form.meta_description.errors }}
+
+                    <div class="col-12">
+                        <label class="form-label">タグ</label>
+                        <div class="input-group">
+                            <div class="input-group-text">#</div>
+                            {{ form.tag }} 
+                        </div>
+                        <small>タグを1つだけ作成できます</small>
+                    </div>
+                    {{ form.tag.errors }}
 
                     <!-- Button  -->
                     <div class="col-12 text-end">
                     <button type="submit" class="btn btn-primary mb-0">変更保存</button>
+                    <a href="{% url 'blogs:delete_post' object.id %}" class="btn btn-danger mb-0">削除</a>
                     </div>
                 </form>
                 </div>
@@ -95,12 +89,4 @@
     <!-- Container END --> 
 </main>
 <!-- **************** MAIN CONTENT END **************** -->
-{% endblock %}
-
-{% block javascript %}
-<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
-<script>
-    var simplemde = new SimpleMDE();
-    document.getElementById('id_content').removeAttribute('required');
-</script>
 {% endblock %}

@@ -24,7 +24,7 @@
           <div class="card">
             <!-- Title START -->
             <div class="card-header border-0 pb-0">
-              <h1 class="h4 card-title mb-0">ブログ記事作成ページ</h1>
+              <h1 class="h4 card-title mb-0">投稿作成ページ</h1>
             </div>
             <!-- Title END -->
 
@@ -36,7 +36,7 @@
                 {% csrf_token %}
 
                 <!-- 口コミ大学 -->
-                <div class="col-8">
+                <div class="col-12">
                   <label class="form-label">タイトル</label>
                   {{ create_blog_form.title }}
                   <small>ブログ記事を簡単に表すようなタイトルを考えてみよう</small>
@@ -45,29 +45,29 @@
 
                 <!-- 本文 -->
                 <div class="col-12">
-                  <label class="form-label">ブログ記事本文</label>
-                  {{ create_blog_form.content }}
-                  <small>markdown方式を利用しています
+                  <label class="form-label">共有URL</label>
+                  {{ create_blog_form.url }}
+                  <small>共有したい、記事やYouTubeのリンクを記入してください
                   </small>
                 </div>
-                {{ create_blog_form.content.errors }}
+                {{ create_blog_form.url.errors }}
 
                 <!-- サムネイル -->
                 <div class="col-8">
                   <label class="form-label">サムネイル画像</label>
                     {{ create_blog_form.top_image }}
-                  <small>ブログ検索の時に表示されます</small>
+                  <small>投稿検索の時に表示されます</small>
                 </div>
                 {{ create_blog_form.top_image.errors }}
 
-                <div class="col-8">
+                <div class="col-12">
                   <label class="form-label">メタデスクリプション</label>
                   {{ create_blog_form.meta_description }}
-                  <small>ブログ記事の概要を150字以内で説明しよう</small>
+                  <small>この投稿の概要を150字以内で説明してください</small>
                 </div>
                 {{ create_blog_form.meta_description.errors }}
 
-                <div class="col-8">
+                <div class="col-12">
                   <label class="form-label">タグ</label>
                   <div class="input-group">
                     <div class="input-group-text">#</div>
@@ -79,10 +79,7 @@
 
                 <!-- Button  -->
                 <div class="col-12 text-end">
-                  <input type="button" class="btn btn-info mb-0" id="save_post" value="一時保存"></input>
-                </div>
-                <div class="col-12 text-end">
-                  <button type="submit" class="btn btn-primary mb-0">ブログ記事を公開</button>
+                  <button type="submit" class="btn btn-primary mb-0">投稿を公開</button>
                 </div>
               </form>
             </div>
@@ -96,31 +93,4 @@
     <!-- Container END --> 
 </main>
 <!-- **************** MAIN CONTENT END **************** -->
-{% endblock %}
-
-{% block javascript %}
-<script>
-    var simplemde = new SimpleMDE();
-    document.getElementById('id_content').removeAttribute('required');
-
-    $("#save_post").click(function(){
-      var title = $("#title").val();
-      var meta_description = $("#meta_description").val();
-      var tag = $("#tag").val();
-      var content = $("#content").val();
-      var top_image = $("#formFile").val();
-      $.ajax({
-        url: "{% url 'blogs:save_post' %}",
-        type: "GET",
-        data: {title: title, meta_description: meta_description, tag: tag, content: content, top_image: top_image},
-        dataType: "json",
-        success: function(json){
-          if(json.message){
-            alert(json.message);
-          }
-        }
-      });
-    });
-</script>
-<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 {% endblock %}

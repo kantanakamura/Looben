@@ -1,10 +1,4 @@
-from dataclasses import field
 from django import forms
-from django.contrib.auth.password_validation import validate_password
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.admin.widgets import AdminDateWidget
-from django.contrib.auth.forms import PasswordChangeForm
-from mdeditor.fields import MDTextFormField
 
 from .models import Blog
 
@@ -20,12 +14,10 @@ class CreateBlogForm(forms.ModelForm):
         'type': 'textarea',
         'id': 'meta_description',
         }))
-    content = MDTextFormField(label='記事内容', widget=forms.Textarea(attrs={
+    url = forms.CharField(label='URL', widget=forms.TextInput(attrs={
         'class': 'form-control', 
-        'placeholder': '記事記入欄',
-        'rows': '10',
-        'type': 'textarea',
-        'id': 'content',
+        'placeholder': 'URL記入欄', 
+        'id': 'url',
         }))
     top_image = forms.FileField(label='サムネイル画像', required=False, widget=forms.FileInput(attrs={
         'class': 'form-control', 
@@ -40,26 +32,25 @@ class CreateBlogForm(forms.ModelForm):
     
     class Meta:
         model = Blog
-        fields = ['title', 'meta_description', 'content', 'top_image', 'tag']
+        fields = ['title', 'meta_description', 'url', 'top_image', 'tag']
         
         
 class EditBlogPostForm(forms.ModelForm):
     title = forms.CharField(label='タイトル', widget=forms.TextInput(attrs={
         'class': 'form-control', 
         'placeholder': 'タイトル記入欄', 
-        'id': '',
+        'id': 'title',
         }))
     meta_description = forms.CharField(label='メタデスクリプション', widget=forms.Textarea(attrs={
         'class': 'form-control', 
-        'placeholder': '',
         'rows': '5',
         'type': 'textarea',
+        'id': 'meta_description',
         }))
-    content = MDTextFormField(label='記事内容', widget=forms.Textarea(attrs={
+    url = forms.CharField(label='URL', widget=forms.TextInput(attrs={
         'class': 'form-control', 
-        'placeholder': '記事記入欄',
-        'rows': '10',
-        'type': 'textarea',
+        'placeholder': 'URL記入欄', 
+        'id': 'url',
         }))
     top_image = forms.FileField(label='サムネイル画像', required=False, widget=forms.FileInput(attrs={
         'class': 'form-control', 
@@ -68,11 +59,10 @@ class EditBlogPostForm(forms.ModelForm):
         }))
     tag = forms.CharField(label='タグ', widget=forms.TextInput(attrs={
         'class': 'form-control', 
-        'placeholder': '', 
-        'id': '',
+        'id': 'tag',
         }))
     
     
     class Meta:
         model = Blog
-        fields = ['title', 'meta_description', 'content', 'top_image', 'tag']
+        fields = ['title', 'meta_description', 'url', 'top_image', 'tag']

@@ -63,10 +63,7 @@
                 <!-- Side Nav START -->
                 <ul class="nav nav-link-secondary flex-column fw-bold gap-2">
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'blogs:liked_blog_list' %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/heart-outline-filled.svg' %}" alt="blog"><span>いいねした記事 </span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'dashboard:post_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/certificate-outline-filled.svg' %}" alt="blog"><span>ブログ記事 </span></a>
+                        <a class="nav-link" href="{% url 'dashboard:post_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/certificate-outline-filled.svg' %}" alt="blog"><span>投稿 </span></a>
                     </li>
                     {% if user.state == '現役台湾留学生' or user.state == '台湾留学卒業生' %}
                     <li class="nav-item">
@@ -98,7 +95,7 @@
                     <div class="bg-overlay bg-dark opacity-5"></div>
                     <div class="p-4 p-sm-5 position-relative">
                     <h1 class="text-white">知りたい情報がここにある</h1>
-                    <p class="text-white">あなたも、Loobenでブログ記事を作ってみませんか? <a href="{% url 'blogs:create_blog' %}">記事を作ってみる</a></p>
+                    <p class="text-white">あなたも、Loobenで留学情報を共有しませんか? <a href="{% url 'blogs:create_blog' %}">投稿する</a></p>
                     <!-- Form START -->
                     {% csrf_token %}
                     <form class="row g-3" method="get">
@@ -134,12 +131,12 @@
                 <div class="card position-relative h-100">
                     <!-- Video image -->
                     <div class="card-image">
-                    <a href="{% url 'blogs:blog_detail' searched_blog.id %}"><img class="card-img-top" src="{{ searched_blog.top_image.url }}" alt="blog_top_image"></a>
+                    <a href=""><img class="card-img-top" src="{{ searched_blog.top_image.url }}" alt="blog_top_image"></a>
                     </div>
                     <!-- Video info -->
                     <div class="card-body">
                     <!-- Video title  -->
-                    <h6> <a class="stretched-link" href="{% url 'blogs:blog_detail' searched_blog.id %}"> {{ searched_blog.title }} </a> </h6>
+                    <h6> <a class="stretched-link" href=""> {{ searched_blog.title }} </a> </h6>
                     <div class="d-flex mt-3">
                         <!-- Avatar -->
                         <div class="avatar avatar-xxs me-2">
@@ -156,12 +153,6 @@
                             </a> 
                         </h6>
                         </div>
-                    </div>
-                    <div class="ms-md-auto d-flex">
-                        <span class="ms-auto small"> {{ searched_blog.likeforblog_set.all.count }}</span>
-                        <button type="button" style="border:none;background:none">
-                            <i class="bi bi-heart" style="color:#F73641"></i>
-                        </button>
                     </div>
                     </div>
                 </div>
@@ -183,12 +174,12 @@
                 <div class="card position-relative h-100">
                     <!-- Video image -->
                     <div class="card-image">
-                    <a href="{% url 'blogs:blog_detail' newest_blog_post.id %}"><img class="card-img-top" src="{{ newest_blog_post.top_image.url }}" alt="blog_top_image"></a>
+                    <a href=""><img class="card-img-top" src="{{ newest_blog_post.top_image.url }}" alt="blog_top_image"></a>
                     </div>
                     <!-- Video info -->
                     <div class="card-body">
                     <!-- Video title  -->
-                    <h6> <a class="stretched-link" href="{% url 'blogs:blog_detail' newest_blog_post.id %}"> {{ newest_blog_post.title }} </a> </h6>
+                    <h6> <a class="stretched-link" href=""> {{ newest_blog_post.title }} </a> </h6>
                     <div class="d-flex mt-3">
                         <!-- Avatar -->
                         <div class="avatar avatar-xxs me-2">
@@ -205,12 +196,6 @@
                             </a> 
                         </h6>
                         </div>
-                    </div>
-                    <div class="ms-md-auto d-flex">
-                        <span class="ms-auto small"> {{ newest_blog_post.likeforblog_set.all.count }}</span>
-                        <button type="button" style="border:none;background:none">
-                            <i class="bi bi-heart" style="color:#F73641"></i>
-                        </button>
                     </div>
                     </div>
                 </div>
@@ -289,7 +274,7 @@
                     <!-- Video image -->
                     <div class="card-image">
                     <div class="ratio ratio-16x9 card-img-top overflow-hidden">
-                        <iframe src="https://player.vimeo.com/video/225888984?h=65630c41c6" title="Vimeo video" allowfullscreen></iframe>
+                        <iframe src="https://note.com/keisukeee/n/n56485c2d9fbe" title="Vimeo video" allowfullscreen></iframe>
                     </div>
                     </div>
                     <!-- Video info -->
@@ -313,55 +298,6 @@
                 </div>
             </div>
             <!-- Official trailer END -->
-    
-            <div class="row g-3 mb-4">
-                <div class="col-12 mt-4">
-                <div class="d-sm-flex justify-content-between align-items-center">
-                    <h5 class="mb-md-0">人気記事 </h5>
-                    <a class="btn btn-sm btn-primary" href="{% url 'blogs:in_order_blog_list' %}">もっとみる</a>
-                </div>
-                </div>
-                {% for most_viewed_post in most_viewed_posts %}
-                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
-                <!-- Video START -->
-                <div class="card position-relative h-100">
-                    <!-- Video image -->
-                    <div class="card-image">
-                    <a href="{% url 'blogs:blog_detail' most_viewed_post.id %}"><img class="card-img-top" src="{{ most_viewed_post.top_image.url }}" alt="blog_image"></a>
-                    </div>
-                    <!-- Video info -->
-                    <div class="card-body">
-                    <!-- Video title  -->
-                    <h6> <a class="stretched-link" href="{% url 'blogs:blog_detail' most_viewed_post.id %}"> {{ most_viewed_post.title }} </a> </h6>
-                    <div class="d-flex mt-3">
-                        <!-- Avatar -->
-                        <div class="avatar avatar-xxs me-2">
-                        <img class="avatar-img rounded-circle" src="{{ most_viewed_post.author.picture.url }}" alt="{{ most_viewed_post.author.username }}">
-                        </div>
-                        <!-- Avatar name -->
-                        <div>
-                        <h6 class="mb-0 lh-1"> 
-                            <a href="{% url 'dashboard:post_in_dashboard' most_viewed_post.author.username %}"> 
-                                {{ most_viewed_post.author.name }} 
-                                {% if most_viewed_post.author.is_verified %}
-                                <i class="bi bi-patch-check-fill text-primary small"></i>
-                                {% endif %}
-                            </a> 
-                        </h6>
-                        </div>
-                    </div>
-                    <div class="ms-md-auto d-flex">
-                        <span class="ms-auto small"> {{ most_viewed_post.likeforblog_set.all.count }}</span>
-                        <button type="button" style="border:none;background:none">
-                            <i class="bi bi-heart" style="color:#F73641"></i>
-                        </button>
-                    </div>
-                    </div>
-                </div>
-                <!-- Video END -->
-                </div>
-                {% endfor %}
-            </div>
     
             <!-- footer START -->
             <footer class="card card-body">

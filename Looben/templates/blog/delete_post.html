@@ -3,9 +3,6 @@
 {% load markdown_extras %}
 
 {% block head_content %}
-<link href="{% static 'mdeditor/css/editormd.min.css' %}" rel="stylesheet">
-<link href="{% static 'mdeditor/css/editormd.preview.css' %}" rel="stylesheet">
-<link rel="stylesheet" href="{% static 'css/blog/blog_detail.css' %}">
 {% endblock %}
 
 
@@ -21,61 +18,52 @@
     <div class="container">
         <div class="row">
             <!-- Main content START -->
-            <div class="col-md-10 mx-auto">
+            <div class="col-md-11 mx-auto">
             <!-- Create a page START -->
             <div class="card">
-                <form method="post">
-                {% csrf_token %}
                 <!-- Title START -->
                 <div class="card-header border-0 pb-0">
-                    <p>この記事を本当に削除しますか？削除するともう一度復元することはできません。</p>
-                    <button type="submit" class="btn btn-danger-soft mb-0 text-end">削除する
-                    </button>
+                <h1 class="h4 card-title mb-0">投稿削除画面</h1>
                 </div>
                 <!-- Title END -->
 
                 <!-- Create a page form START -->
                 <div class="card-body">
-                                    
-                    <img class="rounded" src="{{ object.top_image.url }}" alt="looben">
-                    <div class="mt-4">
-                        <!-- Tag -->
-                        <a href="" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold" >#{{ object.tag }}</a>
-                        <!-- Title info -->
-                        <h1 class="mb-2 h2">
-                            {{ object.title }}
-                        </h1>
-                        
-                        <div class="d-flex align-items-center justify-content-between" style="margin-bottom:5px;">
-                            <div class="d-flex align-items-center">
-                                <!-- Avatar -->
-                                <div class="avatar me-2">
-                                    <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}"> <img class="avatar-img rounded-circle" src="{{ object.author.picture.url }}" alt="{{ object.author.username }}"> </a>
-                                </div>
-                                <!-- Info -->
-                                <div>
-                                    <div class="nav nav-divider">
-                                    <h6 class="nav-item card-title mb-0"> 
-                                        <a href="{% url 'dashboard:post_in_dashboard' object.author.username %}"> 
-                                            {{ object.author.name }} 
-                                            {% if object.author.is_verified %}
-                                            <i class="bi bi-patch-check-fill text-primary small"></i>
-                                            {% endif %}
-                                        </a>
-                                    </h6>
-                                    </div>
-                                    <p class="mb-0 small">{{ object.created_at }}</p>
-                                </div>
-                            </div>
-                        </div>
+                <form class="row g-3 mt-4" method="post">
+                    {% csrf_token %}
 
-                        <div id="main_content">
-                        {{ object.content|markdown|safe }}
-                        </div>
+                    <div class="col-12">
+                        <label class="form-label">タイトル</label>
+                        <input class="form-control" type="text" value="{{ object.title }}" aria-label="Disabled input example" disabled readonly>
                     </div>
+
+                    <div class="col-12">
+                        <label class="form-label">共有URL</label>
+                        <input class="form-control" type="text" value="{{ object.url }}" aria-label="Disabled input example" disabled readonly>
+                    </div>
+
+                    <div class="col-8">
+                        <label class="form-label">サムネイル画像</label>
+                        <input class="form-control" type="text" value="{{ object.top_image }}" aria-label="Disabled input example" disabled readonly>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label">メタデスクリプション</label>
+                        <input class="form-control" type="text" value="{{ object.meta_description }}" aria-label="Disabled input example" disabled readonly>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label">タグ</label>
+                        <input class="form-control" type="text" value="#{{ object.tag }}" aria-label="Disabled input example" disabled readonly>
+                    </div>
+
+                    <!-- Button  -->
+                    <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-danger mb-0">削除</button>
+                    </div>
+                </form>
                 </div>
                 <!-- Create a page form END -->
-                </form>
             </div>
             <!-- Create a page END -->
             </div>
@@ -83,31 +71,6 @@
         </div> <!-- Row END -->
     </div>
     <!-- Container END --> 
-
-    <script src="{% static 'mdeditor/js/jquery.min.js' %}"></script>
-    <script src="{% static 'mdeditor/js/editormd.min.js' %}"></script>
-    <script src="{% static 'mdeditor/js/lib/marked.min.js' %}"></script>
-    <script src="{% static 'mdeditor/js/lib/prettify.min.js' %}"></script>
-    <script src="{% static 'mdeditor/js/lib/raphael.min.js' %}"></script>
-    <script src="{% static 'mdeditor/js/lib/underscore.min.js' %}"></script>
-    <script src="{% static 'mdeditor/js/lib/sequence-diagram.min.js' %}"></script>
-    <script src="{% static 'mdeditor/js/lib/flowchart.min.js' %}"></script>
-    <script src="{% static 'mdeditor/js/lib/jquery.flowchart.min.js' %}"></script>
-    <script>
-        $(function () {
-            editormd.markdownToHTML("content", {
-                emoji           : true,
-                taskList        : true,
-                tex             : true, 
-                flowChart       : true,
-                sequenceDiagram : true,
-            });
-            $(".reference-link").each(function (i,obj) {
-                console.log(obj)
-            })
-        })
-    </script>
-
 </main>
 <!-- **************** MAIN CONTENT END **************** -->
 {% endblock %}

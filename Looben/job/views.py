@@ -22,7 +22,7 @@ def create_job_experience(request):
     notification_lists =  Notification.objects.filter(receiver=request.user).order_by('timestamp').reverse()[:3]
     number_of_notification =  Notification.objects.filter(receiver=request.user).count()
     has_notifications =  Notification.objects.filter(receiver=request.user).exists()
-    has_not_seen_message = ConversationPartner.objects.filter(current_user=request.ser, have_new_message=True).exists()
+    has_not_seen_message = ConversationPartner.objects.filter(current_user=request.user, have_new_message=True).exists()
     return render(request, 'job/create_job_experience.html', context={
         'create_job_experience_form': create_job_experience_form,
         'notification_lists': notification_lists,
