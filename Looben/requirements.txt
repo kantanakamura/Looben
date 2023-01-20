@@ -22,6 +22,7 @@ django-markdownx==3.0.1
 django-mdeditor==0.1.20
 django-summernote==0.8.20.0
 djangorestframework==3.14.0
+gunicorn
 hiredis==2.0.0
 hyperlink==21.0.0
 idna==3.3
@@ -50,3 +51,7 @@ urllib3==1.26.11
 webencodings==0.5.1
 zipp==3.8.1
 zope.interface==5.4.0
+# for postgres
+django-environ~=0.4.5
+dj-database-url==0.5.0
+psycopg2
