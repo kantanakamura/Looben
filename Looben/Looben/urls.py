@@ -19,7 +19,6 @@ urlpatterns = [
     path('', include('chat.urls')),
     path('', include('contact_form.urls')),
     path('', include('notifications.urls')),
-    path(r'mdeditor/', include('mdeditor.urls')),
 ]
 
 handler404 = page_not_found
