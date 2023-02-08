@@ -1,8 +1,8 @@
 from django import forms
 
-from .models import Blog
+from .models import StudyAbroadInformation
 
-class CreateBlogForm(forms.ModelForm):
+class CreateInformationPostForm(forms.ModelForm):
     title = forms.CharField(label='タイトル', widget=forms.TextInput(attrs={
         'class': 'form-control', 
         'placeholder': 'タイトル記入欄', 
@@ -31,11 +31,11 @@ class CreateBlogForm(forms.ModelForm):
     
     
     class Meta:
-        model = Blog
+        model = StudyAbroadInformation
         fields = ['title', 'meta_description', 'url', 'top_image', 'tag']
         
         
-class EditBlogPostForm(forms.ModelForm):
+class EditInformationPostForm(forms.ModelForm):
     title = forms.CharField(label='タイトル', widget=forms.TextInput(attrs={
         'class': 'form-control', 
         'placeholder': 'タイトル記入欄', 
@@ -64,5 +64,5 @@ class EditBlogPostForm(forms.ModelForm):
     
     
     class Meta:
-        model = Blog
+        model = StudyAbroadInformation
         fields = ['title', 'meta_description', 'url', 'top_image', 'tag']

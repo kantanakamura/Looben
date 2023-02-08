@@ -37,7 +37,7 @@
                 <div class="hstack gap-2 gap-xl-3 mt-3">
                     <!-- User stat item -->
                     <div>
-                    <h6 class="mb-0">{{ number_of_blog_post }}</h6>
+                    <h6 class="mb-0">{{ number_of_information_post }}</h6>
                     <small>Post</small>
                     </div>
                     <!-- Divider -->
@@ -95,7 +95,7 @@
                     <div class="bg-overlay bg-dark opacity-5"></div>
                     <div class="p-4 p-sm-5 position-relative">
                     <h1 class="text-white">知りたい情報がここにある</h1>
-                    <p class="text-white">あなたも、Loobenで留学情報を共有しませんか? <a href="{% url 'blogs:create_blog' %}">投稿する</a></p>
+                    <p class="text-white">あなたも、Loobenで留学情報を共有しませんか? <a href="{% url 'study_abroad_information:create_information_post' %}">投稿する</a></p>
                     <!-- Form START -->
                     {% csrf_token %}
                     <form class="row g-3" method="get">
@@ -122,32 +122,32 @@
             <div class="row g-3 mb-4">
                 <div class="col-12 mt-4">
                 <div class="d-sm-flex justify-content-between align-items-center">
-                    <h5 class="mb-md-0">検索結果<strong style="color:#FF1474;">{{ number_of_searched_blogs }}</strong>件</h5>
+                    <h5 class="mb-md-0">検索結果<strong style="color:#FF1474;">{{ number_of_searched_posts }}</strong>件</h5>
                 </div>
                 </div>
-                {% for searched_blog in searched_blogs %}
+                {% for searched_post in searched_posts %}
                 <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
                 <!-- Video START -->
                 <div class="card position-relative h-100">
                     <!-- Video image -->
                     <div class="card-image">
-                    <a href=""><img class="card-img-top" src="{{ searched_blog.top_image.url }}" alt="blog_top_image"></a>
+                    <a href=""><img class="card-img-top" src="{{ searched_post.top_image.url }}" alt="blog_top_image"></a>
                     </div>
                     <!-- Video info -->
                     <div class="card-body">
                     <!-- Video title  -->
-                    <h6> <a class="stretched-link" href=""> {{ searched_blog.title }} </a> </h6>
+                    <h6> <a class="stretched-link" href=""> {{ searched_post.title }} </a> </h6>
                     <div class="d-flex mt-3">
                         <!-- Avatar -->
                         <div class="avatar avatar-xxs me-2">
-                        <img class="avatar-img rounded-circle" src="{{ searched_blog.author.picture.url }}" alt="{{ searched_blog.author.username }}">
+                        <img class="avatar-img rounded-circle" src="{{ searched_post.author.picture.url }}" alt="{{ searched_post.author.username }}">
                         </div>
                         <!-- Avatar name -->
                         <div>
                         <h6 class="mb-0 lh-1"> 
-                            <a href="{% url 'dashboard:post_in_dashboard' searched_blog.author.username %}"> 
-                                {{ searched_blog.author.name }} 
-                                {% if searched_blog.author.is_verified %}
+                            <a href="{% url 'dashboard:post_in_dashboard' searched_post.author.username %}"> 
+                                {{ searched_post.author.name }} 
+                                {% if searched_post.author.is_verified %}
                                 <i class="bi bi-patch-check-fill text-primary small"></i>
                                 {% endif %}
                             </a> 
@@ -168,29 +168,29 @@
                     <h5 class="mb-md-0">最新記事 </h5>
                 </div>
                 </div>
-                {% for newest_blog_post in newest_blog_posts %}
+                {% for newest_information_post in newest_information_posts %}
                 <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
                 <!-- Video START -->
                 <div class="card position-relative h-100">
                     <!-- Video image -->
                     <div class="card-image">
-                    <a href=""><img class="card-img-top" src="{{ newest_blog_post.top_image.url }}" alt="blog_top_image"></a>
+                    <a href="{{ newest_information_post.url }}"><img class="card-img-top" src="{{ newest_information_post.top_image.url }}" alt="blog_top_image"></a>
                     </div>
                     <!-- Video info -->
                     <div class="card-body">
                     <!-- Video title  -->
-                    <h6> <a class="stretched-link" href=""> {{ newest_blog_post.title }} </a> </h6>
+                    <h6> <a class="stretched-link" href="{{ newest_information_post.url }}"> {{ newest_information_post.title }} </a> </h6>
                     <div class="d-flex mt-3">
                         <!-- Avatar -->
                         <div class="avatar avatar-xxs me-2">
-                        <img class="avatar-img rounded-circle" src="{{ newest_blog_post.author.picture.url }}" alt="{{ newest_blog_post.author.username }}">
+                        <img class="avatar-img rounded-circle" src="{{ newest_information_post.author.picture.url }}" alt="{{ newest_information_post.author.username }}">
                         </div>
                         <!-- Avatar name -->
                         <div>
                         <h6 class="mb-0 lh-1"> 
-                            <a href="{% url 'dashboard:post_in_dashboard' newest_blog_post.author.username %}"> 
-                                {{ newest_blog_post.author.name }} 
-                                {% if newest_blog_post.author.is_verified %}
+                            <a href="{% url 'dashboard:post_in_dashboard' newest_information_post.author.username %}"> 
+                                {{ newest_information_post.author.name }} 
+                                {% if newest_information_post.author.is_verified %}
                                 <i class="bi bi-patch-check-fill text-primary small"></i>
                                 {% endif %}
                             </a> 
@@ -209,7 +209,7 @@
                 <div class="col-12 mt-4">
                 <div class="d-sm-flex justify-content-between align-items-center">
                     <h5 class="mb-md-0">オフィシャル記事 </h5>
-                    <a class="btn btn-sm btn-primary" href="{% url 'blogs:in_order_blog_list' %}">もっとみる</a>
+                    <a class="btn btn-sm btn-primary" href="{% url 'study_abroad_information:in_order_information_post_list' %}">もっとみる</a>
                 </div>
                 </div>
                 <div class="col-sm-6 col-lg-4">

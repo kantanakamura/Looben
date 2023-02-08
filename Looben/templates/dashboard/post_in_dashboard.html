@@ -127,7 +127,7 @@
               <h5>@{{ object.username }}の投稿一覧</h5>
               <!-- Button modal -->
               {% if object == user %}
-              <a class="btn btn-primary-soft btn-sm" href="{% url 'blogs:create_blog' %}"> <i class="fa-solid fa-plus pe-1"></i> 投稿作成</a>
+              <a class="btn btn-primary-soft btn-sm" href="{% url 'study_abroad_information:create_information_post' %}"> <i class="fa-solid fa-plus pe-1"></i> 投稿作成</a>
               {% endif %}
             </div>
             <!-- Card header END -->
@@ -136,37 +136,37 @@
               <!-- Upcoming event START -->
               <div class="alert alert-success alert-dismissible fade show" role="alert">
                 <strong>留学情報一覧:</strong> 留学情報一覧はこちらから
-                <a href="{% url 'blogs:blog_list' %}" class="btn btn-xs btn-success ms-md-4">一覧を見る</a>
+                <a href="{% url 'study_abroad_information:information_post_list' %}" class="btn btn-xs btn-success ms-md-4">一覧を見る</a>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>
               <!-- Upcoming event END -->
               <!-- Events list START -->
-              {% for blog_post in blog_posts %}
+              {% for information_post in information_posts %}
               <!-- Blog item START -->
               <div class="card bg-transparent border-0">
                 <div class="row g-3">
                 <div class="col-4">
                     <!-- Blog image -->
                     {% if user == object %}
-                    <a href="{% url 'blogs:edit_post' blog_post.id %}"><img class="rounded" src="{{ blog_post.top_image.url }}" alt="looben_blog"></a>
+                    <a href="{% url 'study_abroad_information:edit_information_post' information_post.id %}"><img class="rounded" src="{{ information_post.top_image.url }}" alt="looben_blog"></a>
                     {% else %}
-                    <a href="{{ blog_post.url }}"><img class="rounded" src="{{ blog_post.top_image.url }}" alt="looben_blog"></a>
+                    <a href="{{ information_post.url }}"><img class="rounded" src="{{ information_post.top_image.url }}" alt="looben_blog"></a>
                     {% endif %}
                 </div>
                 <div class="col-8">
                     <!-- Blog caption -->
-                    <a class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">#{{ blog_post.tag }}</a>
+                    <a class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">#{{ information_post.tag }}</a>
                     <h5>
                       {% if user == object %}
-                      <a href="{% url 'blogs:edit_post' blog_post.id %}" class="btn-link stretched-link text-reset fw-bold">{{ blog_post.title }}</a>
+                      <a href="{% url 'study_abroad_information:edit_information_post' information_post.id %}" class="btn-link stretched-link text-reset fw-bold">{{ information_post.title }}</a>
                       {% else %}
-                      <a href="{{ blog_post.url }}" class="btn-link stretched-link text-reset fw-bold">{{ blog_post.title }}</a>
+                      <a href="{{ information_post.url }}" class="btn-link stretched-link text-reset fw-bold">{{ information_post.title }}</a>
                       {% endif %}
                     </h5>
                     <div class="d-none d-sm-inline-block">
-                    <p class="mb-2">{{ blog_post.meta_description }}</p>
+                    <p class="mb-2">{{ information_post.meta_description }}</p>
                     <!-- BLog date -->
-                    <a class="small text-secondary"> <i class="bi bi-calendar-date pe-1"></i> {{ blog_post.created_at }}</a>
+                    <a class="small text-secondary"> <i class="bi bi-calendar-date pe-1"></i> {{ information_post.created_at }}</a>
                     </div>
                 </div>
                 </div>

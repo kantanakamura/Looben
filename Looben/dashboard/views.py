@@ -1,7 +1,7 @@
 from django.views.generic.detail import DetailView
 
 from accounts.models import Users, FollowForUser
-from blogs.models import Blog
+from study_abroad_information.models import StudyAbroadInformation
 from chat.models import ConversationPartner
 from reviews.models import ReviewOfUniversity
 from job.models import JobExperience
@@ -20,7 +20,7 @@ class PostInDashboardView(DetailView):
         user = self.object
         context['number_of_following_user'] = FollowForUser.objects.filter(user=user).count()
         context['number_of_followed_user'] = FollowForUser.objects.filter(followed_user=user).count()
-        context['blog_posts'] = Blog.objects.filter(author=user).order_by('created_at').reverse().all()
+        context['information_posts'] = StudyAbroadInformation.objects.filter(author=user).order_by('created_at').reverse().all()
         context['job_experiences'] = JobExperience.objects.filter(user=user).order_by('job_date').reverse().all()
         context['newest_users_list'] = Users.objects.filter(state='現役台湾留学生').order_by('joined_at').reverse()[:4]
         if user != self.request.user:

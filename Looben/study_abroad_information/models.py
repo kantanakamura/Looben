@@ -4,7 +4,7 @@ from django.utils import timezone
 from accounts.models import Users
 
 
-class Blog(models.Model):
+class StudyAbroadInformation(models.Model):
     title = models.CharField('タイトル', max_length=50)
     meta_description = models.TextField('メタデスクリプション', blank=True, max_length=150)
     url = models.CharField('url', max_length=600, default='#')
@@ -20,8 +20,5 @@ class Blog(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = '投稿'
-        verbose_name_plural = '投稿'
-
-    
-
+        verbose_name = '留学情報投稿'
+        verbose_name_plural = '留学情報投稿'

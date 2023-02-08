@@ -39,11 +39,11 @@ INSTALLED_APPS = [
     'reviews',
     'dashboard',
     'job',
-    'blogs',
     'chat',
     'contact_form',
     'questions',
     'rest_framework',
+    'study_abroad_information'
 ]
 
 

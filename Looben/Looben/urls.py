@@ -14,7 +14,7 @@ urlpatterns = [
     path('', include('reviews.urls')),
     path('', include('dashboard.urls')),
     path('', include('job.urls')),
-    path('', include('blogs.urls')),
+    path('', include('study_abroad_information.urls')),
     path('', include('questions.urls')),
     path('', include('chat.urls')),
     path('', include('contact_form.urls')),
