@@ -36,22 +36,22 @@
             <div class="row g-4">
                 <div class="card">
                     <div class="card-body">
-                        {% for blog_post_order_by_date in blog_posts_order_by_date %}
+                        {% for information_post_order_by_date in information_posts_order_by_date %}
                         <!-- Blog item START -->
                         <div class="card bg-transparent border-0">
                             <div class="row g-3">
                             <div class="col-4">
                                 <!-- Blog image -->
-                                <img class="rounded" src="{{ blog_post_order_by_date.top_image.url }}" alt="looben_blog_top_image">
+                                <img class="rounded" src="{{ information_post_order_by_date.top_image.url }}" alt="looben_blog_top_image">
                             </div>
                             <div class="col-8">
                                 <!-- Blog caption -->
-                                <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">{{ blog_post_order_by_date.tag }}</a>
-                                <h5><a href="{{ blog_post_order_by_date.url }}" class="btn-link stretched-link text-reset fw-bold">{{ blog_post_order_by_date.title }}</a></h5>
+                                <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">{{ information_post_order_by_date.tag }}</a>
+                                <h5><a href="{{ information_post_order_by_date.url }}" class="btn-link stretched-link text-reset fw-bold">{{ information_post_order_by_date.title }}</a></h5>
                                 <div class="d-none d-sm-inline-block">
-                                <p class="mb-2">{{ blog_post_order_by_date.meta_description }}</p>
+                                <p class="mb-2">{{ information_post_order_by_date.meta_description }}</p>
                                 <!-- BLog date -->
-                                <a class="small text-secondary" href="{{ blog_post_order_by_date.url }}"> <i class="bi bi-calendar-date pe-1"></i> {{ blog_post_order_by_date.created_at }}</a>
+                                <a class="small text-secondary" href="{{ information_post_order_by_date.url }}"> <i class="bi bi-calendar-date pe-1"></i> {{ information_post_order_by_date.created_at }}</a>
                                 </div>
                             </div>
                             </div>
@@ -71,22 +71,22 @@
                 <div class="row g-4">
                     <div class="card">
                         <div class="card-body">
-                            {% for official_blog_post in official_blog_post_lists %}
+                            {% for official_information_post in official_information_post_lists %}
                             <!-- Blog item START -->
                             <div class="card bg-transparent border-0">
                                 <div class="row g-3">
                                 <div class="col-4">
                                     <!-- Blog image -->
-                                    <img class="rounded" src="{{ official_blog_post.top_image.url }}" alt="looben_blog_top_image">
+                                    <img class="rounded" src="{{ official_information_post.top_image.url }}" alt="looben_blog_top_image">
                                 </div>
                                 <div class="col-8">
                                     <!-- Blog caption -->
-                                    <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">{{ official_blog_post.tag }}</a>
-                                    <h5><a href="{{ official_blog_post.url }}" class="btn-link stretched-link text-reset fw-bold">{{ official_blog_post.title }}</a></h5>
+                                    <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">{{ official_information_post.tag }}</a>
+                                    <h5><a href="{{ official_information_post.url }}" class="btn-link stretched-link text-reset fw-bold">{{ official_information_post.title }}</a></h5>
                                     <div class="d-none d-sm-inline-block">
-                                    <p class="mb-2">{{ official_blog_post.meta_description }}</p>
+                                    <p class="mb-2">{{ official_information_post.meta_description }}</p>
                                     <!-- BLog date -->
-                                    <a class="small text-secondary" href="{{ official_blog_post.url }}"> <i class="bi bi-calendar-date pe-1"></i> {{ official_blog_post.created_at }}</a>
+                                    <a class="small text-secondary" href="{{ official_information_post.url }}"> <i class="bi bi-calendar-date pe-1"></i> {{ official_information_post.created_at }}</a>
                                     </div>
                                 </div>
                                 </div>

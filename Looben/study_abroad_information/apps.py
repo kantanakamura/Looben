@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class BlogsConfig(AppConfig):
+class StudyAbroadInformationConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'blogs'
+    name = 'study_abroad_information'
