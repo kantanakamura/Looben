@@ -50,6 +50,14 @@
                                 <h5><a href="{{ information_post_order_by_date.url }}" class="btn-link stretched-link text-reset fw-bold">{{ information_post_order_by_date.title }}</a></h5>
                                 <div class="d-none d-sm-inline-block">
                                 <p class="mb-2">{{ information_post_order_by_date.meta_description }}</p>
+                                <h6 class="mb-0 lh-1"> 
+                                    <a href="{% url 'dashboard:post_in_dashboard' information_post_order_by_date.author.username %}"> 
+                                        {{ information_post_order_by_date.author.name }} 
+                                        {% if oinformation_post_order_by_date.author.is_verified %}
+                                        <i class="bi bi-patch-check-fill text-primary small"></i>
+                                        {% endif %}
+                                    </a> 
+                                </h6>
                                 <!-- BLog date -->
                                 <a class="small text-secondary" href="{{ information_post_order_by_date.url }}"> <i class="bi bi-calendar-date pe-1"></i> {{ information_post_order_by_date.created_at }}</a>
                                 </div>
@@ -67,38 +75,46 @@
             <!-- Row END -->
             </div>
 
-            <div class="tab-pane fade show active" id="tab-2">   
-                <div class="row g-4">
-                    <div class="card">
-                        <div class="card-body">
-                            {% for official_information_post in official_information_post_lists %}
-                            <!-- Blog item START -->
-                            <div class="card bg-transparent border-0">
-                                <div class="row g-3">
-                                <div class="col-4">
-                                    <!-- Blog image -->
-                                    <img class="rounded" src="{{ official_information_post.top_image.url }}" alt="looben_blog_top_image">
-                                </div>
-                                <div class="col-8">
-                                    <!-- Blog caption -->
-                                    <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">{{ official_information_post.tag }}</a>
-                                    <h5><a href="{{ official_information_post.url }}" class="btn-link stretched-link text-reset fw-bold">{{ official_information_post.title }}</a></h5>
-                                    <div class="d-none d-sm-inline-block">
-                                    <p class="mb-2">{{ official_information_post.meta_description }}</p>
-                                    <!-- BLog date -->
-                                    <a class="small text-secondary" href="{{ official_information_post.url }}"> <i class="bi bi-calendar-date pe-1"></i> {{ official_information_post.created_at }}</a>
-                                    </div>
-                                </div>
+            <div class="tab-pane fade show" id="tab-2">   
+            <div class="row g-4">
+                <div class="card">
+                    <div class="card-body">
+                        {% for official_information_post in official_information_post_lists %}
+                        <!-- Blog item START -->
+                        <div class="card bg-transparent border-0">
+                            <div class="row g-3">
+                            <div class="col-4">
+                                <!-- Blog image -->
+                                <img class="rounded" src="{{ official_information_post.top_image.url }}" alt="looben_blog_top_image">
+                            </div>
+                            <div class="col-8">
+                                <!-- Blog caption -->
+                                <a href="#" class="badge bg-danger bg-opacity-10 text-danger mb-2 fw-bold">{{ official_information_post.tag }}</a>
+                                <h5><a href="{{ official_information_post.url }}" class="btn-link stretched-link text-reset fw-bold">{{ official_information_post.title }}</a></h5>
+                                <div class="d-none d-sm-inline-block">
+                                <p class="mb-2">{{ official_information_post.meta_description }}</p>
+                                <h6 class="mb-0 lh-1"> 
+                                    <a href="{% url 'dashboard:post_in_dashboard' official_information_post.author.username %}"> 
+                                        {{ official_information_post.author.name }} 
+                                        {% if official_information_post.author.is_verified %}
+                                        <i class="bi bi-patch-check-fill text-primary small"></i>
+                                        {% endif %}
+                                    </a> 
+                                </h6>
+                                <!-- BLog date -->
+                                <a class="small text-secondary" href="{{ official_information_post.url }}"> <i class="bi bi-calendar-date pe-1"></i> {{ official_information_post.created_at }}</a>
                                 </div>
                             </div>
-                            <!-- Blog item END -->
-                            <hr class="my-4">
-                            {% empty %}
-                            <p>Looben公式投稿はまだありません。</p>
-                            {% endfor %}
+                            </div>
                         </div>
+                        <!-- Blog item END -->
+                        <hr class="my-4">
+                        {% empty %}
+                        <p>Looben公式投稿はまだありません。</p>
+                        {% endfor %}
                     </div>
-                </div> <!-- Row END -->
+                </div>
+            </div> <!-- Row END -->
             </div>
     
 

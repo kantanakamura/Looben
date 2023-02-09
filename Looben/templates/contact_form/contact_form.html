@@ -1,12 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block head_content%}
+{% block header %}
+{% include 'header_for_contact_form.html' %}
 {% endblock %}
 
-{% block header %}
-{% include 'header.html' %}
-{% endblock %}
 
 {% block content %}
 <!-- **************** MAIN CONTENT START **************** -->
@@ -28,7 +26,7 @@
             <div class="col-md-6 text-center">
                 <!-- Title -->
                 <h1>何かお悩みですか？</h1>
-                <p class="mb-4">下記のフォームから、Looben運営に直接質問できます。</p>
+                <p class="mb-4">下記の連絡先から、Looben運営に直接質問できます。</p>
             </div>
             <div class="col-md-3">
                 <!-- SVG START -->
@@ -49,11 +47,14 @@
                             <div class="col-md-8">
                                 <h4>お問い合わせ</h4>
                                 <p>気になることは何でも、気軽にお聞きください。</p>
-                                <form method="POST">
-                                    {% csrf_token %}
-                                    {{ form.as_p }}
-                                    <button type="submit" class="btn btn-primary">送信</button>
-                                </form>
+                                <h5>Looben運営 メールアドレス：</h5> 
+                                <p>looben2022@gmail.com</p>
+                                <h5>Looben代表 メールアドレス：</h5> 
+                                <p>0706363@gmail.com</p>
+                                <hr>
+                                <h5>もっと気軽にお話ししたい方は、下記の(Looben代表の)SNSアカウントから:</h5>
+                                <p>Twitter: <a href='https://twitter.com/kanta_engineer'>中村幹太 - Kanta Nakamura</a></p>
+                                <p>Instagram: <a href='https://www.instagram.com/kanta_engineer/'>中村幹太 - Kanta Nakamura</a></p>
                             </div>
                         </div>
                     </div>
@@ -68,30 +69,4 @@
 </main>
 
 <!-- **************** MAIN CONTENT END **************** -->
-
-<!-- footer START -->
-<footer class="bg-mode py-3">
-    <div class="container">
-        <div class="row">
-        <div class="col-md-6">
-            <!-- Footer nav START -->
-            <ul class="nav justify-content-center justify-content-md-start lh-1">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'contact_form:privacy_and_safety' %}">プライバシーポリシー</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'contact_form:contact_form' %}">お問い合わせ</a>
-            </li>
-            </ul>
-            <!-- Footer nav START -->
-        </div>
-        <div class="col-md-6">
-            <!-- Copyright START -->
-            <p class="text-center text-md-end mb-0">©2023 Looben, All rights reserved.</p>
-            <!-- Copyright END -->
-        </div>
-        </div>
-    </div>
-</footer>
-<!-- footer END -->
 {% endblock %}
