@@ -94,7 +94,8 @@ class InformationPostListView(LoginRequiredMixin, View):
         number_of_following_user = FollowForUser.objects.filter(user=user).count()
         number_of_followed_user = FollowForUser.objects.filter(followed_user=user).count()
         number_of_information_post = StudyAbroadInformation.objects.filter(author=user).count()
-        newest_information_posts = StudyAbroadInformation.objects.order_by('-created_at')[:6]
+        newest_information_posts = StudyAbroadInformation.objects.filter(is_official=False).order_by('-created_at')[:6]
+        official_information_post_lists = StudyAbroadInformation.objects.filter(is_official=True).order_by('-created_at')[:3]
         notification_lists =  Notification.objects.filter(receiver=user).order_by('timestamp').reverse()[:3]
         number_of_notification =  Notification.objects.filter(receiver=user).count()
         has_notifications =  Notification.objects.filter(receiver=user).exists()
@@ -122,6 +123,7 @@ class InformationPostListView(LoginRequiredMixin, View):
             'number_of_followed_user': number_of_followed_user,
             'number_of_information_post': number_of_information_post,
             'newest_information_posts': newest_information_posts,
+            'official_information_post_lists': official_information_post_lists,
             'number_of_searched_posts': number_of_searched_posts,
             'user_searched_something': user_searched_something,
             'searched_posts': searched_posts,
@@ -134,8 +136,8 @@ class InformationPostListView(LoginRequiredMixin, View):
     
 class InOrderInformationPostListView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        information_posts_order_by_date = StudyAbroadInformation.objects.order_by('-created_at')[:20]
-        official_information_post_lists = StudyAbroadInformation.objects.filter(is_official=True)[:20]
+        information_posts_order_by_date = StudyAbroadInformation.objects.filter(is_official=False).order_by('-created_at')[:30]
+        official_information_post_lists = StudyAbroadInformation.objects.filter(is_official=True).order_by('-created_at')[:30]
         notification_lists =  Notification.objects.filter(receiver=request.user).order_by('timestamp').reverse()[:3]
         number_of_notification =  Notification.objects.filter(receiver=request.user).count()
         has_notifications =  Notification.objects.filter(receiver=request.user).exists()

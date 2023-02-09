@@ -165,7 +165,7 @@
             <div class="row g-3 mb-4">
                 <div class="col-12 mt-4">
                 <div class="d-sm-flex justify-content-between align-items-center">
-                    <h5 class="mb-md-0">最新記事 </h5>
+                    <h5 class="mb-md-0">最新情報 </h5>
                 </div>
                 </div>
                 {% for newest_information_post in newest_information_posts %}
@@ -174,7 +174,7 @@
                 <div class="card position-relative h-100">
                     <!-- Video image -->
                     <div class="card-image">
-                    <a href="{{ newest_information_post.url }}"><img class="card-img-top" src="{{ newest_information_post.top_image.url }}" alt="blog_top_image"></a>
+                    <a href="{{ newest_information_post.url }}"><img class="card-img-top" src="{{ newest_information_post.top_image.url }}" alt="top_image"></a>
                     </div>
                     <!-- Video info -->
                     <div class="card-body">
@@ -201,6 +201,8 @@
                 </div>
                 <!-- Video END -->
                 </div>
+                {% empty %}
+                <p>留学情報はまだありません。<p>
                 {% endfor %}
             </div>
     
@@ -208,94 +210,46 @@
             <div class="row g-3 mb-4">
                 <div class="col-12 mt-4">
                 <div class="d-sm-flex justify-content-between align-items-center">
-                    <h5 class="mb-md-0">オフィシャル記事 </h5>
+                    <h5 class="mb-md-0">オフィシャル情報 </h5>
                     <a class="btn btn-sm btn-primary" href="{% url 'study_abroad_information:in_order_information_post_list' %}">もっとみる</a>
                 </div>
                 </div>
+                {% for official_information_post in official_information_post_lists %}
                 <div class="col-sm-6 col-lg-4">
                 <!-- Video START -->
                 <div class="card h-100">
                     <!-- Video image -->
                     <div class="card-image">
-                    <div class="ratio ratio-16x9 card-img-top overflow-hidden">
-                        <iframe src="https://www.youtube.com/embed/8Sl_Igf3lnw" title="YouTube video" allowfullscreen></iframe>
-                    </div>
+                        <a href="{{ official_information_post.url }}"><img class="card-img-top" src="{{ official_information_post.top_image.url }}" alt="top_image"></a>
                     </div>
                     <!-- Video info -->
                     <div class="card-body position-relative">
                     <!-- Video title  -->
-                    <h6> <a class="stretched-link" href="video-details.html"> 15 useful apps for android smartphones users </a> </h6>
+                    <h6> <a class="stretched-link" href="{{ official_information_post.url }}"> {{ official_information_post.title }} </a> </h6>
                     <div class="d-flex mt-2">
                         <!-- Avatar -->
                         <div class="avatar avatar-xxs me-2">
-                        <img class="avatar-img rounded-circle" src="assets/images/avatar/02.jpg" alt="">
+                        <img class="avatar-img rounded-circle" src="{{ official_information_post.author.picture.url }}" alt="{{ official_information_post.author.username }}">
                         </div>
                         <!-- Avatar name -->
                         <div>
-                        <h6 class="mb-0 lh-1"> <a href="#!"> Lori Ferguson <i class="bi bi-patch-check-fill text-success small"></i> </a> </h6>
-                        <span class="ms-auto small"> 235.8K views</span>
+                        <h6 class="mb-0 lh-1"> 
+                            <a href="{% url 'dashboard:post_in_dashboard' official_information_post.author.username %}"> 
+                            {{ official_information_post.author.name }} 
+                            {% if official_information_post.author.is_verified %}
+                            <i class="bi bi-patch-check-fill text-primary small"></i>
+                            {% endif %}
+                            </a> 
+                        </h6>
                         </div>
                     </div>
                     </div>
                 </div>
                 <!-- Video END -->
                 </div>
-                <div class="col-sm-6 col-lg-4">
-                <!-- Video START -->
-                <div class="card h-100">
-                    <!-- Video image -->
-                    <div class="card-image">
-                    <div class="ratio ratio-16x9 card-img-top overflow-hidden">
-                        <iframe src="https://www.youtube.com/embed/8Sl_Igf3lnw" title="YouTube video" allowfullscreen></iframe>
-                    </div>
-                    </div>
-                    <!-- Video info -->
-                    <div class="card-body position-relative">
-                    <!-- Video title  -->
-                    <h6> <a class="stretched-link" href="video-details.html"> 15 useful apps for android smartphones users </a> </h6>
-                    <div class="d-flex mt-2">
-                        <!-- Avatar -->
-                        <div class="avatar avatar-xxs me-2">
-                        <img class="avatar-img rounded-circle" src="assets/images/avatar/02.jpg" alt="">
-                        </div>
-                        <!-- Avatar name -->
-                        <div>
-                        <h6 class="mb-0 lh-1"> <a href="#!"> Lori Ferguson <i class="bi bi-patch-check-fill text-success small"></i> </a> </h6>
-                        <span class="ms-auto small"> 235.8K views</span>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                <!-- Video END -->
-                </div>
-                <div class="col-sm-6 col-lg-4">
-                <!-- Video START -->
-                <div class="card position-relative h-100">
-                    <!-- Video image -->
-                    <div class="card-image">
-                    <div class="ratio ratio-16x9 card-img-top overflow-hidden">
-                        <iframe src="https://note.com/keisukeee/n/n56485c2d9fbe" title="Vimeo video" allowfullscreen></iframe>
-                    </div>
-                    </div>
-                    <!-- Video info -->
-                    <div class="card-body position-relative">
-                    <!-- Video title  -->
-                    <h6> <a class="stretched-link" href="video-details.html"> The Red notice | Official teaser | Netflix </a> </h6>
-                    <div class="d-flex mt-3">
-                        <!-- Avatar -->
-                        <div class="avatar avatar-xxs me-2">
-                        <img class="avatar-img rounded-circle" src="assets/images/avatar/03.jpg" alt="">
-                        </div>
-                        <!-- Avatar name -->
-                        <div>
-                        <h6 class="mb-0 lh-1"> <a href="#!"> Louis Crawford </a> </h6>
-                        <span class="ms-auto small"> 785.2K views</span>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                <!-- Video END -->
-                </div>
+                {% empty %}
+                <p>オフィシャル情報はまだありません。<p>
+                {% endfor %}
             </div>
             <!-- Official trailer END -->
     
