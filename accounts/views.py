@@ -237,7 +237,7 @@ class StudentsByUniversityView(LoginRequiredMixin, DetailView):
     
         
     
-class ComingSoonView(TemplateView):
+class ComingSoonView(LoginRequiredMixin, TemplateView):
     template_name = 'comingsoon.html'
     
     def get_context_data(self,**kwargs):
