@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Looben</title>
+    <link rel="shortcut icon" href="{% static 'images/looben_icon.png' %}">
+    <!-- css -->
+    <link rel="stylesheet" href="{% static 'css/home/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'css/home/style.css' %}">
+    <!-- webフォント -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <main>
+    <section class="fv">
+      <header class="header">
+        <div class="header__inner">
+          <div class="header__logo-wrapper">
+            <img class="header__logo" src="{% static 'images/home/main_logo.png' %}" alt="Looben 台湾留学情報サイト">
+          </div>
+          <div class="header__btn-wrapper">
+
+            <!-- ログインボタン -->
+            <a class="main-btn main-btn--white header__btn" href="{% url 'accounts:user_login' %}">ログイン</a>
+
+            <!-- 新規登録ボタン -->
+            <a class="main-btn main-btn--red header__btn" href="{% url 'accounts:regist' %}">新規登録</a>
+
+          </div>
+        </div>
+      </header>
+
+      <div class="fv__inner">
+        <div class="fv__text-box">
+          <h1 class="fv__main">後悔しない<br class="pc">
+            台湾大学選びを<br>
+            <img class="looben looben-black fv__looben" src="{% static 'images/home/looben-black.png' %}" alt="Looben">で
+          </h1>
+          <p class="fv__text">Loobenは、現役留学生に好きなだけ<br class="pc">
+            質問できる<br class="sp">台湾留学情報サイトです。<br>
+            納得いくまで質問できるので、あなたの理想の大学を選べます。</p>
+
+          <!-- 今すぐ始めるボタン -->
+          <a class="main-btn main-btn--red fv__btn" href="{% url 'accounts:research_university' %}">今すぐ始める</a>
+
+
+        </div>
+        <div class="fv__img-wrapper">
+          <img class="fv__img" src="{% static 'images/home/fv_img01.png' %}" alt="公開しない台湾大学選びをLoobenで">
+        </div>
+      </div>
+    </section>
+
+    <section class="feature">
+      <div class="main-container">
+        <h2 class="feature__title">知りたい情報がここにある</h2>
+        <ul class="feature__item-box">
+          <li class="feature__item feature__item01">
+            <div class="feature__text-box">
+              <h3 class="feature__head">FEATURE 01</h3>
+              <p class="feature__main">留学生による<br class="pc">
+                口コミで<br class="sp">生の声を<br class="pc">
+                聞ける</p>
+              <p class="feature__text">現役留学生にだからこそわかる、<br class="pc">
+                大学の見えない部分を知ることができます。<br class="pc">
+                大学選びで、もう失敗しません。</p>
+            </div>
+            <div class="feature__img-wrapper">
+              <img class="feature__img" src="{% static 'images/home/feature_img01.png' %}" alt="在学生の声">
+            </div>
+          </li>
+          <li class="feature__item feature__item02">
+            <div class="feature__text-box">
+              <h3 class="feature__head">FEATURE 02</h3>
+              <p class="feature__main">気になることは<br class="pc">
+                すぐに<br class="sp">留学生に<br class="pc">
+                質問</p>
+              <p class="feature__text">大学を調べながら疑問に思ったことや<br class="pc">
+                気になることは、すぐに現役留学生に質問できます。<br class="pc">
+                もう、一人で悩む必要はありません。</p>
+            </div>
+            <div class="feature__img-wrapper">
+              <img class="feature__img" src="{% static 'images/home/feature_img02.png' %}" alt="トークルーム">
+            </div>
+          </li>
+          <li class="feature__item feature__item03">
+            <div class="feature__text-box">
+              <h3 class="feature__head">FEATURE 03</h3>
+              <p class="feature__main">バイト探しも<br class="pc"><img class="looben looben-black feature__looben"
+                  src="{% static 'images/home/looben-black.png' %}" alt="Looben">で</p>
+              <p class="feature__text">留学生でも働きやすいバイト先の情報を<br class="pc">
+                見つけられます。<br>
+                あなたもバイト情報があれば、<br class="pc">
+                みんなにバイト情報を共有して、助け合いましょう。</p>
+            </div>
+            <div class="feature__img-wrapper">
+              <img class="feature__img" src="{% static 'images/home/feature_img03.png' %}" alt="最新のバイト情報">
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="message">
+        <div class="message__inner">
+            <div class="message__contents">
+                <div class="message__text-box">
+                    <h2 class="message__title">MESSAGE</h2>
+                    <p class="message__main">大学選びは１度だけ、<br class="sp">後悔しないために</p>
+                    <p class="message__text">私自身も台湾の元智大學に留学している身として、大学選びの難しさ、そして大切さを体感しています。<br class="pc">
+                    そんな大学選びを後悔のないものにするために、台湾に留学してよかったと思えるように、<br class="pc">
+                    台湾留学という新たな挑戦をするあなたを、Loobenが応援します。</p>
+                    <p class="message__sign">Looben代表 中村幹太</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="start">
+        <div class="start__inner">
+            <h2 class="start__title"><img class="looben looben-white start__looben" src="{% static 'images/home/looben-white.png' %}" alt="Looben">は完全無料<span>、</span><br class="sp">さっそく始めてみよう。</h2>
+        </div>
+        <div class="start__btn-wrapper">
+            <!-- 新規登録ボタン -->
+            <a class="main-btn main-btn--white start__btn" href="{% url 'accounts:regist' %}">新規登録</a>
+
+            <!-- ログインボタン -->
+            <a class="main-btn main-btn--red start__btn" href="{% url 'contact_form:contact_form' %}">お問合せはこちら</a>
+        </div>
+    </section>
+    </main>
+
+    <footer class="footer">
+    <div class="footer__logo-wrapper">
+        <img class="footer__logo" src="{% static 'images/home/main_logo.png' %}" alt="Looben 台湾留学情報サイト">
+    </div>
+    </footer>
+
+</body>

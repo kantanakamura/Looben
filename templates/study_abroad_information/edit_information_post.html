@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block head_content%}
+{% endblock %}
+
+
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+
+{% block content %}
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+    <!-- Container START -->
+    <div class="container">
+        <div class="row">
+            <!-- Main content START -->
+            <div class="col-md-11 mx-auto">
+            <!-- Create a page START -->
+            <div class="card">
+                <!-- Title START -->
+                <div class="card-header border-0 pb-0">
+                <h1 class="h4 card-title mb-0">就活経験編集ページ</h1>
+                </div>
+                <!-- Title END -->
+
+                <!-- Create a page form START -->
+                <div class="card-body">
+                <form class="row g-3 mt-4" method="post" enctype="multipart/form-data">
+                    {{ form.non_field_errors }}
+                    {% csrf_token %}
+
+                    <div class="col-12">
+                        <label class="form-label">タイトル</label>
+                        {{ form.title }}
+                        <small>ブログ記事を簡単に表すようなタイトルを考えてみよう</small>
+                    </div>
+                    {{ form.title.errors }}
+
+                    <div class="col-12">
+                        <label class="form-label">共有URL</label>
+                        {{ form.url }}
+                        <small>共有したい、記事やYouTubeのリンクを記入してください
+                        </small>
+                    </div>
+                    {{ form.url.errors }}
+
+                    <div class="col-8">
+                        <label class="form-label">サムネイル画像</label>
+                        {{ form.top_image }}
+                        <small>投稿検索の時に表示されます</small>
+                    </div>
+                    {{ form.top_image.errors }}
+
+                    <div class="col-12">
+                        <label class="form-label">メタデスクリプション</label>
+                        {{ form.meta_description }}
+                        <small>この投稿の概要を150字以内で説明してください</small>
+                    </div>
+                    {{ form.meta_description.errors }}
+
+                    <div class="col-12">
+                        <label class="form-label">タグ</label>
+                        <div class="input-group">
+                            <div class="input-group-text">#</div>
+                            {{ form.tag }} 
+                        </div>
+                        <small>タグを1つだけ作成できます</small>
+                    </div>
+                    {{ form.tag.errors }}
+
+                    <!-- Button  -->
+                    <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-primary mb-0">変更保存</button>
+                    <a href="{% url 'study_abroad_information:delete_information_post' object.id %}" class="btn btn-danger mb-0">削除</a>
+                    </div>
+                </form>
+                </div>
+                <!-- Create a page form END -->
+            </div>
+            <!-- Create a page END -->
+            </div>
+    
+        </div> <!-- Row END -->
+    </div>
+    <!-- Container END --> 
+</main>
+<!-- **************** MAIN CONTENT END **************** -->
+{% endblock %}

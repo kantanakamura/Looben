@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block head_content%}
+{% endblock %}
+
+
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+
+{% block content %}
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+    <!-- Container START -->
+    <div class="container">
+        <div class="row g-4">
+    
+            <!-- Sidenav START -->
+            <div class="col-lg-3">
+    
+            <!-- Advanced filter responsive toggler START -->
+            <div class="d-flex align-items-center d-lg-none">
+                <button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
+                <i class="btn btn-primary fw-bold fa-solid fa-sliders-h"></i>
+                <span class="h6 mb-0 fw-bold d-lg-none ms-2">質問カテゴリー</span>
+                </button>
+            </div>
+            <!-- Advanced filter responsive toggler END -->
+            
+            <!-- Navbar START-->
+            <nav class="navbar navbar-expand-lg mx-0"> 
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSideNavbar">
+                <!-- Offcanvas header -->
+                <div class="offcanvas-header">
+                    <button type="button" class="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+    
+                <!-- Offcanvas body -->
+                <div class="offcanvas-body d-block px-2 px-lg-0">
+                    <!-- Card START -->
+                    <div class="card overflow-hidden">
+                    <!-- Cover image -->
+                    <div class="h-50px" style="background-image:url({% static 'images/bg/create_review.jpg' %}); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+                        <!-- Card body START -->
+                        <div class="card-body pt-0">
+                        <div class="text-center">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-lg mt-n5 mb-3">
+                            <a href="#!"><img class="avatar-img rounded border border-white border-3" src="{{ user.picture.url }}" alt="{{ user.username }}"></a>
+                        </div>
+                        <!-- Info -->
+                        <h5 class="mb-0"> 
+                            <a href="{% url 'dashboard:post_in_dashboard' user.username %}">
+                                {{ user.name }} 
+                                {% if user.is_verified %}
+                                <i class="bi bi-patch-check-fill text-primary small"></i>
+                                {% endif %}
+                            </a> 
+                        </h5>
+                        <p>{{ user.school }}</p>
+                        </div>
+                        <!-- Divider -->
+                        <hr>
+    
+                        <!-- Side Nav START -->
+                        <ul class="nav nav-link-secondary flex-column fw-bold gap-2 text-center">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'questions:categorized_questions' category='university' %}"><img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bank-outline-filled.svg' %}" alt="人生"><span>大学 </span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'questions:categorized_questions' category='foods' %}"><img class="me-2 h-20px fa-fw" src="{% static 'images/icon/burger-outline-filled.svg' %}" alt="食事"><span>食事 </span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'questions:categorized_questions' category='study' %}"><img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bookmark-open-outline-filled.svg' %}" alt="勉強"><span>勉強 </span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'questions:categorized_questions' category='job' %}"><img class="me-2 h-20px fa-fw" src="{% static 'images/icon/laptop-outline-filled.svg' %}" alt="就活"><span>就活 </span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'questions:categorized_questions' category='life' %}"><img class="me-2 h-20px fa-fw" src="{% static 'images/icon/globe-outline-filled.svg' %}" alt="人生"><span>人生 </span></a>
+                            </li>
+                        </ul>
+                        <!-- Side Nav END -->
+                    </div>
+                    <!-- Card body END -->
+                    <!-- Card footer -->
+                    <div class="card-footer text-center py-2">
+                        <a class="btn btn-link btn-sm" href="{% url 'dashboard:post_in_dashboard' user.username %}">ダッシュボードを見る </a>
+                    </div>
+                    </div>
+                    <!-- Card END -->
+
+                    <!-- Copyright -->
+                    <p class="small text-center mt-1">©2023 <a class="text-body" target="_blank" href=""> Looben </a></p>
+                </div>
+                </div>
+            </nav>
+            <!-- Navbar END-->
+            </div>
+            <!-- Sidenav END -->
+    
+            <!-- Main content START -->
+            <div class="col-md-8 col-lg-6 vstack gap-4">
+            <!-- Create a page START -->
+            <div class="card">
+                <!-- Title START -->
+                <div class="card-header border-0 pb-0">
+                <h1 class="h4 card-title mb-0">ベストアンサーへのコメント作成ページ</h1>
+                </div>
+                <!-- Title END -->
+
+                <!-- Create a page form START -->
+                <div class="card-body">
+                    <h5><i class="bi bi-patch-question-fill" style="color:#1E99FF;"></i> 質問</h5>
+                    <a href="{% url 'questions:question_detail' question.id %}"><p>{{ question.content }}</p></a>
+                    <hr>
+
+                    <div class="d-md-flex align-items-center mb-4">
+                        <!-- Avatar -->
+                        <div class="avatar me-3 mb-3 mb-md-0">
+                            <a href="{% url 'dashboard:post_in_dashboard' object.user.username %}"> <img class="avatar-img rounded-circle" src="{{ object.user.picture.url }}" alt="{{ object.user.username }}"> </a>
+                        </div>
+                        <!-- Info -->
+                        <div class="w-100">
+                            <div class="d-sm-flex align-items-start">
+                            <h6 class="mb-0">
+                                <a href="{% url 'dashboard:post_in_dashboard' object.user.username %}">
+                                    {{ object.user.name }} 
+                                    {% if object.user.is_verified %}
+                                    <i class="bi bi-patch-check-fill text-primary small"></i>
+                                    {% endif %}
+                                </a>
+                            </h6>
+                            <p class="small ms-sm-2 mb-0">{{ object.user.state }}</p>
+                            </div>
+                            <!-- Connections START -->
+                            <ul class="avatar-group mt-1 list-unstyled align-items-sm-center">
+                            <li class="small">
+                                {{ object.user.school }} / {{ object.user.major }}
+                            </li>
+                            </ul>
+                            <!-- Connections END -->
+                        </div>
+                    </div>
+                    <p><img src="{% static 'images/logo/medal.png' %}" style="width:50px;">{{ object.answer }}</p>
+                    <hr>
+
+                
+                    <form class="row g-3 mt-4" method="post">
+                        {{ comment_to_answer_form.non_field_errors }}
+                        {% csrf_token %}
+
+                        <!-- カテゴリー -->
+                        <div class="col-12">
+                        <label class="form-label">回答者へのコメント</label>
+                        {{ comment_to_answer_form.comment }}
+                        <small>感謝の言葉や、回答に対する感想を書いて、思いを伝えましょう。</small>
+                        </div>
+                        {{ comment_to_answer_form.comment.errors }}
+
+                        <!-- Button  -->
+                        <div class="col-12 text-end">
+                        <button type="submit" class="btn btn-primary mb-0">ベストアンサーにする</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- Create a page form END -->
+            </div>
+            <!-- Create a page END -->
+            </div>
+    
+        </div> <!-- Row END -->
+    </div>
+    <!-- Container END --> 
+</main>
+<!-- **************** MAIN CONTENT END **************** -->
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block head_content%}
+{% endblock %}
+
+
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+
+{% block content %}
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+    <h1 class="visually-hidden">Heroes examples</h1>
+  
+    <div class="px-4 py-5 my-5 text-center">
+      <img class="d-block mx-auto mb-4" src="{% static 'images/looben_icon2.png' %}" alt="looben" width="75" height="75">
+      <h1 class="display-5 fw-bold">Coming Soon</h1>
+      <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">現在、バイト検索機能を開発中です。今しばらくお待ちください。</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+          {% if user.is_authenticated %}
+          <!--  もし、ユーザーがログイン済みだったら、ダッシュボードに戻る -->
+          <a href="{% url 'dashboard:post_in_dashboard' user.username %}"><button type="button" class="btn btn-primary btn-lg px-4 gap-3">ダッシュボードに戻る</button></a>
+          {% else %}
+          <!--  もし、ユーザーがログインしていなかったら、大学検索ページに戻る -->
+          <a href="{% url 'accounts:research_university' %}"><button type="button" class="btn btn-outline-info btn-lg px-4">大学検索ページに戻る</button></a>
+          {% endif %}
+        </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

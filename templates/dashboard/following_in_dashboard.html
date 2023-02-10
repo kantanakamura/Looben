@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head_content%}
+{% endblock %}
+
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+{% block content %}
+<!-- **************** MAIN CONTENT START **************** -->
+<main>
+    <!-- Container START -->
+    <div class="container">
+      <div class="row g-4">
+        <!-- Main content START -->
+        <div class="col-lg-8 vstack gap-4">
+            <!-- My profile START -->
+            <div class="card">
+              <!-- Cover image -->
+              <div class="h-200px rounded-top" style="background-color:{{ object.individual_theme_color }}; background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+              <!-- Card body START -->
+              <div class="card-body py-0">
+                <div class="d-sm-flex align-items-start text-center text-sm-start">
+                  <div>
+                    <!-- Avatar -->
+                    <div class="avatar avatar-xxl mt-n5 mb-3">
+                      <img class="avatar-img rounded-circle border border-white border-3" src="{{ object.picture.url }}" alt="プロフィール写真">
+                    </div>
+                  </div>
+                  <div class="ms-sm-4 mt-sm-3">
+                    <!-- Info -->
+                    <h1 class="mb-0 h5">
+                      {{ object.name }} 
+                      {% if object.is_verified %}
+                      <i class="bi bi-patch-check-fill text-primary small"></i>
+                      {% endif %}
+                    </h1>
+                    <p>@{{ object.username }}</p>
+                    <p>
+                      <ul class="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">
+                        <li class="list-inline-item">フォロワー<strong id="number-of-followed-user">{{ number_of_followed_user }}</strong>人</li>
+                        <li class="list-inline-item">フォロー中<strong>{{ number_of_following_user }}</strong>人</li>
+                      </ul>
+                    </p>
+                  </div>
+                  <!-- Button -->
+                  <div class="d-flex mt-3 justify-content-center ms-sm-auto">
+                    {% if user.id == object.id %}
+                    <div class="dropdown ms-3" style="margin-right:4px;">
+                      <a href="#" class="btn btn-sm btn-secondary-soft" id="eventActionShare" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="bi bi-share-fill"></i>
+                      </a>
+                      <!-- Dropdown menu -->
+                      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="eventActionShare">
+                        <li style="text-align:center;">SNSでアカウントをシェア</li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                          <a class="dropdown-item" href="https://twitter.com/share?url={{ request.scheme }}://{{ request.get_host }}{{ request.path }}" target="_blank" rel="nofollow">
+                            <i class="bi bi-twitter" style="color:#36B5F7;"></i> Twitter
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="https://www.facebook.com/share.php?u={{ request.scheme }}://{{ request.get_host }}{{ request.path }}&t={{ object.username }}" target="_blank" rel="nofollow">
+                            <i class="bi bi-facebook" style="color:#368AF7;"></i> Facebook
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="https://www.instagram.com/share?url={{ request.scheme }}://{{ request.get_host }}{{ request.path }}" target="_blank" rel="nofollow">
+                              <i class="bi bi-instagram" style="color:#EE4CAC;"></i> Instagram
+                          </a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="https://line.me/R/msg/text/?{{ request.scheme }}://{{ request.get_host }}{{ request.path }}" target="_blank" rel="nofollow">
+                              <i class="bi bi-line" style="color:#1DAF58;"></i> Line
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <a href="{% url 'accounts:account_setting' object.username  %}"><button class="btn btn-danger-soft me-2" type="button"> <i class="bi bi-pencil-fill pe-1"></i> 編集 </button></a>
+                    {% elif is_user_following %}
+                    <a href="{% url 'chat:create_chatroom' object.username %}"><button class="btn btn-primary-soft me-2" type="button"> <i class="bi bi-chat-dots-fill pe-1"></i> メッセージ </button></a>
+                    <button class="btn btn-danger-soft me-2" type="button" id="ajax-follow-for-user"> <i class="bi bi-person-heart pe-1"></i> <span id="following-message-for-javascript">{{ following_message_for_javascript }}<span> </button>
+                    {% else %}
+                    <a href="{% url 'chat:create_chatroom' object.username %}"><button class="btn btn-primary-soft me-2" type="button"> <i class="bi bi-chat-dots-fill pe-1"></i> メッセージ </button></a>
+                    <button class="btn btn-info-soft me-2" type="button" id="ajax-follow-for-user"> <i class="bi bi-person-heart pe-1"></i> <span id="following-message-for-javascript">{{ following_message_for_javascript }}<span> </button>
+                    {% endif %}
+                  </div>
+                </div>
+                <!-- Description -->
+                <div>
+                    <p>{{ object.description }}</p>
+                </div>
+                <!-- List profile -->
+                <ul class="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">
+                  <li class="list-inline-item"><i class="bi bi-person me-1"></i> {{ object.state }}</li>
+                  {% if object.state == '現役台湾留学生' or object.state == '台湾留学卒業生' %}
+                  <li class="list-inline-item"><i class="bi bi-pen me-1"></i>  {{ object.school }} / {{ object.major }}</li>
+                  {% else %}
+                  {% endif %}
+                </ul>
+              </div>
+              <!-- Card body END -->
+
+              <div class="card-footer mt-3 pt-2 pb-0">
+                <!-- Nav profile pages -->
+                <ul class="nav nav-bottom-line align-items-center justify-content-center justify-content-md-start mb-0 border-0">
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:post_in_dashboard' object.username %}"> 投稿 </a> </li>
+                  <!-- ユーザーの所属が現役台湾留学生or台湾留学卒業生なら、大学の口コミタブを表示 -->
+                  {% if object.state == '現役台湾留学生' or object.state == '台湾留学卒業生' %}
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:review_in_dashboard' object.username %}"> 口コミ </a> </li>
+                  {% endif %}
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:question_in_dashboard' object.username %}"> 質問 </a> </li>
+                  <li class="nav-item"> <a class="nav-link active" href="{% url 'dashboard:following_in_dashboard' object.username %}"> フォロー中 <span class="badge bg-success bg-opacity-10 text-success small"> {{ number_of_following_user }}</span> </a> </li>
+                  <li class="nav-item"> <a class="nav-link" href="{% url 'dashboard:followed_in_dashboard' object.username %}"> フォロワー <span class="badge bg-success bg-opacity-10 text-success small" id="number-of-followed-user"> {{ number_of_followed_user }}</span> </a> </li>
+                </ul>
+              </div>
+            </div>
+            <!-- My profile END -->
+  
+            <!-- Card Connections START -->
+            <div class="card">
+                <!-- Card header START -->
+                <div class="card-header border-0 pb-0">
+                <h5 class="card-title"> フォロー中</h5> 
+                </div>
+                <!-- Card header END -->
+                <!-- Card body START -->
+                <div class="card-body">
+                    {% for following_user in object.following_users.all %}
+                    <!-- Connections Item -->
+                    <div class="d-md-flex align-items-center mb-4">
+                        <!-- Avatar -->
+                        <div class="avatar me-3 mb-3 mb-md-0">
+                            <a href="{% url 'dashboard:post_in_dashboard' following_user.followed_user.username %}"> <img class="avatar-img rounded-circle" src="{{ following_user.followed_user.picture.url }}" alt="{{ following_user.followed_user.username }}"> </a>
+                        </div>
+                        <!-- Info -->
+                        <div class="w-100">
+                            <div class="d-sm-flex align-items-start">
+                            <h6 class="mb-0">
+                              <a href="{% url 'dashboard:post_in_dashboard' following_user.followed_user.username %}">
+                                {{ following_user.followed_user.name }} 
+                                {% if following_user.followed_user.is_verified %}
+                                <i class="bi bi-patch-check-fill text-primary small"></i>
+                                {% endif %}
+                              </a>
+                            </h6>
+                            <p class="small ms-sm-2 mb-0">{{ following_user.followed_user.state }}</p>
+                            </div>
+                            <!-- Connections START -->
+                            <ul class="avatar-group mt-1 list-unstyled align-items-sm-center">
+                            <li class="small">
+                                {{ following_user.followed_user.school }} / {{ following_user.followed_user.major }}
+                            </li>
+                            </ul>
+                            <!-- Connections END -->
+                        </div>
+                        <!-- Button -->
+                        <div class="ms-md-auto d-flex">
+                            {% if not following_user.followed_user == user %}
+                            <a href="{% url 'dashboard:post_in_dashboard' following_user.followed_user.username %}"><button class="btn btn-primary-soft btn-sm mb-0 me-2"> Profile </button></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p>フォローしている人はまだいません。</p>
+                    {% endfor %}
+                </div>
+                <!-- Card body END -->
+            </div>
+            <!-- Card Connections END -->
+        </div>
+        <!-- Main content END -->
+
+        {% include 'dashboard/sidebar.html' %}
+  
+      </div> <!-- Row END -->
+    </div>
+    <!-- Container END -->
+    
+
+    <script type="text/javascript">
+      /* ユーザーフォローの非同期通信 */
+      document.getElementById('ajax-follow-for-user').addEventListener('click', e => {
+        e.preventDefault();
+        const url = '{% url "accounts:follow_for_user" %}';
+        fetch(url, {
+          method: 'POST',
+          body: `followed_user_pk={{object.pk}}`,
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+            'X-CSRFToken': '{{ csrf_token }}',
+          },
+        }).then(response => {
+          return response.json();
+        }).then(response => {
+          // フォロー数を書き換える
+          const counter = document.getElementById('number-of-followed-user')
+          counter.textContent = response.number_of_followed_user
+          const following_message = document.getElementById('following-message-for-javascript')
+          following_message.textContent = response.following_message_for_javascript
+          const icon = document.getElementById('ajax-follow-for-user')
+          // 作成した場合はハートを塗る
+          if (response.method == 'create') {
+            icon.classList.remove('btn-info-soft')
+            icon.classList.add('btn-danger-soft')
+            icon.id = 'ajax-follow-for-user'
+          } else {
+            icon.classList.remove('btn-danger-soft')
+            icon.classList.add('btn-info-soft')
+            icon.id = 'ajax-follow-for-user'
+          }
+        }).catch(error => {
+          console.log(error);
+        });
+      });
+    </script>
+</main>
+<!-- **************** MAIN CONTENT END **************** -->
+{% endblock %}

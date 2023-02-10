@@ -1,0 +1,182 @@
+{% load static %}
+<!-- =======================Header START -->
+<header class="navbar-dark navbar-transparent header-static">
+
+    <!-- Logo Nav START -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+        <!-- Logo START -->
+        {% if user.is_authenticated %}
+        <a class="navbar-brand" href="{% url 'dashboard:post_in_dashboard' username=user.username %}">
+            <img class="light-mode-item navbar-brand-item" style="width:125px" src="{% static 'images/looben.png' %}" alt="looben">
+        </a>
+        {% else %}
+        <a class="navbar-brand" href="{% url 'accounts:home' %}">
+            <img class="light-mode-item navbar-brand-item" src="{% static 'images/looben.png' %}" alt="looben">
+        </a>
+        {% endif %}
+        <!-- Logo END -->
+
+        <button class="navbar-toggler ms-auto icon-md btn btn-light p-0" style="background: transparent;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar2" aria-controls="offcanvasNavbar2">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="offcanvas offcanvas-end text-bg-white" tabindex="-1" id="offcanvasNavbar2" aria-labelledby="offcanvasNavbar2Label">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasNavbar2Label">台湾留学情報サイトLooben</h5>
+                <button type="button" class="btn-close btn-close-dark" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'accounts:research_university' %}">大学検索</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'questions:question' %}">質問部屋</a>
+                    </li>  
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'study_abroad_information:information_post_list' %}">留学情報</a>
+                    </li>  
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="homeMenu" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">留学生とつながる</a>
+                        <ul class="dropdown-menu" aria-labelledby="homeMenu">
+                            <li> <a class="dropdown-item" href="{% url 'accounts:user_ranking' %}"><i class="bi bi-file-earmark-person"></i> 留学生ランキング</a></li>
+                            <li> <a class="dropdown-item" href="{% url 'accounts:comingsoon' %}"><i class="bi bi-briefcase"></i> バイト</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- Main navbar END -->
+
+        {% if user.is_authenticated %}
+        <!-- Nav right START -->
+        <ul class="nav flex-nowrap align-items-center ms-sm-3 list-unstyled">
+            <!-- チャット画面への変移ボタン-->
+            <li class="nav-item ms-2 dropdown">
+                <a class="nav-link icon-md btn btn-light p-0" href="{% url 'chat:chat_room' %}"  style="background-color: transparent; border:none;">
+                    {% if has_not_seen_message %}
+                    <span class="badge-notif animation-blink"></span>
+                    {% endif %}
+                    <i class="bi bi-chat-dots-fill fs-6"> </i>
+                </a>
+            </li>
+
+            <!-- 通知画面への変移ボタン-->
+            <li class="nav-item dropdown ms-2">
+                <a class="nav-link icon-md btn btn-dark-soft p-0" href="#" id="notifDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                    {% if has_notifications %}
+                    <span class="badge-notif animation-blink"></span>
+                    {% endif %}
+                    <i class="bi bi-bell-fill fs-6"> </i>
+                </a>
+                <div class="dropdown-menu dropdown-animation dropdown-menu-end dropdown-menu-size-md p-0 shadow-lg border-0" aria-labelledby="notifDropdown">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="m-0">
+                        通知 
+                        {% if number_of_notification %}
+                        <span class="badge bg-danger bg-opacity-10 text-danger ms-2">{{ number_of_notification }} new</span>
+                        {% endif %}
+                    </h6>
+                    <a class="small" href="{% url 'notifications:delete_all_notifications' %}">すべて既読にする</a>
+                    </div>
+                    <div class="card-body p-0">
+                    <ul class="list-group list-group-flush list-unstyled p-2">
+                        {% for notification in notification_lists %}
+                        <!-- Notif item -->
+                        <li>
+                        <div class="list-group-item list-group-item-action rounded badge-unread d-flex border-0 mb-1 p-3">
+                            <div class="avatar text-center d-none d-sm-inline-block">
+                            <a href="{% url 'dashboard:post_in_dashboard' notification.sender.username %}"><img class="avatar-img rounded-circle" src="{{ notification.sender.picture.url }}" alt="{{ notification.sender.username }}"></a>
+                            </div>
+                            <div class="ms-sm-3">
+                            <div class=" d-flex">
+                            <p class="small mb-2">{{ notification.message }}</p>
+                            </div>
+                        </div>
+                        </li>
+                        <!-- Notif item -->
+                        {% empty %}
+                        <p>通知はまだありません。</p>
+                        {% endfor %}
+                    </ul>
+                    </div>
+                    <div class="card-footer text-center">
+                    <a href="{% url 'notifications:notification_list' %}" class="btn btn-sm btn-primary-soft">全て見る</a>
+                    </div>
+                </div>
+                </div>
+            </li>
+            <!-- Notification dropdown END -->
+
+
+            <!-- アイコンボタン　-->
+            <li class="nav-item ms-2 dropdown">
+            <a class="nav-link btn icon-md p-0" href="#" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
+                <img class="avatar-img rounded-2" src="{{ user.picture.url }}" alt="プロフィール写真">
+            </a>
+            <ul class="dropdown-menu dropdown-animation dropdown-menu-end pt-3 small me-md-n3" aria-labelledby="profileDropdown">
+                <!-- Profile info -->
+                <li class="px-3">
+                <div class="d-flex align-items-center position-relative">
+                    <!-- Avatar -->
+                    <div class="avatar me-3">
+                    <img class="avatar-img rounded-circle"  src="{{ user.picture.url }}" alt="プロフィール写真">
+                    </div>
+                    <div>
+                    <p class="h6">
+                        {{ user.name }}
+                        {% if user.is_verified %}
+                        <i class="bi bi-patch-check-fill text-primary small"></i>
+                        {% endif %}
+                    </p>
+                    {% if user.state == '留学興味あり' or user.state == 'その他' %}
+                    <p class="small m-0">{{ user.state }}</p>
+                    {% else %}
+                    <p class="small m-0">{{ user.school }}</p>
+                    {% endif %}
+                    </div>
+                </div>
+                <a class="dropdown-item btn btn-primary-soft btn-sm my-2 text-center" href="{% url 'dashboard:post_in_dashboard' username=user.username %}">ダッシュボード</a>
+                </li>
+                <!-- Links -->
+                <li>
+                    <a class="dropdown-item" href="{% url 'accounts:account_setting' username=user.username %}">
+                        <i class="bi bi-gear fa-fw me-2"></i>設定</a>
+                    </li>
+                <li> 
+                    <a class="dropdown-item" href="{% url 'contact_form:privacy_and_safety' %}">
+                        <i class="fa-fw bi bi-life-preserver me-2"></i>プライバシーポリシー
+                    </a> 
+                </li>
+                <li> 
+                    <a class="dropdown-item" href="{% url 'contact_form:contact_form' %}">
+                        <i class="fa-fw bi bi-envelope me-2"></i>問い合わせ
+                    </a> 
+                </li>
+                <!-- superuserなら管理画面へのリンクを載せる -->
+                {% if user.is_superuser %}
+                <li class="dropdown-divider"></li>
+                <li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'admin:index' %}"><i class="bi bi-controller fa-fw me-2"></i>管理画面</a></li>
+                {% endif %}
+                <li class="dropdown-divider"></li>
+                <li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'accounts:user_logout' %}"><i class="bi bi-power fa-fw me-2"></i>ログアウト</a></li>
+            </ul>
+            </li>
+            <!-- Profile START -->
+        </ul>
+        {% else %}
+        <ul class="nav flex-nowrap align-items-center ms-sm-3 list-unstyled">
+            <!-- ログイン　リンク -->
+            <li class="nav-item">
+            <a href="{% url 'accounts:user_login' %}" class="nav-link"><button class="btn btn-info-soft me-2" type="button">ログイン</button></a>
+            </li>
+        </ul>
+        {% endif %}
+        <!-- Nav right END -->
+        </div>
+    </nav>
+    <!-- Logo Nav END --> 
+</header>
+<!-- ======================= Header END -->

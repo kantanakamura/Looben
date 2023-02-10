@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+
+{% block content %}
+<main> 
+
+    <!-- Container START -->
+    <div class="container-fluid">
+
+        <!-- Sidenav START -->
+        <div class="navbar navbar-vertical navbar-light">
+            <div class="offcanvas offcanvas-start custom-scrollbar rounded pt-3" tabindex="-1" id="navbarVerticaloffcanvas">
+            <div class="offcanvas-body pt-5 pt-lg-0">
+                <!-- Card START -->
+                
+                <!-- Avatar -->
+                <div class="avatar avatar-lg mb-3">
+                    <a href="{% url 'dashboard:post_in_dashboard' user.username %}"><img class="avatar-img rounded-circle border border-white border-3" src="{{ user.picture.url }}" alt="{{ user.username }}"></a>
+                </div>
+                <!-- Info -->
+                <h5 class="mb-0"> 
+                    <a href="{% url 'dashboard:post_in_dashboard' user.username %}">
+                        {{ user.name }} 
+                        {% if user.is_verified %}
+                        <i class="bi bi-patch-check-fill text-primary small"></i>
+                        {% endif %}
+                    </a> 
+                </h5>
+                <small>{{ user.school }}</small>
+                <!-- User stat START -->
+                <div class="hstack gap-2 gap-xl-3 mt-3">
+                    <!-- User stat item -->
+                    <div>
+                    <h6 class="mb-0">{{ number_of_information_post }}</h6>
+                    <small>Post</small>
+                    </div>
+                    <!-- Divider -->
+                    <div class="vr"></div>
+                    <!-- User stat item -->
+                    <div>
+                    <h6 class="mb-0">{{ number_of_followed_user }}</h6>
+                    <small>Followers</small>
+                    </div>
+                    <!-- Divider -->
+                    <div class="vr"></div>
+                    <!-- User stat item -->
+                    <div>
+                    <h6 class="mb-0">{{ number_of_following_user }}</h6>
+                    <small>Following</small>
+                    </div>
+                </div>
+                <!-- User stat END -->
+    
+                <!-- Divider -->
+                <hr>
+    
+                <!-- Side Nav START -->
+                <ul class="nav nav-link-secondary flex-column fw-bold gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard:post_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/certificate-outline-filled.svg' %}" alt="blog"><span>投稿 </span></a>
+                    </li>
+                    {% if user.state == '現役台湾留学生' or user.state == '台湾留学卒業生' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard:review_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/clipboard-list-outline-filled.svg' %}" alt="review"><span>口コミ </span></a>
+                    </li>                    
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard:question_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/bulb-curvy-outline-filled.svg' %}" alt="question"><span>質問 </span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard:following_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-outline-filled.svg' %}" alt="following"><span>フォロー中 </span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard:followed_in_dashboard' user.username %}"> <img class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-girl-outline-filled.svg' %}" alt="followd"><span>フォロワー </span></a>
+                    </li>
+                </ul>
+                <!-- Side Nav END -->
+                </div>
+            </div>
+            </div>
+            <!-- Sidenav END -->
+    
+            <!-- Main content START -->
+            <div class="page-content">
+            <div class="row mb-4">
+                <div class="col-12">
+                <!-- Video main feed -->
+                <div class="rounded py-4 py-sm-5 overflow-hidden position-relative" style="background-image:url({% static 'images/bg/wave.jpg' %}); background-position: center center; background-size: cover; background-repeat: no-repeat;">
+                    <div class="bg-overlay bg-dark opacity-5"></div>
+                    <div class="p-4 p-sm-5 position-relative">
+                    <h1 class="text-white">知りたい情報がここにある</h1>
+                    <p class="text-white">あなたも、Loobenで留学情報を共有しませんか? <a href="{% url 'study_abroad_information:create_information_post' %}">投稿する</a></p>
+                    <!-- Form START -->
+                    {% csrf_token %}
+                    <form class="row g-3" method="get">
+                    <div class="col-md-6">
+                        <!-- Where -->
+                        <div class="input-group">
+                        <input class="form-control form-control-lg me-1 pe-5" type="search" placeholder="キーワード検索" name="search">
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-grid">
+                        <!-- Search -->
+                        <button class="btn btn-lg btn-primary" type="submit">検索</button>
+                    </div>
+                    </form>
+                    <!-- Form END -->
+                    </div>
+                </div>
+                <!-- Video main END -->
+                </div>
+            </div>
+                
+
+            {% if user_searched_something %}
+            <div class="row g-3 mb-4">
+                <div class="col-12 mt-4">
+                <div class="d-sm-flex justify-content-between align-items-center">
+                    <h5 class="mb-md-0">検索結果<strong style="color:#FF1474;">{{ number_of_searched_posts }}</strong>件</h5>
+                </div>
+                </div>
+                {% for searched_post in searched_posts %}
+                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
+                <!-- Video START -->
+                <div class="card position-relative h-100">
+                    <!-- Video image -->
+                    <div class="card-image">
+                    <a href=""><img class="card-img-top" src="{{ searched_post.top_image.url }}" alt="blog_top_image"></a>
+                    </div>
+                    <!-- Video info -->
+                    <div class="card-body">
+                    <!-- Video title  -->
+                    <h6> <a class="stretched-link" href=""> {{ searched_post.title }} </a> </h6>
+                    <div class="d-flex mt-3">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xxs me-2">
+                        <img class="avatar-img rounded-circle" src="{{ searched_post.author.picture.url }}" alt="{{ searched_post.author.username }}">
+                        </div>
+                        <!-- Avatar name -->
+                        <div>
+                        <h6 class="mb-0 lh-1"> 
+                            <a href="{% url 'dashboard:post_in_dashboard' searched_post.author.username %}"> 
+                                {{ searched_post.author.name }} 
+                                {% if searched_post.author.is_verified %}
+                                <i class="bi bi-patch-check-fill text-primary small"></i>
+                                {% endif %}
+                            </a> 
+                        </h6>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- Video END -->
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="row g-3 mb-4">
+                <div class="col-12 mt-4">
+                <div class="d-sm-flex justify-content-between align-items-center">
+                    <h5 class="mb-md-0">最新情報 </h5>
+                </div>
+                </div>
+                {% for newest_information_post in newest_information_posts %}
+                <div class="col-sm-6 col-md-4 col-xl-3 col-xxl-2">
+                <!-- Video START -->
+                <div class="card position-relative h-100">
+                    <!-- Video image -->
+                    <div class="card-image">
+                    <a href="{{ newest_information_post.url }}"><img class="card-img-top" src="{{ newest_information_post.top_image.url }}" alt="top_image"></a>
+                    </div>
+                    <!-- Video info -->
+                    <div class="card-body">
+                    <!-- Video title  -->
+                    <h6> <a class="stretched-link" href="{{ newest_information_post.url }}"> {{ newest_information_post.title }} </a> </h6>
+                    <div class="d-flex mt-3">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xxs me-2">
+                        <img class="avatar-img rounded-circle" src="{{ newest_information_post.author.picture.url }}" alt="{{ newest_information_post.author.username }}">
+                        </div>
+                        <!-- Avatar name -->
+                        <div>
+                        <h6 class="mb-0 lh-1"> 
+                            <a href="{% url 'dashboard:post_in_dashboard' newest_information_post.author.username %}"> 
+                                {{ newest_information_post.author.name }} 
+                                {% if newest_information_post.author.is_verified %}
+                                <i class="bi bi-patch-check-fill text-primary small"></i>
+                                {% endif %}
+                            </a> 
+                        </h6>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- Video END -->
+                </div>
+                {% empty %}
+                <p>留学情報はまだありません。<p>
+                {% endfor %}
+            </div>
+    
+            <!-- Official trailer START -->
+            <div class="row g-3 mb-4">
+                <div class="col-12 mt-4">
+                <div class="d-sm-flex justify-content-between align-items-center">
+                    <h5 class="mb-md-0">オフィシャル情報 </h5>
+                    <a class="btn btn-sm btn-primary" href="{% url 'study_abroad_information:in_order_information_post_list' %}">もっとみる</a>
+                </div>
+                </div>
+                {% for official_information_post in official_information_post_lists %}
+                <div class="col-sm-6 col-lg-4">
+                <!-- Video START -->
+                <div class="card h-100">
+                    <!-- Video image -->
+                    <div class="card-image">
+                        <a href="{{ official_information_post.url }}"><img class="card-img-top" src="{{ official_information_post.top_image.url }}" alt="top_image"></a>
+                    </div>
+                    <!-- Video info -->
+                    <div class="card-body position-relative">
+                    <!-- Video title  -->
+                    <h6> <a class="stretched-link" href="{{ official_information_post.url }}"> {{ official_information_post.title }} </a> </h6>
+                    <div class="d-flex mt-2">
+                        <!-- Avatar -->
+                        <div class="avatar avatar-xxs me-2">
+                        <img class="avatar-img rounded-circle" src="{{ official_information_post.author.picture.url }}" alt="{{ official_information_post.author.username }}">
+                        </div>
+                        <!-- Avatar name -->
+                        <div>
+                        <h6 class="mb-0 lh-1"> 
+                            <a href="{% url 'dashboard:post_in_dashboard' official_information_post.author.username %}"> 
+                            {{ official_information_post.author.name }} 
+                            {% if official_information_post.author.is_verified %}
+                            <i class="bi bi-patch-check-fill text-primary small"></i>
+                            {% endif %}
+                            </a> 
+                        </h6>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <!-- Video END -->
+                </div>
+                {% empty %}
+                <p>オフィシャル情報はまだありません。<p>
+                {% endfor %}
+            </div>
+            <!-- Official trailer END -->
+    
+            <!-- footer START -->
+            <footer class="card card-body">
+                <div class="row g-4">
+                <div class="col-md-8">
+                    <!-- Footer nav START -->
+                    <ul class="nav lh-1">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'contact_form:privacy_and_safety' %}">プライバシーポリシー</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'contact_form:contact_form' %}">お問い合わせ</a>
+                        </li>
+                    </ul>
+                    <!-- Footer nav START -->
+                    <!-- Copyright START -->
+                    <p class="mb-0 mt-4">©2023 Looben, All Rights Reserved.</p>
+                    <!-- Copyright END -->
+                </div>
+            </footer>
+            <!-- footer END -->
+        </div>
+        <!-- Main content END -->
+
+    </div>
+    <!-- Container END -->
+    
+</main>
+<!-- **************** MAIN CONTENT END **************** -->
+
+{% endblock %}

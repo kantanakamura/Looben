@@ -1,0 +1,582 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block head_content%}
+{% endblock %}
+
+
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+
+{% block content %}
+<!-- **************** MAIN CONTENT START **************** -->
+<main class="pt-5">
+
+    <!-- Page header START -->
+    <div class="py-5" style="background-image:url({% static 'images/bg/search_uni.jpg' %}); background-position: center center; background-size: cover; background-repeat: no-repeat;"> 
+        <div class="container">
+            <div class="row justify-content-center py-5">
+              <div class="col-md-6 text-center">
+              <!-- Title -->
+              <h1 class="text-white">自分に合った台湾の大学を探す.</h1>
+              <!-- Search form START -->
+              {% csrf_token %}
+              <form class="rounded position-relative" method="get">
+                <input class="form-control form-control-lg ps-5" type="search" placeholder="検索" aria-label="Search" name="search">
+                <button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit"><i class="bi bi-search fs-5 ps-1"> </i></button>
+              </form>
+              <!-- Search form END -->
+              <p class="mb-4 text-white" style="margin-top:20px;"><i class="bi bi-patch-check-fill text-success small"></i>は国立大学、<i class="bi bi-patch-check-fill text-warning small"></i>は私立大学</p>
+              </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page header END -->
+  
+  <!-- Container START -->
+  <div class="py-5">
+    <div class="container">
+  
+      <div class="row g-4">
+        <div class="col-12">
+            <!-- Tab nav line START -->
+            <ul class="nav nav-tabs nav-tabs-white justify-content-center border-0">
+            <li class="nav-item"> <a class="nav-link active" data-bs-toggle="tab" href="#tab-1"> 評価が高い大学 </a> </li>
+            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-2"> 国立 </a> </li>
+            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-3"> 私立 </a> </li>
+            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-4"> 北部 </a> </li>
+            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-5"> 中部 </a> </li>
+            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-6"> 東部 </a> </li>
+            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-7"> 南部 </a> </li>
+            <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#tab-8"> いいねした大学 </a> </li>
+          </ul>
+          <!-- Tab nav line START -->
+        </div>
+      </div>
+
+      {% if user_searched_anything %}
+      <div class="tab-content mb-0 pb-0 text-center">
+        <!-- 検索された大学 START -->
+        <div class="tab-pane fade show active">
+          <div class="row g-4">
+            <h4>検索結果<strong style="color:#FF1474;">{{ number_of_searched_universities }}</strong>件</h4>
+            {% for searched_university in searched_universities %}
+            <!-- Main content START -->
+            <div class="col-sm-6 col-lg-4">
+                <!-- Card feed item START -->
+                <div class="card h-100">
+                  <img class="card-img-top" src="{{ searched_university.picture.url }}" alt="{{ searched_university.name }}" style="height:210px;">
+                  <!-- Card header END -->
+                  <!-- Card body START -->
+                  <div class="card-body">
+                    <!-- Info -->
+                    <p class="text-body"><strong>{{ searched_university.name }}</strong> {% if searched_university.is_national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                    <div>
+                    {% with range=''|center:5 %}
+                    {% for _ in range %}
+                      {% if forloop.counter <= searched_university.star_rating %}
+                      <i class="fas fa-star" style="color:#F7E36C;"></i>
+                      {% else %}
+                      <i class="fas fa-star" style="color:#D8DDEA;"></i>
+                      {% endif %}
+                    {% endfor %}
+                    <span style="color:#FF1474;"><strong>{{ searched_university.star_rating }}.0</strong></span>
+                    {% endwith %}
+                    </div>
+                    <a class="text-body" href="{% url 'accounts:university_detail' pk=searched_university.id %}">{{ searched_university.description }}</a>
+                    <!-- Feed react START -->
+                    <ul class="nav nav-stack flex-wrap small mt-3">
+                      <li class="nav-item">
+                        <a href="{% url 'accounts:university_detail' searched_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"> もっとみる</button></a>
+                      </li>
+                      <li class="nav-item ms-sm-auto">
+                        <div class="ms-md-auto d-flex">
+                          <span style="color:gray;"> {{ searched_university.likeforuniversity_set.all.count }}</span>
+                          <button type="button" style="border:none;background:none">
+                              <i class="bi bi-heart" style="color:#F73641"></i>
+                          </button>
+                        </div>
+                      </li>
+                    </ul>
+                    <!-- Feed react END -->
+                  </div>
+                  <!-- Card body END -->
+                </div>
+                <!-- Card feed item END -->
+            </div>
+            <!-- Main content END -->
+            {% endfor %}
+          </div> 
+          <!-- Row END -->
+      </div>
+      <hr>
+      <!-- 検索された大学 END -->
+      {% endif %}
+      
+      <div class="tab-content mb-0 pb-0">
+        <!-- 評価の高い大学 tab START -->
+        <div class="tab-pane fade show active text-center" id="tab-1">
+          <div class="row g-4">
+            {% for high_rated_university in high_rated_universities %}
+            <!-- Main content START -->
+            <div class="col-sm-6 col-lg-4">
+                <!-- Card feed item START -->
+                <div class="card h-100">
+                  <img class="card-img-top" src="{{ high_rated_university.picture.url }}" alt="{{ high_rated_university.name }}" style="height:210px;">
+                  <!-- Card header END -->
+                  <!-- Card body START -->
+                  <div class="card-body">
+                    <!-- Info -->
+                    <p class="text-body"><strong>{{ high_rated_university.name }}</strong> {% if high_rated_university.is_national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                    <div>
+                    {% with range=''|center:5 %}
+                    {% for _ in range %}
+                      {% if forloop.counter <= high_rated_university.star_rating %}
+                      <i class="fas fa-star" style="color:#F7E36C;"></i>
+                      {% else %}
+                      <i class="fas fa-star" style="color:#D8DDEA;"></i>
+                      {% endif %}
+                    {% endfor %}
+                    <span style="color:#FF1474;"><strong>{{ high_rated_university.star_rating }}.0</strong></span>
+                    {% endwith %}
+                    </div>
+                    <a class="text-body" href="{% url 'accounts:university_detail' pk=high_rated_university.id %}">{{ high_rated_university.description }}</a>
+                    <!-- Feed react START -->
+                    <ul class="nav nav-stack flex-wrap small mt-3">
+                      <li class="nav-item">
+                        <a href="{% url 'accounts:university_detail' high_rated_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"> もっとみる</button></a>
+                      </li>
+                      <!-- 保存　button START -->
+                      <li class="nav-item ms-sm-auto">
+                        <div class="ms-md-auto d-flex">
+                          <span style="color:gray;"> {{ high_rated_university.likeforuniversity_set.all.count }}</span>
+                          <button type="button" style="border:none;background:none">
+                              <i class="bi bi-heart" style="color:#F73641"></i>
+                          </button>
+                        </div>
+                      </li>
+                      <!-- 保存　button END -->
+                    </ul>
+                    <!-- Feed react END -->
+                  </div>
+                  <!-- Card body END -->
+                </div>
+                <!-- Card feed item END -->
+            </div>
+            <!-- Main content END -->
+            {% endfor %}
+          </div> 
+          <!-- Row END -->
+        </div>
+        <!-- 評価の高い大学 tab END -->
+  
+
+        <!-- 国立 tab START -->
+        <div class="tab-pane fade text-center" id="tab-2">
+            
+          <div class="row g-4">
+            {% for national_university in national_universities %}
+            <!-- Main content START -->
+            <div class="col-sm-6 col-lg-4">
+                <!-- Card feed item START -->
+                <div class="card h-100">
+                  <img class="card-img-top" src="{{ national_university.picture.url }}" alt="{{ national_university.name }}" style="height:210px;">
+                  <!-- Card header END -->
+                  <!-- Card body START -->
+                  <div class="card-body">
+                    <!-- Info -->
+                    <p class="text-body"><strong>{{ national_university.name }}</strong> <i class="bi bi-patch-check-fill text-success small"></i></p>
+                    <div>
+                    {% with range=''|center:5 %}
+                    {% for _ in range %}
+                      {% if forloop.counter <= national_university.star_rating %}
+                      <i class="fas fa-star" style="color:#F7E36C;"></i>
+                      {% else %}
+                      <i class="fas fa-star" style="color:#D8DDEA;"></i>
+                      {% endif %}
+                    {% endfor %}
+                    <span style="color:#FF1474;"><strong>{{ national_university.star_rating }}.0</strong></span>
+                    {% endwith %}
+                    </div>
+                    <a class="text-body" href="{% url 'accounts:university_detail' pk=national_university.id %}">{{ national_university.description }}</a>
+                    <!-- Feed react START -->
+                    <ul class="nav nav-stack flex-wrap small mt-3">
+                      <li class="nav-item">
+                        <a href="{% url 'accounts:university_detail' national_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"> もっとみる</button></a>
+                      </li>
+                      <!-- 保存　button START -->
+                      <li class="nav-item ms-sm-auto">
+                        <div class="ms-md-auto d-flex">
+                          <span style="color:gray;"> {{ national_university.likeforuniversity_set.all.count }}</span>
+                          <button type="button" style="border:none;background:none">
+                              <i class="bi bi-heart" style="color:#F73641"></i>
+                          </button>
+                        </div>
+                      </li>
+                      <!-- 保存　button END -->
+                    </ul>
+                    <!-- Feed react END -->
+                  </div>
+                  <!-- Card body END -->
+                </div>
+                <!-- Card feed item END -->
+            </div>
+            <!-- Main content END -->
+            {% endfor %}
+          </div> <!-- Row END -->
+        </div>
+        <!-- 国立 tab END -->
+  
+
+        <!-- 私立 tab START -->
+        <div class="tab-pane fade text-center" id="tab-3">
+            
+            <div class="row g-4">
+              {% for non_national_university in non_national_universities %}
+              <!-- Main content START -->
+              <div class="col-sm-6 col-lg-4">
+                  <!-- Card feed item START -->
+                  <div class="card h-100">
+                    <img class="card-img-top" src="{{ non_national_university.picture.url }}" alt="{{ non_national_university.name }}" style="height:210px;">
+                    <!-- Card header END -->
+                    <!-- Card body START -->
+                    <div class="card-body">
+                      <!-- Info -->
+                      <p class="text-body"><strong>{{ non_national_university.name }}</strong> <i class="bi bi-patch-check-fill text-warning small"></i></p>
+                      <div>
+                        {% with range=''|center:5 %}
+                        {% for _ in range %}
+                          {% if forloop.counter <= non_national_university.star_rating %}
+                          <i class="fas fa-star" style="color:#F7E36C;"></i>
+                          {% else %}
+                          <i class="fas fa-star" style="color:#D8DDEA;"></i>
+                          {% endif %}
+                        {% endfor %}
+                        <span style="color:#FF1474;"><strong>{{ non_national_university.star_rating }}.0</strong></span>
+                        {% endwith %}
+                      </div>
+                      <a class="text-body" href="{% url 'accounts:university_detail' pk=non_national_university.id %}">{{ non_national_university.description }}</a>
+                      <!-- Feed react START -->
+                      <ul class="nav nav-stack flex-wrap small mt-3">
+                        <li class="nav-item">
+                          <a href="{% url 'accounts:university_detail' non_national_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"> もっとみる</button></a>
+                        </li>
+                        <!-- 保存　button START -->
+                        <li class="nav-item ms-sm-auto">
+                          <div class="ms-md-auto d-flex">
+                            <span style="color:gray;"> {{ non_national_university.likeforuniversity_set.all.count }}</span>
+                            <button type="button" style="border:none;background:none">
+                                <i class="bi bi-heart" style="color:#F73641"></i>
+                            </button>
+                          </div>
+                        </li>
+                        <!-- 保存　button END -->
+                      </ul>
+                      <!-- Feed react END -->
+                    </div>
+                    <!-- Card body END -->
+                  </div>
+                  <!-- Card feed item END -->
+              </div>
+              <!-- Main content END -->
+              {% endfor %}
+            </div> <!-- Row END -->
+        </div>
+        <!-- 私立 tab END -->
+  
+
+        <!-- 北部 tab START -->
+        <div class="tab-pane fade text-center" id="tab-4">
+            
+            <div class="row g-4">
+              {% for north_university in north_universities %}
+              <!-- Main content START -->
+              <div class="col-sm-6 col-lg-4">
+                  <!-- Card feed item START -->
+                  <div class="card h-100">
+                    <img class="card-img-top" src="{{ north_university.picture.url }}" alt="{{ north_university.name }}" style="height:210px;">
+                    <!-- Card header END -->
+                    <!-- Card body START -->
+                    <div class="card-body">
+                      <!-- Info -->
+                      <p class="text-body"><strong>{{ north_university.name }}</strong> {% if north_university.is_national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                      <div>
+                        {% with range=''|center:5 %}
+                        {% for _ in range %}
+                          {% if forloop.counter <= north_university.star_rating %}
+                          <i class="fas fa-star" style="color:#F7E36C;"></i>
+                          {% else %}
+                          <i class="fas fa-star" style="color:#D8DDEA;"></i>
+                          {% endif %}
+                        {% endfor %}
+                        <span style="color:#FF1474;"><strong>{{ north_university.star_rating }}.0</strong></span>
+                        {% endwith %}
+                      </div>
+                      <a class="text-body" href="{% url 'accounts:university_detail' pk=north_university.id %}">{{ north_university.description }}</a>
+                      <!-- Feed react START -->
+                      <ul class="nav nav-stack flex-wrap small mt-3">
+                        <li class="nav-item">
+                          <a href="{% url 'accounts:university_detail' north_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"> もっとみる</button></a>
+                        </li>
+                        <!-- 保存　button START -->
+                        <li class="nav-item ms-sm-auto">
+                          <div class="ms-md-auto d-flex">
+                            <span style="color:gray;"> {{ north_university.likeforuniversity_set.all.count }}</span>
+                            <button type="button" style="border:none;background:none">
+                                <i class="bi bi-heart" style="color:#F73641"></i>
+                            </button>
+                          </div>
+                        </li>
+                        <!-- 保存　button END -->
+                      </ul>
+                      <!-- Feed react END -->
+                    </div>
+                    <!-- Card body END -->
+                  </div>
+                  <!-- Card feed item END -->
+              </div>
+              <!-- Main content END -->
+              {% endfor %}
+            </div> <!-- Row END -->
+        </div>
+        <!-- 北部 tab END -->
+  
+        <!-- 中部 tab START -->
+        <div class="tab-pane fade text-center" id="tab-5">
+            
+            <div class="row g-4">
+              {% for middle_university in middle_universities %}
+              <!-- Main content START -->
+              <div class="col-sm-6 col-lg-4">
+                  <!-- Card feed item START -->
+                  <div class="card h-100">
+                    <img class="card-img-top" src="{{ middle_university.picture.url }}" alt="{{ middle_university.name }}" style="height:210px;">
+                    <!-- Card header END -->
+                    <!-- Card body START -->
+                    <div class="card-body">
+                      <!-- Info -->
+                      <p class="text-body"><strong>{{ middle_university.name }}</strong> {% if middle_university.is_national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                      <div>
+                        {% with range=''|center:5 %}
+                        {% for _ in range %}
+                          {% if forloop.counter <= middle_university.star_rating %}
+                          <i class="fas fa-star" style="color:#F7E36C;"></i>
+                          {% else %}
+                          <i class="fas fa-star" style="color:#D8DDEA;"></i>
+                          {% endif %}
+                        {% endfor %}
+                        <span style="color:#FF1474;"><strong>{{ middle_university.star_rating }}.0</strong></span>
+                        {% endwith %}
+                      </div>
+                      <a class="text-body" href="{% url 'accounts:university_detail' pk=middle_university.id %}">{{ middle_university.description }}</a>
+                      <!-- Feed react START -->
+                      <ul class="nav nav-stack flex-wrap small mt-3">
+                        <li class="nav-item">
+                          <a href="{% url 'accounts:university_detail' middle_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"> もっとみる</button></a>
+                        </li>
+                        <!-- 保存　button START -->
+                        <li class="nav-item ms-sm-auto">
+                          <div class="ms-md-auto d-flex">
+                            <span style="color:gray;"> {{ middle_university.likeforuniversity_set.all.count }}</span>
+                            <button type="button" style="border:none;background:none">
+                                <i class="bi bi-heart" style="color:#F73641"></i>
+                            </button>
+                          </div>
+                        </li>
+                        <!-- 保存　button END -->
+                      </ul>
+                      <!-- Feed react END -->
+                    </div>
+                    <!-- Card body END -->
+                  </div>
+                  <!-- Card feed item END -->
+              </div>
+              <!-- Main content END -->
+              {% endfor %}
+            </div> <!-- Row END -->
+        </div>
+        <!-- 中部 tab END -->
+  
+        <!-- 東部 tab START -->
+        <div class="tab-pane fade text-center" id="tab-6">
+            
+            <div class="row g-4">
+              {% for east_university in east_universities %}
+              <!-- Main content START -->
+              <div class="col-sm-6 col-lg-4">
+                  <!-- Card feed item START -->
+                  <div class="card h-100">
+                    <img class="card-img-top" src="{{ east_university.picture.url }}" alt="{{ east_university.name }}" style="height:210px;">
+                    <!-- Card header END -->
+                    <!-- Card body START -->
+                    <div class="card-body">
+                      <!-- Info -->
+                      <p class="text-body"><strong>{{ east_university.name }}</strong> {% if east_university.is_national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                      <div>
+                        {% with range=''|center:5 %}
+                        {% for _ in range %}
+                          {% if forloop.counter <= east_university.star_rating %}
+                          <i class="fas fa-star" style="color:#F7E36C;"></i>
+                          {% else %}
+                          <i class="fas fa-star" style="color:#D8DDEA;"></i>
+                          {% endif %}
+                        {% endfor %}
+                        <span style="color:#FF1474;"><strong>{{ east_university.star_rating }}.0</strong></span>
+                        {% endwith %}
+                      </div>
+                      <a class="text-body" href="{% url 'accounts:university_detail' pk=east_university.id %}">{{ east_university.description }}</a>
+                      <!-- Feed react START -->
+                      <ul class="nav nav-stack flex-wrap small mt-3">
+                        <li class="nav-item">
+                          <a href="{% url 'accounts:university_detail' east_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"> もっとみる</button></a>
+                        </li>
+                        <!-- 保存　button START -->
+                        <li class="nav-item ms-sm-auto">
+                          <div class="ms-md-auto d-flex">
+                            <span style="color:gray;"> {{ east_university.likeforuniversity_set.all.count }}</span>
+                            <button type="button" style="border:none;background:none">
+                                <i class="bi bi-heart" style="color:#F73641"></i>
+                            </button>
+                          </div>
+                        </li>
+                        <!-- 保存　button END -->
+                      </ul>
+                      <!-- Feed react END -->
+                    </div>
+                    <!-- Card body END -->
+                  </div>
+                  <!-- Card feed item END -->
+              </div>
+              <!-- Main content END -->
+              {% endfor %}
+            </div> <!-- Row END -->
+        </div>
+        <!-- 東部 tab END -->
+
+        <!-- 南部 tab START -->
+        <div class="tab-pane fade text-center" id="tab-7">
+            
+            <div class="row g-4">
+              {% for south_university in south_universities %}
+              <!-- Main content START -->
+              <div class="col-sm-6 col-lg-4">
+                  <!-- Card feed item START -->
+                  <div class="card h-100">
+                    <img class="card-img-top" src="{{ south_university.picture.url }}" alt="{{ south_university.name }}" style="height:210px;">
+                    <!-- Card header END -->
+                    <!-- Card body START -->
+                    <div class="card-body">
+                      <!-- Info -->
+                      <p class="text-body"><strong>{{ south_university.name }}</strong> {% if south_university.is_national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                      <div>
+                        {% with range=''|center:5 %}
+                        {% for _ in range %}
+                          {% if forloop.counter <= south_university.star_rating %}
+                          <i class="fas fa-star" style="color:#F7E36C;"></i>
+                          {% else %}
+                          <i class="fas fa-star" style="color:#D8DDEA;"></i>
+                          {% endif %}
+                        {% endfor %}
+                        <span style="color:#FF1474;"><strong>{{ south_university.star_rating }}.0</strong></span>
+                        {% endwith %}
+                      </div>
+                      <a class="text-body" href="{% url 'accounts:university_detail' pk=south_university.id %}">{{ south_university.description }}</a>
+                      <!-- Feed react START -->
+                      <ul class="nav nav-stack flex-wrap small mt-3">
+                        <li class="nav-item">
+                          <a href="{% url 'accounts:university_detail' south_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"> もっとみる</button></a>
+                        </li>
+                        <!-- 保存　button START -->
+                        <li class="nav-item ms-sm-auto">
+                          <div class="ms-md-auto d-flex">
+                            <span style="color:gray;"> {{ south_university.likeforuniversity_set.all.count }}</span>
+                            <button type="button" style="border:none;background:none">
+                                <i class="bi bi-heart" style="color:#F73641"></i>
+                            </button>
+                          </div>
+                        </li>
+                        <!-- 保存　button END -->
+                      </ul>
+                      <!-- Feed react END -->
+                    </div>
+                    <!-- Card body END -->
+                  </div>
+                  <!-- Card feed item END -->
+              </div>
+              <!-- Main content END -->
+              {% endfor %}
+            </div> <!-- Row END -->
+        </div>
+        <!-- 南部 tab END -->
+
+        <!-- いいねした大学 tab START -->
+        <div class="tab-pane fade text-center" id="tab-8">
+          <div class="row g-4">
+            {% for liked_university in liked_universities %}
+            <!-- Main content START -->
+            <div class="col-sm-6 col-lg-4">
+              <!-- Card feed item START -->
+              <div class="card h-100">
+                <img class="card-img-top" src="{{ liked_university.target_university.picture.url }}" alt="{{ liked_university.target_university.name }}" style="height:210px;">
+                <!-- Card header END -->
+                <!-- Card body START -->
+                <div class="card-body">
+                  <!-- Info -->
+                  <p class="text-body"><strong>{{ liked_university.target_university.name }}</strong> {% if liked_university.target_university.is_national %} <i class="bi bi-patch-check-fill text-success small"></i> {% else %} <i class="bi bi-patch-check-fill text-warning small"></i> {% endif %}</p>
+                  <div>
+                    {% with range=''|center:5 %}
+                    {% for _ in range %}
+                      {% if forloop.counter <= liked_university.target_university.star_rating %}
+                      <i class="fas fa-star" style="color:#F7E36C;"></i>
+                      {% else %}
+                      <i class="fas fa-star" style="color:#D8DDEA;"></i>
+                      {% endif %}
+                    {% endfor %}
+                    <span style="color:#FF1474;"><strong>{{ liked_university.target_university.star_rating }}.0</strong></span>
+                    {% endwith %}
+                  </div>
+                  <a class="text-body" href="{% url 'accounts:university_detail' liked_university.target_university.id %}">{{ liked_university.target_university.description }}</a>
+                  <!-- Feed react START -->
+                  <ul class="nav nav-stack flex-wrap small mt-3">
+                    <li class="nav-item">
+                      <a href="{% url 'accounts:university_detail' liked_university.target_university.id %}"><button class="btn btn-sm btn-outline-light" data-bs-toggle="tooltip" data-bs-placement="top"> もっとみる</button></a>
+                    </li>
+                    <!-- いいね数 START -->
+                    <li class="nav-item ms-sm-auto">
+                      <div class="ms-md-auto d-flex">
+                        <span style="color:gray;"> {{ liked_university.target_university.likeforuniversity_set.all.count }}</span>
+                        <button type="button" style="border:none;background:none">
+                            <i class="bi bi-heart-fill" style="color:#F73641"></i>
+                        </button>
+                      </div>
+                    </li>
+                    <!-- いいね数 END -->
+                  </ul>
+                  <!-- Feed react END -->
+                </div>
+                <!-- Card body END -->
+              </div>
+              <!-- Card feed item END -->
+            </div>
+            <!-- Main content END -->
+            {% empty %}
+            <!-- もし、いいねした大学がない場合-->
+            <div class="my-sm-5 py-sm-5">
+              <i class="display-1 text-primary text-opacity-25 bi bi-card-text"> </i>
+              <h4 class="mt-2 mb-3 text-body">あなたがいいねした大学はありません</h4>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <!-- いいねした大学 tab END --> 
+      </div>
+    </div>
+  </div>
+    <!-- Container END -->
+  
+</main>
+<!-- **************** MAIN CONTENT END **************** -->
+{% endblock %}

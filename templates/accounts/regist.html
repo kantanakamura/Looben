@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+{% include 'header.html' %}
+{% endblock %}
+
+
+{% block content %}
+    <!-- **************** MAIN CONTENT START **************** -->
+    <main>
+        <!-- Container START -->
+        <div class="container">
+        <div class="row justify-content-center align-items-center vh-100 py-5">
+            <!-- Main content START -->
+            <div class="col-sm-10 col-md-8 col-lg-7 col-xl-6 col-xxl-5">
+            <!-- Loobenロゴ -->
+            <div class="text-center">
+                <img class="mb-4" src="{% static 'images/looben_icon2.png' %}" alt="looben" width="75" height="75">
+            </div>
+            <!-- Sign up START -->
+            <div class="card card-body rounded-3 p-4 p-sm-5">
+                <div class="text-center">
+                <!-- タイトル -->
+                <h2 class="mb-2">新規登録</h2>
+                <p>Loobenは完全無料で利用いただけます</p>
+                <!-- ログイン画面へのリンク　-->
+                <span class="d-block">すでにアカウントをお持ちですか？<a href="{% url 'accounts:user_login' %}">  ログイン</a></span>
+                </div>
+
+                <!-- Form START -->
+                <form class="mt-4" method="post">
+                {{ form.non_field_errors }}
+                {% csrf_token %}
+
+                <!-- Email -->
+                <div class="mb-3 input-group-lg form-floating">
+                    {{ form.email }}
+                    <label for="floatingInput">Enter email</label>
+                    <small>あなたのメールアドレスを確実に守ります。</small>
+                </div>
+                {{ form.email.errors }}
+
+                <!-- Username -->
+                <div class="mb-3 input-group-lg">
+                    <div class="input-group">
+                        <div class="input-group-text">@</div>
+                        {{ form.username }}
+                    </div>
+                    <small>半角英字と数字、_を利用できます。</small>
+                </div>
+                {{ form.username.errors }}
+
+                <!-- Password -->
+                <div class="mb-3 input-group-lg form-floating">
+                    {{ form.password }}
+                    <label for="floatingInput">Enter password</label>
+                </div>
+                {{ form.password.errors }}
+
+                <!-- Confirm password -->
+                <div class="mb-3 input-group-lg form-floating">
+                    {{ form.confirm_password }}
+                    <label for="floatingInput">Enter password again</label>
+                    <small>確認として、パスワードを再入力してください。</small>
+                </div>
+                {{ form.confirm_password.errors }}
+                    
+
+                <!-- 新規登録ボタン -->
+                <div class="d-grid"><button type="submit" class="btn btn-lg btn-primary">新規登録</button></div>
+                
+                <!-- コピーライト -->
+                <p class="mb-0 mt-3 text-center">©2023 Looben. All rights reserved</p>
+                </form>
+                <!-- Form END -->
+            </div>
+            <!-- Sign up END -->
+            </div>
+        </div> <!-- Row END -->
+        </div>
+        <!-- Container END -->
+    </main>
+{% endblock %}
