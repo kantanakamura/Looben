@@ -1,10 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.base import TemplateView, View
 from django.views.generic.list import ListView
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
@@ -26,11 +26,24 @@ from notifications.models import Notification
 from chat.models import ConversationPartner
 
 
-class HomeView(TemplateView):
+class UnauthenticatedOnly(UserPassesTestMixin):
+    """
+    ログイン済みのユーザーのアクセスを制限する
+    """
+    def test_func(self):
+        # ログイン状態じゃないかチェック
+        return not self.request.user.is_authenticated
+    
+    def handle_no_permission(self):
+        # ログイン状態なら投稿一覧へリダイレクト
+        return redirect('accounts:research_university')
+    
+    
+class HomeView(UnauthenticatedOnly, TemplateView):
     template_name= 'accounts/home.html'
     
 
-class RegistUserView(CreateView):
+class RegistUserView(UnauthenticatedOnly, CreateView):
     template_name = 'accounts/regist.html'
     form_class = RegistForm
     success_message = 'アカウント作成に成功しました'
@@ -39,7 +52,7 @@ class RegistUserView(CreateView):
         return reverse_lazy('accounts:user_login')   
     
 
-class UserLoginView(LoginView):
+class UserLoginView(UnauthenticatedOnly, LoginView):
     template_name = 'accounts/user_login.html'
     authentication_form = UserLoginForm
     
