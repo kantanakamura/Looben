@@ -1,13 +1,18 @@
-from dataclasses import field
 from django import forms
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.admin.widgets import AdminDateWidget
-from django.contrib.auth.forms import PasswordChangeForm
+import re
 
 from .models import Majors, Schools, Users
 
 
+# usernameのエラー確認のfunctoin
+def validate_username(username):
+    pattern = r'^[a-zA-Z0-9_]+$'
+    if not re.match(pattern, username):
+        raise forms.ValidationError("ユーザーネームはローマ字とアンダーバーのみを含めてください。")
+    
+    
 #　アカウント作成フォーム
 class RegistForm(forms.ModelForm):
     username = forms.CharField(label='ユーザーネーム', widget=forms.TextInput(attrs={
@@ -51,7 +56,12 @@ class RegistForm(forms.ModelForm):
         confirm_password = cleaned_data['confirm_password']
         if password != confirm_password:
             raise forms.ValidationError('パスワードが一致しません')
-    
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        validate_username(username)
+        return username
+
     
 #　ユーザーログインフォーム
 class UserLoginForm(AuthenticationForm):
