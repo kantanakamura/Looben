@@ -1,6 +1,3 @@
-from .models import Users
-
-
 def for_earning_post_likes(author):
     author.contributed_points += 1
     author.save()
