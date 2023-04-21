@@ -10,8 +10,12 @@
 
 
 ## 使用技術
-・Python 3.9
-・Django 4.1
-・Postgres
-・psycopg2-binary
-・python-dotenv
+- Python 3.9
+- Django 4.1
+- Postgres
+- psycopg2-binary
+- python-dotenv
+- AWS(EC2)
+- nginx
+- gunicorn
+- postgreSQL
