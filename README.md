@@ -19,3 +19,9 @@
 - nginx
 - gunicorn
 - postgreSQL
+
+## ER図
+![Looben ER図](https://user-images.githubusercontent.com/96579474/233837300-fac1870a-ff00-4b40-855d-85444e20c891.png)
+
+## System Architecure
+![Looben SystemArchitecture](https://user-images.githubusercontent.com/96579474/233837318-9a045687-5b8a-409a-acad-88b3439c020f.png)
