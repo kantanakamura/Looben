@@ -1,7 +1,5 @@
 from rest_framework import serializers
 
-
-from accounts.models import Users
 from chat.models import Messages
 
 

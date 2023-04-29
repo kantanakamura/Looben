@@ -3,6 +3,7 @@ from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from chat.serializers import MessageSerializer
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.views.generic.base import View
 from django.shortcuts import get_object_or_404 
 from django.http import Http404
@@ -12,7 +13,8 @@ from accounts.models import Users
 from chat.models import Messages
 from notifications.models import Notification
     
-    
+
+@login_required
 def get_message(request, username):
     """
     特定ユーザ間のチャット情報を取得する
@@ -48,7 +50,7 @@ def get_message(request, username):
         'has_not_seen_message': has_not_seen_message
         })
     
-    
+@login_required
 def create_chatroom(request, username):
     conversation_partner = get_object_or_404(Users, username=username)
     conversation_connection = ConversationPartner.objects.filter(conversation_partner=conversation_partner, current_user=request.user)
@@ -110,7 +112,7 @@ class ChatRoomView(LoginRequiredMixin, View):
             })
         
         
-class UpdateMessage(View):
+class UpdateMessage(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         data = JSONParser().parse(request)
