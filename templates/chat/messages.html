@@ -280,6 +280,7 @@
           })
       }
 
+      // 1秒ごとにreceive関数を実行
       $(function () {
         setInterval(receive, 1000, '{{conversation_partner.picture.url}}', '{{conversation_partner.username}}')
       })
