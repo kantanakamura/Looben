@@ -8,3 +8,4 @@ django[argon2]
 # for postgres
 django-environ~=0.4.5
 dj-database-url==0.5.0
+python-dotenv==0.21.0
