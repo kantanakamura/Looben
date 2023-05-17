@@ -1,0 +1,32 @@
+version: "3.2"
+
+services:
+  db:
+    container_name: looben_db
+    image: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=looben
+      - POSTGRES_USER=kanta
+      - POSTGRES_PASSWORD=Yogawa1029
+      
+  web:
+    container_name: looben_web
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_NAME=looben
+      - POSTGRES_USER=kanta
+      - POSTGRES_PASSWORD=Yogawa1029
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
