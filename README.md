@@ -1,7 +1,7 @@
 # 台湾留学情報サイト　- Looben
 
 [※ ここからサイトへ移動できます](http://looben.org)  
-[※ 振り返り記事](https://kanta-blog.tokyo/looben-review/)
+[※ このプロジェクトの振り返り記事](https://kanta-blog.tokyo/looben-review/)
 
 1. [概要](#概要)
 2. [使用技術](#使用技術)
