@@ -4,7 +4,9 @@ django-summernote==0.8.20.0
 djangorestframework==3.14.0
 gunicorn
 psycopg2-binary
-django[argon2]
 django-environ~=0.4.5
 dj-database-url==0.5.0
-python-dotenv==0.21.0
+python-dotenv
+pytest-django
+psycopg2-binary
+django[argon2]

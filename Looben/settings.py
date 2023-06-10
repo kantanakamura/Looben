@@ -1,3 +1,5 @@
+import environ
+from dotenv import load_dotenv
 import os
 from pathlib import Path
 from dotenv import load_dotenv
@@ -12,8 +14,9 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+dotenv_path = os.path.join(BASE_DIR, '.env')
+load_dotenv(dotenv_path)
 
-load_dotenv('.env')
 SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG')
 
@@ -100,7 +103,10 @@ DATABASES = {
         'USER': os.environ.get('DATABASE_USER'),
         'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
         'HOST': os.environ.get('DATABASE_HOST'),
-        'PORT': os.environ.get('DATABASE_PORT')
+        'PORT': os.environ.get('DATABASE_PORT'),
+        'TEST': {
+            'NAME': 'looben_test_db',
+        },
     },
 }
 
@@ -109,6 +115,7 @@ import sys
 if 'test' in sys.argv: #Covers regular testing and django-coverage
     DATABASES['default']['ENGINE'] = 'django.db.backends.postgresql'
     DATABASES['default']['NAME'] = ':memory:'
+
 
 
 # Password validation
