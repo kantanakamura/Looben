@@ -16,4 +16,4 @@ jobs:
         env:
           SECRET_KEY: 2c8a67ed46c7f1d1ed7b4ae604801a79ca2213409372b4bdf8 
           DEBUG: True
-        run: docker-compose run --rm web sh -c "pytest"
+        run: docker-compose run --rm web sh -c "export DJANGO_SETTINGS_MODULE=Looben.settings && pytest"
