@@ -17,8 +17,8 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 dotenv_path = os.path.join(BASE_DIR, '.env')
 load_dotenv(dotenv_path)
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
-DEBUG = os.environ.get('DEBUG')
+SECRET_KEY = 'django-insecure-%!pjc*mfa!0ohj)i2x&v&+=0^m1=_$j&6bp0@y8*(5yni=6c)0'
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -98,12 +98,12 @@ ASGI_APPLICATION = 'Looben.asgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('DATABASE_ENGINE'),
-        'NAME': os.environ.get('DATABASE_NAME'),
-        'USER': os.environ.get('DATABASE_USER'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-        'HOST': os.environ.get('DATABASE_HOST'),
-        'PORT': os.environ.get('DATABASE_PORT'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'looben',
+        'USER': 'kanta',
+        'PASSWORD': 'Yogawa1029',
+        'HOST': 'db',
+        'PORT': 5432,
         'TEST': {
             'NAME': 'looben_test_db',
         },
