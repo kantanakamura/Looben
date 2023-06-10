@@ -104,16 +104,8 @@ DATABASES = {
         'HOST': os.environ.get('DATABASE_HOST'),
         'PORT': os.environ.get('DATABASE_PORT')
     },
-    'TEST': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'looben_test',
-        'USER': 'looben_test',
-        'PASSWORD': 'Pytest2023',
-        'HOST': 'db',
-        'PORT': 5432
-    }
+    
 }
-
 
 
 
