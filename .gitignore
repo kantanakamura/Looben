@@ -6,6 +6,8 @@ __pycache__
 media
 .DS_Store
 
+.env
+
 # Backup files # 
 *.bak 
 
