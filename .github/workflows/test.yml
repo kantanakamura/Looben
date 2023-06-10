@@ -10,10 +10,10 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v2
       - name: Excute tests
         env:
           SECRET_KEY: 2c8a67ed46c7f1d1ed7b4ae604801a79ca2213409372b4bdf8 
           DEBUG: True
-        run: docker-compose run --rm web sh -c "python3 manage.py test"
+        run: docker-compose run --rm web sh -c "pytest"
