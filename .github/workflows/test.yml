@@ -12,7 +12,6 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Create .env file
         run: |
-          touch .env
           echo SECRET_KEY="${{ secrets.SECRET_KEY }}" >> .env
           echo DEBUG=${{ secrets.DEBUG }} >> .env
           echo DATABASE_ENGINE=${{ secrets.DATABASE_ENGINE }} >> .env
