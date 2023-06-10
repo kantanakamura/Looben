@@ -106,7 +106,7 @@ DATABASES = {
     }
 }
 
-DATABASES['test'] = {
+DATABASES['TEST'] = {
     'default': {
         'ENGINE': os.environ.get('DATABASE_ENGINE'),
         'NAME': os.environ.get('DATABASE_NAME_TEST'),
