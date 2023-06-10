@@ -107,7 +107,6 @@ DATABASES = {
             'NAME': 'looben_test_db',
         },
     },
-    
 }
 
 
