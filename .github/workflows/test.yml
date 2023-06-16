@@ -29,16 +29,6 @@ jobs:
           DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
           DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
           DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
-        run: |
-          touch .env
-          echo "SECRET_KEY=$SECRET_KEY" >> .env
-          echo "DEBUG=$DEBUG" >> .env
-          echo "DATABASE_ENGINE=$DATABASE_ENGINE" >> .env
-          echo "DATABASE_NAME=$DATABASE_NAME" >> .env
-          echo "DATABASE_USER=$DATABASE_USER" >> .env
-          echo "DATABASE_PASSWORD=$DATABASE_PASSWORD" >> .env
-          echo "DATABASE_HOST=$DATABASE_HOST" >> .env
-          echo "DATABASE_PORT=$DATABASE_PORT" >> .env
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Excute tests
