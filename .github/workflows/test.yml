@@ -11,17 +11,15 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Create .env file
-        run: |  
-          touch .env
-          echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
-          echo DEBUG=${{ secrets.DEBUG }} >> .env
-          echo DATABASE_ENGINE=${{ secrets.DATABASE_ENGINE }} >> .env
-          echo DATABASE_NAME=${{ secrets.DATABASE_NAME }} >> .env
-          echo DATABASE_USER=${{ secrets.DATABASE_USER }} >> .env 
-          echo DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} >> .env
-          echo DATABASE_HOST=${{ secrets.DATABASE_HOST }} >> .env 
-          echo DATABASE_POR=${{ secrets.DATABASE_PORT }} >> .env
-          cat .env
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          DEBUG: ${{ secrets.DEBUG }}
+          DATABASE_ENGINE: ${{ secrets.DATABASE_ENGINE }}
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+          DATABASE_USER: ${{ secrets.DATABASE_USER }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+          DATABASE_POR: ${{ secrets.DATABASE_PORT }}
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Excute tests
