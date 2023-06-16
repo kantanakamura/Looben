@@ -1,5 +1,14 @@
 name: Run All Looben Tests
 on: [push]
+env: 
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  DEBUG: ${{ secrets.DEBUG }}
+  DATABASE_ENGINE: ${{ secrets.DATABASE_ENGINE }}
+  DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+  DATABASE_USER: ${{ secrets.DATABASE_USER }}
+  DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+  DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+  DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
 jobs:
   unittest:
     name: Run all tests
@@ -10,25 +19,16 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Create .env file
-        run: | 
-          echo $SECRET_KEY
-          echo $DEBUG
-          echo $DATABASE_ENGINE
-          echo $DATABASE_NAME
-          echo $DATABASE_USER
-          echo $DATABASE_PASSWORD
-          echo $DATABASE_HOST
-          echo $DATABASE_PORT
-        env: 
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          DEBUG: ${{ secrets.DEBUG }}
-          DATABASE_ENGINE: ${{ secrets.DATABASE_ENGINE }}
-          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-          DATABASE_USER: ${{ secrets.DATABASE_USER }}
-          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-          DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
+      # - name: Create .env file
+      #   run: | 
+      #     echo $SECRET_KEY
+      #     echo $DEBUG
+      #     echo $DATABASE_ENGINE
+      #     echo $DATABASE_NAME
+      #     echo $DATABASE_USER
+      #     echo $DATABASE_PASSWORD
+      #     echo $DATABASE_HOST
+      #     echo $DATABASE_PORT
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Excute tests
