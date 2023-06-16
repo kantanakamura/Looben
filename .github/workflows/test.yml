@@ -12,8 +12,17 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Checkout repository
         uses: actions/checkout@v2
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          DEBUG: ${{ secrets.DEBUG }}
+          DATABASE_ENGINE: ${{ secrets.DATABASE_ENGINE }}
+          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+          DATABASE_USER: ${{ secrets.DATABASE_USER }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+          DATABASE_POR: ${{ secrets.DATABASE_PORT }}
       - name: Excute tests
         env:
           SECRET_KEY: 2c8a67ed46c7f1d1ed7b4ae604801a79ca2213409372b4bdf8 
           DEBUG: True
-        run: docker-compose run --rm web sh -c "export DJANGO_SETTINGS_MODULE=Looben.settings"
+        run: docker-compose build && docker-compose run --rm web sh -c "export DJANGO_SETTINGS_MODULE=Looben.settings && pytest"
