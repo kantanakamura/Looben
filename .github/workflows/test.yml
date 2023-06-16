@@ -10,7 +10,8 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USER }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Create .env file
+      - name: Checkout repository
+        uses: actions/checkout@v2
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           DEBUG: ${{ secrets.DEBUG }}
@@ -20,8 +21,6 @@ jobs:
           DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
           DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
           DATABASE_POR: ${{ secrets.DATABASE_PORT }}
-      - name: Checkout repository
-        uses: actions/checkout@v2
       - name: Excute tests
         env:
           SECRET_KEY: 2c8a67ed46c7f1d1ed7b4ae604801a79ca2213409372b4bdf8 
