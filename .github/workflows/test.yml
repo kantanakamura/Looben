@@ -1,5 +1,14 @@
 name: Run All Looben Tests
 on: [push]
+env: 
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  DEBUG: ${{ secrets.DEBUG }}
+  DATABASE_ENGINE: ${{ secrets.DATABASE_ENGINE }}
+  DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+  DATABASE_USER: ${{ secrets.DATABASE_USER }}
+  DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
+  DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+  DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
 jobs:
   unittest:
     name: Run all tests
@@ -21,15 +30,6 @@ jobs:
       #     echo $DATABASE_HOST
       #     echo $DATABASE_PORT
       - name: Checkout repository
-        env: 
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          DEBUG: ${{ secrets.DEBUG }}
-          DATABASE_ENGINE: ${{ secrets.DATABASE_ENGINE }}
-          DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-          DATABASE_USER: ${{ secrets.DATABASE_USER }}
-          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-          DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
         uses: actions/checkout@v2
       - name: Excute tests
         env:
