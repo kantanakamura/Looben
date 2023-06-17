@@ -36,7 +36,7 @@
 - 質問検索機能
 - 大学の口コミ作成機能
 
-## ER図
+## ER Diagram
 ![Looben ER図](https://user-images.githubusercontent.com/96579474/233837300-fac1870a-ff00-4b40-855d-85444e20c891.png)
 
 ## System Architecure
