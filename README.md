@@ -1,18 +1,16 @@
-# 台湾留学情報サイト　- Looben
+# Looben
 
-[※ ここからサイトへ移動できます](http://looben.org)  
-[※ このプロジェクトの振り返り記事](https://kanta-blog.tokyo/looben-review/)
+[※ You can move to the site from here](http://looben.org)  
 
-1. [概要](#概要)
-2. [使用技術](#使用技術)
-
-
-## 概要
-台湾留学という選択をする学生が、後悔のない大学生活を送れるように、情報の少ない台湾の大学情報をまとめ、交流できるwebアプリ。
-現役留学生に質問したり、現役留学生による台湾の大学の口コミを見ることで、リアルな大学情報を手軽に得ることができます。
+1. [Overview](#概要)
+2. [Used Technologies](#使用技術)
 
 
-## 使用技術
+## Overview
+This is a web application that compiles scarce information about universities in Taiwan and facilitates exchanges, allowing students who choose to study in Taiwan to have a university life without regret. By asking current exchange students questions or seeing reviews of Taiwanese universities by current exchange students, you can easily obtain realistic university information.
+
+
+## Used Technologies
 - Python 3.9
 - Django 4.1
 - Postgres
@@ -23,18 +21,18 @@
 - gunicorn
 - postgreSQL
 
-## 機能一覧
-- ユーザー登録、ログイン,ログアウト機能
-- 大学検索機能
-- プロフィール編集機能
-- 就活状況登録、削除、編集機能
-- 留学情報登録、削除、編集機能
-- 留学情報検索機能
-- リアルタイムチャット機能
-- フォロー機能
-- 質問作成、回答、ベストアンサー機能
-- 質問検索機能
-- 大学の口コミ作成機能
+## List of Functions
+- User registration, login, logout functions
+- University search function
+- Profile editing function
+- Job hunting status registration, deletion, editing function
+- Study abroad information registration, deletion, editing function
+- Study abroad information search function
+- Real-time chat function
+- Follow function
+- Question creation, answer, best answer function
+- Question search function
+- University review creation function
 
 ## ER Diagram
 ![Looben ER図](https://user-images.githubusercontent.com/96579474/233837300-fac1870a-ff00-4b40-855d-85444e20c891.png)
