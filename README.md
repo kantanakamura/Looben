@@ -3,8 +3,7 @@
 [※ You can move to the site from here](http://looben.org)  
 
 1. Overview
-2. [Used Technologies](#使用技術)
-
+2. Used Technologies
 
 ## Overview
 This is a web application that compiles scarce information about universities in Taiwan and facilitates exchanges, allowing students who choose to study in Taiwan to have a university life without regret. By asking current exchange students questions or seeing reviews of Taiwanese universities by current exchange students, you can easily obtain realistic university information.
